@@ -1,0 +1,20 @@
+<?php
+
+////////////////////////////////////////////////////////////////////////////////
+// Database Configuration //////////////////////////////////////////////////////
+
+// currently only mysql is supported.
+// update the values to match your database connection and rename this file to
+// database.conf.php
+
+Nether\Option::Set([
+	'nether-database-connections' => [
+		'Default' => [
+			'Type'     => 'mysql',
+			'Hostname' => 'server',
+			'Username' => 'user',
+			'Password' => 'pass',
+			'Database' => 'dbname'
+		]
+	]
+]);

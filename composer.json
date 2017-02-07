@@ -1,0 +1,19 @@
+{
+	"require": {
+		"netherphp\/world": "^2.2"
+	},
+	"config": {
+		"preferred-install": {
+			"netherphp\/*": "source",
+			"*": "dist"
+		}
+	},
+	"autoload": {
+		"psr-0": {
+			"Atlantis\\": "core\/"
+		},
+		"psr-4": {
+			"Routes\\": "routes\/"
+		}
+	}
+}
