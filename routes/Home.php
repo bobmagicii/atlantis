@@ -1,10 +1,12 @@
 <?php
 
 namespace Routes;
-use \Nether;
-use \Routes;
+use \Atlantis as Atlantis;
+use \Nether   as Nether;
+use \Routes   as Routes;
 
-class Home {
+class Home
+extends Atlantis\Site\PublicWeb {
 
 	public function Index() {
 		echo "Hello World!";

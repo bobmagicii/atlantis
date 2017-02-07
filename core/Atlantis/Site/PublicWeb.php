@@ -1,7 +1,8 @@
 <?php
 
 namespace Atlantis\Site;
-use \Atlantis;
+use \Atlantis as Atlantis;
+use \Nether   as Nether;
 
 class PublicWeb {
 
@@ -23,6 +24,8 @@ class PublicWeb {
 
 	public function
 	__construct() {
+
+		$this->Surface = new Nether\Surface;
 
 		return;
 	}
