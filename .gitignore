@@ -1,0 +1,5 @@
+# bof
+/conf/database.conf.php
+/cache/
+/vendor/
+# eof
