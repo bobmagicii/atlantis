@@ -1,6 +1,7 @@
 {
 	"require": {
-		"netherphp\/world": "^2.2"
+		"netherphp\/world": "^2.2",
+		"robmorgan\/phinx": "^0.6"
 	},
 	"config": {
 		"preferred-install": {
