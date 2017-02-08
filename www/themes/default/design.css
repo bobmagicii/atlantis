@@ -1,0 +1,149 @@
+
+* {
+	box-sizing: border-box;
+	font-family: "Roboto Condensed", sans-serif;
+	font-weight: 300;
+}
+
+html,
+body {
+	background: #eee;
+	margin: 0px;
+	padding: 0px;
+}
+
+a:link,
+a:visited {
+	color: #444;
+	text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	line-height: normal;
+	margin: 0px;
+	padding: 0px;
+}
+
+p {
+	margin: 0px 0px 16px 0px;
+}
+
+p:last-child {
+	margin-bottom: 0px !important;
+}
+
+/*//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////*/
+
+.FloatClear {
+	border: 0px;
+	clear: both;
+	margin: 0px;
+}
+
+/*//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////*/
+
+.Contain {
+	width: 100%;
+}
+
+.Contain
+> div {
+	margin: 0px auto;
+	width: 1000px;
+}
+
+/*//////////////////////////////////////////////////////////////////////////////
+// page header structures ////////////////////////////////////////////////////*/
+
+body > header {
+	height: 75px;
+	font-size: 16px;
+	line-height: 35px;
+	padding: 20px;
+}
+
+body > header
+h1 {
+	float: left;
+	font-size: 1em;
+	line-height: 35px;
+	margin: 0px;
+	padding: 0px;
+	text-transform: uppercase;
+}
+
+body > header
+nav ul {
+	float: right;
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+body > header
+nav ul li {
+	display: inline-block;
+	margin: 0px 0px 0px 24px;
+	padding: 0px;
+	text-transform: uppercase;
+}
+
+body > header
+nav ul li a:link,
+body > header
+nav ul li a:visited {
+	color: #888;
+}
+
+/*//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////*/
+
+.Promo {
+	background-color: #333;
+	background-image: url(gfx/bg01.jpg);
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	color: #fff;
+	margin-bottom: 32px;
+}
+
+.Promo
+> div {
+	padding: 48px 0px;
+}
+
+.Promo
+section {
+	float: left;
+}
+
+.Promo
+section h2 {
+	margin-bottom: 24px;
+	letter-spacing: 0.75em;
+	text-transform: uppercase;
+}
+
+.Promo
+section p {
+	color: #aaa;
+	letter-spacing: 0.15em;
+	margin-bottom: 8px;
+	text-transform: uppercase;
+}
+
+.Promo
+aside {
+	color: #aaa;
+	float: right;
+	text-transform: uppercase;
+}
+
+
+

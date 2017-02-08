@@ -2,11 +2,35 @@
 <html>
 <head>
 	<title><?php $surface->Show('page-title') ?></title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i&amp;subset=latin-ext" />
+	<link rel="stylesheet" type="text/css" href="/themes/default/design.css" />
 </head>
 <body>
 
+<header class="Contain"><div>
+	<h1><?php echo htmlentities(Nether\Option::Get('app-name')) ?></h1>
+	<nav>
+		<ul>
+			<li><a href="/">Home</a></li>
+			<li><a href="https://github.com/bobmagicii/atlantis" target="_blank">Github</a></li>
+		</ul>
+	</nav>
+</div></header>
+
+<div class="Contain Promo"><div>
+	<section>
+		<h2>Oh Snap</h2>
+		<p>This theme is not even blue.</p>
+		<p>With a name like that, you would think it would be.</p>
+	</section>
+	<hr class="FloatClear" />
+</div></div>
+
+<div class="Contain Main"><div>
+
 <?php echo $surface->Get('stdout') ?>
 
+</div></div>
 
 </body>
 </html>
