@@ -187,7 +187,7 @@ extends Nether\Object {
 		return NULL;
 	}
 
-	static public function
+	static protected function
 	Create_ValidateAlias($Opt):
 	Void {
 	/*//
@@ -207,7 +207,7 @@ extends Nether\Object {
 		return;
 	}
 
-	static public function
+	static protected function
 	Create_ValidateEmail($Opt):
 	Void {
 	/*//
@@ -227,7 +227,7 @@ extends Nether\Object {
 		return;
 	}
 
-	static public function
+	static protected function
 	Create_ValidatePassword($Opt):
 	Void {
 	/*//
