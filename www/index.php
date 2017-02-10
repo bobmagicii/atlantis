@@ -5,5 +5,7 @@ require(sprintf(
 	dirname(dirname(__FILE__))
 ));
 
-(new Atlantis\Site\Router)
-->Run();
+$Router = new Atlantis\Site\Router;
+Nether\Stash::Set('Router',$Router);
+
+$Router->Run();

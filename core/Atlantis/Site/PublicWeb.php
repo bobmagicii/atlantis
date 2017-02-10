@@ -9,15 +9,12 @@ class PublicWeb {
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
 
-	protected
-	$Router = NULL;
-
-	public function
-	GetRouter():
-	Nether\Avenue\Router {
-
-		return $this->Router;
-	}
+	public
+	$Get     = NULL,
+	$Post    = NULL,
+	$Router  = NULL,
+	$Surface = NULL,
+	$User    = NULL;
 
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
@@ -25,7 +22,11 @@ class PublicWeb {
 	public function
 	__construct() {
 
+		$this->Get = new Nether\Input\Filter($_GET);
+		$this->Post = new Nether\Input\Filter($_POST);
+		$this->Router = Nether\Stash::Get('Router');
 		$this->Surface = new Nether\Surface;
+		$this->User = Nether\Auth\User::FetchSession();
 
 		return;
 	}

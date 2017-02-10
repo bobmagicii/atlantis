@@ -14,6 +14,7 @@ extends Nether\Avenue\Router {
 		$this
 		->AddRoute('{@}//index','Routes\Home::Index')
 		->AddRoute('{@}//about','Routes\Home::About')
+		->AddRoute('{@}//login','Routes\Login::Index')
 		->AddRoute('{@}//{@}','Routes\Home::NotFound');
 
 		Nether\Ki::Queue(
