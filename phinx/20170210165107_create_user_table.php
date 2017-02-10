@@ -30,12 +30,16 @@ COLLATE='utf8_general_ci'
 ENGINE=InnoDB;
 		");
 
-		$this->Insert('Users',[
-			'user_ctime' => time(),
-			'user_alias' => 'root',
-			'user_email' => 'root@localhost',
-			'user_phash' => hash('sha512','test'),
-			'user_psand' => hash('sha512',microtime(TRUE))
+		// when the application is solid, this migration and many of them
+		// from the dev period will be completely removed and new base
+		// migrations will be built based on the releaseable state.
+		// so do not lol toooo hard.
+
+		Nether\Auth\User::Create([
+			'Alias'     => 'root',
+			'Email'     => 'root@atlantis.local',
+			'Password1' => 'password',
+			'Password2' => 'password'
 		]);
 
 		return;

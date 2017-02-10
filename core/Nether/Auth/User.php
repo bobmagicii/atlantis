@@ -3,6 +3,8 @@
 namespace Nether\Auth;
 use \Nether as Nether;
 
+use \Exception as Exception;
+
 Nether\Option::Define([
 	'nether-user-table-name'    => 'Users',
 	'nether-user-cookie-name'   => 'nether-user',
@@ -92,6 +94,10 @@ extends Nether\Object {
 	public function
 	GetSessionHash():
 	String {
+	/*//
+	@date 2017-02-10
+	get the current session hash allowing for shifting sands.
+	//*/
 
 		return hash('sha512',"{$this->PHash}:{$this->PSand}");
 	}
@@ -197,6 +203,7 @@ extends Nether\Object {
 	Get($Val):
 	?self {
 	/*//
+	@date 2017-02-08
 	return the specified user automatically determining the proper method to
 	use to look them up based on what you gave us.
 	//*/
@@ -217,33 +224,90 @@ extends Nether\Object {
 	GetByID(Int $ID):
 	?self {
 	/*//
-	@todo
+	@date 2017-02-10
 	return the specified user looking up by user id.
 	//*/
 
+		$Table = Nether\Option::Get('nether-user-table-name');
+		$SQL = Nether\Database::Get()->NewVerse();
+
+		$Result = $SQL
+		->Select($Table)
+		->Fields('*')
+		->Where('user_id=:ID')
+		->Limit(1)
+		->Query([ ':ID' => $ID ]);
+
+		// boom boom pow
+		if(!$Result->IsOK())
+		throw new Exception('User::GetByID critical phail');
+
+		// user not found
+		if(!$Result->GetCount())
 		return NULL;
+
+		// get user.
+		return new self($Result->Next());
 	}
 
 	static public function
 	GetByAlias(String $Alias):
 	?self {
 	/*//
-	@todo
+	@date 2017-02-10
 	return the specified user looking up by username/alias.
 	//*/
 
+		$Table = Nether\Option::Get('nether-user-table-name');
+		$SQL = Nether\Database::Get()->NewVerse();
+
+		$Result = $SQL
+		->Select($Table)
+		->Fields('*')
+		->Where('user_alias LIKE :Alias')
+		->Limit(1)
+		->Query([ ':Alias' => $Alias ]);
+
+		// boom boom pow
+		if(!$Result->IsOK())
+		throw new Exception('User::GetByAlias critical phail');
+
+		// user not found
+		if(!$Result->GetCount())
 		return NULL;
+
+		// get user.
+		return new self($Result->Next());
 	}
 
 	static public function
 	GetByEmail(String $Email):
 	?self {
 	/*//
-	@todo
+	@date 2017-02-10
 	return the specified user looking up by email address.
 	//*/
 
+		$Table = Nether\Option::Get('nether-user-table-name');
+		$SQL = Nether\Database::Get()->NewVerse();
+
+		$Result = $SQL
+		->Select($Table)
+		->Fields('*')
+		->Where('user_email LIKE :Email')
+		->Limit(1)
+		->Query([ ':Email' => $Email ]);
+
+		// boom boom pow
+		if(!$Result->IsOK())
+		throw new Exception('User::GetByEmail critical phail');
+
+		// user not found
+		if(!$Result->GetCount())
 		return NULL;
+
+		// get user.
+		return new self($Result->Next());
 	}
 
 	////////////////////////////////////////////////////////////////
@@ -259,6 +323,11 @@ extends Nether\Object {
 	like the email looks legit, passwords match, etc, and catch various
 	exceptions when they fail.
 	//*/
+
+		$Result = NULL;
+		$UserID = 0;
+
+		////////
 
 		$Opt = new Nether\Object($Opt,[
 			// fields used by the query.
@@ -279,9 +348,33 @@ extends Nether\Object {
 		self::Create_ValidateEmail($Opt);
 		self::Create_ValidatePassword($Opt);
 
-		// ...
+		////////
 
-		return NULL;
+		$Result = Nether\Database::Get()
+		->NewVerse()
+		->Insert(Nether\Option::Get('nether-user-table-name'))
+		->Fields([
+			'user_ctime' => ':TimeCreated',
+			'user_stime' => ':TimeSeen',
+			'user_btime' => ':TimeBanned',
+			'user_alias' => ':Alias',
+			'user_email' => ':Email',
+			'user_psand' => ':PSand',
+			'user_phash' => ':PHash'
+		])
+		->Query($Opt);
+
+		if(!$Result->IsOK())
+		throw new Exception('User::Create critical phail');
+
+		////////
+
+		if(!($UserID = (Int)$Result->GetInsertID()))
+		throw new Exception('User::Create interesting phail');
+
+		////////
+
+		return self::GetByID($UserID);
 	}
 
 	static protected function
