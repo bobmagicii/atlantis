@@ -153,7 +153,7 @@ extends Nether\Object {
 	}
 
 	static public function
-	CreateSession(self $User, Bool $Overshadow=FALSE):
+	LaunchSession(self $User, Bool $Overshadow=FALSE):
 	Void {
 	/*//
 	@todo test
