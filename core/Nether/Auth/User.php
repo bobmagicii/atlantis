@@ -4,6 +4,7 @@ namespace Nether\Auth;
 use \Nether as Nether;
 
 Nether\Option::Define([
+	'nether-user-table-name'    => 'Users',
 	'nether-user-cookie-name'   => 'nether-user',
 	'nether-user-cookie-path'   => '/',
 	'nether-user-cookie-domain' => (
@@ -98,7 +99,6 @@ extends Nether\Object {
 	////////////////////////////////////////////////////////////////
 	// User Session API ////////////////////////////////////////////
 
-
 	static public function
 	FetchSession():
 	?self {
@@ -148,7 +148,7 @@ extends Nether\Object {
 		$Data[0] = base_convert($Data[0],36,10);
 
 		// see if the user exists.
-		if(!($User = self::GetByID($Data[0]))
+		if(!($User = self::GetByID($Data[0])))
 		return NULL;
 
 		// see that the user validates.
