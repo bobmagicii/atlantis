@@ -3,6 +3,16 @@
 namespace Nether\Auth;
 use \Nether as Nether;
 
+Nether\Option::Define([
+	'nether-user-cookie-name'   => 'nether-user',
+	'nether-user-cookie-path'   => '/',
+	'nether-user-cookie-domain' => (
+		(array_key_exists('HTTP_HOST',$_SERVER))?
+		($_SERVER['HTTP_HOST']):
+		(NULL)
+	)
+]);
+
 class User
 extends Nether\Object {
 
@@ -46,7 +56,7 @@ extends Nether\Object {
 	$PSand = NULL;
 
 	////////////////////////////////////////////////////////////////
-	// Instance Methods Property ///////////////////////////////////
+	// Instance Property Methods ///////////////////////////////////
 
 	public function
 	GetID():
@@ -81,16 +91,92 @@ extends Nether\Object {
 	////////////////////////////////////////////////////////////////
 	// User Session API ////////////////////////////////////////////
 
+
 	static public function
-	GetFromSession():
+	FetchSession():
 	?self {
 	/*//
-	@todo
-	return the user that is currently logged in. if no user is found or the
-	session failed validation then it will return null.
+	@todo test
+	@date 2017-02-09
+	fetch the currently active session
 	//*/
 
+		return self::GetSession(TRUE) ?? self::GetSession(FALSE);
+	}
+
+	static public function
+	GetSession(Bool $Overshadowed=FALSE):
+	?self {
+	/*//
+	@todo test
+	@date 2017-02-09
+	return the user that is currently logged in to the specified session. it
+	will pull either the normal session or the overshadow.
+	//*/
+
+		$Data = NULL;
+		$User = NULL;
+		$CName = Nether\Option::Get('nether-user-cookie-name');
+
+		////////
+
+		if($Overshadowed)
+		$CName .= '-os';
+
+		////////
+
+		// did we even have data
+		if(!array_key_exists($CName,$_COOKIE))
 		return NULL;
+
+		// did the data fit our expected format
+		if(!preg_match(
+			'/^([a-z0-9]):([a-z0-9])$/',
+			$_COOKIE[$CName],
+			$Data
+		))
+		return NULL;
+
+		// expand the user id.
+		$Data[0] = base_convert($Data[0],36,10);
+
+		// see if the user exists.
+		if(!($User = self::GetByID($Data[0]))
+		return NULL;
+
+		// see that the user validates.
+		if(hash('sha512',"{$User->PHash}:{$User->PSand}") !== $Data[1])
+		return NULL;
+
+		// so we're good.
+		return $User;
+	}
+
+	static public function
+	CreateSession(self $User, Bool $Overshadow=FALSE):
+	Void {
+	/*//
+	@todo test
+	@date 2017-02-09
+	set a user to be logged in.
+	//*/
+
+		$CName = Nether\Option::Get('nether-user-cookie-name');
+		$CPath = Nether\Option::Get('nether-user-cookie-path');
+		$CDomain = Nether\Option::Get('nether-user-cookie-domain');
+
+		if($Overshadow)
+		$CName .= '-os';
+
+		setcookie(
+			$CName,
+			"{$User->PHash}:{$User->PSand}",
+			(time() + (86400*7)),
+			$CPath,
+			$CDomain
+		);
+
+		return;
 	}
 
 	////////////////////////////////////////////////////////////////
