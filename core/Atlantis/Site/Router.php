@@ -17,6 +17,14 @@ extends Nether\Avenue\Router {
 		->AddRoute('{@}//login','Routes\Login::Index')
 		->AddRoute('{@}//{@}','Routes\Home::NotFound');
 
+		// figure out who is logged in.
+		Nether\Stash::Set(
+			'User',
+			Nether\Auth\User::FetchSession()
+		);
+
+		// give surface area access to the router via $router.
+		// lowercase to match $this, a "magic" variable.
 		Nether\Ki::Queue(
 			'surface-render-scope',
 			function(Array &$Scope):

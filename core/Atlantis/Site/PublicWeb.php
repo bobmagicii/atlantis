@@ -26,7 +26,7 @@ class PublicWeb {
 		$this->Post = new Nether\Input\Filter($_POST);
 		$this->Router = Nether\Stash::Get('Router');
 		$this->Surface = new Nether\Surface;
-		$this->User = Nether\Auth\User::FetchSession();
+		$this->User = Nether\Stash::Get('User');
 
 		return;
 	}
