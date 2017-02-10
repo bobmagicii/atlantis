@@ -9,7 +9,8 @@ class Home
 extends Atlantis\Site\PublicWeb {
 
 	public function Index() {
-		echo "Hello World!";
+
+		$this->Surface->Area('home/index');
 		return;
 	}
 

@@ -1,3 +1,8 @@
+<?php
+
+$User = Nether\Stash::Get('User');
+
+?>
 <!doctype html>
 <html>
 <head>
@@ -14,7 +19,11 @@
 	<nav>
 		<ul>
 			<li><a href="/">Home</a></li>
-			<li><a href="https://github.com/bobmagicii/atlantis" target="_blank">Github</a></li>
+<?php if($User): ?>
+<?php else: ?>
+			<li><a href="/join/">Join</a></li>
+			<li><a href="/login/">Login</a></li>
+<?php endif; ?>
 		</ul>
 	</nav>
 </div></header>
@@ -28,11 +37,19 @@
 	<hr class="FloatClear" />
 </div></div>
 
-<div class="Contain Main"><div>
+<section class="Contain"><div>
 
 <?php echo $surface->Get('stdout') ?>
 
-</div></div>
+</div></section>
+
+<footer class="Contain"><div>
+	this is a footer
+	<ul>
+		<li><a href="https://github.com/bobmagicii/atlantis" target="_blank"><i class="fa fa-github"></i> Github</a></li>
+	</ul>
+	<hr class="FloatClear" />
+</div></footer>
 
 </body>
 </html>
