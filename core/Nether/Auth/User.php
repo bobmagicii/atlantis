@@ -170,7 +170,11 @@ extends Nether\Object {
 
 		setcookie(
 			$CName,
-			"{$User->PHash}:{$User->PSand}",
+			sprintf(
+				'%s:%s',
+				base_convert($User->GetID(),10,36),
+				hash('sha512',"{$User->PHash}:{$User->PSand}")
+			),
 			(time() + (86400*7)),
 			$CPath,
 			$CDomain
