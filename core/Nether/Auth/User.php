@@ -88,6 +88,13 @@ extends Nether\Object {
 		return $this->Email;
 	}
 
+	public function
+	GetSessionHash():
+	String {
+
+		return hash('sha512',"{$this->PHash}:{$this->PSand}");
+	}
+
 	////////////////////////////////////////////////////////////////
 	// User Session API ////////////////////////////////////////////
 
@@ -145,7 +152,7 @@ extends Nether\Object {
 		return NULL;
 
 		// see that the user validates.
-		if(hash('sha512',"{$User->PHash}:{$User->PSand}") !== $Data[1])
+		if($User->GetSessionHash() !== $Data[1])
 		return NULL;
 
 		// so we're good.
@@ -173,7 +180,7 @@ extends Nether\Object {
 			sprintf(
 				'%s:%s',
 				base_convert($User->GetID(),10,36),
-				hash('sha512',"{$User->PHash}:{$User->PSand}")
+				$User->GetSessionHash()
 			),
 			(time() + (86400*7)),
 			$CPath,
