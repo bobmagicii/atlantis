@@ -1,10 +1,15 @@
 <?php
 
 namespace Nether\Auth\Error;
-
-use \Exception as Exception;
+use \Nether as Nether;
 
 class AliasInvalid
-extends Exception {
+extends Nether\Auth\Error {
+
+	public function
+	__construct() {
+		parent::__construct('Alias is invalid.');
+		return;
+	}
 
 }

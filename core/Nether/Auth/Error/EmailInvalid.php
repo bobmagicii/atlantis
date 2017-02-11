@@ -1,10 +1,14 @@
 <?php
 
 namespace Nether\Auth\Error;
-
-use \Exception as Exception;
+use \Nether as Nether;
 
 class EmailInvalid
-extends Exception {
+extends Nether\Auth\Error {
 
+	public function
+	__construct() {
+		parent::__construct('Email is invalid.');
+		return;
+	}
 }
