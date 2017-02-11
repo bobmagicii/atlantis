@@ -120,7 +120,6 @@ extends Nether\Object {
 	FetchSession():
 	?self {
 	/*//
-	@todo test
 	@date 2017-02-09
 	fetch the currently active session
 	//*/
@@ -132,7 +131,6 @@ extends Nether\Object {
 	GetSession(Bool $Overshadowed=FALSE):
 	?self {
 	/*//
-	@todo test
 	@date 2017-02-09
 	return the user that is currently logged in to the specified session. it
 	will pull either the normal session or the overshadow.
@@ -182,6 +180,10 @@ extends Nether\Object {
 	static public function
 	DestroySession():
 	Void {
+	/*//
+	@date 2017-02-11
+	kill the login session.
+	//*/
 
 		$CName = Nether\Option::Get('nether-user-cookie-name');
 		$CPath = Nether\Option::Get('nether-user-cookie-path');
@@ -195,7 +197,6 @@ extends Nether\Object {
 	LaunchSession(self $User, Bool $Overshadow=FALSE):
 	Void {
 	/*//
-	@todo test
 	@date 2017-02-09
 	set a user to be logged in.
 	//*/
