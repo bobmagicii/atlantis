@@ -16,6 +16,7 @@ extends Nether\Avenue\Router {
 		->AddRoute('{@}//about','Routes\\Home::About')
 		->AddRoute('{@}//login','Routes\\Login::Index')
 		->AddRoute('{@}//logout','Routes\\Login::Destroy')
+		->AddRoute('{@}//join','Routes\\Join::Index')
 		->AddRoute('{@}//{@}','Routes\\Home::NotFound');
 
 		// figure out who is logged in.

@@ -1,0 +1,30 @@
+<?php
+
+$Printer = new Nether\Input\Filter($_POST);
+$Printer->SetDefaultFunction('Atlantis\\Util\\Filters::SafeForHTML');
+
+?>
+<div class="TextAlignCenter">
+	<h3>Join</h3>
+	<form method="post">
+		<div class="PaddingVerticalBarely">
+			<input type="text" name="Alias" placeholder="Username..." value="<?php echo $Printer->Alias ?>" />
+		</div>
+		<div class="PaddingVerticalBarely">
+			<input type="text" name="Email" placeholder="Email..." value="<?php echo $Printer->Email ?>" />
+		</div>
+		<div class="PaddingVerticalBarely">
+			<input type="password" name="Password1" placeholder="Password..."  value="<?php echo $Printer->Password1 ?>" />
+		</div>
+		<div class="PaddingVerticalBarely">
+			<input type="password" name="Password2" placeholder="Password Again..." value="<?php echo $Printer->Password2 ?>" />
+		</div>
+		<div class="PaddingVerticalBarely">
+			<div class="g-recaptcha" data-sitekey="<?php echo Nether\Option::Get('recaptcha-key') ?>"></div>
+		</div>
+		<div class="PaddingVerticalBarely">
+			<input type="hidden" name="Action" value="lulz" />
+			<input type="submit" value="Create Account" />
+		</div>
+	</form>
+</div>
