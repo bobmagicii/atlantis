@@ -2,6 +2,18 @@
 
 $User = Nether\Stash::Get('User');
 
+$PageErrors = function(Nether\Object\Datastore $Errors):Void {
+	$Errors->Each(function(Atlantis\Site\Error\Inline $Inline):Void {
+		printf(
+			'<div class="Contain Error"><div>%s%s</div></div>',
+			($Inline->GetIcon())?
+				("<i class=\"fa {$Inline->GetIcon()}\"></i> "):
+				(''),
+			$Inline->GetMessage()
+		);
+	});
+};
+
 ?>
 <!doctype html>
 <html>
@@ -15,7 +27,7 @@ $User = Nether\Stash::Get('User');
 <body>
 
 <header class="Contain"><div>
-	<h1><?php echo htmlentities(Nether\Option::Get('app-name')) ?></h1>
+	<h1><i class="fa fa-hashtag"></i> <?php echo htmlentities(Nether\Option::Get('app-name')) ?></h1>
 	<nav>
 		<ul>
 			<li><a href="/">Home</a></li>
@@ -36,6 +48,8 @@ $User = Nether\Stash::Get('User');
 	</section>
 	<hr class="FloatClear" />
 </div></div>
+
+<?php if($route->Errors->Count()) $PageErrors($route->Errors); ?>
 
 <section class="Contain"><div>
 
