@@ -102,6 +102,17 @@ extends Nether\Object {
 		return hash('sha512',"{$this->PHash}:{$this->PSand}");
 	}
 
+	public function
+	IsValidPassword(String $Password):
+	Bool {
+	/*//
+	@date 2017-02-11
+	does the specified password match the one belonging to this user?
+	//*/
+
+		return (hash('sha512',$Password) === $this->PHash);
+	}
+
 	////////////////////////////////////////////////////////////////
 	// User Session API ////////////////////////////////////////////
 
@@ -144,21 +155,21 @@ extends Nether\Object {
 
 		// did the data fit our expected format
 		if(!preg_match(
-			'/^([a-z0-9]):([a-z0-9])$/',
+			'/^([a-z0-9]+):([a-z0-9]+)$/',
 			$_COOKIE[$CName],
 			$Data
 		))
 		return NULL;
 
 		// expand the user id.
-		$Data[0] = base_convert($Data[0],36,10);
+		$Data[1] = (Int)base_convert($Data[1],36,10);
 
 		// see if the user exists.
-		if(!($User = self::GetByID($Data[0])))
+		if(!($User = self::GetByID($Data[1])))
 		return NULL;
 
 		// see that the user validates.
-		if($User->GetSessionHash() !== $Data[1])
+		if($User->GetSessionHash() !== $Data[2])
 		return NULL;
 
 		// so we're good.
