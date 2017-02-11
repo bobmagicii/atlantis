@@ -176,6 +176,21 @@ extends Nether\Object {
 		return $User;
 	}
 
+	////////////////
+	////////////////
+
+	static public function
+	DestroySession():
+	Void {
+
+		$CName = Nether\Option::Get('nether-user-cookie-name');
+		$CPath = Nether\Option::Get('nether-user-cookie-path');
+		$CDomain = Nether\Option::Get('nether-user-cookie-domain');
+
+		setcookie($CName,'',(-1),$CPath,$CDomain);
+		return;
+	}
+
 	static public function
 	LaunchSession(self $User, Bool $Overshadow=FALSE):
 	Void {

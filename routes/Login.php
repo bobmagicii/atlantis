@@ -21,6 +21,15 @@ extends Atlantis\Site\PublicWeb {
 		return;
 	}
 
+	public function
+	Destroy():
+	Void {
+
+		Nether\Auth\User::DestroySession();
+		$this->Redirect('/');
+		return;
+	}
+
 	protected function
 	HandleLogin():
 	Void {

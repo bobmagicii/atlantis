@@ -12,10 +12,11 @@ extends Nether\Avenue\Router {
 		parent::__construct($Opt);
 
 		$this
-		->AddRoute('{@}//index','Routes\Home::Index')
-		->AddRoute('{@}//about','Routes\Home::About')
-		->AddRoute('{@}//login','Routes\Login::Index')
-		->AddRoute('{@}//{@}','Routes\Home::NotFound');
+		->AddRoute('{@}//index','Routes\\Home::Index')
+		->AddRoute('{@}//about','Routes\\Home::About')
+		->AddRoute('{@}//login','Routes\\Login::Index')
+		->AddRoute('{@}//logout','Routes\\Login::Destroy')
+		->AddRoute('{@}//{@}','Routes\\Home::NotFound');
 
 		// figure out who is logged in.
 		Nether\Stash::Set(
