@@ -49,7 +49,9 @@ $AppStats = new class() {
 			'qc(%d), hc(%d %d%%)',
 			$Stat->QueryCount,
 			$Stat->HitCount,
-			(($Stat->HitCount / $Stat->QueryCount) * 100)
+			($Stat->QueryCount)?
+				((($Stat->HitCount / $Stat->QueryCount) * 100)):
+				(0)
 		);
 	}
 	public function
