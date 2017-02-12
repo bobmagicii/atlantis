@@ -37,7 +37,7 @@ $AppStats = new class() {
 	public function
 	__toString():
 	String {
-		return "db{{$this->GetDatabase()}} c{{$this->GetCache()}}";
+		return "db{{$this->GetDatabase()}}<br />c{{$this->GetCache()}}";
 	}
 	public function
 	GetCache():
@@ -106,10 +106,10 @@ $AppStats = new class() {
 </div></section>
 
 <footer class="Contain"><div>
-	<code><?php echo $AppStats ?></code>
 	<ul>
 		<li><a href="https://github.com/bobmagicii/atlantis" target="_blank"><i class="fa fa-github"></i> Github</a></li>
 	</ul>
+	<code><?php echo $AppStats ?></code>
 	<hr class="FloatClear" />
 </div></footer>
 
