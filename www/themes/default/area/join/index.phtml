@@ -20,6 +20,9 @@ $Printer->SetDefaultFunction('Atlantis\\Util\\Filters::SafeForHTML');
 			<input type="password" name="Password2" placeholder="Password Again..." value="<?php echo $Printer->Password2 ?>" />
 		</div>
 		<div class="PaddingVerticalBarely">
+			<style type="text/css" scoped>
+			.g-recaptcha > div { margin: 0px auto; width: 300px; }
+			</style>
 			<div class="g-recaptcha" data-sitekey="<?php echo Nether\Option::Get('recaptcha-key') ?>"></div>
 		</div>
 		<div class="PaddingVerticalBarely">
