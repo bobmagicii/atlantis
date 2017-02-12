@@ -33,12 +33,45 @@ $PrimaryBar = function() use($User):Void {
 	return;
 };
 
+$AppStats = new class() {
+	public function
+	__toString():
+	String {
+		return "db{{$this->GetDatabase()}} c{{$this->GetCache()}}";
+	}
+	public function
+	GetCache():
+	String {
+
+		$Stat = Nether\Stash::Get('Cache')->GetStats();
+
+		return sprintf(
+			'qc(%d), hc(%d %d%%)',
+			$Stat->QueryCount,
+			$Stat->HitCount,
+			(($Stat->HitCount / $Stat->QueryCount) * 100)
+		);
+	}
+	public function
+	GetDatabase():
+	String {
+
+		return sprintf(
+			'cn(%d), ct(%.3f), qn(%d), qt(%.3f)',
+			Nether\Database::$ConnectCount,
+			Nether\Database::$ConnectTime,
+			Nether\Database::$QueryCount,
+			Nether\Database::$QueryTime
+		);
+	}
+};
+
 ?>
 <!doctype html>
 <html>
 <head>
 	<title><?php $surface->Show('page-title') ?></title>
-	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i&amp;subset=latin-ext" />
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Share+Tech+Mono&amp;subset=latin-ext" />
 	<link rel="stylesheet" type="text/css" href="/themes/default/design.css" />
 	<link rel="stylesheet" type="text/css" href="/share/other/dist/styles.css" />
 	<script type="text/javascript" src="/share/other/dist/scripts.js"></script>
@@ -73,7 +106,7 @@ $PrimaryBar = function() use($User):Void {
 </div></section>
 
 <footer class="Contain"><div>
-	this is a footer
+	<code><?php echo $AppStats ?></code>
 	<ul>
 		<li><a href="https://github.com/bobmagicii/atlantis" target="_blank"><i class="fa fa-github"></i> Github</a></li>
 	</ul>

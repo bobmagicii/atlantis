@@ -31,6 +31,10 @@ h4 {
 	padding: 0px;
 }
 
+code {
+	font-family: 'Share Tech Mono', monospace;
+}
+
 p {
 	margin: 0px 0px 16px 0px;
 }
