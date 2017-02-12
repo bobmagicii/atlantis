@@ -59,6 +59,44 @@ extends Nether\Object {
 	$PSand = NULL;
 
 	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
+	public function
+	Cache():
+	self {
+	/*//
+	@date 2017-02-11
+	prime the cache with this user.
+	//*/
+
+		$Cache = Nether\Stash::Get(Nether\Option::Get('cache-stash-name'));
+
+		$Cache->Set("nether-user-id-{$this->GetID()}",$this);
+		$Cache->Set("nether-user-al-{$this->GetAlias()}",$this);
+		$Cache->Set("nether-user-em-{$this->GetEmail()}",$this);
+
+		return $this;
+	}
+
+	public function
+	Flush():
+	self {
+	/*//
+	@date 2017-02-11
+	drop this user from the cache. you'll need to use this after changing any
+	information about them.
+	//*/
+
+		$Cache = Nether\Stash::Get(Nether\Option::Get('cache-stash-name'));
+
+		$Cache->Drop("nether-user-id-{$this->GetID()}");
+		$Cache->Drop("nether-user-al-{$this->GetAlias()}");
+		$Cache->Drop("nether-user-em-{$this->GetEmail()}");
+
+		return $this;
+	}
+
+	////////////////////////////////////////////////////////////////
 	// Instance Property Methods ///////////////////////////////////
 
 	public function
@@ -255,6 +293,9 @@ extends Nether\Object {
 	return the specified user looking up by user id.
 	//*/
 
+		$Cached = self::GetFromCache("nether-user-id-{$ID}");
+		if($Cached) return $Cached;
+
 		$Table = Nether\Option::Get('nether-user-table-name');
 		$SQL = Nether\Database::Get()->NewVerse();
 
@@ -274,7 +315,7 @@ extends Nether\Object {
 		return NULL;
 
 		// get user.
-		return new self($Result->Next());
+		return (new self($Result->Next()))->Cache();
 	}
 
 	static public function
@@ -284,6 +325,9 @@ extends Nether\Object {
 	@date 2017-02-10
 	return the specified user looking up by username/alias.
 	//*/
+
+		$Cached = self::GetFromCache("nether-user-al-{$Alias}");
+		if($Cached) return $Cached;
 
 		$Table = Nether\Option::Get('nether-user-table-name');
 		$SQL = Nether\Database::Get()->NewVerse();
@@ -304,7 +348,7 @@ extends Nether\Object {
 		return NULL;
 
 		// get user.
-		return new self($Result->Next());
+		return (new self($Result->Next()))->Cache();
 	}
 
 	static public function
@@ -314,6 +358,9 @@ extends Nether\Object {
 	@date 2017-02-10
 	return the specified user looking up by email address.
 	//*/
+
+		$Cached = self::GetFromCache("nether-user-em-{$Email}");
+		if($Cached) return $Cached;
 
 		$Table = Nether\Option::Get('nether-user-table-name');
 		$SQL = Nether\Database::Get()->NewVerse();
@@ -334,7 +381,20 @@ extends Nether\Object {
 		return NULL;
 
 		// get user.
-		return new self($Result->Next());
+		return (new self($Result->Next()))->Cache();
+	}
+
+	static public function
+	GetFromCache(String $Key):
+	?self {
+	/*//
+	@date 2017-02-11
+	see if this user has been cached return it if so null if not.
+	//*/
+
+		return Nether\Stash::Get(
+			Nether\Option::Get('cache-stash-name')
+		)->Get($Key);
 	}
 
 	////////////////////////////////////////////////////////////////

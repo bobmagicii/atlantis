@@ -11,5 +11,10 @@ Nether\Option::Set([
 
 	// framework settings.
 	'nether-web-root' => sprintf('%s/www',ProjectRoot),
-	'nether-web-path' => '/'
+	'nether-web-path' => '/',
+	'cache-stash-name' => 'Cache',
+	'cache-key-prefix' => 'atlantis-',
+	'cache-drivers-load' => [
+		'App'  => 'Nether\\Cache\\Appcache',
+	] // no memcached 7.1 for windows yet...
 ]);
