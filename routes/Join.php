@@ -26,10 +26,22 @@ extends Atlantis\Site\PublicWeb {
 	HandleJoin():
 	Void {
 
-		$Human = new ReCaptcha\ReCaptcha(Nether\Option::Get('recaptcha-secret'));
+		// check if they can fool google into believing they are real.
 
-		// @todo finish recaptcha validation
-		// cuz gf is staring at me
+		$Human = new ReCaptcha\ReCaptcha(Nether\Option::Get('recaptcha-secret'));
+		$CVal = $this->Post->{'g-recaptcha-response'};
+		$IP = $_SERVER['REMOTE_ADDR'];
+
+		if(!$Human->Verify($CVal,$IP)->IsSuccess()) {
+			$this->Errors->Push(new InlineError([
+				'Message' => 'Failed to validate as human.'
+			]));
+			return;
+		}
+
+		// then see if they were able to figure out how to fill in a form.
+		// the user auth class will kick out various exceptions it does
+		// all the checking we need atm.
 
 		try {
 			$User = Nether\Auth\User::Create([
@@ -46,6 +58,8 @@ extends Atlantis\Site\PublicWeb {
 			]));
 			return;
 		}
+
+		// huzzah for you.
 
 		Nether\Auth\User::LaunchSession($User);
 		$this->Redirect('/');
