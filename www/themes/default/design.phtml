@@ -14,6 +14,25 @@ $PageErrors = function(Nether\Object\Datastore $Errors):Void {
 	});
 };
 
+$PrimaryBar = function() use($User):Void {
+
+	if($User) $Data = [
+		'Home' => '/',
+		"Logout ({$User->GetAlias()})" => '/logout/'
+	];
+
+	else $Data = [
+		'Home' => '/',
+		'Join' => '/join/',
+		'Login' => '/login/'
+	];
+
+	foreach($Data as $Name => $URL)
+	echo "<li><a href=\"{$URL}\">{$Name}</a></li>";
+
+	return;
+};
+
 ?>
 <!doctype html>
 <html>
@@ -31,13 +50,7 @@ $PageErrors = function(Nether\Object\Datastore $Errors):Void {
 	<h1><i class="fa fa-hashtag"></i> <?php echo htmlentities(Nether\Option::Get('app-name')) ?></h1>
 	<nav>
 		<ul>
-			<li><a href="/">Home</a></li>
-<?php if($User): ?>
-			<li><a href="/logout/">Logout</a></li>
-<?php else: ?>
-			<li><a href="/join/">Join</a></li>
-			<li><a href="/login/">Login</a></li>
-<?php endif; ?>
+<?php $PrimaryBar() ?>
 		</ul>
 	</nav>
 </div></header>
