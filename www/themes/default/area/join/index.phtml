@@ -7,21 +7,21 @@ $Printer->SetDefaultFunction('Atlantis\\Util\\Filters::SafeForHTML');
 <div class="TextAlignCenter">
 	<h3>Join</h3>
 	<form method="post">
-		<div class="PaddingVerticalBarely">
-			<input type="text" name="Alias" placeholder="Username..." value="<?php echo $Printer->Alias ?>" />
+		<div class="PaddingVerticalBarely" style="width:300px;margin:0px auto;">
+			<input type="text" name="Alias" class="WidthFull" placeholder="Username..." value="<?php echo $Printer->Alias ?>" />
 		</div>
-		<div class="PaddingVerticalBarely">
-			<input type="text" name="Email" placeholder="Email..." value="<?php echo $Printer->Email ?>" />
+		<div class="PaddingVerticalBarely" style="width:300px;margin:0px auto;">
+			<input type="text" name="Email" class="WidthFull" placeholder="Email..." value="<?php echo $Printer->Email ?>" />
 		</div>
-		<div class="PaddingVerticalBarely">
-			<input type="password" name="Password1" placeholder="Password..."  value="<?php echo $Printer->Password1 ?>" />
+		<div class="PaddingVerticalBarely" style="width:300px;margin:0px auto;">
+			<input type="password" name="Password1" class="WidthFull" placeholder="Password..."  value="<?php echo $Printer->Password1 ?>" />
 		</div>
-		<div class="PaddingVerticalBarely">
-			<input type="password" name="Password2" placeholder="Password Again..." value="<?php echo $Printer->Password2 ?>" />
+		<div class="PaddingVerticalBarely" style="width:300px;margin:0px auto;">
+			<input type="password" name="Password2" class="WidthFull" placeholder="Password Again..." value="<?php echo $Printer->Password2 ?>" />
 		</div>
 		<div class="PaddingVerticalBarely">
 			<style type="text/css" scoped>
-			.g-recaptcha > div { margin: 0px auto; width: 300px; }
+			.g-recaptcha > div { margin: 0px auto; width: 304px; }
 			</style>
 			<div class="g-recaptcha" data-sitekey="<?php echo Nether\Option::Get('recaptcha-key') ?>"></div>
 		</div>
