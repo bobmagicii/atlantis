@@ -142,6 +142,8 @@ nav ul li a:visited {
 
 body > section {
 	background: #efefef;
+	font-size: 1.2em;
+	letter-spacing: 0.02em;
 	padding: 32px 0px;
 }
 
