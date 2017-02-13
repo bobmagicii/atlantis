@@ -21,20 +21,58 @@
 .Title {
 	font-size: 14px;
 	font-weight: bold;
-	margin: -8px 0px 0px 2px;
+	margin: -8px 0px 0px 0px;
+	text-align: center;
+	text-transform: uppercase;
 }
 
 .TitleBox
 .Title span {
 	background: #eee;
 	color: #bbb;
-	padding: 0px 6px;
+	padding: 0px 16px;
 }
 
 .TitleBox
 .Box {
 	font-size: 1em;
-	padding: 8px;
+	padding: 6px;
+}
+
+.TagList {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+
+	font-size: 0px;
+	list-style-type: none;
+	margin: 0px 0px 0px 0px;
+	overflow: hidden;
+	padding: 0px;
+}
+
+.TagList
+li {
+	display: block;
+	flex-grow: 1;
+	margin: 4px;
+	white-space: nowrap;
+}
+
+.TagList
+li a {
+	display: block;
+	border: 1px solid #ccc;
+	color: #888;
+	font-size: 12px;
+	padding: 4px 8px;
+	text-align: center;
+}
+
+.TagList
+li a:hover {
+	background: #ccc;
+	color: #fff;
 }
 
 </style>
@@ -46,7 +84,20 @@
 		<span>Title Box</span>
 	</div>
 	<div class="Box">
-		omgerd
+		<ul class="TagList">
+			<li><a href="">Bananas</a></li>
+			<li><a href="">Ball Gowns</a></li>
+			<li><a href="">C</a></li>
+			<li><a href="">Design</a></li>
+			<li><a href="">HTML</a></li>
+			<li><a href="">Holiday</a></li>
+			<li><a href="">Gaming</a></li>
+			<li><a href="">Javascript</a></li>
+			<li><a href="">Standards</a></li>
+			<li><a href="">PHP</a></li>
+			<li><a href="">Pizza</a></li>
+			<li><a href="">Rant</a></li>
+		</ul>
 	</div>
 </div>
 
