@@ -76,6 +76,16 @@ textarea:focus {
 
 .WidthFull { width: 100%; }
 
+.PostText {
+	font-size: 1.2em;
+	letter-spacing: 0.02em;
+	line-height: 1.5em;
+}
+
+.PostText h3 {
+	margin-bottom: 16px;
+}
+
 /*//////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////*/
 
@@ -142,8 +152,6 @@ nav ul li a:visited {
 
 body > section {
 	background: #efefef;
-	font-size: 1.2em;
-	letter-spacing: 0.02em;
 	padding: 32px 0px;
 }
 
