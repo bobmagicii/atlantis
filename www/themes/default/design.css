@@ -76,16 +76,6 @@ textarea:focus {
 
 .WidthFull { width: 100%; }
 
-.PostText {
-	font-size: 1.2em;
-	letter-spacing: 0.02em;
-	line-height: 1.5em;
-}
-
-.PostText h3 {
-	margin-bottom: 16px;
-}
-
 /*//////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////*/
 
@@ -186,6 +176,34 @@ ul li {
 /*//////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////*/
 
+main {
+	font-size: 1.2em;
+	letter-spacing: 0.02em;
+	line-height: 1.5em;
+}
+
+main
+> header > ul {
+	font-size: 0.7em;
+	list-style-type: none;
+	margin: 0px 0px 16px 0px;
+	padding: 0px;
+}
+
+main
+> header > ul > li {
+	margin: 0px;
+	padding: 0px;
+}
+
+main
+> header time {
+	font-weight: bold;
+}
+
+/*//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////*/
+
 .Promo {
 	background-color: #333;
 	background-image: url(gfx/bg01.jpg);
@@ -227,5 +245,152 @@ aside {
 	text-transform: uppercase;
 }
 
+/*//////////////////////////////////////////////////////////////////////////////
+//// TitleBox Widget /////////////////////////////////////////////////////////*/
 
+/* this creates the normal variant of the title box suitable for most generic
+text based content.
 
+<div class="TitleBox">
+	<div class="Title">
+		<span>Title Box</span>
+	</div>
+	<div class="Box">
+		Main text content.
+	</div>
+</div>
+*/
+
+.TitleBox {
+	border: 1px solid #ccc;
+	border-bottom: 0px;
+}
+
+.TitleBox:last-of-type {
+	border-bottom: 1px solid #ccc;
+}
+
+.TitleBox
+.Title {
+	font-size: 14px;
+	font-weight: bold;
+	margin: -8px 0px 0px 0px;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.TitleBox
+.Title span {
+	background: #eee;
+	color: #888;
+	padding: 0px 16px;
+}
+
+.TitleBox
+.Box {
+	font-size: 1em;
+	padding: 6px 12px 24px 12px;
+}
+
+.TitleBox:last-of-type
+.Box {
+	padding: 6px 12px 12px 12px;
+}
+
+/* this creates a variant of the title box which is suited for showing a cloud
+of tags that auto adjust to fill the space.
+
+<div class="TitleBox">
+	<div class="Title">
+		<span>Title Box</span>
+	</div>
+	<ul class="Box">
+		<li><a href=""></a></li>
+	</ul>
+</div>
+*/
+
+.TitleBox
+ul.Box {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	font-size: 0px;
+	list-style-type: none;
+	margin: -4px;
+	overflow: hidden;
+}
+
+.TitleBox
+ul.Box li {
+	display: block;
+	flex-grow: 1;
+	margin: 4px;
+	white-space: nowrap;
+}
+
+.TitleBox
+ul.Box li a {
+	display: block;
+	border: 1px solid #ddd;
+	color: #888;
+	font-size: 12px;
+	padding: 4px 8px;
+	text-align: center;
+}
+
+.TitleBox
+ul.Box li a:hover {
+	background: #ccc;
+	border: 1px solid #666;
+	color: #666;
+}
+
+/* this creates a variant of the title box which is suited for showing info
+about the content author.
+
+<div class="TitleBox">
+	<div class="Title">
+		<span>Title Box</span>
+	</div>
+	<aside class="Box">
+		<a href=""><img src="/author/photo.jpg" /></a>
+		<dl>
+			<dt>Author Name</dt>
+			<dd>Short author biogrpahy text to display.</dd>
+		</dl>
+	</aside>
+</div>
+*/
+
+.TitleBox
+aside.Box img {
+	max-width: 100%;
+	margin-bottom: 16px;
+}
+
+.TitleBox
+aside.Box dl,
+.TitleBox
+aside.Box dl dt,
+.TitleBox
+aside.Box dl dd {
+	margin: 0px;
+	padding: 0px;
+}
+
+.TitleBox
+aside.Box dl dt {
+	color: #888;
+	font-size: 0.85em;
+	font-weight: bold;
+	margin-bottom: 0px;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.TitleBox
+aside.Box dl dd {
+	color: #888;
+	font-size: 0.85em;
+}
