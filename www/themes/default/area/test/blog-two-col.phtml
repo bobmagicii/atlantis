@@ -15,6 +15,11 @@
 
 .TitleBox {
 	border: 1px solid #ccc;
+	border-bottom: 0px;
+}
+
+.TitleBox:last-of-type {
+	border-bottom: 1px solid #ccc;
 }
 
 .TitleBox
@@ -29,29 +34,34 @@
 .TitleBox
 .Title span {
 	background: #eee;
-	color: #bbb;
+	color: #888;
 	padding: 0px 16px;
 }
 
 .TitleBox
 .Box {
 	font-size: 1em;
-	padding: 6px;
+	padding: 6px 12px 24px 12px;
 }
 
-.TagList {
+.TitleBox:last-of-type
+.Box {
+	padding: 6px 12px 12px 12px;
+}
+
+.TitleBox .TagList {
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
 
 	font-size: 0px;
 	list-style-type: none;
-	margin: 0px 0px 0px 0px;
+	margin: -4px;
 	overflow: hidden;
 	padding: 0px;
 }
 
-.TagList
+.TitleBox .TagList
 li {
 	display: block;
 	flex-grow: 1;
@@ -59,20 +69,53 @@ li {
 	white-space: nowrap;
 }
 
-.TagList
+.TitleBox .TagList
 li a {
 	display: block;
-	border: 1px solid #ccc;
+	border: 1px solid #ddd;
 	color: #888;
 	font-size: 12px;
 	padding: 4px 8px;
 	text-align: center;
 }
 
-.TagList
+.TitleBox .TagList
 li a:hover {
 	background: #ccc;
-	color: #fff;
+	border: 1px solid #666;
+	color: #666;
+}
+
+.TitleBox .AuthorInfo
+img {
+	max-width: 100%;
+	margin-bottom: 16px;
+}
+
+.TitleBox .AuthorInfo
+dl,
+.TitleBox .AuthorInfo
+dl dt,
+.TitleBox .AuthorInfo
+dl dd {
+	margin: 0px;
+	padding: 0px;
+}
+
+.TitleBox .AuthorInfo
+dl dt {
+	color: #888;
+	font-size: 0.75em;
+	font-weight: bold;
+	margin-bottom: 0px;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.TitleBox .AuthorInfo
+dl dd {
+	color: #888;
+	font-size: 0.75em;
 }
 
 </style>
@@ -81,7 +124,22 @@ li a:hover {
 
 <div class="TitleBox">
 	<div class="Title">
-		<span>Title Box</span>
+		<span>About</span>
+	</div>
+	<div class="Box">
+		<div class="AuthorInfo">
+			<a href=""><img src="/themes/default/gfx/default-icon.png" alt="" /></a>
+			<dl>
+				<dt><A href="">Your Mom</a></dt>
+				<dd>Pommy ipsum it's just not cricket brilliant, the chippy squirrel gobsmacked, bugger terribly. Have a butcher's at this tad bossy britches scatterbrained lost the plot squirrel.</dd>
+			</dl>
+		</div>
+	</div>
+</div>
+
+<div class="TitleBox">
+	<div class="Title">
+		<span>Tags</span>
 	</div>
 	<div class="Box">
 		<ul class="TagList">
