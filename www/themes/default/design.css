@@ -17,6 +17,11 @@ a:visited {
 	text-decoration: none;
 }
 
+a:active,
+a:hover {
+	color: #000;
+}
+
 h1,
 h2,
 h3,
@@ -59,6 +64,17 @@ textarea:focus {
 	transition: border-color 1s;
 }
 
+ul
+li {
+	margin-bottom: 8px;
+}
+
+ul
+li:last-of-type {
+	margin-bottom: 0px;
+}
+
+
 /*//////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////*/
 
@@ -69,6 +85,7 @@ textarea:focus {
 .PaddingVerticalLess { padding-top: 16px; padding-bottom: 16px; }
 .PaddingVerticalNormal { padding-top: 32px; padding-bottom: 32px; }
 .TextAlignCenter { text-align: center; }
+.VerticalAlignMiddle { vertical-align: middle; }
 .WidthFull { width: 100%; }
 
 /*//////////////////////////////////////////////////////////////////////////////
@@ -126,6 +143,19 @@ body
 	margin: 0px;
 	padding: 0px;
 	text-transform: uppercase;
+}
+
+body
+> header h1 a:link,
+body
+> header h1 a:visited {
+	color: #000;
+}
+
+body
+> header h1 a:hover img {
+	transform: rotate(360deg);
+	transition: transform 1s;
 }
 
 body
@@ -222,6 +252,19 @@ main
 main
 > header time {
 	font-weight: bold;
+}
+
+main a:link,
+main a:visited {
+	border-bottom: 1px dotted #aaa;
+	color: #444;
+	text-decoration: none;
+}
+
+main a:active,
+main a:hover {
+	color: #000;
+	border-bottom: 1px dotted #666;
 }
 
 /*//////////////////////////////////////////////////////////////////////////////

@@ -14,7 +14,8 @@ extends Atlantis\Site\PublicWeb {
 
 		switch($Area) {
 
-			case 'blog-two-col':
+			case 'blog-two-col-left':
+			case 'blog-two-col-right':
 			case 'totally-legit-theme-component':
 			$this->Surface->Area("test/{$Area}");
 			break;
