@@ -155,6 +155,7 @@ body
 body
 > header h1 a:hover img {
 	transform: rotate(360deg);
+	transform-origin: 50% 70%;
 	transition: transform 1s;
 }
 
