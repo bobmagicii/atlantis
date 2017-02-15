@@ -1,0 +1,20 @@
+<?php
+
+// uncomment this if you would like to see more verbosity when things go wrong.
+// define('DEVMODE',TRUE);
+
+Nether\Option::Set([
+
+	////////////////////////////////////////////////////////////////
+	// Google reCaptcha Config /////////////////////////////////////
+
+	// you will need to create api keys for recaptcha and put them
+	// or else nobody will be able to sign up. it is free obvs like
+	// i have any money.
+
+	// https://www.google.com/recaptcha/intro/
+
+	'recaptcha-key'    => 'ur-recaptcha-public-key',
+	'recaptcha-secret' => 'ur-recaptcha-sekret-key'
+]);
+

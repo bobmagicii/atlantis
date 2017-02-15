@@ -9,6 +9,7 @@ difference here is that it is not WordPress and requires bleeding edge PHP.
 * PHP-PDO
 * MySQL
 * Composer
+* A ReCaptcha API key (https://www.google.com/recaptcha/intro/)
 
 # Suggestions
 
@@ -57,6 +58,11 @@ Unixen.
 ```bash
 $ php vendor/bin/phinx migrate
 ```
+
+## Configure Other Things
+
+Copy `conf\private.conf.dist` to `conf\private.conf.php` and fill it in.
+
 ## Ready
 
 You should now be able to visit [localhost](http://localhost) and get to work.

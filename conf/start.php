@@ -25,6 +25,18 @@ require(sprintf(
 	require($Filename);
 })();
 
+(function(){
+	$Filename = sprintf(
+		'%s/conf/private.conf.php',
+		ProjectRoot
+	);
+
+	if(!file_exists($Filename))
+	throw new Exception('No private configuration.');
+
+	require($Filename);
+})();
+
 require(sprintf(
 	'%s/conf/atlantis.conf.php',
 	ProjectRoot
