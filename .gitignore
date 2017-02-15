@@ -1,5 +1,6 @@
 # bof
 /conf/database.conf.php
+/conf/private.conf.php
 /cache/
 /vendor/
 # eof
