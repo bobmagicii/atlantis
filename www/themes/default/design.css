@@ -153,10 +153,17 @@ body
 }
 
 body
-> header h1 a:hover img {
-	transform: rotate(360deg);
+> header h1 a img {
+	transform: rotate(0deg);
 	transform-origin: 50% 70%;
-	transition: transform 1s;
+	transition: transform 0.60s;
+}
+
+body
+> header h1 a:hover img {
+	transform: rotate(-360deg);
+	transform-origin: 50% 70%;
+	transition: transform 0.90s;
 }
 
 body
