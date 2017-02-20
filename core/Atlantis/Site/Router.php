@@ -11,6 +11,10 @@ extends Nether\Avenue\Router {
 	__construct($Opt=NULL) {
 		parent::__construct($Opt);
 
+		$User = NULL;
+
+		////////
+
 		$this
 		->AddRoute('{@}//index','Routes\\Home::Index')
 		->AddRoute('{@}//about','Routes\\Home::About')
@@ -20,14 +24,20 @@ extends Nether\Avenue\Router {
 		->AddRoute('{@}//theme-test/($)','Routes\\ThemeTest::Index')
 		->AddRoute('{@}//{@}','Routes\\Home::NotFound');
 
+		////////
+
 		// figure out who is logged in.
+
 		Nether\Stash::Set(
 			'User',
-			Atlantis\Site\User::FetchSession()
+			($User = Atlantis\Site\User::FetchSession())
 		);
+
+		////////
 
 		// give surface area access to the router via $router.
 		// lowercase to match $this, a "magic" variable.
+
 		Nether\Ki::Queue(
 			'surface-render-scope',
 			function(Array &$Scope):
