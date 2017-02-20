@@ -315,7 +315,7 @@ extends Nether\Object {
 		return NULL;
 
 		// get user.
-		return (new self($Result->Next()))->Cache();
+		return (new static($Result->Next()))->Cache();
 	}
 
 	static public function
@@ -348,7 +348,7 @@ extends Nether\Object {
 		return NULL;
 
 		// get user.
-		return (new self($Result->Next()))->Cache();
+		return (new static($Result->Next()))->Cache();
 	}
 
 	static public function
@@ -381,7 +381,7 @@ extends Nether\Object {
 		return NULL;
 
 		// get user.
-		return (new self($Result->Next()))->Cache();
+		return (new static($Result->Next()))->Cache();
 	}
 
 	static public function
