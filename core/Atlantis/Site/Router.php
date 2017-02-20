@@ -23,7 +23,7 @@ extends Nether\Avenue\Router {
 		// figure out who is logged in.
 		Nether\Stash::Set(
 			'User',
-			Nether\Auth\User::FetchSession()
+			Atlantis\Site\User::FetchSession()
 		);
 
 		// give surface area access to the router via $router.

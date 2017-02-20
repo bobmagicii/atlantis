@@ -162,7 +162,7 @@ extends Nether\Object {
 	fetch the currently active session
 	//*/
 
-		return self::GetSession(TRUE) ?? self::GetSession(FALSE);
+		return static::GetSession(TRUE) ?? static::GetSession(FALSE);
 	}
 
 	static public function
@@ -201,7 +201,7 @@ extends Nether\Object {
 		$Data[1] = (Int)base_convert($Data[1],36,10);
 
 		// see if the user exists.
-		if(!($User = self::GetByID($Data[1])))
+		if(!($User = static::GetByID($Data[1])))
 		return NULL;
 
 		// see that the user validates.
@@ -275,14 +275,14 @@ extends Nether\Object {
 
 		// if given an integer look it up by id.
 		if(is_int($Val))
-		return self::GetByID($Val);
+		return static::GetByID($Val);
 
 		// if it looks like an email look it up by email.
 		if(strpos($Val,'@') !== FALSE)
-		return self::GetByEmail($Val);
+		return static::GetByEmail($Val);
 
 		// fall back to looking up by username.
-		return self::GetByAlias($Val);
+		return static::GetByAlias($Val);
 	}
 
 	static public function
@@ -293,7 +293,7 @@ extends Nether\Object {
 	return the specified user looking up by user id.
 	//*/
 
-		$Cached = self::GetFromCache("nether-user-id-{$ID}");
+		$Cached = static::GetFromCache("nether-user-id-{$ID}");
 		if($Cached) return $Cached;
 
 		$Table = Nether\Option::Get('nether-user-table-name');
@@ -326,7 +326,7 @@ extends Nether\Object {
 	return the specified user looking up by username/alias.
 	//*/
 
-		$Cached = self::GetFromCache("nether-user-al-{$Alias}");
+		$Cached = static::GetFromCache("nether-user-al-{$Alias}");
 		if($Cached) return $Cached;
 
 		$Table = Nether\Option::Get('nether-user-table-name');
@@ -359,7 +359,7 @@ extends Nether\Object {
 	return the specified user looking up by email address.
 	//*/
 
-		$Cached = self::GetFromCache("nether-user-em-{$Email}");
+		$Cached = static::GetFromCache("nether-user-em-{$Email}");
 		if($Cached) return $Cached;
 
 		$Table = Nether\Option::Get('nether-user-table-name');
@@ -431,9 +431,9 @@ extends Nether\Object {
 			'Password2'   => NULL
 		]);
 
-		self::Create_ValidateAlias($Opt);
-		self::Create_ValidateEmail($Opt);
-		self::Create_ValidatePassword($Opt);
+		static::Create_ValidateAlias($Opt);
+		static::Create_ValidateEmail($Opt);
+		static::Create_ValidatePassword($Opt);
 
 		////////
 
@@ -461,7 +461,7 @@ extends Nether\Object {
 
 		////////
 
-		return self::GetByID($UserID);
+		return static::GetByID($UserID);
 	}
 
 	static protected function
@@ -478,7 +478,7 @@ extends Nether\Object {
 		throw new Error\AliasInvalid;
 
 		// make sure it does not already exist.
-		if(self::GetByAlias($Opt->Alias) !== NULL)
+		if(static::GetByAlias($Opt->Alias) !== NULL)
 		throw new Error\AliasNotUnique;
 
 		return;
@@ -498,7 +498,7 @@ extends Nether\Object {
 		throw new Error\EmailInvalid;
 
 		// make sure it does not already exist.
-		if(self::GetByEmail($Opt->Email) !== NULL)
+		if(static::GetByEmail($Opt->Email) !== NULL)
 		throw new Error\EmailNotUnique;
 
 		return;
