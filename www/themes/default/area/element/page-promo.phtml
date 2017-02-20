@@ -1,8 +1,16 @@
 <div class="Contain Promo"><div>
 	<section>
-		<h2>Oh Snap</h2>
-		<p>This theme is not even blue.</p>
-		<p>With a name like that, you would think it would be.</p>
+		<?php
+			if($element->HasTitle())
+			echo '<h2>', $element->GetTitle(), '</h2>', PHP_EOL;
+		?>
+		<?php
+			if($element->HasSubtitle())
+			foreach(explode("\n",$element->GetSubtitle()) as $Line)
+			echo '<p>', $Line, '</p>';
+
+			echo PHP_EOL;
+		?>
 	</section>
 	<hr class="FloatClear" />
 </div></div>

@@ -48,6 +48,13 @@ class Element {
 		if(!$this->Area)
 		return '';
 
+		Nether\Ki::Queue(
+			'surface-render-scope',
+			function(Array &$Scope):
+			Void { $Scope['element'] = $this; return; },
+			FALSE
+		);
+
 		return $this->Surface->GetArea($this->Area);
 	}
 

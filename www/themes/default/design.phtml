@@ -96,7 +96,11 @@ $AppStats = new class() {
 	</nav>
 </div></header>
 
-<?php echo new Atlantis\Element\PagePromo ?>
+<?php
+echo (new Atlantis\Element\PagePromo)
+->SetTitle('Oh Snap')
+->SetSubtitle("This theme is not even blue.\nWith a name like that you think it would be.");
+?>
 
 <?php if($route->Errors->Count()) $PageErrors($route->Errors); ?>
 
