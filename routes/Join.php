@@ -44,7 +44,7 @@ extends Atlantis\Site\PublicWeb {
 		// all the checking we need atm.
 
 		try {
-			$User = Nether\Auth\User::Create([
+			$User = Atlantis\Site\User::Create([
 				'Alias'     => $this->Post->Alias,
 				'Email'     => $this->Post->Email,
 				'Password1' => $this->Post->Password1,
@@ -61,7 +61,7 @@ extends Atlantis\Site\PublicWeb {
 
 		// huzzah for you.
 
-		Nether\Auth\User::LaunchSession($User);
+		Atlantis\Site\User::LaunchSession($User);
 		$this->Redirect('/');
 		return;
 	}

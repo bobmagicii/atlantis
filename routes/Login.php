@@ -25,7 +25,7 @@ extends Atlantis\Site\PublicWeb {
 	Destroy():
 	Void {
 
-		Nether\Auth\User::DestroySession();
+		Atlantis\Site\User::DestroySession();
 		$this->Redirect('/');
 		return;
 	}
@@ -34,7 +34,7 @@ extends Atlantis\Site\PublicWeb {
 	HandleLogin():
 	Void {
 
-		$User = Nether\Auth\User::Get($this->Post->Account);
+		$User = Atlantis\Site\User::Get($this->Post->Account);
 
 		if(!$User) {
 			$this->Errors->Push(new Error([
@@ -52,7 +52,7 @@ extends Atlantis\Site\PublicWeb {
 			return;
 		}
 
-		Nether\Auth\User::LaunchSession($User);
+		Atlantis\Site\User::LaunchSession($User);
 		$this->Redirect('/');
 		return;
 	}
