@@ -63,6 +63,7 @@ are expected to be keywords like 'admin' and 'writer'.
 		$Result = Nether\Database::Get()
 		->NewVerse()
 		->Select('BlogUsers')
+		->Fields('*')
 		->Where('blog_id=:BlogID')
 		->Query([
 			':BlogID' => $BlogID
@@ -92,6 +93,7 @@ are expected to be keywords like 'admin' and 'writer'.
 		$Result = Nether\Database::Get()
 		->NewVerse()
 		->Select('BlogUsers')
+		->Fields('*')
 		->Where('user_id=:UserID')
 		->Query([
 			':UserID' => $UserID
