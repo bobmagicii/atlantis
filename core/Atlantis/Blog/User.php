@@ -107,12 +107,77 @@ are expected to be keywords like 'admin' and 'writer'.
 		return $Output;
 	}
 
+	static public function
+	ListByBlogUser(Int $BlogID, Int $UserID):
+	Array {
+	/*//
+	fetch a list of all the permissions for the specified user on the
+	specified blog.
+	//*/
+
+		$Row = NULL;
+		$Output = [];
+
+		$Result = Nether\Database::Get()
+		->NewVerse()
+		->Select('BlogUsers')
+		->Fields('*')
+		->Where([
+			'blog_id=:BlogID',
+			'user_id=:UserID'
+		])
+		->Query([
+			':BlogID' => $BlogID,
+			':UserID' => $UserID
+		]);
+
+		////////
+
+		while($Row = $Result->Next())
+		$Output[] = new static($Row);
+
+		return $Output;
+	}
+
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
+	static public function
+	Get(Int $BlogID, Int $UserID, String $Level):
+	?self {
+
+		$Row = Nether\Database::Get()
+		->NewVerse()
+		->Select('BlogUsers')
+		->Fields('*')
+		->Where([
+			'blog_id=:BlogID',
+			'user_id=:UserID',
+			'bloguser_level=:Level'
+		])
+		->Query([
+			':BlogID' => $BlogID,
+			':UserID' => $UserID,
+			':Level'  => $Level
+		])
+		->Next();
+
+		if($Row)
+		return new static($Row);
+
+		return NULL;
+	}
+
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
 
 	static public function
 	Create($Opt=NULL)	:
 	self {
+
+		$Result = NULL;
+
+		////////
 
 		$Opt = new Nether\Object($Opt,[
 			'BlogID' => 0,
@@ -128,6 +193,14 @@ are expected to be keywords like 'admin' and 'writer'.
 
 		if(!$Opt->Level)
 		throw new Exception('blog user must have Level defined');
+
+		////////
+
+		// if this relationship already exists just return the one that was
+		// there and move on.
+
+		if($Result = static::Get($Opt->BlogID,$Opt->UserID,$Opt->Level))
+		return $Result;
 
 		////////
 

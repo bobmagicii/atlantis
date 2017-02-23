@@ -133,7 +133,58 @@ class Blog {
 	}
 
 	////////////////////////////////////////////////////////////////
+	// blog user management ////////////////////////////////////////
+
+	public function
+	AddUser(Int $UserID, String $Level):
+	Atlantis\Blog\User {
+	/*//
+	add the specified user to this blog with the specified permission. the
+	permission given should be one of the Level constants from Blog\User.
+	//*/
+
+		return Atlantis\Blog\User::Create(
+			$this->ID,
+			$UserID,
+			$Level
+		);
+	}
+
+	public function
+	RemoveUser(Int $UserID, ?String $Level=NULL):
+	Void {
+	/*//
+	remove the specified user from this blog. if no permission is specified
+	then all permissions will be removed, else only the specified permission
+	will be removed.
+	//*/
+
+		$BlogUser;
+		$BlogUsers;
+
+		////////
+
+		if($Level !== NULL)
+		$BlogUsers = [
+			Atlantis\Blog\User::Get($this->ID,$UserID,$Level)
+		];
+
+		else
+		$BlogUsers = Atlantis\Blog\User::ListByBlogUser(
+			$this->ID,
+			$UserID
+		);
+
+		////////
+
+		foreach($BlogUsers as $BlogUser)
+		$BlogUser->Delete();
+
+		return;
+	}
+
 	////////////////////////////////////////////////////////////////
+	// blog user permission checking ///////////////////////////////
 
 	public function
 	CanUser(Int $UserID, Array $Levels):
