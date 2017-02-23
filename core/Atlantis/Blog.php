@@ -135,6 +135,55 @@ class Blog {
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
 
+	public function
+	CanUser(Int $UserID, Array $Levels):
+	Bool {
+	/*//
+	determine if the specified user has any of the specified permissions.
+	//*/
+
+		$Result = array_filter(
+			$this->Users,
+			function($Who) use($UserID,$Levels) {
+				return (
+					$Who->UserID === $UserID
+					&& in_array($Who->Level,$Levels,TRUE)
+				);
+			}
+		);
+
+		return (count($Result) > 0);
+	}
+
+	public function
+	CanUserEdit(Int $UserID):
+	Bool {
+	/*//
+	a shortcut wrapper for CanUser to determine if a user has the permissions
+	nessessary to edit settings for this blog.
+	//*/
+
+		return $this->CanUser($UserID,[
+			'owner'
+		]);
+	}
+
+	public function
+	CanUserWrite(Int $UserID):
+	Bool {
+	/*//
+	a shortcut wrapper for CanUser to determine if a user has the permissions
+	nessessary to create posts on this blog.
+	//*/
+
+		return $this->CanUser($UserID,[
+			'owner', 'writer'
+		]);
+	}
+
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
 	static public function
 	GetByID(Int $ID):
 	?self {
