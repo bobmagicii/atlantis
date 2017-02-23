@@ -1,6 +1,6 @@
 <?php
 
-namespace Atlantis\Site;
+namespace Atlantis;
 use \Atlantis as Atlantis;
 use \Nether   as Nether;
 

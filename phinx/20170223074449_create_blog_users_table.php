@@ -28,7 +28,7 @@ ENGINE=InnoDB;
 LOL
 		);
 
-		$User = Atlantis\Site\User::GetByID(1);
+		$User = Atlantis\User::GetByID(1);
 		$Blog = Atlantis\Blog::Create([
 			'Title'   => 'Test Blog',
 			'Tagline' => 'It is best blog.'

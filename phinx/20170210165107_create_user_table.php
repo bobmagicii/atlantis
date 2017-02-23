@@ -35,7 +35,7 @@ ENGINE=InnoDB;
 		// migrations will be built based on the releaseable state.
 		// so do not lol toooo hard.
 
-		Nether\Auth\User::Create([
+		Atlantis\User::Create([
 			'Alias'     => 'root',
 			'Email'     => 'root@atlantis.local',
 			'Password1' => 'password',
