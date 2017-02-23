@@ -1,4 +1,4 @@
-<?php
+<?php // vscode-fold=9
 
 use $useClassName;
 
