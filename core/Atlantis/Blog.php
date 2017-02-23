@@ -6,12 +6,12 @@ use \Nether   as Nether;
 
 use \Exception as Exception;
 
-class Blog {
+class Blog
+extends Nether\Object {
 
 	static public
 	$PropertyMap = [
 		'blog_id'      => 'ID:int',
-		'user_id'      => 'UserID:int',
 		'blog_title'   => 'Title',
 		'blog_tagline' => 'Tagline'
 	];
@@ -143,11 +143,11 @@ class Blog {
 	permission given should be one of the Level constants from Blog\User.
 	//*/
 
-		return Atlantis\Blog\User::Create(
-			$this->ID,
-			$UserID,
-			$Level
-		);
+		return Atlantis\Blog\User::Create([
+			'BlogID' => $this->ID,
+			'UserID' => $UserID,
+			'Level'  => $Level
+		]);
 	}
 
 	public function

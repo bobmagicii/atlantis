@@ -24,11 +24,6 @@ ENGINE=InnoDB;
 LOL
 		);
 
-		Atlantis\Blog::Create([
-			'Title'   => 'Test Blog',
-			'Tagline' => 'It is best blog.'
-		]);
-
 		return;
 	}
 
@@ -38,7 +33,7 @@ LOL
 	operations to perform when downgrading the database with this migration.
 	//*/
 
-		$this->Execute('DROP TABLE IF EXISTS Blogs;');
+		$this->Execute('DROP TABLE `Blogs`;');
 
 		return;
 	}

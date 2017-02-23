@@ -51,7 +51,7 @@ ENGINE=InnoDB;
 	operations to perform when downgrading the database with this migration.
 	//*/
 
-		$this->Execute("DROP TABLE IF EXISTS `Users`;");
+		$this->Execute("DROP TABLE `Users`;");
 
 		return;
 	}

@@ -28,11 +28,16 @@ ENGINE=InnoDB;
 LOL
 		);
 
-		Atlantis\Blog\User::Create([
-			'BlogID' => 1,
-			'UserID' => 1,
-			'Level'  => 'owner'
+		$User = Atlantis\Site\User::GetByID(1);
+		$Blog = Atlantis\Blog::Create([
+			'Title'   => 'Test Blog',
+			'Tagline' => 'It is best blog.'
 		]);
+
+		$Blog->AddUser(
+			$User->GetID(),
+			Atlantis\Blog\User::LevelOwner
+		);
 
 		return;
 	}
@@ -43,7 +48,7 @@ LOL
 	operations to perform when downgrading the database with this migration.
 	//*/
 
-		$this->Execute('DROP TABLE IF EXISTS BlogUsers');
+		$this->Execute('DROP TABLE `BlogUsers`');
 
 		return;
 	}
