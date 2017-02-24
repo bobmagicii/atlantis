@@ -233,6 +233,38 @@ extends Nether\Object {
 	}
 
 	////////////////////////////////////////////////////////////////
+	// cache methods ///////////////////////////////////////////////
+
+	public function
+	Cache():
+	self {
+	/*//
+	@date 2017-02-11
+	prime the cache with this user.
+	//*/
+
+		$Cache = Nether\Stash::Get(Nether\Option::Get('cache-stash-name'));
+		$Cache->Set("nether-blog-id-{$this->GetID()}",$this);
+
+		return $this;
+	}
+
+	public function
+	Flush():
+	self {
+	/*//
+	@date 2017-02-11
+	drop this user from the cache. you'll need to use this after changing any
+	information about them.
+	//*/
+
+		$Cache = Nether\Stash::Get(Nether\Option::Get('cache-stash-name'));
+		$Cache->Drop("nether-blog-id-{$this->GetID()}");
+
+		return $this;
+	}
+
+	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
 
 	static public function
@@ -241,6 +273,19 @@ extends Nether\Object {
 	/*//
 	fetch a blog by its id.
 	//*/
+
+		$Cached = NULL;
+		$Row = NULL;
+		$Output = NULL;
+
+		////////
+
+		$Cached = static::GetFromCache("nether-blog-id-{$ID}");
+
+		if($Cached)
+		return $Cached;
+
+		////////
 
 		$Row = Nether\Database::Get()
 		->NewVerse()
@@ -257,7 +302,29 @@ extends Nether\Object {
 		if(!$Row)
 		return NULL;
 
-		return new static($Row);
+		$Output = new static($Row);
+		$Output->Cache();
+
+		return $Output;
+	}
+
+
+	static public function
+	GetFromCache(String $Key):
+	?self {
+	/*//
+	@date 2017-02-11
+	see if this blog has been cached return it if so null if not.
+	//*/
+
+		$Result = Nether\Stash::Get(
+			Nether\Option::Get('cache-stash-name')
+		)->Get($Key);
+
+		if(!$Result)
+		return NULL;
+
+		return $Result->Value;
 	}
 
 	////////////////////////////////////////////////////////////////
