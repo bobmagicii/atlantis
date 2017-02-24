@@ -28,8 +28,25 @@ are expected to be keywords like 'admin' and 'writer'.
 	////////////////////////////////////////////////////////////////
 
 	public function
+	GetBlog():
+	Atlantis\Blog {
+
+		return Atlantis\Blog::GetByID($this->BlogID);
+	}
+
+	public function
+	GetUser():
+	Atlantis\User {
+
+		return Atlantis\User::GetByID($this->UserID);
+	}
+
+	public function
 	Delete():
 	Void {
+
+		$User = $this->GetUser();
+		$Blog = $this->GetBlog();
 
 		Nether\Database::Get()
 		->NewVerse()
@@ -40,6 +57,9 @@ are expected to be keywords like 'admin' and 'writer'.
 			'bloguser_level=:Level'
 		])
 		->Query($this);
+
+		$User->Flush();
+		$Blog->Flush();
 
 		return;
 	}
@@ -176,6 +196,8 @@ are expected to be keywords like 'admin' and 'writer'.
 	self {
 
 		$Result = NULL;
+		$User = NULL;
+		$Blog = NULL;
 
 		////////
 
@@ -193,6 +215,18 @@ are expected to be keywords like 'admin' and 'writer'.
 
 		if(!$Opt->Level)
 		throw new Exception('blog user must have Level defined');
+
+		////////
+
+		$User = Atlantis\User::GetByID((Int)$Opt->UserID);
+
+		if(!$User)
+		throw new Exception('the user must exist.');
+
+		$Blog = Atlantis\Blog::GetByID((Int)$Opt->BlogID);
+
+		if(!$Blog)
+		throw new Exceptoin('the blog must exist');
 
 		////////
 
@@ -218,6 +252,12 @@ are expected to be keywords like 'admin' and 'writer'.
 		throw new Exception('Blog\User::Create critical failure');
 
 		////////
+
+		// after a successful insert we need to flush caches for anyone
+		// who was involved.
+
+		$User->Flush();
+		$Blog->Flush();
 
 		return new static([
 			'blog_id'        => $Opt->BlogID,
