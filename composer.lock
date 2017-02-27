@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "78ede6053480a80b97f1d389fb9f5e7e",
-    "content-hash": "ed33d9e4746cf099ee1d2479aca8afda",
+    "hash": "9fefedf0f53262b3354db25d250bdefe",
+    "content-hash": "82e05803053323a368a0b2c2796b9c5a",
     "packages": [
         {
             "name": "google/recaptcha",
@@ -51,6 +51,43 @@
                 "spam"
             ],
             "time": "2015-09-02 17:23:59"
+        },
+        {
+            "name": "netherjs/nui",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/netherjs/nui.git",
+                "reference": "9edb4e964dddcf7d4d0bc4018441750e9a3dd66a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/netherjs/nui/zipball/9edb4e964dddcf7d4d0bc4018441750e9a3dd66a",
+                "reference": "9edb4e964dddcf7d4d0bc4018441750e9a3dd66a",
+                "shasum": ""
+            },
+            "require": {
+                "netherphp/onescript": "^2.0.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Bob Majdak Jr",
+                    "email": "bob@nether.io",
+                    "homepage": "http://nether.io/nui",
+                    "role": "developer"
+                }
+            ],
+            "description": "A basic Get-It-Done Javascript UI toolkit",
+            "keywords": [
+                "JS",
+                "ui"
+            ],
+            "time": "2016-02-26 02:18:19"
         },
         {
             "name": "netherphp/avenue",

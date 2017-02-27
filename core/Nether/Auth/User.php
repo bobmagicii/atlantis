@@ -392,9 +392,14 @@ extends Nether\Object {
 	see if this user has been cached return it if so null if not.
 	//*/
 
-		return Nether\Stash::Get(
+		$Result = Nether\Stash::Get(
 			Nether\Option::Get('cache-stash-name')
 		)->Get($Key);
+
+		if(!$Result)
+		return NULL;
+
+		return $Result->Value;
 	}
 
 	////////////////////////////////////////////////////////////////

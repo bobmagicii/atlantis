@@ -1,6 +1,6 @@
 <?php
 
-namespace Atlantis\Site;
+namespace Atlantis;
 use \Atlantis as Atlantis;
 use \Nether   as Nether;
 
@@ -26,33 +26,12 @@ extends Nether\Auth\User {
 	__ready():
 	Void {
 
-		// $this->FetchBlogs();
+		$this->Blogs = Atlantis\Blog\User::ListByUserID($this->ID);
+
 		return;
 	}
 
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
-
-	protected function
-	FetchBlogs():
-	Void {
-
-		$Result = Nether\Database::Get()
-		->NewVerse()
-		->Select('BlogUsers')
-		->Fields('*')
-		->Where('user_id=:ID')
-		->Query([
-			':ID' => $this->ID
-		]);
-
-		if(!$Result->IsOK())
-		throw new Exception('User::FetchBlogs critikal phail');
-
-		while($Row = $Result->Next())
-		$this->Blogs[] = new Atlantis\Blog\User($Row);
-
-		return;
-	}
 
 }

@@ -1,4 +1,4 @@
-<?php
+<?php // vscode-fold=9
 
 use Phinx\Migration\AbstractMigration;
 
@@ -35,7 +35,7 @@ ENGINE=InnoDB;
 		// migrations will be built based on the releaseable state.
 		// so do not lol toooo hard.
 
-		Nether\Auth\User::Create([
+		Atlantis\User::Create([
 			'Alias'     => 'root',
 			'Email'     => 'root@atlantis.local',
 			'Password1' => 'password',
@@ -51,7 +51,7 @@ ENGINE=InnoDB;
 	operations to perform when downgrading the database with this migration.
 	//*/
 
-		$this->Execute("DROP TABLE IF EXISTS `Users`;");
+		$this->Execute("DROP TABLE `Users`;");
 
 		return;
 	}

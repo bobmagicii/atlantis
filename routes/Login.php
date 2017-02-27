@@ -25,7 +25,7 @@ extends Atlantis\Site\PublicWeb {
 	Destroy():
 	Void {
 
-		Atlantis\Site\User::DestroySession();
+		Atlantis\User::DestroySession();
 		$this->Redirect('/');
 		return;
 	}
@@ -34,7 +34,7 @@ extends Atlantis\Site\PublicWeb {
 	HandleLogin():
 	Void {
 
-		$User = Atlantis\Site\User::Get($this->Post->Account);
+		$User = Atlantis\User::Get($this->Post->Account);
 
 		if(!$User) {
 			$this->Errors->Push(new Error([
@@ -52,7 +52,7 @@ extends Atlantis\Site\PublicWeb {
 			return;
 		}
 
-		Atlantis\Site\User::LaunchSession($User);
+		Atlantis\User::LaunchSession($User);
 		$this->Redirect('/');
 		return;
 	}

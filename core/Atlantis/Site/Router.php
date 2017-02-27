@@ -30,7 +30,7 @@ extends Nether\Avenue\Router {
 
 		Nether\Stash::Set(
 			'User',
-			($User = Atlantis\Site\User::FetchSession())
+			($User = Atlantis\User::FetchSession())
 		);
 
 		////////

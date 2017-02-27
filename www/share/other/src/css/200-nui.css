@@ -1,0 +1,114 @@
+
+.NUI-Widget,
+.NUI-Widget * {
+	box-sizing:border-box;
+}
+
+.NUI-Widget {
+	font-family:
+		HelveticaNeue-Light,
+		'Helvetica Neue Light', 'Helvetica Neue',
+		'Segoe UI Light', 'Segoe UI',
+		'Open Sans', 'Dejavu Sans',
+		Helvetica, Arial,
+		sans-serif;
+}
+
+.NUI-PositionFixed { position:fixed; }
+.NUI-PositionAbsolute { position:absolute; }
+
+.NUI-Block { display:block; }
+.NUI-Center { margin-left:auto; margin-right:auto; text-align:center; }
+.NUI-Hidden { display:none; }
+.NUI-Moveable { cursor:move; }
+.NUI-NoSelect { -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none; }
+
+/*/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////*/
+
+.NUI-Overlay {
+	position:fixed;
+	top:0px; left:0px;
+	bottom:0px; right:0px;
+
+	background:rgba(0,0,0,0.75);
+	overflow:hidden;
+	z-index:9001;
+}
+
+.NUI-Overlay-Close {
+	cursor:pointer;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////*/
+
+.NUI-Dialog {
+	background:rgba(255,255,255,0.85);
+	border:1px solid #fff;
+	border-radius:10px;
+	box-shadow:0px 0px 10px rgba(0,0,0,0.75);
+	color:#000;
+	min-width:300px;
+	max-width:90%;
+	margin:0px;
+	padding:0px;
+	overflow:hidden;
+}
+
+.NUI-Dialog > header {
+	background:#fff;
+	font-weight:bold;
+	height:auto;
+	padding:10px;
+}
+
+.NUI-Dialog > header button {
+	background:#eee;
+	border:0px solid #ccc;
+	border-top-right-radius:8px;
+	color:#aaa;
+	cursor:pointer;
+	height:100%;
+	float:right;
+	padding-left:16px;
+	padding-right:16px;
+	text-align:center;
+	vertical-align:center;
+}
+
+.NUI-Dialog > header button:hover {
+	background:#C43634;
+	color:#E5A09F;
+}
+
+.NUI-Dialog > header span {
+	margin-right:20px;
+}
+
+.NUI-Dialog > section {
+	padding:10px;
+}
+
+.NUI-Dialog > footer {
+	background:#fff;
+	padding:10px;
+	text-align:right;
+}
+
+.NUI-Dialog > footer button {
+	margin-left:10px;
+	vertical-align:middle;
+}
+
+.NUI-Dialog > footer img {
+	vertical-align:middle;
+}
+
+
+/*/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////*/
+
+.NUI-Button {
+
+}
