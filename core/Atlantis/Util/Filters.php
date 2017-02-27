@@ -7,7 +7,8 @@ namespace Atlantis\Util;
 class Filters {
 /*//
 this class is a static housing for all the reusable methods we will have for
-doing things like validating and sanitising input.
+doing things like validating and sanitising input. unless stated otherwise all
+methods here are safe for direct use or use as callback filtering.
 //*/
 
 	static public function
@@ -38,6 +39,21 @@ doing things like validating and sanitising input.
 		return 1;
 
 		return (Int)$Val;
+	}
+
+	static public function
+	RouteSafeAlias($Val):
+	String {
+	/*//
+	@date 2017-02-27
+	transform the given input to be safe for routing based on the rules i
+	want to see for generated urls.
+	//*/
+
+		return strtolower(str_replace(' ','-',preg_replace(
+			'/[^a-z0-9\x20]/i', '',
+			$Val
+		)));
 	}
 
 	static public function
