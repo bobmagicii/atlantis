@@ -335,9 +335,10 @@ extends Nether\Object {
 
 		$Opt = new Nether\Object($Opt,[
 			// required.
-			'BlogID'      => NULL,
-			'UserID'      => NULL,
+			'BlogID'      => 0,
+			'UserID'      => 0,
 			'Title'       => NULL,
+			'Alias'       => NULL,
 			'Content'     => NULL,
 
 			// meta.
@@ -348,17 +349,20 @@ extends Nether\Object {
 
 		////////
 
-		if($Opt->BlogID === NULL)
+		if(!$Opt->BlogID)
 		throw new Exception('BlogID cannot be empty.');
 
-		if($Opt->UserID === NULL)
+		if(!$Opt->UserID)
 		throw new Exception('UserID cannot be empty.');
 
-		if(!$Opt->Title === NULL)
+		if(!$Opt->Title)
 		throw new Exception('Title cannot be empty.');
 
-		if(!$Opt->Content === NULL)
+		if(!$Opt->Content)
 		throw new Exception('Content cannot be empty it a blog ffs');
+
+		if(!$Opt->Alias)
+		$Opt->Alias = Atlantis\Util\Filters::RouteSafeAlias($Opt->Title);
 
 		////////
 
@@ -372,6 +376,7 @@ extends Nether\Object {
 			'post_utime'   => ':TimeUpdated',
 			'post_draft'   => ':Draft',
 			'post_title'   => ':Title',
+			'post_alias'   => ':Alias',
 			'post_content' => ':Content'
 		])
 		->Query($Opt);

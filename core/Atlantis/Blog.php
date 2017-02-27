@@ -13,6 +13,7 @@ extends Nether\Object {
 	$PropertyMap = [
 		'blog_id'      => 'ID:int',
 		'blog_title'   => 'Title',
+		'blog_alias'   => 'Alias',
 		'blog_tagline' => 'Tagline'
 	];
 
@@ -212,6 +213,8 @@ extends Nether\Object {
 	determine if the specified user has any of the specified permissions.
 	//*/
 
+		$this->GetUsers();
+
 		$Result = array_filter(
 			$this->Users,
 			function($Who) use($UserID,$Levels) {
@@ -358,11 +361,15 @@ extends Nether\Object {
 
 		$Opt = new Nether\Object($Opt,[
 			'Title'   => NULL,
+			'Alias'   => NULL,
 			'Tagline' => ''
 		]);
 
 		if(!$Opt->Title)
-		throw new \Exception('blog must have title');
+		throw new Exception('blog must have title');
+
+		if(!$Opt->Alias)
+		$Opt->Alias = Atlantis\Util\Filters::RouteSafeAlias($Opt->Title);
 
 		////////
 
@@ -371,6 +378,7 @@ extends Nether\Object {
 		->Insert('Blogs')
 		->Fields([
 			'blog_title'   => ':Title',
+			'blog_alias'   => ':Alias',
 			'blog_tagline' => ':Tagline'
 		])
 		->Query($Opt);
