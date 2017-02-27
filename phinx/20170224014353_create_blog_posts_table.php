@@ -20,11 +20,13 @@ CREATE TABLE `BlogPosts` (
 	`post_utime` BIGINT(20) NOT NULL DEFAULT '0',
 	`post_draft` TINYINT(1) NOT NULL DEFAULT '0',
 	`post_title` VARCHAR(128) NOT NULL,
+	`post_alias` VARCHAR(128) NOT NULL,
 	`post_content` TEXT NOT NULL,
 	PRIMARY KEY (`post_id`),
 	INDEX `BlogPostBlogID` (`blog_id`),
 	INDEX `BlogPostUserID` (`user_id`),
 	INDEX `BlogPostTimePosted` (`post_ptime`),
+	INDEX `BlogPostAlias` (`post_alias`),
 	CONSTRAINT `BlogPostBlogID` FOREIGN KEY (`blog_id`) REFERENCES `blogs` (`blog_id`) ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT `BlogPostUserID` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON UPDATE CASCADE ON DELETE CASCADE
 )
