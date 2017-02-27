@@ -3,8 +3,10 @@
 // ninja a database configuration for phinx from the application like a baus.
 
 require(sprintf(
-	'%s/conf/start.php',
-	dirname(__FILE__)
+	'%s%sconf%sstart.php',
+	dirname(__FILE__,2),
+	DIRECTORY_SEPARATOR,
+	DIRECTORY_SEPARATOR
 ));
 
 $Connection = (new Nether\Database)->GetDriver();
@@ -19,10 +21,10 @@ return [
 		]
 	],
 	'templates' => [
-		'file' => '%%PHINX_CONFIG_DIR%%/phinx/Template.txt'
+		'file' => '%%PHINX_CONFIG_DIR%%/../phinx/Template.txt'
 	],
 	'paths' => [
-		'migrations' => '%%PHINX_CONFIG_DIR%%/phinx'
+		'migrations' => '%%PHINX_CONFIG_DIR%%/../phinx'
 	]
 ];
 
