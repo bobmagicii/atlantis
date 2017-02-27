@@ -25,6 +25,9 @@ extends Nether\Object {
 	public function
 	GetID():
 	Int {
+	/*//
+	return the unique id for this blog.
+	//*/
 
 		return $this->ID;
 	}
@@ -38,6 +41,9 @@ extends Nether\Object {
 	public function
 	GetTitle():
 	String {
+	/*//
+	return the title that has been given to this blog.
+	//*/
 
 		return $this->Title;
 	}
@@ -46,7 +52,7 @@ extends Nether\Object {
 	SetTitle(String $Title):
 	self {
 	/*//
-	@todo flush cache
+	update the title for this blog.
 	//*/
 
 		$this->Title = $Title;
@@ -63,6 +69,8 @@ extends Nether\Object {
 		->Limit(1)
 		->Query($this);
 
+		$this->Flush();
+
 		////////
 
 		return $this;
@@ -77,6 +85,9 @@ extends Nether\Object {
 	public function
 	GetTagline():
 	String {
+	/*//
+	return the subtitle/tagline given to this blog.
+	//*/
 
 		return $this->Tagline;
 	}
@@ -85,7 +96,7 @@ extends Nether\Object {
 	SetTagline(String $Tagline):
 	self {
 	/*//
-	@todo flush cache
+	update the subtitle/tagline given to this blog.
 	//*/
 
 		$this->Tagline = $Tagline;
@@ -102,6 +113,8 @@ extends Nether\Object {
 		->Limit(1)
 		->Query($this);
 
+		$this->Flush();
+
 		////////
 
 		return $this;
@@ -116,6 +129,13 @@ extends Nether\Object {
 	public function
 	GetUsers():
 	Array {
+	/*//
+	fetch the list of blog user permissions for this blog. it describes who
+	can do what to this blog.
+	//*/
+
+		if(!count($this->Users))
+		Atlantis\Blog\User::ListByBlogID($this->ID);
 
 		return $this->Users;
 	}
@@ -127,7 +147,6 @@ extends Nether\Object {
 	__ready():
 	Void {
 
-		$this->Users = Blog\User::ListByBlogID($this->ID);
 
 		return;
 	}
