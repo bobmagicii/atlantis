@@ -56,10 +56,6 @@ extends Nether\Object {
 	update the title for this blog.
 	//*/
 
-		$this->Title = $Title;
-
-		////////
-
 		Nether\Database::Get()
 		->NewVerse()
 		->Update('Blogs')
@@ -68,12 +64,61 @@ extends Nether\Object {
 		])
 		->Where('blog_id=:ID')
 		->Limit(1)
-		->Query($this);
+		->Query([
+			':ID'    => $this->ID,
+			':Title' => $Title
+		]);
 
 		$this->Flush();
 
 		////////
 
+		$this->Title = $Title;
+		return $this;
+	}
+
+	////////
+	////////
+
+	protected
+	$Alias = '';
+
+	public function
+	GetAlias():
+	String {
+
+		return $this->Alias;
+	}
+
+	public function
+	SetAlias(String $Alias):
+	self {
+	/*//
+	update the alias for this blog.
+	//*/
+
+		$Alias = Atlantis\Util\Filters::RouteSafeAlias($Alias);
+
+		////////
+
+		Nether\Database::Get()
+		->NewVerse()
+		->Update('Blogs')
+		->Fields([
+			'blog_alias' => ':Alias'
+		])
+		->Where('blog_id=:ID')
+		->Limit(1)
+		->Query([
+			':ID'    => $this->ID,
+			':Alias' => $Alias
+		]);
+
+		$this->Flush();
+
+		////////
+
+		$this->Alias = $Alias;
 		return $this;
 	}
 
@@ -100,10 +145,6 @@ extends Nether\Object {
 	update the subtitle/tagline given to this blog.
 	//*/
 
-		$this->Tagline = $Tagline;
-
-		////////
-
 		Nether\Database::Get()
 		->NewVerse()
 		->Update('Blogs')
@@ -112,12 +153,16 @@ extends Nether\Object {
 		])
 		->Where('blog_id=:ID')
 		->Limit(1)
-		->Query($this);
+		->Query([
+			':ID'      => $this->ID,
+			':Tagline' => $Tagline
+		]);
 
 		$this->Flush();
 
 		////////
 
+		$this->Tagline = $Tagline;
 		return $this;
 	}
 
@@ -266,7 +311,9 @@ extends Nether\Object {
 	//*/
 
 		$Cache = Nether\Stash::Get(Nether\Option::Get('cache-stash-name'));
+
 		$Cache->Set("nether-blog-id-{$this->GetID()}",$this);
+		$Cache->Set("nether-blog-al-{$this->GetAlias()}",$this);
 
 		return $this;
 	}
@@ -281,7 +328,9 @@ extends Nether\Object {
 	//*/
 
 		$Cache = Nether\Stash::Get(Nether\Option::Get('cache-stash-name'));
+
 		$Cache->Drop("nether-blog-id-{$this->GetID()}");
+		$Cache->Drop("nether-blog-al-{$this->GetAlias()}");
 
 		return $this;
 	}
@@ -296,16 +345,13 @@ extends Nether\Object {
 	fetch a blog by its id.
 	//*/
 
-		$Cached = NULL;
 		$Row = NULL;
 		$Output = NULL;
 
 		////////
 
-		$Cached = static::GetFromCache("nether-blog-id-{$ID}");
-
-		if($Cached)
-		return $Cached;
+		if($Output = static::GetFromCache("nether-blog-id-{$ID}"))
+		return $Output;
 
 		////////
 
@@ -330,6 +376,40 @@ extends Nether\Object {
 		return $Output;
 	}
 
+	static public function
+	GetByAlias(String $Alias):
+	?self {
+
+		$Row = NULL;
+		$Output = NULL;
+
+		////////
+
+		if($Output = static::GetFromCache("nether-blog-al-{$Alias}"))
+		return $Output;
+
+		////////
+
+		$Row = Nether\Database::Get()
+		->NewVerse()
+		->Select('Blogs')
+		->Fields('*')
+		->Where('blog_alias=:Alias')
+		->Query([
+			':Alias' => $Alias
+		])
+		->Next();
+
+		////////
+
+		if(!$Row)
+		return NULL;
+
+		$Output = new static($Row);
+		$Output->Cache();
+
+		return $Output;
+	}
 
 	static public function
 	GetFromCache(String $Key):
