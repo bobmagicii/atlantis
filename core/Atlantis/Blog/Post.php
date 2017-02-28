@@ -315,7 +315,36 @@ extends Nether\Object {
 		if(!$Result->GetCount())
 		return NULL;
 
-		return new self($Result->Next());
+		return new static($Result->Next());
+	}
+
+	static public function
+	GetByBlogAlias(Int $BlogID, String $Alias):
+	?self {
+	/*//
+	get a specific blog post by its alias. alias for posts are only unique
+	to their blog, so we have to know which blog to check as well.
+	//*/
+
+		$Row = Nether\Database::Get()
+		->NewVerse()
+		->Select('BlogPosts')
+		->Fields('*')
+		->Where([
+			'blog_id=:BlogID',
+			'post_alias=:Alias'
+		])
+		->Limit(1)
+		->Query([
+			':BlogID' => $BlogID,
+			':Alias'  => $Alias
+		])
+		->Next();
+
+		if(!$Row)
+		return NULL;
+
+		return new static($Row);
 	}
 
 	////////////////////////////////////////////////////////////////
@@ -330,6 +359,7 @@ extends Nether\Object {
 
 		$Result = NULL;
 		$ID = NULL;
+		$Exist = NULL;
 
 		////////
 
@@ -363,6 +393,25 @@ extends Nether\Object {
 
 		if(!$Opt->Alias)
 		$Opt->Alias = Atlantis\Util\Filters::RouteSafeAlias($Opt->Title);
+
+		////////
+
+		// make sure that our alias is unique to this blog's posts. if it
+		// is not add an iterator to the end of it.
+
+		while($Exist = static::GetByBlogAlias($Opt->BlogID,$Opt->Alias)) {
+			if(preg_match('/-(\d)$/',$Opt->Alias))
+			$Opt->Alias = preg_replace_callback(
+				'/-(\d+)$/',
+				function($Match) {
+					return sprintf('-%d',((Int)$Match[1] + 1));
+				},
+				$Opt->Alias
+			);
+
+			else
+			$Opt->Alias .= '-2';
+		}
 
 		////////
 

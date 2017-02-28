@@ -339,6 +339,20 @@ extends Nether\Object {
 	////////////////////////////////////////////////////////////////
 
 	static public function
+	Get($What):
+	?self {
+	/*//
+	fetch the blog based on the context of the argument. if it was a literal
+	integer then look it up by id, else look it up by alias.
+	//*/
+
+		if(is_int($What))
+		return static::GetByID($What);
+
+		return static::GetByAlias($What);
+	}
+
+	static public function
 	GetByID(Int $ID):
 	?self {
 	/*//
@@ -439,6 +453,10 @@ extends Nether\Object {
 	create a new blog instance.
 	//*/
 
+		$Exist = NULL;
+
+		////////
+
 		$Opt = new Nether\Object($Opt,[
 			'Title'   => NULL,
 			'Alias'   => NULL,
@@ -450,6 +468,27 @@ extends Nether\Object {
 
 		if(!$Opt->Alias)
 		$Opt->Alias = Atlantis\Util\Filters::RouteSafeAlias($Opt->Title);
+
+		////////
+
+		// make sure that the alias is unique. if we run into conflicts
+		// we will automatically add an iterator to the end of it. idealy
+		// our create ui will red flag it before creation so they can pick
+		// something else though.
+
+		while($Exist = static::GetByAlias($Opt->Alias)) {
+			if(preg_match('/-(\d)$/',$Opt->Alias))
+			$Opt->Alias = preg_replace_callback(
+				'/-(\d+)$/',
+				function($Match) {
+					return sprintf('-%d',((Int)$Match[1] + 1));
+				},
+				$Opt->Alias
+			);
+
+			else
+			$Opt->Alias .= '-2';
+		}
 
 		////////
 
