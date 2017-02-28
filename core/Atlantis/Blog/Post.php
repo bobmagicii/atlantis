@@ -18,6 +18,7 @@ extends Nether\Object {
 		'post_utime'   => 'TimeUpdated:int',
 		'post_draft'   => 'Draft:bool',
 		'post_title'   => 'Title',
+		'post_alias'   => 'Alias',
 		'post_content' => 'Content'
 	];
 
@@ -67,6 +68,17 @@ extends Nether\Object {
 		return $this->Blog;
 	}
 
+	public function
+	SetBlogID(Int $BlogID):
+	self {
+	/*//
+	@todo
+	update which blog this post belongs to.
+	//*/
+
+		return $this;
+	}
+
 	////////////////
 	////////////////
 
@@ -95,6 +107,17 @@ extends Nether\Object {
 		$this->User = Atlantis\User::GetByID((Int)$this->UserID);
 
 		return $this->User;
+	}
+
+	public function
+	SetUserID(Int $UserID):
+	self {
+	/*//
+	@todo
+	update the user id this post belongs to.
+	//*/
+
+		return $this;
 	}
 
 	////////////////
@@ -177,6 +200,23 @@ extends Nether\Object {
 		);
 	}
 
+	public function
+	SetTimeUpdated(?Int $Time=NULL):
+	self {
+	/*//
+	@todo
+	update the time updated for this post. if no time is specified then it
+	will use the current time.
+	//*/
+
+		if($Time === NULL)
+		$Time = time();
+
+		// ...
+
+		return $this;
+	}
+
 	////////////////
 	////////////////
 
@@ -191,6 +231,17 @@ extends Nether\Object {
 	//*/
 
 		return $this->Draft;
+	}
+
+	public function
+	SetDraft(Bool $State):
+	self {
+	/*//
+	@todo
+	update the draft state of this post.
+	//*/
+
+		return $this;
 	}
 
 	////////////////
@@ -209,6 +260,44 @@ extends Nether\Object {
 		return $this->Title;
 	}
 
+	public function
+	SetTitle(String $Title):
+	self {
+	/*//
+	@todo
+	update title for this post.
+	//*/
+
+		return $this;
+	}
+
+	////////////////
+	////////////////
+
+	protected
+	$Alias = '';
+
+	public function
+	GetAlias():
+	String {
+	/*//
+	return the alias that was given to this post.
+	//*/
+
+		return $this->Alias;
+	}
+
+	public function
+	SetAlias(String $Alias):
+	self {
+	/*//
+	@todo
+	update the alias for this post.
+	//*/
+
+		return $this;
+	}
+
 	////////////////
 	////////////////
 
@@ -223,6 +312,17 @@ extends Nether\Object {
 	//*/
 
 		return $this->Content;
+	}
+
+	public function
+	SetContent():
+	String {
+	/*//
+	@todo
+	update the text content of this post.
+	//*/
+
+		return $this;
 	}
 
 	////////////////////////////////////////////////////////////////
