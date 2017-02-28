@@ -9,6 +9,9 @@ use \Exception as Exception;
 class Post
 extends Nether\Object {
 
+	use
+	Atlantis\Packages\CacheInterface;
+
 	public static
 	$PropertyMap = [
 		'post_id'      => 'ID:int',
@@ -341,6 +344,42 @@ extends Nether\Object {
 	}
 
 	////////////////////////////////////////////////////////////////
+	// cache methods ///////////////////////////////////////////////
+
+	public function
+	Cache():
+	self {
+	/*//
+	@date 2017-02-27
+	prime the cache with this user.
+	//*/
+
+		$Cache = Nether\Stash::Get(Nether\Option::Get('cache-stash-name'));
+
+		$Cache->Set("atl-post-id-{$this->GetID()}",$this);
+		$Cache->Set("atl-post-al-{$this->GetBlogID()}-{$this->GetAlias()}",$this);
+
+		return $this;
+	}
+
+	public function
+	Flush():
+	self {
+	/*//
+	@date 2017-02-27
+	drop this user from the cache. you'll need to use this after changing any
+	information about them.
+	//*/
+
+		$Cache = Nether\Stash::Get(Nether\Option::Get('cache-stash-name'));
+
+		$Cache->Drop("atl-post-id-{$this->GetID()}");
+		$Cache->Drop("atl-post-al-{$this->GetBlogID()}-{$this->GetAlias()}");
+
+		return $this;
+	}
+
+	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
 
 	static public function
@@ -399,7 +438,17 @@ extends Nether\Object {
 	get a specific blog post by id.
 	//*/
 
-		$Result = Nether\Database::Get()
+		$Row = NULL;
+		$Output = NULL;
+
+		////////
+
+		if($Output = static::GetFromCache("alt-post-id-{$ID}"))
+		return $Output->SetCached(TRUE);
+
+		////////
+
+		$Row = Nether\Database::Get()
 		->NewVerse()
 		->Select('BlogPosts')
 		->Fields('*')
@@ -407,15 +456,18 @@ extends Nether\Object {
 		->Limit(1)
 		->Query([
 			':PostID' => $ID
-		]);
+		])
+		->Next();
 
-		if(!$Result->IsOK())
-		throw new Exception('Post::GetByID critikal phail');
-
-		if(!$Result->GetCount())
+		if(!$Row)
 		return NULL;
 
-		return new static($Result->Next());
+		////////
+
+		$Output = new static($Row);
+		$Output->SetCached(FALSE)->Cache();
+
+		return $Output;
 	}
 
 	static public function
@@ -425,6 +477,16 @@ extends Nether\Object {
 	get a specific blog post by its alias. alias for posts are only unique
 	to their blog, so we have to know which blog to check as well.
 	//*/
+
+		$Row = NULL;
+		$Output = NULL;
+
+		////////
+
+		if($Output = static::GetFromCache("atl-post-al-{$BlogID}-{$Alias}"))
+		return $Output->SetCached(TRUE);
+
+		////////
 
 		$Row = Nether\Database::Get()
 		->NewVerse()
@@ -444,7 +506,12 @@ extends Nether\Object {
 		if(!$Row)
 		return NULL;
 
-		return new static($Row);
+		////////
+
+		$Output = new static($Row);
+		$Output->SetCached(FALSE)->Cache();
+
+		return $Output;
 	}
 
 	////////////////////////////////////////////////////////////////

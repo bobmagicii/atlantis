@@ -9,6 +9,9 @@ use \Exception as Exception;
 class Blog
 extends Nether\Object {
 
+	use
+	Atlantis\Packages\CacheInterface;
+
 	static public
 	$PropertyMap = [
 		'blog_id'      => 'ID:int',
@@ -17,8 +20,8 @@ extends Nether\Object {
 		'blog_tagline' => 'Tagline'
 	];
 
-	////////
-	////////
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
 
 	protected
 	$ID = 0;
@@ -33,8 +36,8 @@ extends Nether\Object {
 		return $this->ID;
 	}
 
-	////////
-	////////
+	////////////////
+	////////////////
 
 	protected
 	$Title = '';
@@ -77,8 +80,8 @@ extends Nether\Object {
 		return $this;
 	}
 
-	////////
-	////////
+	////////////////
+	////////////////
 
 	protected
 	$Alias = '';
@@ -122,8 +125,8 @@ extends Nether\Object {
 		return $this;
 	}
 
-	////////
-	////////
+	////////////////
+	////////////////
 
 	protected
 	$Tagline = '';
@@ -166,8 +169,8 @@ extends Nether\Object {
 		return $this;
 	}
 
-	////////
-	////////
+	////////////////
+	////////////////
 
 	protected
 	$Users = [];
@@ -312,8 +315,8 @@ extends Nether\Object {
 
 		$Cache = Nether\Stash::Get(Nether\Option::Get('cache-stash-name'));
 
-		$Cache->Set("nether-blog-id-{$this->GetID()}",$this);
-		$Cache->Set("nether-blog-al-{$this->GetAlias()}",$this);
+		$Cache->Set("atl-blog-id-{$this->GetID()}",$this);
+		$Cache->Set("atl-blog-al-{$this->GetAlias()}",$this);
 
 		return $this;
 	}
@@ -329,8 +332,8 @@ extends Nether\Object {
 
 		$Cache = Nether\Stash::Get(Nether\Option::Get('cache-stash-name'));
 
-		$Cache->Drop("nether-blog-id-{$this->GetID()}");
-		$Cache->Drop("nether-blog-al-{$this->GetAlias()}");
+		$Cache->Drop("atl-blog-id-{$this->GetID()}");
+		$Cache->Drop("atl-blog-al-{$this->GetAlias()}");
 
 		return $this;
 	}
@@ -364,8 +367,8 @@ extends Nether\Object {
 
 		////////
 
-		if($Output = static::GetFromCache("nether-blog-id-{$ID}"))
-		return $Output;
+		if($Output = static::GetFromCache("atl-blog-id-{$ID}"))
+		return $Output->SetCached(TRUE);
 
 		////////
 
@@ -385,7 +388,7 @@ extends Nether\Object {
 		return NULL;
 
 		$Output = new static($Row);
-		$Output->Cache();
+		$Output->SetCached(FALSE)->Cache();
 
 		return $Output;
 	}
@@ -399,8 +402,8 @@ extends Nether\Object {
 
 		////////
 
-		if($Output = static::GetFromCache("nether-blog-al-{$Alias}"))
-		return $Output;
+		if($Output = static::GetFromCache("atl-blog-al-{$Alias}"))
+		return $Output->SetCached(TRUE);
 
 		////////
 
@@ -420,27 +423,9 @@ extends Nether\Object {
 		return NULL;
 
 		$Output = new static($Row);
-		$Output->Cache();
+		$Output->SetCached(FALSE)->Cache();
 
 		return $Output;
-	}
-
-	static public function
-	GetFromCache(String $Key):
-	?self {
-	/*//
-	@date 2017-02-11
-	see if this blog has been cached return it if so null if not.
-	//*/
-
-		$Result = Nether\Stash::Get(
-			Nether\Option::Get('cache-stash-name')
-		)->Get($Key);
-
-		if(!$Result)
-		return NULL;
-
-		return $Result->Value;
 	}
 
 	////////////////////////////////////////////////////////////////
