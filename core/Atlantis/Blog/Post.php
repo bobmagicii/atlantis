@@ -26,7 +26,7 @@ extends Nether\Object {
 	];
 
 	////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////
+	// post properties & api ///////////////////////////////////////
 
 	protected
 	$ID = 0;
@@ -41,8 +41,7 @@ extends Nether\Object {
 		return $this->ID;
 	}
 
-	////////////////
-	////////////////
+	////////////////////////////////////////////////////////////////
 
 	protected
 	$BlogID = 0,
@@ -82,8 +81,7 @@ extends Nether\Object {
 		return $this;
 	}
 
-	////////////////
-	////////////////
+	////////////////////////////////////////////////////////////////
 
 	protected
 	$UserID = 0,
@@ -123,8 +121,7 @@ extends Nether\Object {
 		return $this;
 	}
 
-	////////////////
-	////////////////
+	////////////////////////////////////////////////////////////////
 
 	protected
 	$TimePosted = 0;
@@ -163,8 +160,7 @@ extends Nether\Object {
 		);
 	}
 
-	////////////////
-	////////////////
+	////////////////////////////////////////////////////////////////
 
 	protected
 	$TimeUpdated = 0;
@@ -220,8 +216,7 @@ extends Nether\Object {
 		return $this;
 	}
 
-	////////////////
-	////////////////
+	////////////////////////////////////////////////////////////////
 
 	protected
 	$Draft = FALSE;
@@ -247,8 +242,7 @@ extends Nether\Object {
 		return $this;
 	}
 
-	////////////////
-	////////////////
+	////////////////////////////////////////////////////////////////
 
 	protected
 	$Title = '';
@@ -274,8 +268,7 @@ extends Nether\Object {
 		return $this;
 	}
 
-	////////////////
-	////////////////
+	////////////////////////////////////////////////////////////////
 
 	protected
 	$Alias = '';
@@ -294,15 +287,38 @@ extends Nether\Object {
 	SetAlias(String $Alias):
 	self {
 	/*//
-	@todo
+	@2017-03-01
 	update the alias for this post.
 	//*/
+
+		$Alias = $this::GetUniqueAlias($Alias);
+
+		////////
+
+		Nether\Database::Get()
+		->NewVerse()
+		->Update('BlogPosts')
+		->Fields([
+			'post_alias' => ':Alias'
+		])
+		->Where([
+			'post_id' => ':ID'
+		])
+		->Limit(1)
+		->Query([
+			':ID'    => $this->ID,
+			':Alias' => $this->Alias
+		]);
+
+		////////
+
+		$this->Flush();
+		$this->Alias = $Alias;
 
 		return $this;
 	}
 
-	////////////////
-	////////////////
+	////////////////////////////////////////////////////////////////
 
 	protected
 	$Content = '';
@@ -350,6 +366,7 @@ extends Nether\Object {
 	Cache():
 	self {
 	/*//
+	@override
 	@date 2017-02-27
 	prime the cache with this user.
 	//*/
@@ -366,6 +383,7 @@ extends Nether\Object {
 	Flush():
 	self {
 	/*//
+	@override
 	@date 2017-02-27
 	drop this user from the cache. you'll need to use this after changing any
 	information about them.
@@ -380,12 +398,13 @@ extends Nether\Object {
 	}
 
 	////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////
+	// search methods //////////////////////////////////////////////
 
 	static public function
 	ListByBlogID(Int $BlogID, $Opt=NULL):
 	Array {
 	/*//
+	@date 2017-02-25
 	fetch a list of all the posts that belong to a specified blog.
 	//*/
 
@@ -429,12 +448,12 @@ extends Nether\Object {
 	}
 
 	////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////
 
 	static public function
 	GetByID(Int $ID):
 	?self {
 	/*//
+	@date 2017-02-25
 	get a specific blog post by id.
 	//*/
 
@@ -474,6 +493,7 @@ extends Nether\Object {
 	GetByBlogAlias(Int $BlogID, String $Alias):
 	?self {
 	/*//
+	@date 2017-02-25
 	get a specific blog post by its alias. alias for posts are only unique
 	to their blog, so we have to know which blog to check as well.
 	//*/
@@ -514,6 +534,8 @@ extends Nether\Object {
 		return $Output;
 	}
 
+	////////////////////////////////////////////////////////////////
+
 	static public function
 	GetUniqueAlias(Int $BlogID, String $Alias):
 	String {
@@ -546,12 +568,13 @@ extends Nether\Object {
 	}
 
 	////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////
+	// creation api ////////////////////////////////////////////////
 
 	static public function
 	Create($Opt=NULL):
 	self {
 	/*//
+	@date 2017-02-25
 	create a new post with the specified data.
 	//*/
 
