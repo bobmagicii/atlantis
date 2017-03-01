@@ -9,7 +9,8 @@ use Atlantis\Site\Router       as Router;
 use Nether\Avenue\RouteHandler as Handler;
 use Exception                  as Exception;
 
-class BlogPost {
+class BlogPost
+extends Atlantis\Site\PublicWeb {
 
 	static public function
 	WillHandleRequest(Router $Router, Handler $Handler):
@@ -48,7 +49,21 @@ class BlogPost {
 		$Blog = Atlantis\Blog::GetByAlias($BlogAlias);
 		$Post = $Blog->GetPostByAlias($PostAlias);
 
-		echo 'blog post view';
+		////////
+
+		Nether\Ki::Queue(
+			'surface-render-scope',
+			function(Array &$Scope) use($Blog,$Post) {
+				$Scope['blog'] = $Blog;
+				$Scope['post'] = $Post;
+				return;
+			},
+			FALSE
+		);
+
+		////////
+
+		$this->Surface->Area('post/index');
 		return;
 	}
 
