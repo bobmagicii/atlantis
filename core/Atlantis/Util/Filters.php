@@ -16,11 +16,11 @@ methods here are safe for direct use or use as callback filtering.
 	Int {
 	/*//
 	@date 2017-02-27
-	make sure the specified value is within the range of 1 to 25, and if not
+	make sure the specified value is within the range of 0 to 25, and if not
 	force it to the max allowed.
 	//*/
 
-		if(!is_numeric($Val) || $Val < 1 || $Val > 25)
+		if(!is_numeric($Val) || $Val < 0 || $Val > 25)
 		return 25;
 
 		return (Int)$Val;
