@@ -413,6 +413,9 @@ extends Nether\Object {
 	static public function
 	GetByAlias(String $Alias):
 	?self {
+	/*//
+	fetch a blog by its alias.
+	//*/
 
 		$Row = NULL;
 		$Output = NULL;
