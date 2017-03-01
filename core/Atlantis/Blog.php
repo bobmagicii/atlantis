@@ -428,6 +428,37 @@ extends Nether\Object {
 		return $Output;
 	}
 
+	static public function
+	GetUniqueAlias(String $Alias):
+	String {
+	/*//
+	@date 2017-03-01
+	make sure the alias we want to use is unique among all the blogs. returns
+	the unique value. adds an integer to the end of the alias if it was not
+	found to be unique.
+	//*/
+
+		$Exist = NULL;
+
+		////////
+
+		while($Exist = static::GetByAlias($Alias)) {
+			if(preg_match('/-(\d)$/',$Alias))
+			$Alias = preg_replace_callback(
+				'/-(\d+)$/',
+				function($M) { return sprintf('-%d',((Int)$M[1]+1)); },
+				$Alias
+			);
+
+			else
+			$Alias .= '-2';
+		}
+
+		////////
+
+		return $Alias;
+	}
+
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
 
@@ -456,24 +487,7 @@ extends Nether\Object {
 
 		////////
 
-		// make sure that the alias is unique. if we run into conflicts
-		// we will automatically add an iterator to the end of it. idealy
-		// our create ui will red flag it before creation so they can pick
-		// something else though.
-
-		while($Exist = static::GetByAlias($Opt->Alias)) {
-			if(preg_match('/-(\d)$/',$Opt->Alias))
-			$Opt->Alias = preg_replace_callback(
-				'/-(\d+)$/',
-				function($Match) {
-					return sprintf('-%d',((Int)$Match[1] + 1));
-				},
-				$Opt->Alias
-			);
-
-			else
-			$Opt->Alias .= '-2';
-		}
+		$Opt->Alias = static::GetUniqueAlias($Opt->Alias);
 
 		////////
 
