@@ -10,7 +10,7 @@
         "css"
     ],
     "Files": [
-        "css/main.css"
+        "css/element-main.css"
     ],
     "Minify": false,
     "OutputFile": "element.css",
