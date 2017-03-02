@@ -3,11 +3,11 @@
 namespace Atlantis\Element\TitleBox;
 use \Atlantis as Atlantis;
 
-class Cloud
+class TextCloud
 extends Atlantis\Element\TitleBox\Text {
 
 	protected
-	$Area = 'element/title-box/cloud';
+	$Area = 'element/title-box/text-cloud';
 
 	use
 	Atlantis\Properties\ItemListStore;
