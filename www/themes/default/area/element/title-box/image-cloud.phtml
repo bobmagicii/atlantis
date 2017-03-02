@@ -1,0 +1,10 @@
+<div class="TitleBox">
+	<div class="Title">
+		<span><?php echo htmlentities($element->GetTitle()) ?></span>
+	</div>
+	<ul class="Box">
+<?php foreach($element->GetItems() as $Item): ?>
+		<li id="<?php echo $Item->GetID() ?>" class="<?php echo $Item->GetClassesAttrString() ?>"><a href="<?php echo $Item->GetURL() ?>"><img src="<?php echo $Item->GetImageURL() ?>" /></a></li>
+<?php endforeach; ?>
+	</ul>
+</div>

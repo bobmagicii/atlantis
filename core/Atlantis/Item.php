@@ -15,6 +15,7 @@ if you try, it just returns null back as the value.
 	Atlantis\Properties\Title,
 	Atlantis\Properties\Subtitle,
 	Atlantis\Properties\URL,
+	Atlantis\Properties\ImageURL,
 	Atlantis\Properties\ClassListStore;
 
 	public function
@@ -25,6 +26,7 @@ if you try, it just returns null back as the value.
 			'Title'    => '',
 			'Subtitle' => '',
 			'URL'      => '',
+			'ImageURL' => '',
 			'Classes'  => []
 		]);
 
@@ -37,6 +39,7 @@ if you try, it just returns null back as the value.
 		$this->Title = $Opt->Title;
 		$this->Subtitle = $Opt->Subtitle;
 		$this->URL = $Opt->URL;
+		$this->ImageURL = $Opt->ImageURL;
 
 		$this->GetClasses()
 		->SetData($Opt->Classes);
