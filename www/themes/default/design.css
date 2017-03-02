@@ -85,13 +85,43 @@ li:last-of-type {
 /* generic modifiers for various uses */
 
 .FloatClear { border: 0px; clear: both; margin: 0px; }
-.PaddingVerticalBarely { padding-top: 8px; padding-bottom: 8px; }
-.PaddingVerticalLess { padding-top: 16px; padding-bottom: 16px; }
-.PaddingVerticalNormal { padding-top: 32px; padding-bottom: 32px; }
+
 .TextAlignCenter { text-align: center; }
 .VerticalAlignMiddle { vertical-align: middle; }
 .WidthFull { width: 100%; }
 .WidthHalf { width: 50%; }
+
+.MarginAboveNone { margin-top: 0px !important; }
+.MarginAboveBarely { margin-top: 8px !important; }
+.MarginAboveLess { margin-top: 16px !important; }
+.MarginAboveNormal { margin-top: 32px !important; }
+.MarginAboveSpaaace { margin-top: 64px !important; }
+.MarginBelowNone { margin-bottom: 0px !important; }
+.MarginBelowBarely { margin-bottom: 8px !important; }
+.MarginBelowLess { margin-bottom: 16px !important; }
+.MarginBelowNormal { margin-bottom: 32px !important; }
+.MarginBelowSpaaace { margin-bottom: 64px !important; }
+.MarginVerticalNone { margin-top: 0px; margin-bottom: 0px; }
+.MarginVerticalBarely { margin-top: 8px; margin-bottom: 8px; }
+.MarginVerticalLess { margin-top: 16px; margin-bottom: 16px; }
+.MarginVerticalNormal { margin-top: 32px; margin-bottom: 32px; }
+.MarginVerticalSpaaace { margin-top: 64px; margin-bottom: 64px; }
+
+.PaddingAboveNone { padding-top: 0px !important; }
+.PaddingAboveBarely { padding-top: 8px !important; }
+.PaddingAboveLess { padding-top: 16px !important; }
+.PaddingAboveNormal { padding-top: 32px !important; }
+.PaddingAboveSpaaace { padding-top: 64px !important; }
+.PaddingBelowNone { padding-bottom: 0px !important; }
+.PaddingBelowBarely { padding-bottom: 8px !important; }
+.PaddingBelowLess { padding-bottom: 16px !important; }
+.PaddingBelowNormal { padding-bottom: 32px !important; }
+.PaddingBelowSpaaace { padding-bottom: 64px !important; }
+.PaddingVerticalNone { padding-top: 0px; padding-bottom: 0px; }
+.PaddingVerticalBarely { padding-top: 8px; padding-bottom: 8px; }
+.PaddingVerticalLess { padding-top: 16px; padding-bottom: 16px; }
+.PaddingVerticalNormal { padding-top: 32px; padding-bottom: 32px; }
+.PaddingVerticalSpaaace { padding-top: 64px; padding-bottom: 64px; }
 
 /*//////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////*/
