@@ -2,7 +2,7 @@
 <div class="Atlantis-Element Atlantis-Element-PostListing">
 <?php if($element->HasTitle()): ?>
 	<legend><?php echo htmlentities($element->GetTitle()) ?></legend>
-	<hr />
+	<hr class="MarginBelowNormal" />
 <?php endif; ?>
 <?php foreach($element->GetItems() as $Item): ?>
 	<div id="<?php echo $Item->GetID() ?>" class="<?php echo $Item->GetClassesAttrString() ?>">

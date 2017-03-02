@@ -357,10 +357,18 @@ extends Nether\Object {
 	GetURL():
 	String {
 	/*//
-	@todo
+	@date 2017-03-02
+	get the url to view this blog.
 	//*/
 
-		return '';
+		$Router = Nether\Stash::Get('Router');
+
+		return sprintf(
+			'%s://%s/%s/',
+			$Router->GetProtocol(),
+			$Router->GetFullDomain(),
+			$this->Alias
+		);
 	}
 
 	//////////////////////////////////////////////////////////////////////////
