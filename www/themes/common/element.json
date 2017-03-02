@@ -1,0 +1,19 @@
+{
+    "AddFileHeader": false,
+    "AddScriptHeader": true,
+    "ContentType": "text\/css",
+    "Directories": [
+        "css/element"
+    ],
+    "DistDir": ".",
+    "Extensions": [
+        "css"
+    ],
+    "Files": [
+        "css/main.css"
+    ],
+    "Minify": false,
+    "OutputFile": "element.css",
+    "OutputMinFile": "element.min.css",
+    "Print": false
+}

@@ -1,0 +1,20 @@
+/*// nether-onescript //
+@date 2017-03-02 22:29:27
+@files [
+    "src\\css\/main.css",
+    "src\\css\/element\\post-listing.css"
+]
+//*/
+
+.Atlantis-Element hr {
+	border: 0px;
+	border-bottom: 1px solid #ddd;
+	margin: 6px 0px;
+	padding: 0px;
+}
+
+.Atlantis-Element-PostListing
+h1 {
+	font-size: 1.0em;
+}
+
