@@ -1,4 +1,4 @@
-<?php
+<?php // vscode-fold=2
 
 echo new class
 extends Atlantis\Page\TwoCol1x3 {
@@ -12,13 +12,12 @@ extends Atlantis\Page\TwoCol1x3 {
 		->Push('Flip');
 
 		$this->PopulateSidebar();
-
-		$this->Main
-		->Push('I am totally a thing.')
-		->Push('So am I');
+		$this->PopulateMain();
 
 		return;
 	}
+
+	//////////////////////////////////////////////////////////////////////////
 
 	private function
 	PopulateSidebar():
@@ -51,6 +50,20 @@ extends Atlantis\Page\TwoCol1x3 {
 		}
 
 		return $Element;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+
+	private function
+	PopulateMain():
+	Void {
+
+
+		$this->Main
+		->Push('I am totally a thing.')
+		->Push('So am I');
+
+		return;
 	}
 
 };
