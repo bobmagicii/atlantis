@@ -24,26 +24,62 @@ extends Atlantis\Page\TwoCol1x3 {
 	PopulateSidebar():
 	Void {
 
+		$CloudData = [
+			new Atlantis\Item([
+				'Title'    => 'Thing 1',
+				'URL'      => 'http://thing1.lol',
+				'ImageURL' => '/themes/default/gfx/icon-default.png'
+			]),
+			new Atlantis\Item([
+				'Title'    => 'Thing 2',
+				'URL'      => 'http://thing2.lol',
+				'ImageURL' => '/themes/default/gfx/icon-default.png'
+			]),
+			new Atlantis\Item([
+				'Title'    => 'Thing 3',
+				'URL'      => 'http://thing3.lol',
+				'ImageURL' => '/themes/default/gfx/icon-default.png'
+			]),
+			new Atlantis\Item([
+				'Title'    => 'Thing 4',
+				'URL'      => 'http://thing4.lol',
+				'ImageURL' => '/themes/default/gfx/icon-default.png'
+			]),
+			new Atlantis\Item([
+				'Title'    => 'Thing 5',
+				'URL'      => 'http://thing5.lol',
+				'ImageURL' => '/themes/default/gfx/icon-default.png'
+			])
+		];
+
+		////////
+
 		$Text = (new Atlantis\Element\TitleBox\Text)
 		->SetTitle('Test Box')
 		->SetContent('Test Content');
 
-		$Cloud = (new Atlantis\Element\TitleBox\TextCloud)
-		->SetTitle('Test Cloud');
+		////////
 
-		$Cloud->GetItems()
-		->Push(new Atlantis\Item([
-			'Title' => 'Thing 1',
-			'URL'   => 'http://thing1.lol'
-		]))
-		->Push(new Atlantis\Item([
-			'Title' => 'Thing 2',
-			'URL'   => 'http://thing2.lol'
-		]));
+		$TextCloud = (new Atlantis\Element\TitleBox\TextCloud)
+		->SetTitle('Text Cloud');
+
+		$TextCloud->GetItems()
+		->SetData($CloudData);
+
+		////////
+
+		$ImageCloud = (new Atlantis\Element\TitleBox\ImageCloud)
+		->SetTitle('Image Cloud');
+
+		$ImageCloud->GetItems()
+		->SetData($CloudData);
+
+		////////
 
 		$this->Sidebar
 		->Push($Text)
-		->Push($Cloud);
+		->Push($TextCloud)
+		->Push($ImageCloud);
 
 		return;
 	}

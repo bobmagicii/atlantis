@@ -35,6 +35,10 @@ code {
 	font-family: 'Share Tech Mono', monospace;
 }
 
+img {
+	vertical-align: middle;
+}
+
 p {
 	margin: 0px 0px 16px 0px;
 }
@@ -87,6 +91,7 @@ li:last-of-type {
 .TextAlignCenter { text-align: center; }
 .VerticalAlignMiddle { vertical-align: middle; }
 .WidthFull { width: 100%; }
+.WidthHalf { width: 50%; }
 
 /*//////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////*/
@@ -156,6 +161,7 @@ h1 a img {
 	transform: rotate(0deg);
 	transform-origin: 50% 70%;
 	transition: transform 0.60s;
+	vertical-align: initial;
 }
 
 body > header
@@ -436,6 +442,7 @@ ul.Box {
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
+
 	font-size: 0px;
 	list-style-type: none;
 	margin: -4px;
@@ -444,10 +451,9 @@ ul.Box {
 
 .TitleBox
 ul.Box li {
-	display: block;
-	flex-grow: 1;
+	flex: 1 1 auto;
 	margin: 4px;
-	white-space: nowrap;
+	min-width: 25%;
 }
 
 .TitleBox
@@ -456,7 +462,7 @@ ul.Box li a {
 	border: 1px solid #ddd;
 	color: #888;
 	font-size: 12px;
-	padding: 4px 8px;
+	padding: 4px 4px;
 	text-align: center;
 }
 
@@ -465,6 +471,12 @@ ul.Box li a:hover {
 	background: #ccc;
 	border: 1px solid #666;
 	color: #666;
+}
+
+.TitleBox
+ul.Box li a img {
+	min-width: 0%;
+	max-width: 33%;
 }
 
 /* this creates a variant of the title box which is suited for showing info
