@@ -4,7 +4,7 @@
 	</div>
 	<ul class="Box">
 <?php foreach($element->GetItems() as $Item): ?>
-		<li><a href="<?php echo $Item->GetURL() ?>"><?php echo $Item->GetTitle() ?></a></li>
+		<li class="<?php echo $Item->GetClassesAttrString() ?>"><a href="<?php echo $Item->GetURL() ?>"><?php echo $Item->GetTitle() ?></a></li>
 <?php endforeach; ?>
 	</ul>
 </div>
