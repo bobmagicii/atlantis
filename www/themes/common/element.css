@@ -1,16 +1,26 @@
 /*// nether-onescript //
-@date 2017-03-02 22:29:27
+@date 2017-03-02 23:01:06
 @files [
-    "src\\css\/main.css",
+    "src\\css\/element-main.css",
     "src\\css\/element\\post-listing.css"
 ]
 //*/
 
 .Atlantis-Element hr {
 	border: 0px;
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid #ccc;
 	margin: 6px 0px;
 	padding: 0px;
+}
+
+.Atlantis-Element legend {
+	color: #888;
+	font-size: 12px;
+	letter-spacing: 0.05em;
+	line-height: normal;
+	margin: 0px;
+	padding: 0px;
+	text-transform: uppercase;
 }
 
 .Atlantis-Element-PostListing
