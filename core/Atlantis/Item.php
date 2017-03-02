@@ -41,7 +41,7 @@ if you try, it just returns null back as the value.
 		$this->URL = $Opt->URL;
 		$this->ImageURL = $Opt->ImageURL;
 
-		$this->GetClasses()
+		if(count($Opt->Classes)) $this->GetClasses()
 		->SetData($Opt->Classes);
 
 		return;

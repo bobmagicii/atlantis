@@ -567,6 +567,145 @@ extends Nether\Object {
 		return $Alias;
 	}
 
+	//////////////////////////////////////////////////////////////////////////
+
+	static public function
+	Search($Opt=NULL):
+	Atlantis\Datastore {
+	/*//
+	primary search api for blogs.
+	//*/
+
+		$Result = NULL;
+		$Row = NULL;
+		$Found = 0;
+		$SQL = Nether\Database::Get()->NewVerse();
+		$Output = new Atlantis\Datastore;
+
+		////////
+
+		$Opt = new Nether\Object($Opt,[
+			'Page'   => 1,
+			'Sort'   => 'Newest',
+			'Limit'  => 0,
+
+			'BlogID' => NULL
+		]);
+
+		static::Search_ExtendSelect($Opt,$SQL);
+		static::Search_ExtendLimits($Opt,$SQL);
+		static::Search_ExtendFilters($Opt,$SQL);
+		static::Search_ExtendSorts($Opt,$SQL);
+
+		////////
+
+		// run the query.
+
+		$Result = $SQL->Query($Opt);
+
+		if(!$Result->IsOK())
+		throw new Exception('Post::Search fatal error');
+
+		////////
+
+		// follow up with the db about how many things were found.
+
+		$Found = (Int)$SQL
+		->GetDatabase()
+		->Query('SELECT FOUND_ROWS() AS FoundRows;')
+		->Next()
+		->FoundRows;
+
+		////////
+
+		// populate the result set.
+
+		while($Row = $Result->Next())
+		$Output->Push(new static($Row));
+
+		$Output
+		->Found($Found)
+		->Page($Opt->Page)
+		->Limit($Opt->Limit);
+
+		////////
+
+		return $Output;
+	}
+
+	static protected function
+	Search_ExtendSelect($Opt,$SQL):
+	Void {
+	/*//
+	@date 2017-03-02
+	generate the search query selection clause.
+	//*/
+
+		$SQL
+		->Select('BlogPosts')
+		->Fields('SQL_CALC_FOUND_ROWS *');
+
+		return;
+	}
+
+	static protected function
+	Search_ExtendFilters(Nether\Object $Opt, Nether\Database\Verse $SQL):
+	Void {
+	/*//
+	@date 2017-03-02
+	generate the search query filter clauses.
+	//*/
+
+		if(is_int($Opt->BlogID))
+		$SQL->Where('blog_id=:BlogID');
+
+		return;
+	}
+
+	static protected function
+	Search_ExtendLimits(Nether\Object $Opt, Nether\Database\Verse $SQL):
+	Void {
+	/*//
+	@date 2017-03-02
+	generate the search query limitation clauses.
+	//*/
+
+		$Opt->Page = Atlantis\Util\Filters::PageNumber($Opt->Page);
+		$Opt->Limit = Atlantis\Util\Filters::NumberLimit25($Opt->Limit);
+
+		if($Opt->Limit > 0) $SQL
+		->Limit($Opt->Limit)
+		->Offset(($Opt->Page - 1) * $Opt->Limit);
+
+		return;
+	}
+
+	static protected function
+	Search_ExtendSorts(Nether\Object $Opt, Nether\Database\Verse $SQL):
+	Void {
+	/*//
+	@date 2017-03-02
+	generate the search query sorting clauses.
+	//*/
+
+		switch($Opt->Sort) {
+			case 'Newest':
+				$SQL->Sort('post_id',$SQL::SortDesc);
+			break;
+			case 'Oldest':
+				$SQL->Sort('post_id',$SQL::SortAsc);
+			break;
+			case 'TitleAZ':
+				$SQL->Sort('post_title',$SQL::SortDesc);
+			break;
+			case 'TitleZA':
+				$SQL->Sort('post_title',$SQL::SortAsc);
+			break;
+		}
+
+		return;
+	}
+
 	///////////////////////////////////////////////////////////////////////////
 	// creation api ///////////////////////////////////////////////////////////
 

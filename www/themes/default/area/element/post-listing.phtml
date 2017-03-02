@@ -1,0 +1,13 @@
+
+<div class="Atlantis-Element Atlantis-Element-PostListing">
+<?php if($element->HasTitle()): ?>
+	<legend><?php echo htmlentities($element->GetTitle()) ?></legend>
+	<hr />
+<?php endif; ?>
+<?php foreach($element->GetItems() as $Item): ?>
+	<div id="<?php echo $Item->GetID() ?>" class="<?php echo $Item->GetClassesAttrString() ?>">
+		<h1><a href="<?php echo $Item->GetURL() ?>"><?php echo htmlentities($Item->GetTitle()) ?></a></h1>
+	</div>
+<?php endforeach; ?>
+</div>
+

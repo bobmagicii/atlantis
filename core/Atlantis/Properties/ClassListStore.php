@@ -36,6 +36,9 @@ classes in widgets and such.
 	delimited by a space.
 	//*/
 
+		if(!$this->ClassListStore)
+		return '';
+
 		return implode(
 			' ',
 			$this->GetClasses()->GetData()

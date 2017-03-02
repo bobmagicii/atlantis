@@ -60,10 +60,23 @@ extends Atlantis\Page\TwoCol1x3 {
 
 
 		$this->Main
-		->Push('I am totally a thing.')
-		->Push('So am I');
+		->Push($this->GetMainRecentPosts());
 
 		return;
+	}
+
+	private function
+	GetMainRecentPosts() {
+
+		$Element = (new Atlantis\Element\PostListing)
+		->SetTitle('Latest Posts');
+
+		foreach($this->Surface->Get('Home.RecentPosts') as $Post)
+		$Element->GetItems()->Push(new Atlantis\Item([
+			'Title' => $Post->GetTitle()
+		]));
+
+		return $Element;
 	}
 
 };

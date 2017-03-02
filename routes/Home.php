@@ -12,6 +12,7 @@ extends Atlantis\Site\PublicWeb {
 	Index() {
 
 		$this->Surface->Set('Home.PopularBlogs',$this->GetPopularBlogs());
+		$this->Surface->Set('Home.RecentPosts',$this->GetRecentPosts());
 		$this->Surface->Area('home/index');
 		return;
 	}
@@ -27,7 +28,23 @@ extends Atlantis\Site\PublicWeb {
 
 		$Output = Atlantis\Blog::Search([
 			'Sort'  => 'TitleAZ',
-			'Limit' => 16,
+			'Limit' => 8,
+			'Page'  => 1
+		]);
+
+		return $Output;
+	}
+
+	protected function
+	GetRecentPosts():
+	Atlantis\Datastore {
+	/*//
+	fetch a list of the most recent blog posts site wide.
+	//*/
+
+		$Output = Atlantis\Blog\Post::Search([
+			'Sort'  => 'Newest',
+			'Limit' => 10,
 			'Page'  => 1
 		]);
 
