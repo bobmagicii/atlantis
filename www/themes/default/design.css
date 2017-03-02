@@ -451,7 +451,8 @@ ul.Box {
 
 .TitleBox
 ul.Box li {
-	flex: 1 1 auto;
+	flex: 1 1 0;
+	align-self: flex-start;
 	margin: 4px;
 	min-width: 25%;
 }
@@ -475,8 +476,28 @@ ul.Box li a:hover {
 
 .TitleBox
 ul.Box li a img {
-	min-width: 0%;
-	max-width: 33%;
+	min-width: 25%;
+	max-width: 100%;
+}
+
+.TitleBox.C1
+ul.Box li {
+	min-width: 50%;
+}
+
+.TitleBox.C2
+ul.Box li {
+	min-width: 33%;
+}
+
+.TitleBox.C3
+ul.Box li {
+	min-width: 25%;
+}
+
+.TitleBox.C4
+ul.Box li {
+	min-width: 20%;
 }
 
 /* this creates a variant of the title box which is suited for showing info
