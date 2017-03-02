@@ -33,6 +33,7 @@ if you try, it just returns null back as the value.
 
 		////////
 
+		$this->ID = $Opt->ID;
 		$this->Title = $Opt->Title;
 		$this->Subtitle = $Opt->Subtitle;
 		$this->URL = $Opt->URL;
