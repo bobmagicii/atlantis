@@ -11,6 +11,7 @@ if you try, it just returns null back as the value.
 //*/
 
 	use
+	Atlantis\Properties\ID,
 	Atlantis\Properties\Title,
 	Atlantis\Properties\Subtitle,
 	Atlantis\Properties\URL,
@@ -20,6 +21,7 @@ if you try, it just returns null back as the value.
 	__construct($Opt=NULL) {
 
 		$Opt = new Nether\Object($Opt,[
+			'ID'       => '',
 			'Title'    => '',
 			'Subtitle' => '',
 			'URL'      => '',
