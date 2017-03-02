@@ -342,22 +342,24 @@ html tree by adding the TwoColFlip modifier.
 .TwoCol1x3
 > div:nth-child(1) {
 	float: left;
+	min-height: 1px;
 	width: 25%;
 }
 
 .TwoCol1x3
 > div:nth-child(2) {
 	float: left;
+	min-height: 1px;
 	padding-left: 32px;
 	width: 75%;
 }
 
-.TwoCol1x3.TwoColFlip
+.TwoCol1x3.Flip
 > div:nth-child(1) {
 	float: right;
 }
 
-.TwoCol1x3.TwoColFlip
+.TwoCol1x3.Flip
 > div:nth-child(2) {
 	float: left;
 	padding-left: 0px;

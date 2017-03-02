@@ -1,15 +1,51 @@
-<main>
-<p>Letter of Marque to go on account square-rigged topmast capstan Cat o'nine tails American Main flogging Privateer Pieces of Eight. Yo-ho-ho Sink me sloop parley main sheet lass tender loot bilge rat nipper. Gold Road Brethren of the Coast main sheet interloper cackle fruit matey trysail bilged on her anchor strike colors line.</p>
+<?php
 
-<h3>Test Links</h3>
-<ul>
-	<li><a href="/theme-test/blog-two-col-left">Blog Two Column, Left Sidebar</a></li>
-	<li><a href="/theme-test/blog-two-col-right">Blog Two Column, Right Sidebar</a></li>
-</ul>
+echo new class
+extends Atlantis\Page\TwoCol1x3 {
 
-<p>Haul wind square-rigged hail-shot Sink me gangway piracy chase keelhaul crack Jennys tea cup fathom. Provost draft cutlass hulk topgallant gally flogging gangway rum marooned. Quarterdeck aft mizzenmast belay Pirate Round loot long clothes jury mast spanker hulk.</p>
-<p>American Main Shiver me timbers Sail ho stern hornswaggle tender strike colors belay topsail gibbet. Booty no prey, no pay long clothes come about mizzenmast hang the jib me parley walk the plank loaded to the gunwalls. Lugger maroon tackle pillage marooned port ahoy grog blossom Sail ho topsail.</p>
-<p>Handsomely walk the plank ye prow hearties fire ship heave down starboard careen dance the hempen jig. Bilged on her anchor maroon fire in the hole spirits transom Nelsons folly Barbary Coast gaff mizzen hulk. Gold Road take a caulk Pieces of Eight Shiver me timbers hornswaggle overhaul blow the man down topmast broadside Jolly Roger.</p>
-<p>Hulk black spot gun nipperkin ballast aye piracy provost swab boatswain. Gunwalls port Brethren of the Coast pressgang starboard dead men tell no tales yawl yardarm avast blow the man down. Shrouds American Main galleon Admiral of the Black long boat jack square-rigged Cat o'nine tails gangway fathom.</p>
-<p>Code of conduct topsail Buccaneer keelhaul furl yo-ho-ho Davy Jones' Locker fluke Shiver me timbers red ensign. Splice the main brace code of conduct six pounders jury mast blow the man down doubloon yawl Pirate Round haul wind lugger. Admiral of the Black careen Nelsons folly crack Jennys tea cup Jack Ketch spyglass long clothes handsomely booty Pirate Round.</p>
-</main>
+	public function
+	OnConstruct():
+	Void {
+		parent::OnConstruct(...func_get_args());
+
+		$this->GetClasses()
+		->Push('Flip');
+
+		$this->PopulateSidebar();
+
+		$this->Main
+		->Push('I am totally a thing.')
+		->Push('So am I');
+
+		return;
+	}
+
+	private function
+	PopulateSidebar():
+	Void {
+
+		$Text = (new Atlantis\Element\TitleBox\Text)
+		->SetTitle('Test Box')
+		->SetContent('Test Content');
+
+		$Cloud = (new Atlantis\Element\TitleBox\Cloud)
+		->SetTitle('Test Cloud');
+
+		$Cloud->GetItems()
+		->Push(new Atlantis\Item([
+			'Title' => 'Thing 1',
+			'URL'   => 'http://thing1.lol'
+		]))
+		->Push(new Atlantis\Item([
+			'Title' => 'Thing 2',
+			'URL'   => 'http://thing2.lol'
+		]));
+
+		$this->Sidebar
+		->Push($Text)
+		->Push($Cloud);
+
+		return;
+	}
+
+};

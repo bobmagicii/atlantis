@@ -20,8 +20,8 @@ extends Nether\Object {
 		'blog_tagline' => 'Tagline'
 	];
 
-	////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
+	// properties and accessors //////////////////////////////////////////////
 
 	protected
 	$ID = 0;
@@ -36,8 +36,7 @@ extends Nether\Object {
 		return $this->ID;
 	}
 
-	////////////////
-	////////////////
+	//////////////////////////////////////////////////////////////////////////
 
 	protected
 	$Title = '';
@@ -80,8 +79,7 @@ extends Nether\Object {
 		return $this;
 	}
 
-	////////////////
-	////////////////
+	//////////////////////////////////////////////////////////////////////////
 
 	protected
 	$Alias = '';
@@ -125,8 +123,7 @@ extends Nether\Object {
 		return $this;
 	}
 
-	////////////////
-	////////////////
+	//////////////////////////////////////////////////////////////////////////
 
 	protected
 	$Tagline = '';
@@ -169,8 +166,7 @@ extends Nether\Object {
 		return $this;
 	}
 
-	////////////////
-	////////////////
+	//////////////////////////////////////////////////////////////////////////
 
 	protected
 	$Users = [];
@@ -189,8 +185,8 @@ extends Nether\Object {
 		return $this->Users;
 	}
 
-	////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
 
 	protected function
 	__ready():
@@ -200,8 +196,8 @@ extends Nether\Object {
 		return;
 	}
 
-	////////////////////////////////////////////////////////////////
-	// blog user management ////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
+	// blog user management //////////////////////////////////////////////////
 
 	public function
 	AddUser(Int $UserID, String $Level):
@@ -251,8 +247,8 @@ extends Nether\Object {
 		return;
 	}
 
-	////////////////////////////////////////////////////////////////
-	// blog user permission checking ///////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
+	// blog user permission checking /////////////////////////////////////////
 
 	public function
 	CanUser(Int $UserID, Array $Levels):
@@ -302,13 +298,14 @@ extends Nether\Object {
 		]);
 	}
 
-	////////////////////////////////////////////////////////////////
-	// cache methods ///////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
+	// cache methods /////////////////////////////////////////////////////////
 
 	public function
 	Cache():
 	self {
 	/*//
+	@override
 	@date 2017-02-11
 	prime the cache with this user.
 	//*/
@@ -325,6 +322,7 @@ extends Nether\Object {
 	Flush():
 	self {
 	/*//
+	@override
 	@date 2017-02-11
 	drop this user from the cache. you'll need to use this after changing any
 	information about them.
@@ -338,8 +336,8 @@ extends Nether\Object {
 		return $this;
 	}
 
-	////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
+	// other methods /////////////////////////////////////////////////////////
 
 	public function
 	GetPostByAlias(String $Alias):
@@ -355,8 +353,8 @@ extends Nether\Object {
 		);
 	}
 
-	////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
+	// search api ////////////////////////////////////////////////////////////
 
 	static public function
 	Get($What):
@@ -448,6 +446,8 @@ extends Nether\Object {
 		return $Output;
 	}
 
+	//////////////////////////////////////////////////////////////////////////
+
 	static public function
 	GetUniqueAlias(String $Alias):
 	String {
@@ -479,8 +479,142 @@ extends Nether\Object {
 		return $Alias;
 	}
 
-	////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
+
+	static public function
+	Search($Opt=NULL):
+	Atlantis\Datastore {
+	/*//
+	primary search api for blogs.
+	//*/
+
+		$Result = NULL;
+		$Row = NULL;
+		$Found = 0;
+		$SQL = Nether\Database::Get()->NewVerse();
+		$Output = new Atlantis\Datastore;
+
+		////////
+
+		$Opt = new Nether\Object($Opt,[
+			'Page'  => 1,
+			'Sort'  => 'Newest',
+			'Limit' => 0
+		]);
+
+		static::Search_ExtendSelect($Opt,$SQL);
+		static::Search_ExtendLimits($Opt,$SQL);
+		static::Search_ExtendFilters($Opt,$SQL);
+		static::Search_ExtendSorts($Opt,$SQL);
+
+		////////
+
+		// run the query.
+
+		$Result = $SQL->Query($Opt);
+
+		if(!$Result->IsOK())
+		throw new Exception('Blog::Search fatal error');
+
+		////////
+
+		// follow up with the db about how many things were found.
+
+		$Found = (Int)$SQL
+		->GetDatabase()
+		->Query('SELECT FOUND_ROWS() AS FoundRows;')
+		->Next()
+		->FoundRows;
+
+		////////
+
+		// populate the result set.
+
+		while($Row = $Result->Next())
+		$Output->Push(new static($Row));
+
+		$Output
+		->Found($Found)
+		->Page($Opt->Page)
+		->Limit($Opt->Limit);
+
+		////////
+
+		return $Output;
+	}
+
+	static protected function
+	Search_ExtendSelect($Opt,$SQL):
+	Void {
+	/*//
+	@date 2017-03-01
+	generate the search query selection clause.
+	//*/
+
+		$SQL
+		->Select('Blogs')
+		->Fields('SQL_CALC_FOUND_ROWS *');
+
+		return;
+	}
+
+	static protected function
+	Search_ExtendFilters(Nether\Object $Opt, Nether\Database\Verse $SQL):
+	Void {
+	/*//
+	@date 2017-03-01
+	generate the search query filter clauses.
+	//*/
+
+		return;
+	}
+
+	static protected function
+	Search_ExtendLimits(Nether\Object $Opt, Nether\Database\Verse $SQL):
+	Void {
+	/*//
+	@date 2017-03-01
+	generate the search query limitation clauses.
+	//*/
+
+		$Opt->Page = Atlantis\Util\Filters::PageNumber($Opt->Page);
+		$Opt->Limit = Atlantis\Util\Filters::NumberLimit25($Opt->Limit);
+
+		if($Opt->Limit > 0) $SQL
+		->Limit($Opt->Limit)
+		->Offset(($Opt->Page - 1) * $Opt->Limit);
+
+		return;
+	}
+
+	static protected function
+	Search_ExtendSorts(Nether\Object $Opt, Nether\Database\Verse $SQL):
+	Void {
+	/*//
+	@date 2017-03-01
+	generate the search query sorting clauses.
+	//*/
+
+		switch($Opt->Sort) {
+			case 'Newest':
+				$SQL->Sort('blog_id',$SQL::SortDesc);
+			break;
+			case 'Oldest':
+				$SQL->Sort('blog_id',$SQL::SortAsc);
+			break;
+			case 'TitleAZ':
+				$SQL->Sort('blog_title',$SQL::SortDesc);
+			break;
+			case 'TitleZA':
+				$SQL->Sort('blog_title',$SQL::SortAsc);
+			break;
+		}
+
+		return;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	// create methods ////////////////////////////////////////////////////////
 
 	static public function
 	Create($Opt=NULL):
