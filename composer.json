@@ -3,7 +3,8 @@
 		"netherphp\/world": "^2.2",
 		"google\/recaptcha": "^1.1",
 		"robmorgan\/phinx": "^0.6",
-		"netherjs/nui": "^2.0"
+		"netherjs/nui": "^2.0",
+		"artem_c/emmet": "^1.0"
 	},
 	"config": {
 		"preferred-install": {

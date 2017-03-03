@@ -4,9 +4,47 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9fefedf0f53262b3354db25d250bdefe",
-    "content-hash": "82e05803053323a368a0b2c2796b9c5a",
+    "hash": "f2400554871347836a82299b1b085765",
+    "content-hash": "d38d5a580cd070aafc7e50d842fecc28",
     "packages": [
+        {
+            "name": "artem_c/emmet",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/artemBilik/emmet.git",
+                "reference": "a9c4b90261ae061e931321b12f99e0021d15a3cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/artemBilik/emmet/zipball/a9c4b90261ae061e931321b12f99e0021d15a3cb",
+                "reference": "a9c4b90261ae061e931321b12f99e0021d15a3cb",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "artem_c\\emmet\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "free"
+            ],
+            "authors": [
+                {
+                    "name": "Artem Bilik",
+                    "email": "artem.bilik@gmail.com"
+                }
+            ],
+            "description": "emmet implementation for php",
+            "keywords": [
+                "emmet",
+                "html",
+                "php"
+            ],
+            "time": "2015-05-30 18:43:33"
+        },
         {
             "name": "google/recaptcha",
             "version": "1.1.2",
