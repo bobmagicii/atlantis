@@ -73,8 +73,7 @@ extends Atlantis\Page\TwoCol1x3 {
 
 		foreach($this->Surface->Get('Home.RecentPosts') as $Post)
 		$Element->GetItems()->Push(new Atlantis\Item([
-			'Title' => $Post->GetTitle(),
-			'URL'   => $Post->GetURL()
+			'Object' => $Post
 		]));
 
 		return $Element;
