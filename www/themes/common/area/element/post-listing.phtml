@@ -19,17 +19,20 @@ $Builder = new class {
 		$Post = $Item->GetObject();
 		$Blog = $Post->GetBlogObject();
 		$HTML = new Atlantis\Util\ZenHTML('
-			div[id=`ItemID` class=`ItemClass`]
+			(div[id=`ItemID` class=`ItemClass`]
 				>(
 					h1
 					>a[href=`PostURL`]{`PostTitle`}
 				)
-				+(div>(
-					{From }
-					+a[href=`BlogURL`]{`BlogTitle`}
-					+{ On }
-					+em{`PostDate`}
-				))
+				+(div
+					>(
+						{From }
+						+a[href=`BlogURL`]{`BlogTitle`}
+						+{ On }
+						+em{`PostDate`}
+					)
+				)
+			)
 		');
 
 		return $HTML->Create([
