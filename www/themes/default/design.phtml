@@ -106,9 +106,10 @@ $GetStylesheetURL = function(String $URI):String {
 </div></header>
 
 <?php
-echo (new Atlantis\Element\PagePromo)
-->SetTitle('Oh Snap')
-->SetSubtitle("This theme is not even blue.\nWith a name like that you think it would be.");
+
+if($surface->Get('Page.Promo') instanceof Atlantis\Element\PagePromo)
+echo $surface->Get('Page.Promo');
+
 ?>
 
 <?php if($route->Errors->Count()) $PageErrors($route->Errors); ?>

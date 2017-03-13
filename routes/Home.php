@@ -11,6 +11,14 @@ extends Atlantis\Site\PublicWeb {
 	public function
 	Index() {
 
+		$Promo = (new Atlantis\Element\PagePromo)
+		->SetTitle('Oh Snap')
+		->SetSubtitle(
+			"This theme is not even blue.\n".
+			"With a name like that you think it would be."
+		);
+
+		$this->Surface->Set('Page.Promo',$Promo);
 		$this->Surface->Set('Home.PopularBlogs',$this->GetPopularBlogs());
 		$this->Surface->Set('Home.RecentPosts',$this->GetRecentPosts());
 		$this->Surface->Area('home/index');
