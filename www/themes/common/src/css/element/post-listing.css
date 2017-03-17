@@ -2,3 +2,8 @@
 h1 {
 	font-size: 1.0em;
 }
+
+.Atlantis-Element-PostListing
+legend {
+	margin-bottom: 24px;
+}

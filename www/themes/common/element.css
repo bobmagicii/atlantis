@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2017-03-02 23:01:06
+@date 2017-03-17 22:03:56
 @files [
     "src\\css\/element-main.css",
     "src\\css\/element\\post-listing.css"
@@ -26,5 +26,10 @@
 .Atlantis-Element-PostListing
 h1 {
 	font-size: 1.0em;
+}
+
+.Atlantis-Element-PostListing
+legend {
+	margin-bottom: 24px;
 }
 

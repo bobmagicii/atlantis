@@ -51,6 +51,6 @@ $Builder = new class {
 ?>
 
 <div class="Atlantis-Element Atlantis-Element-PostListing">
-	<?php if($element->HasTitle()): ?><legend><?php echo htmlentities($element->GetTitle()) ?></legend><hr class="MarginBelowNormal" /><?php endif; ?>
+	<?php if($element->HasTitle()): ?><legend><?php echo htmlentities($element->GetTitle()) ?></legend><?php endif; ?>
 	<?php foreach($element->GetItems() as $Item) echo $Builder->Print($Item); ?>
 </div>
