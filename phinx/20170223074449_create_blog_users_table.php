@@ -31,7 +31,7 @@ LOL
 		$User = Atlantis\User::GetByID(1);
 		$Blog = Atlantis\Blog::Create([
 			'Title'   => 'Test Blog',
-			'Tagline' => 'It is best blog.'
+			'Tagline' => 'It Is Best Blog'
 		]);
 
 		$Blog->AddUser(
