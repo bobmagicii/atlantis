@@ -40,6 +40,9 @@ extends Atlantis\Site\PublicWeb {
 	Void {
 
 		$Blog = Atlantis\Blog::GetByAlias($BlogAlias);
+		$Promo = (new Atlantis\Element\PagePromo)
+		->SetTitle($Blog->GetTitle())
+		->SetSubtitle($Blog->GetTagline());
 
 		////////
 
@@ -54,6 +57,7 @@ extends Atlantis\Site\PublicWeb {
 
 		////////
 
+		$this->Surface->Set('Page.Promo',$Promo);
 		$this->Surface->Area('blog/index');
 		return;
 	}
