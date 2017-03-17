@@ -66,7 +66,8 @@ extends Atlantis\Page\TwoCol1x3 {
 	}
 
 	private function
-	GetMainRecentPosts() {
+	GetMainRecentPosts():
+	Atlantis\Element {
 
 		$Element = (new Atlantis\Element\PostListing)
 		->SetTitle('Latest Posts');
