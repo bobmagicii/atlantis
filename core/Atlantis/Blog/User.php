@@ -7,7 +7,7 @@ use \Nether   as Nether;
 use \Exception as Exception;
 
 class User
-extends Nether\Object {
+extends Nether\Object\Mapped {
 /*//
 this class defines the relationship between a blog and a site user. user levels
 are expected to be keywords like 'admin' and 'writer'.
@@ -201,7 +201,7 @@ are expected to be keywords like 'admin' and 'writer'.
 
 		////////
 
-		$Opt = new Nether\Object($Opt,[
+		$Opt = new Nether\Object\Mapped($Opt,[
 			'BlogID' => 0,
 			'UserID' => 0,
 			'Level'  => NULL

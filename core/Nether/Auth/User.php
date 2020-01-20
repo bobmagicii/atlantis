@@ -17,7 +17,7 @@ Nether\Option::Define([
 ]);
 
 class User
-extends Nether\Object {
+extends Nether\Object\Mapped {
 
 	static public
 	$PropertyMap = [
@@ -421,7 +421,7 @@ extends Nether\Object {
 
 		////////
 
-		$Opt = new Nether\Object($Opt,[
+		$Opt = new Nether\Object\Mapped($Opt,[
 			// fields used by the query.
 			'TimeCreated' => time(),
 			'TimeSeen'    => 0,

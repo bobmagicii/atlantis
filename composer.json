@@ -1,9 +1,9 @@
 {
 	"require": {
-		"netherphp\/world": "^2.2",
+		"netherphp\/world": "^3.0.1",
 		"google\/recaptcha": "^1.1",
 		"robmorgan\/phinx": "^0.6",
-		"netherjs/nui": "^2.0",
+		"netherjs/nui": "^3.0",
 		"artem_c/emmet": "^1.0"
 	},
 	"config": {

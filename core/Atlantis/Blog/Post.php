@@ -7,7 +7,7 @@ use \Nether   as Nether;
 use \Exception as Exception;
 
 class Post
-extends Nether\Object {
+extends Nether\Object\Mapped {
 
 	use
 	Atlantis\Packages\CacheInterface;
@@ -433,7 +433,7 @@ extends Nether\Object {
 
 		////////
 
-		$Opt = Nether\Object::Get($Opt,[
+		$Opt = Nether\Object\Mapped::Get($Opt,[
 			// options
 			'Page'   => 1,
 			'Limit'  => 10,
@@ -604,7 +604,7 @@ extends Nether\Object {
 
 		////////
 
-		$Opt = new Nether\Object($Opt,[
+		$Opt = new Nether\Object\Mapped($Opt,[
 			'Page'   => 1,
 			'Sort'   => 'Newest',
 			'Limit'  => 0,
@@ -669,7 +669,7 @@ extends Nether\Object {
 	}
 
 	static protected function
-	Search_ExtendFilters(Nether\Object $Opt, Nether\Database\Verse $SQL):
+	Search_ExtendFilters(Nether\Object\Mapped $Opt, Nether\Database\Verse $SQL):
 	Void {
 	/*//
 	@date 2017-03-02
@@ -683,7 +683,7 @@ extends Nether\Object {
 	}
 
 	static protected function
-	Search_ExtendLimits(Nether\Object $Opt, Nether\Database\Verse $SQL):
+	Search_ExtendLimits(Nether\Object\Mapped $Opt, Nether\Database\Verse $SQL):
 	Void {
 	/*//
 	@date 2017-03-02
@@ -701,7 +701,7 @@ extends Nether\Object {
 	}
 
 	static protected function
-	Search_ExtendSorts(Nether\Object $Opt, Nether\Database\Verse $SQL):
+	Search_ExtendSorts(Nether\Object\Mapped $Opt, Nether\Database\Verse $SQL):
 	Void {
 	/*//
 	@date 2017-03-02
@@ -743,7 +743,7 @@ extends Nether\Object {
 
 		////////
 
-		$Opt = new Nether\Object($Opt,[
+		$Opt = new Nether\Object\Mapped($Opt,[
 			// required.
 			'BlogID'      => 0,
 			'UserID'      => 0,
