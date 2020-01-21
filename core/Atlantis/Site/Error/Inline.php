@@ -71,7 +71,7 @@ class Inline {
 	public function
 	__construct($Opt=NULL) {
 
-		$Opt = new Nether\Object($Opt,[
+		$Opt = new Nether\Object\Mapped($Opt,[
 			'Message' => '',
 			'Error'   => 0,
 			'Icon'    => ''
