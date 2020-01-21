@@ -5,7 +5,17 @@ require(sprintf(
 	dirname(dirname(__FILE__))
 ));
 
-$Router = new Atlantis\Site\Router;
-Nether\Stash::Set('Router',$Router);
+try {
+	$Router = new Atlantis\Site\Router;
+	Nether\Stash::Set('Router',$Router);
 
-$Router->Run();
+	$Router->Run();
+}
+
+catch(Throwable $Error) {
+	if(Nether\Stash::Has('Surface')) {
+		Nether\Stash::Get('Surface')
+		->Set('Error',(ENV\DEV)?($Error):(NULL))
+		->Area('error/error');
+	}
+}
