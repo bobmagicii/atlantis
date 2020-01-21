@@ -5,7 +5,7 @@ difference here is that it is not WordPress and requires bleeding edge PHP.
 
 # Requirements
 
-* PHP 7.1 - Will not work on older.
+* PHP 7.4 - Will not work on older.
 * PHP-PDO
 * MySQL
 * Composer
