@@ -1,0 +1,16 @@
+<?php
+
+if(!isset($Surface))
+$Surface = Nether\Stash::Get('Surface');
+
+$Error = $Surface->Get('Error');
+
+?>
+
+<?php if($Error instanceof Throwable): ?>
+<h1>Unhandled Exception</h1>
+<pre><?php echo $Error ?></pre>
+<?php else: ?>
+<h1>Oops.</h1>
+<p>Something went turbo wrong.</p>
+<?php endif; ?>

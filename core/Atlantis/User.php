@@ -9,12 +9,16 @@ use \Exception as Exception;
 class User
 extends Nether\Auth\User {
 
-	protected
-	$Blogs = [];
+	protected array $Blogs;
 
 	public function
 	GetBlogs():
 	Array {
+
+		var_dump($this->Blogs);
+
+		if($this->Blogs === NULL)
+		$this->Blogs = Atlantis\Blog\User::ListByUserID($this->ID);
 
 		return $this->Blogs;
 	}
@@ -26,7 +30,7 @@ extends Nether\Auth\User {
 	__ready():
 	Void {
 
-		$this->Blogs = Atlantis\Blog\User::ListByUserID($this->ID);
+		$this->GetBlogs();
 
 		return;
 	}

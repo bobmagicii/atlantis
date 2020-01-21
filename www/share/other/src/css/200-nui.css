@@ -23,6 +23,11 @@
 .NUI-Moveable { cursor:move; }
 .NUI-NoSelect { -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none; }
 
+/* this is a fix for ios cursors not being in forms after the
+keyboard pops up. */
+.NUI-Flag-Dialog-Open
+{ position: fixed; width: 100%; }
+
 /*/////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////*/
 
@@ -49,8 +54,8 @@
 	border-radius:10px;
 	box-shadow:0px 0px 10px rgba(0,0,0,0.75);
 	color:#000;
-	min-width:300px;
-	max-width:90%;
+	max-width:90vw;
+	max-height:90vh;
 	margin:0px;
 	padding:0px;
 	overflow:hidden;
