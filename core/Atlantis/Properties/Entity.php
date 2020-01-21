@@ -2,7 +2,7 @@
 
 namespace Atlantis\Properties;
 
-trait Object {
+trait Entity {
 /*//
 provide a id property to any object that requests to have one with get, set,
 and an actionable method.

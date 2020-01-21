@@ -16,19 +16,19 @@ $PageErrors = function(Nether\Object\Datastore $Errors):Void {
 
 $PrimaryBar = function() use($User):Void {
 
+	$Data = [
+		'Home'  => '/',
+		'Join'  => '/join/',
+		'Login' => '/login/'
+	];
+
 	if($User) $Data = [
 		'Home' => '/',
 		"Logout ({$User->GetAlias()})" => '/logout/'
 	];
 
-	else $Data = [
-		'Home' => '/',
-		'Join' => '/join/',
-		'Login' => '/login/'
-	];
-
 	foreach($Data as $Name => $URL)
-	echo "<li><a href=\"{$URL}\">{$Name}</a></li>";
+	echo "<div class=\"col-auto\"><a href=\"{$URL}\" class=\"text-uppercase\">{$Name}</a></div>";
 
 	return;
 };
@@ -69,7 +69,7 @@ $AppStats = new class() {
 
 $GetStylesheetURL = function(String $URI):String {
 
-	if(defined('DEVMODE') && DEVMODE === TRUE)
+	if(ENV\DEV)
 	return "{$URI}.php";
 
 	return $URI;
@@ -91,19 +91,20 @@ $GetStylesheetURL = function(String $URI):String {
 </head>
 <body>
 
-<header class="Contain"><div>
-	<h1>
-		<a href="/">
-		<img src="/themes/default/gfx/icon-tiny.png" alt="A" />
-		<?php echo htmlentities(Nether\Option::Get('app-name')) ?>
-		</a>
-	</h1>
-	<nav>
-		<ul>
-<?php $PrimaryBar() ?>
-		</ul>
-	</nav>
-</div></header>
+<header>
+	<div class="container">
+		<div class="row">
+			<h1 class="col-auto">
+				<a href="/">
+					<img src="/themes/default/gfx/icon-tiny.png" alt="A" />
+					<?php echo htmlentities(Nether\Option::Get('app-name')) ?>
+				</a>
+			</h1>
+			<div class="col"></div>
+			<?php $PrimaryBar() ?>
+		</div>
+	</div>
+</header>
 
 <?php
 

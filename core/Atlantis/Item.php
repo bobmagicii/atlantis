@@ -16,13 +16,13 @@ if you try, it just returns null back as the value.
 	Atlantis\Properties\Subtitle,
 	Atlantis\Properties\URL,
 	Atlantis\Properties\ImageURL,
-	Atlantis\Properties\Object,
+	Atlantis\Properties\Entity,
 	Atlantis\Properties\ClassListStore;
 
 	public function
 	__construct($Opt=NULL) {
 
-		$Opt = new Nether\Object($Opt,[
+		$Opt = new Nether\Object\Mapped($Opt,[
 			'ID'       => '',
 			'Title'    => '',
 			'Subtitle' => '',
