@@ -33,7 +33,11 @@ class PublicWeb {
 		Nether\Ki::Queue(
 			'surface-render-scope',
 			function(Array &$Scope):
-			Void { $Scope['route'] = $this; return; },
+			Void {
+				$Scope['Route'] = $this;
+				$Scope['Surface'] = $this->Surface;
+				return;
+			},
 			TRUE
 		);
 

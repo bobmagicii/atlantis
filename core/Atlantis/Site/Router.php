@@ -43,7 +43,7 @@ extends Nether\Avenue\Router {
 		Nether\Ki::Queue(
 			'surface-render-scope',
 			function(Array &$Scope):
-			Void { $Scope['router'] = $this; return; },
+			Void { $Scope['Router'] = $this; return; },
 			TRUE
 		);
 
