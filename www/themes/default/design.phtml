@@ -1,71 +1,8 @@
 <?php
 
+require_once('theme.php');
+
 $User = Nether\Stash::Get('User');
-
-$PageErrors = function(Nether\Object\Datastore $Errors):Void {
-	$Errors->Each(function(Atlantis\Site\Error\Inline $Inline):Void {
-		printf(
-			'<div class="Contain Error"><div>%s%s</div></div>',
-			($Inline->GetIcon())?
-				("<i class=\"fa {$Inline->GetIcon()}\"></i> "):
-				(''),
-			$Inline->GetMessage()
-		);
-	});
-};
-
-$PrimaryBar = function() use($User):Void {
-
-	$Data = [
-		'Home'  => '/',
-		'Join'  => '/join/',
-		'Login' => '/login/'
-	];
-
-	if($User) $Data = [
-		'Home' => '/',
-		"Logout ({$User->GetAlias()})" => '/logout/'
-	];
-
-	foreach($Data as $Name => $URL)
-	echo "<div class=\"col-auto\"><a href=\"{$URL}\" class=\"text-uppercase\">{$Name}</a></div>";
-
-	return;
-};
-
-$AppStats = new class() {
-	public function
-	__toString():
-	String {
-		return "db{{$this->GetDatabase()}}<br />c{{$this->GetCache()}}";
-	}
-	public function
-	GetCache():
-	String {
-
-		$Stat = Nether\Stash::Get('Cache')->GetStats();
-
-		return sprintf(
-			'qc(%d), hc(%d %d%%)',
-			$Stat->QueryCount,
-			$Stat->HitCount,
-			($Stat->QueryCount===0)?:
-			((($Stat->HitCount / $Stat->QueryCount) * 100))
-		);
-	}
-	public function
-	GetDatabase():
-	String {
-
-		return sprintf(
-			'cn(%d), ct(%.3f), qn(%d), qt(%.3f)',
-			Nether\Database::$ConnectCount,
-			Nether\Database::$ConnectTime,
-			Nether\Database::$QueryCount,
-			Nether\Database::$QueryTime
-		);
-	}
-};
 
 $GetStylesheetURL = function(String $URI):String {
 
@@ -101,31 +38,33 @@ $GetStylesheetURL = function(String $URI):String {
 				</a>
 			</h1>
 			<div class="col"></div>
-			<?php $PrimaryBar() ?>
+			<?php Theme::RenderHeaderNavItems($User) ?>
 		</div>
 	</div>
 </header>
 
 <?php
 
-if($surface->Get('Page.Promo') instanceof Atlantis\Element\PagePromo)
-echo $surface->Get('Page.Promo');
+if($Surface->Get('Page.Promo') instanceof Atlantis\Element\PagePromo)
+echo $Surface->Get('Page.Promo');
 
 ?>
 
-<?php if($route->Errors->Count()) $PageErrors($route->Errors); ?>
+<?php Theme::RenderInlineErrors($Route->Errors); ?>
 
-<section class="Contain"><div>
+<section>
+	<div class="container">
 
-<?php echo $surface->Get('stdout') ?>
+<?php echo $Surface->Get('stdout') ?>
 
-</div></section>
+	</div>
+</section>
 
 <footer class="Contain"><div>
 	<ul>
 		<li><a href="https://github.com/bobmagicii/atlantis" target="_blank"><i class="fa fa-github"></i> Github</a></li>
 	</ul>
-	<code><?php echo $AppStats ?></code>
+	<code><?php Theme::RenderAppStats(); ?></code>
 	<hr class="FloatClear" />
 </div></footer>
 

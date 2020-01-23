@@ -332,25 +332,13 @@ given an image to display to art shit up.
 	color: #fff;
 }
 
-.Promo
-> div {
-	padding: 48px 0px;
-}
-
-.Promo
-section {
-	float: left;
-}
-
-.Promo
-section h2 {
+.Promo h2 {
 	margin-bottom: 24px;
 	letter-spacing: 0.75em;
 	text-transform: uppercase;
 }
 
-.Promo
-section p {
+.Promo p {
 	color: #aaa;
 	letter-spacing: 0.15em;
 	margin-bottom: 8px;
