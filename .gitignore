@@ -1,6 +1,14 @@
-# bof
-/conf/database.conf.php
-/conf/private.conf.php
+# ignore some application paths.
 /cache/
 /vendor/
+
+# ignore my actual config files while allowing the templates.
+/conf/database.conf.php
+/conf/private.conf.php
+/conf/servers/apache24.conf
+/conf/tools/acmephp.yml
+
+# ignore my ssl files
+/conf/ssl/
+
 # eof
