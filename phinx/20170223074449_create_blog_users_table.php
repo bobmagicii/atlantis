@@ -19,8 +19,8 @@ CREATE TABLE `BlogUsers` (
 	UNIQUE INDEX `BlogUserUniqueIdentity` (`blog_id`, `user_id`, `bloguser_level`),
 	INDEX `BlogID` (`blog_id`),
 	INDEX `UserID` (`user_id`),
-	CONSTRAINT `BlogUserBlogID` FOREIGN KEY (`blog_id`) REFERENCES `blogs` (`blog_id`) ON UPDATE CASCADE ON DELETE CASCADE,
-	CONSTRAINT `BlogUserUserID` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON UPDATE CASCADE ON DELETE CASCADE
+	CONSTRAINT `BlogUserBlogID` FOREIGN KEY (`blog_id`) REFERENCES `Blogs` (`blog_id`) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT `BlogUserUserID` FOREIGN KEY (`user_id`) REFERENCES `Users` (`user_id`) ON UPDATE CASCADE ON DELETE CASCADE
 )
 COMMENT='Defines the relationships between Blogs and Users'
 COLLATE='utf8_general_ci'

@@ -27,8 +27,8 @@ CREATE TABLE `BlogPosts` (
 	INDEX `BlogPostUserID` (`user_id`),
 	INDEX `BlogPostTimePosted` (`post_ptime`),
 	INDEX `BlogPostAlias` (`post_alias`),
-	CONSTRAINT `BlogPostBlogID` FOREIGN KEY (`blog_id`) REFERENCES `blogs` (`blog_id`) ON UPDATE CASCADE ON DELETE CASCADE,
-	CONSTRAINT `BlogPostUserID` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON UPDATE CASCADE ON DELETE CASCADE
+	CONSTRAINT `BlogPostBlogID` FOREIGN KEY (`blog_id`) REFERENCES `Blogs` (`blog_id`) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT `BlogPostUserID` FOREIGN KEY (`user_id`) REFERENCES `Users` (`user_id`) ON UPDATE CASCADE ON DELETE CASCADE
 )
 COLLATE='utf8_general_ci'
 COMMENT='Defines a post made in a blog.'
