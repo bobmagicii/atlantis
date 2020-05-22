@@ -1,0 +1,7 @@
+#!/bin/sh
+
+LocalPath=$PWD
+ConfigPath=${LocalPath}/conf/phinx.conf.php
+CmdPhinx=${LocalPath}/vendor/bin/phinx
+
+${CmdPhinx} --configuration="${ConfigPath}" $*
