@@ -1,0 +1,11 @@
+<?php
+
+header("Content-type: application/json");
+
+echo json_encode([
+	'Output'   => $Surface->Get('stdout'),
+	'Error'    => $Surface->Get('Error'),
+	'Message'  => $Surface->Get('Message'),
+	'Location' => $Surface->Get('Location'),
+	'Payload'  => $Surface->Get('Payload')
+],JSON_PRETTY_PRINT);

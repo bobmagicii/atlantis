@@ -57,6 +57,33 @@ methods here are safe for direct use or use as callback filtering.
 	}
 
 	static public function
+	MethodFromAlias($Val):
+	String {
+	/*//
+	@date 2020-05-22
+	transform the given input into a method name we want to call.
+	//*/
+
+		$Output = strtolower(preg_replace(
+			'/[^a-zA-Z0-9-]/', '',
+			$Val
+		));
+
+		$Output = ucwords(str_replace(
+			'-', ' ',
+			$Output
+		));
+
+		$Output = str_replace(
+			' ',
+			'',
+			$Output
+		);
+
+		return $Output;
+	}
+
+	static public function
 	SafeForHTML($Val):
 	String {
 	/*//
