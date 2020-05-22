@@ -10,6 +10,7 @@
 	<Directory $Path/$WebRoot>
 		Options -Indexes +MultiViews
 		Require all granted
+		AllowOverride All
 	</Directory>
 	<VirtualHost *:80>
 		Documentroot $Path/$WebRoot
@@ -22,6 +23,7 @@
 	<Directory $Path/$WebRoot>
 		Options -Indexes +MultiViews
 		Require all granted
+		AllowOverride All
 	</Directory>
 	<VirtualHost *:80>
 		Documentroot $Path/$WebRoot
