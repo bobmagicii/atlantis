@@ -20,7 +20,7 @@ extends Atlantis\Site\PublicWeb {
 
 		$this->Surface->Set('Page.Promo',$Promo);
 		$this->Surface->Set('Home.PopularBlogs',$this->GetPopularBlogs());
-		$this->Surface->Set('Home.RecentPosts',$this->GetRecentPosts());
+		$this->Surface->Set('Home.Posts',$this->GetRecentPosts());
 		$this->Surface->Area('home/index');
 		return;
 	}

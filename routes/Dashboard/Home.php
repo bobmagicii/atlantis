@@ -11,6 +11,9 @@ extends Atlantis\Site\ProtectedWeb {
 	Index():
 	Void {
 
+		($this->Surface)
+		->Area('dashboard/home');
+
 		return;
 	}
 

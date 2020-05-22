@@ -348,7 +348,7 @@ extends Nether\Object\Mapped {
 	///////////////////////////////////////////////////////////////////////////
 
 	public function
-	__ready():
+	__Ready():
 	Void {
 	/*//
 	prepare some data for this object.
@@ -433,7 +433,7 @@ extends Nether\Object\Mapped {
 
 		////////
 
-		$Opt = Nether\Object\Mapped::Get($Opt,[
+		$Opt = new Nether\Object\Mapped($Opt,[
 			// options
 			'Page'   => 1,
 			'Limit'  => 10,

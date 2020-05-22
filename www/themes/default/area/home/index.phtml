@@ -1,83 +1,34 @@
-<?php // vscode-fold=2
+<?php
 
-echo new class
-extends Atlantis\Page\TwoCol1x3 {
+/**
+ * @var Atlantis\Datastore $Posts
+ * @var Atlantis\Blog\Post $Post
+ */
 
-	public function
-	OnConstruct():
-	Void {
-		parent::OnConstruct(...func_get_args());
+$Posts = $Surface->Get('Home.Posts');
 
-		$this->GetClasses()
-		->Push('Flip');
+?>
 
-		$this->PopulateSidebar();
-		$this->PopulateMain();
+<div class="container">
+	<div class="row">
+		<div class="col-12 col-md-8 mb-4">
 
-		return;
-	}
+			<h3>Latest Posts</h3>
+			<hr />
+			<?php foreach($Posts as $Post): ?>
+			<div>
+				<div><a href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->GetTitle()) ?></a></div>
+				<div>
+					Posted on <?php echo $Post->GetDatePosted() ?>
+					From <a href="<?php echo $Post->GetBlogObject()->GetURL() ?>"><?php echo $Post->GetBlogObject()->GetTitle() ?></a>
+					By <?php echo $Post->GetUserObject()->GetAlias() ?>
+				</div>
+			</div>
+			<?php endforeach; ?>
 
-	//////////////////////////////////////////////////////////////////////////
-
-	private function
-	PopulateSidebar():
-	Void {
-
-		$this->Sidebar
-		->Push($this->GetSidebarPopularBlogs());
-
-		return;
-	}
-
-	private function
-	GetSidebarPopularBlogs():
-	Atlantis\Element {
-
-		$Element = (new Atlantis\Element\TitleBox\ImageCloud)
-		->SetTitle('Popular Blogs');
-
-		$Element->GetClasses()
-		->Push('C2');
-
-		foreach($this->Surface->Get('Home.PopularBlogs') as $Blog) {
-			$Element->GetItems()
-			->Push(new Atlantis\Item([
-				'Title'    => $Blog->GetTitle(),
-				'Subtitle' => $Blog->GetTagline(),
-				'ImageURL' => '/themes/default/gfx/icon-default.png',
-				'URL'      => $Blog->GetURL()
-			]));
-		}
-
-		return $Element;
-	}
-
-	//////////////////////////////////////////////////////////////////////////
-
-	private function
-	PopulateMain():
-	Void {
-
-
-		$this->Main
-		->Push($this->GetMainRecentPosts());
-
-		return;
-	}
-
-	private function
-	GetMainRecentPosts():
-	Atlantis\Element {
-
-		$Element = (new Atlantis\Element\PostListing)
-		->SetTitle('Latest Posts');
-
-		foreach($this->Surface->Get('Home.RecentPosts') as $Post)
-		$Element->GetItems()->Push(new Atlantis\Item([
-			'Object' => $Post
-		]));
-
-		return $Element;
-	}
-
-};
+		</div>
+		<div class="col-12 col-md-4 mb-4">
+			[Sidebar]
+		</div>
+	</div>
+</div>
