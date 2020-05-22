@@ -12,6 +12,62 @@ methods here are safe for direct use or use as callback filtering.
 //*/
 
 	static public function
+	TypeBool($Val):
+	Bool {
+	/*//
+	@date 2017-12-15
+	//*/
+
+		if(is_bool($Val))
+		return (Bool)$Val;
+
+		switch(strtolower((String)$Val)) {
+			case 'true': case '1':
+			case 'yes': case 'y':
+			return TRUE;
+
+			case 'false': case '0':
+			case 'no': case 'n':
+			return FALSE;
+		}
+
+		return FALSE;
+	}
+
+	static public function
+	TypeInt($Val):
+	Int {
+	/*//
+	@date 2017-12-15
+	//*/
+
+		return (Int)$Val;
+	}
+
+	static public function
+	TypeFloat($Val):
+	Float {
+	/*//
+	@date 2017-12-15
+	//*/
+
+		return (Float)$Val;
+	}
+
+	static public function
+	TypeString($Val):
+	String {
+	/*//
+	@date 2017-12-15
+	//*/
+
+		return (String)$Val;
+	}
+
+	////////////////////////////////
+	////////////////////////////////
+
+	static public function
 	NumberLimit25($Val):
 	Int {
 	/*//
@@ -93,6 +149,46 @@ methods here are safe for direct use or use as callback filtering.
 	//*/
 
 		return htmlentities($Val);
+	}
+
+
+	////////////////////////////////
+	////////////////////////////////
+
+	static public function
+	Base64Encode(?String $Val):
+	?String {
+	/*//
+	encode into base64 safe for urls.
+	https://en.wikipedia.org/wiki/Base64#URL_applications
+	//*/
+
+		if(!$Val)
+		return NULL;
+
+		return str_replace(
+			['+','/'],
+			['-','_'],
+			rtrim(base64_encode($Val),'=')
+		);
+	}
+
+	static public function
+	Base64Decode(?String $Val):
+	?String {
+	/*//
+	decode from url safe base64.
+	https://en.wikipedia.org/wiki/Base64#URL_applications
+	//*/
+
+		if(!$Val)
+		return NULL;
+
+		return base64_decode(str_replace(
+			['-','_'],
+			['+','/'],
+			$Val
+		));
 	}
 
 }

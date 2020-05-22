@@ -62,7 +62,7 @@ extends Atlantis\Site\PublicWeb {
 		// huzzah for you.
 
 		Atlantis\User::LaunchSession($User);
-		$this->Redirect('/');
+		$this->Goto('/');
 		return;
 	}
 

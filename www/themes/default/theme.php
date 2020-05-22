@@ -10,6 +10,9 @@ class Theme {
 	logged into the system or not.
 	//*/
 
+		$Title = NULL;
+		$URL = NULL;
+
 		if($User) $Data = [
 			'Home' => '/',
 			"Logout ({$User->GetAlias()})" => '/logout/'
@@ -39,7 +42,7 @@ class Theme {
 		implements Atlantis\Packages\StringableObject {
 
 			public function
-			__toString():
+			__ToString():
 			String {
 				return "db{{$this->GetDatabase()}}<br />c{{$this->GetCache()}}";
 			}
@@ -90,6 +93,7 @@ class Theme {
 					(''),
 				$Inline->GetMessage()
 			);
+			return;
 		});
 
 		return;

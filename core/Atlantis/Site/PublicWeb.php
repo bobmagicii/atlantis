@@ -51,11 +51,22 @@ class PublicWeb {
 	////////////////////////////////////////////////////////////////
 
 	public function
-	Redirect(String $URL, Int $Code=303):
+	GetEncodedURL():
+	String {
+	/*//
+	@date 2020-05-22
+	get the current url encoded to be safe for url pararms.
+	//*/
+
+		return Atlantis\Util\Filters::Base64Encode($this->Router->GetURL());
+	}
+
+	public function
+	Goto(String $URL, Int $Code=303):
 	Void {
 	/*//
 	@todo actually use the specific code.
-	@date 2017-02-11
+	@date 2020-05-22
 	//*/
 
 		header("HTTP/1.1 303 See Other");

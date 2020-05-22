@@ -14,6 +14,9 @@ extends Atlantis\Site\PublicWeb {
 	Index():
 	Void {
 
+		($this->Get)
+		->Goto('Atlantis\\Util\\Filters::Base64Decode');
+
 		if($this->Post->Account && $this->Post->Password)
 		$this->HandleLogin();
 
@@ -26,7 +29,7 @@ extends Atlantis\Site\PublicWeb {
 	Void {
 
 		Atlantis\User::DestroySession();
-		$this->Redirect('/');
+		$this->Goto('/');
 		return;
 	}
 
@@ -35,6 +38,7 @@ extends Atlantis\Site\PublicWeb {
 	Void {
 
 		$User = Atlantis\User::Get($this->Post->Account);
+		$Goto = $this->Get->Goto ?? '/';
 
 		if(!$User) {
 			$this->Errors->Push(new Error([
@@ -53,7 +57,7 @@ extends Atlantis\Site\PublicWeb {
 		}
 
 		Atlantis\User::LaunchSession($User);
-		$this->Redirect('/');
+		$this->Goto($Goto);
 		return;
 	}
 
