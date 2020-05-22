@@ -2,10 +2,7 @@
 
 require_once('theme.php');
 
-$User = Nether\Stash::Get('User');
-
 $GetStylesheetURL = function(String $URI):String {
-
 	if(ENV\DEV)
 	return "{$URI}.php";
 
@@ -38,7 +35,7 @@ $GetStylesheetURL = function(String $URI):String {
 				</a>
 			</h1>
 			<div class="col"></div>
-			<?php Theme::RenderHeaderNavItems($User) ?>
+			<?php Theme::RenderHeaderNavItems($Route->User) ?>
 		</div>
 	</div>
 </header>
