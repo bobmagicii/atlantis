@@ -21,21 +21,24 @@ class PublicWeb {
 	////////////////////////////////////////////////////////////////
 
 	public function
-	__construct() {
+	__Construct(Atlantis\Site\Router $Router) {
 
+		$this->Router = $Router;
 		$this->Get = new Nether\Input\Filter($_GET);
 		$this->Post = new Nether\Input\Filter($_POST);
 		$this->Router = Nether\Stash::Get('Router');
 		$this->Surface = new Nether\Surface;
-		$this->User = Nether\Stash::Get('User');
+		$this->User = Atlantis\User::FetchSession();
 		$this->Errors = new Nether\Object\Datastore;
 
 		Nether\Ki::Queue(
 			'surface-render-scope',
 			function(Array &$Scope):
 			Void {
+				$Scope['Router'] = $this->Router;
 				$Scope['Route'] = $this;
 				$Scope['Surface'] = $this->Surface;
+				$Scope['User'] = $this->User;
 				return;
 			},
 			TRUE
@@ -58,7 +61,20 @@ class PublicWeb {
 		header("HTTP/1.1 303 See Other");
 		header("Location: {$URL}");
 
-		exit(0);
+		$this->Quit();
+		return;
+	}
+
+	public function
+	Quit(Int $ErrNum=0):
+	Void {
+	/*//
+	@date 2020-05-22
+	so long and thanks for all the fish.
+	//*/
+
+		exit($ErrNum=0);
+		return;
 	}
 
 }
