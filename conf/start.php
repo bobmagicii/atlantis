@@ -36,6 +36,7 @@ require(sprintf(
 	throw new Exception('No database configuration.');
 
 	require($Filename);
+	return;
 })();
 
 (function(){
@@ -48,6 +49,7 @@ require(sprintf(
 	throw new Exception('No private configuration.');
 
 	require($Filename);
+	return;
 })();
 
 require(sprintf(

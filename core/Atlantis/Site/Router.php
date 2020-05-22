@@ -8,8 +8,8 @@ class Router
 extends Nether\Avenue\Router {
 
 	public function
-	__construct($Opt=NULL) {
-		parent::__construct($Opt);
+	__Construct($Opt=NULL) {
+		parent::__Construct($Opt);
 
 		$User = NULL;
 
@@ -51,4 +51,3 @@ extends Nether\Avenue\Router {
 	}
 
 }
-
