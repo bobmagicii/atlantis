@@ -1,3 +1,11 @@
+/*// nether-onescript //
+@date 2020-05-23 05:46:08
+@files [
+    "src\/main.css",
+    "src\/local\/error-tray.css"
+]
+//*/
+
 * {
 	box-sizing: border-box;
 	font-family: "Roboto Condensed", sans-serif;
@@ -200,7 +208,7 @@ given an image to display to art shit up.
 
 .Promo {
 	background-color: #333;
-	background-image: url(gfx/bg01.jpg);
+	background-image: url(../gfx/bg01.jpg);
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -218,5 +226,12 @@ given an image to display to art shit up.
 	letter-spacing: 0.15em;
 	margin-bottom: 8px;
 	text-transform: uppercase;
+}
+
+.ErrorTray .Error {
+	background: #886464;
+	color: #fff;
+	padding: 16px 0px;
+	text-align: center;
 }
 

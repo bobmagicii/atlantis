@@ -1,0 +1,222 @@
+* {
+	box-sizing: border-box;
+	font-family: "Roboto Condensed", sans-serif;
+}
+
+html,
+body {
+	background: #ddd;
+	font-weight: 300;
+	margin: 0px;
+	padding: 0px;
+}
+
+a:link,
+a:visited {
+	color: #444;
+	text-decoration: none;
+}
+
+a:active,
+a:hover {
+	color: #000;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	line-height: normal;
+	margin: 0px;
+	padding: 0px;
+}
+
+code {
+	font-family: 'Share Tech Mono', monospace;
+}
+
+img {
+	vertical-align: middle;
+}
+
+p {
+	margin: 0px 0px 16px 0px;
+}
+
+p:last-child {
+	margin-bottom: 0px !important;
+}
+
+button,
+input,
+select,
+textarea {
+	background-color: #eee;
+	border: 1px solid #ccc;
+	font-size: 1.0em;
+	font-weight: 300;
+	letter-spacing: 0.05em;
+	padding: 8px 16px;
+}
+
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	border-color: #000;
+	outline: none;
+	transition: border-color 1s;
+}
+
+ul
+li {
+	margin-bottom: 8px;
+}
+
+ul
+li:last-of-type {
+	margin-bottom: 0px;
+}
+
+/*//////////////////////////////////////////////////////////////////////////////
+// page header structures ////////////////////////////////////////////////////*/
+
+/* the page header that contains the primary navigation. */
+
+body > header {
+	background: #efefef;
+	height: 75px;
+	font-size: 16px;
+	line-height: 35px;
+	padding: 20px;
+}
+
+body > header
+h1 {
+	float: left;
+	font-size: 1em;
+	line-height: 35px;
+	margin: 0px;
+	padding: 0px;
+	text-transform: uppercase;
+}
+
+body > header
+h1 a:link,
+body > header
+h1 a:visited {
+	color: #000;
+}
+
+body > header
+h1 a img {
+	transform: rotate(0deg);
+	transform-origin: 50% 70%;
+	transition: transform 0.60s;
+	vertical-align: initial;
+}
+
+body > header
+h1 a:hover img {
+	transform: rotate(-360deg);
+	transform-origin: 50% 70%;
+	transition: transform 0.90s;
+}
+
+body > header
+nav ul {
+	float: right;
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+body > header
+nav ul li {
+	display: inline-block;
+	margin: 0px 0px 0px 24px;
+	padding: 0px;
+	text-transform: uppercase;
+}
+
+body > header
+nav ul li a:link,
+body > header
+nav ul li a:visited {
+	color: #888;
+}
+
+/* the page content area where most of the generated content goes. */
+
+body > section {
+	background: #efefef;
+	padding: 32px 0px;
+}
+
+/* the page footer which contains notices and stats. */
+
+body > footer {
+	background: #ddd;
+	color: #999;
+	padding: 32px 0px;
+}
+
+body > footer
+a:link,
+body > footer
+a:visited {
+	color: #999;
+}
+
+body > footer
+ul {
+	float: right;
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+body > footer
+ul li {
+	display: inline;
+	margin: 0px;
+	padding: 0px;
+}
+
+/*//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////*/
+
+/* this contains the promotional stripe under the page header which can be
+given an image to display to art shit up.
+
+<div class="Contain Promo"><div>
+	<section>
+		<h2>Promo Title</h2>
+		<p>Generic text content then goes here.</p>
+	</section>
+	<hr class="FloatClear" />
+</div></div>
+*/
+
+.Promo {
+	background-color: #333;
+	background-image: url(../gfx/bg01.jpg);
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	color: #fff;
+}
+
+.Promo h2 {
+	margin-bottom: 24px;
+	letter-spacing: 0.75em;
+	text-transform: uppercase;
+}
+
+.Promo p {
+	color: #aaa;
+	letter-spacing: 0.15em;
+	margin-bottom: 8px;
+	text-transform: uppercase;
+}
+
