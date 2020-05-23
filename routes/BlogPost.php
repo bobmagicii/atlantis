@@ -12,6 +12,9 @@ use Exception                  as Exception;
 class BlogPost
 extends Atlantis\Site\PublicWeb {
 
+	static protected
+	?Atlantis\Prototype\BlogPost $FoundPost = NULL;
+
 	static public function
 	WillHandleRequest(Router $Router, Handler $Handler):
 	Bool {
@@ -22,23 +25,18 @@ extends Atlantis\Site\PublicWeb {
 	them in a static property.
 	//*/
 
-		$Blog = NULL;
-		$Post = NULL;
-
-		////////
-
 		// make sure we could find the blog.
 
-		if(!($Blog = Atlantis\Blog::GetByAlias($Router->GetPathSlot(1))))
+		$Result = Atlantis\Prototype\BlogPost::Find([
+			'BlogAlias' => $Router->GetPathSlot(1),
+			'Alias'     => $Router->GetPathSlot(2),
+			'Limit'     => 1
+		]);
+
+		if($Result->Total === 0)
 		return FALSE;
 
-		// make sure we could find the post.
-
-		if(!($Post = $Blog->GetPostByAlias($Router->GetPathSlot(2))))
-		return FALSE;
-
-		////////
-
+		static::$FoundPost = new Atlantis\Prototype\BlogPost($Result->Payload[0]);
 		return TRUE;
 	}
 
@@ -46,19 +44,20 @@ extends Atlantis\Site\PublicWeb {
 	Index(String $BlogAlias, String $PostAlias):
 	Void {
 
-		$Blog = Atlantis\Blog::GetByAlias($BlogAlias);
-		$Post = $Blog->GetPostByAlias($PostAlias);
+		$Post = static::$FoundPost;
+		$Blog = static::$FoundPost->Blog;
+
 		$Promo = (new Atlantis\Element\PagePromo)
-		->SetTitle($Blog->GetTitle())
-		->SetSubtitle($Blog->GetTagline());
+		->SetTitle($Blog->Title)
+		->SetSubtitle($Blog->Tagline);
 
 		////////
 
 		Nether\Ki::Queue(
 			'surface-render-scope',
 			function(Array &$Scope) use($Blog,$Post) {
-				$Scope['blog'] = $Blog;
-				$Scope['post'] = $Post;
+				$Scope['Blog'] = $Blog;
+				$Scope['Post'] = $Post;
 				return;
 			},
 			FALSE

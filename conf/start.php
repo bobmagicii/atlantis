@@ -11,6 +11,8 @@ if(file_exists(sprintf('%s/prod.lock',ProjectRoot))) {
 }
 
 else {
+	error_reporting(E_ALL);
+	ini_set('display_errors',TRUE);
 	define('ENV\\DEV',TRUE);
 	define('ENV\\PROD',FALSE);
 }

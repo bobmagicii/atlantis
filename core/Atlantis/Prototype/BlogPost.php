@@ -136,6 +136,56 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
+	static protected function
+	GetExtendQuery($SQL):
+	Void {
+	/*//
+	@date 2018-06-08
+	//*/
+
+		$SQL
+		->Join('Blogs Bl ON Main.BlogID=Bl.ID')
+		->Join('Users Us ON Main.UserID=Us.ID');
+
+		return;
+	}
+
+	static protected function
+	FindExtendOptions($Opt):
+	Array {
+	/*//
+	@date 2020-05-23
+	//*/
+
+		return [
+			'Alias'     => NULL,
+			'BlogID'    => NULL,
+			'BlogAlias' => NULL
+		];
+	}
+
+	static protected function
+	FindApplyFilters($Opt,$SQL):
+	Void {
+	/*//
+	@date 2018-06-08
+	//*/
+
+		if($Opt->Alias !== NULL)
+		$SQL->Where('Main.Alias=:Alias');
+
+		if($Opt->BlogID !== NULL)
+		$SQL->Where('Main.BlogID=:BlogID');
+
+		if($Opt->BlogAlias !== NULL)
+		$SQL->Where('Bl.Alias=:BlogAlias');
+
+		return;
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
 	static public function
 	Create($Opt):
 	self {

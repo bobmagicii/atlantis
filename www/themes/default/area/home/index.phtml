@@ -20,8 +20,8 @@ $Posts = $Surface->Get('Home.Posts');
 				<div><a href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->Title) ?></a></div>
 				<div>
 					Posted on <?php echo $Post->DateCreated->Format('F jS g:ia') ?>
-					From <a href="<?php ?>"><?php ?></a>
-					By <?php ?>
+					From <a href="<?php echo $Post->Blog->GetURL() ?>"><?php echo $Post->Blog->Title ?></a>
+					By <?php $Post->User->Alias ?>
 				</div>
 			</div>
 			<?php endforeach; ?>

@@ -99,6 +99,44 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
+	static protected function
+	GetExtendQuery($SQL):
+	Void {
+	/*//
+	@date 2018-06-08
+	//*/
+
+		return;
+	}
+
+	static protected function
+	FindExtendOptions($Opt):
+	Array {
+	/*//
+	@date 2020-05-23
+	//*/
+
+		return [
+			'Alias' => NULL
+		];
+	}
+
+	static protected function
+	FindApplyFilters($Opt,$SQL):
+	Void {
+	/*//
+	@date 2018-06-08
+	//*/
+
+		if($Opt->Alias !== NULL)
+		$SQL->Where('Main.Alias=:Alias');
+
+		return;
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
 	static public function
 	Create($Opt):
 	self {

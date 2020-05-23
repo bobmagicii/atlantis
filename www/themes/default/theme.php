@@ -14,8 +14,9 @@ class Theme {
 		$URL = NULL;
 
 		if($User) $Data = [
-			'Home' => '/',
-			"Logout ({$User->GetAlias()})" => '/logout/'
+			'Home'      => '/',
+			'Dashboard' => '/dashboard/',
+			'Log Out' => '/logout/'
 		];
 
 		else $Data = [

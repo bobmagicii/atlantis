@@ -25,6 +25,7 @@ search queries:
 
 	UserID INT UNSIGNED
 	Enabled INT
+	UUID VARCHAR(36)
 
 classes which directly define the table will be in the prototype
 namespace.
@@ -260,7 +261,7 @@ namespace.
 			'BeforeID'         => FALSE,
 			'CustomFilterFunc' => NULL,
 			'CustomSortFunc'   => NULL,
-			'GetExtendQuery'   => FALSE
+			'GetExtendQuery'   => TRUE
 		];
 
 		////////
@@ -335,7 +336,7 @@ namespace.
 
 		// filter by owner id.
 
-		if($Opt->OwnerID) {
+		if($Opt->UserID) {
 			$SQL->Where('Main.UserID=:UserID');
 		}
 
@@ -399,11 +400,10 @@ namespace.
 		////////
 
 		$Result = $SQL->Query($Opt);
-		//Toaster\Misc\Util::VarDump($Result);
-		//print_r($Result);
+		//Atlantis\Util::VarDump($Result);
 
 		if(!$Result->IsOK())
-		throw new Exception('Find failed');
+		throw new Atlantis\Error\DatabaseQueryError($Result);
 
 		$Found = (Int)$DB->Query('SELECT FOUND_ROWS() AS Found')
 		->Next()
@@ -414,7 +414,7 @@ namespace.
 		while($Row = $Result->Next())
 		$Output->Payload[] = new static($Row);
 
-		$Output->Count = count($Output->Data);
+		$Output->Count = count($Output->Payload);
 		$Output->Page = $Opt->Page;
 		$Output->Limit = $Opt->Limit;
 		$Output->Total = $Found;

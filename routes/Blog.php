@@ -12,6 +12,9 @@ use Exception                  as Exception;
 class Blog
 extends Atlantis\Site\PublicWeb {
 
+	static protected
+	?Atlantis\Prototype\Blog $FoundBlog = NULL;
+
 	static public function
 	WillHandleRequest(Router $Router, Handler $Handler):
 	Bool {
@@ -21,17 +24,15 @@ extends Atlantis\Site\PublicWeb {
 	than storing a static reference to it.
 	//*/
 
-		$Blog = NULL;
+		$Result = Atlantis\Prototype\Blog::Find([
+			'Alias' => $Router->GetPathSlot(1),
+			'Limit' => 1
+		]);
 
-		////////
-
-		// make sure we could find the blog.
-
-		if(!($Blog = Atlantis\Blog::GetByAlias($Router->GetPathSlot(1))))
+		if($Result->Count === 0)
 		return FALSE;
 
-		////////
-
+		static::$FoundBlog = new Atlantis\Prototype\Blog($Result->Payload[0]);
 		return TRUE;
 	}
 
@@ -39,17 +40,18 @@ extends Atlantis\Site\PublicWeb {
 	Index(String $BlogAlias):
 	Void {
 
-		$Blog = Atlantis\Blog::GetByAlias($BlogAlias);
+		$Blog = static::$FoundBlog;
+
 		$Promo = (new Atlantis\Element\PagePromo)
-		->SetTitle($Blog->GetTitle())
-		->SetSubtitle($Blog->GetTagline());
+		->SetTitle($Blog->Title)
+		->SetSubtitle($Blog->Tagline);
 
 		////////
 
 		Nether\Ki::Queue(
 			'surface-render-scope',
 			function(Array &$Scope) use($Blog) {
-				$Scope['blog'] = $Blog;
+				$Scope['Blog'] = $Blog;
 				return;
 			},
 			FALSE
