@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @var Atlantis\Prototype\BlogPost $Post
+*/
+
+$Post = $Surface->Get('Blog.Post');
+
+?>
+
+<div class="container">
+	blog post view template: <?php echo $Post->Title, ' - ', $Post->Blog->Title ?>
+</div>

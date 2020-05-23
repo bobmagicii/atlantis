@@ -1,6 +1,6 @@
 <?php
 
-namespace Routes;
+namespace Routes\Blog;
 use \Atlantis as Atlantis;
 use \Routes   as Routes;
 use \Nether   as Nether;
@@ -9,20 +9,15 @@ use Atlantis\Site\Router       as Router;
 use Nether\Avenue\RouteHandler as Handler;
 use Exception                  as Exception;
 
-class Blog
+class Index
 extends Atlantis\Site\PublicWeb {
 
 	static protected
-	?Atlantis\Prototype\Blog $FoundBlog = NULL;
+	?Atlantis\Prototype\Blog $Found = NULL;
 
 	static public function
 	WillHandleRequest(Router $Router, Handler $Handler):
 	Bool {
-	/*//
-	check if we were able to find a blog that matches this request. we are
-	trusting that the lookup primed the local cache with this object rather
-	than storing a static reference to it.
-	//*/
 
 		$Result = Atlantis\Prototype\Blog::Find([
 			'Alias' => $Router->GetPathSlot(1),
@@ -32,7 +27,7 @@ extends Atlantis\Site\PublicWeb {
 		if($Result->Count === 0)
 		return FALSE;
 
-		static::$FoundBlog = new Atlantis\Prototype\Blog($Result->Payload[0]);
+		static::$Found = $Result->Payload[0];
 		return TRUE;
 	}
 
@@ -40,7 +35,7 @@ extends Atlantis\Site\PublicWeb {
 	Index(String $BlogAlias):
 	Void {
 
-		$Blog = static::$FoundBlog;
+		$Blog = static::$Found;
 
 		$Promo = (new Atlantis\Element\PagePromo)
 		->SetTitle($Blog->Title)

@@ -21,7 +21,7 @@ $Posts = $Surface->Get('Home.Posts');
 				<div>
 					Posted on <?php echo $Post->DateCreated->Format('F jS g:ia') ?>
 					From <a href="<?php echo $Post->Blog->GetURL() ?>"><?php echo $Post->Blog->Title ?></a>
-					By <?php $Post->User->Alias ?>
+					By <?php echo $Post->User->Alias ?>
 				</div>
 			</div>
 			<?php endforeach; ?>

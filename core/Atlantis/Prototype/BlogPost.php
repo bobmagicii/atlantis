@@ -81,12 +81,13 @@ extends Atlantis\Prototype {
 
 		$this->Blog = NULL;
 
-		if(array_key_exists('B_ID',$Raw))
-		$this->Blog = new Atlantis\Prototype\Blog(
-			Atlantis\Util::StripPrefixedQueryFields(
-				$Raw, 'B_'
-			)
-		);
+		if(array_key_exists('B_ID',$Raw)) {
+			$this->Blog = new Atlantis\Prototype\Blog(
+				Atlantis\Util::StripPrefixedQueryFields(
+					$Raw, 'B_'
+				)
+			);
+		}
 
 		return $this;
 	}
