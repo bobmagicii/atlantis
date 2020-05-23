@@ -5,7 +5,7 @@
     "Directories": [
         "css"
     ],
-    "DistDir": "dist",
+    "DistDir": ".",
     "Extensions": [
         "css"
     ],
