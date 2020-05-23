@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration as AbstractMigration;
 
-class AtlantisCreateUserTable
+class NetherCreateUserTable
 extends AbstractMigration {
 
 	public function
@@ -14,17 +14,19 @@ extends AbstractMigration {
 		$this->Execute(
 			<<< LOL
 			CREATE TABLE `Users` (
-				`user_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID - unique id for user',
-				`user_ctime` BIGINT NOT NULL DEFAULT '0' COMMENT 'TimeCreated - unix time account was made',
-				`user_stime` BIGINT NOT NULL DEFAULT '0' COMMENT 'TimeSeen - unix time account was last used',
-				`user_btime` BIGINT NOT NULL DEFAULT '0' COMMENT 'TimeBanned - unix time account was banned from login',
-				`user_alias` VARCHAR(16) NOT NULL DEFAULT '0' COMMENT 'Alias - aka username',
-				`user_email` VARCHAR(64) NOT NULL DEFAULT '0' COMMENT 'Email - durr',
-				`user_phash` VARCHAR(128) NOT NULL DEFAULT '0' COMMENT 'PHash - hash of the password we did not store',
-				`user_psand` VARCHAR(128) NOT NULL DEFAULT '0' COMMENT 'PSand - shiftable sand for login invalidation',
-				PRIMARY KEY (`user_id`),
-				INDEX `user_alias` (`user_alias`),
-				INDEX `user_email` (`user_email`)
+				`ID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID - unique id for user',
+				`TimeCreated` BIGINT NOT NULL DEFAULT '0' COMMENT 'TimeCreated - unix time account was made',
+				`TimeSeen` BIGINT NOT NULL DEFAULT '0' COMMENT 'TimeSeen - unix time account was last used',
+				`TimeBanned` BIGINT NOT NULL DEFAULT '0' COMMENT 'TimeBanned - unix time account was banned from login',
+				`Enabled` TINYINT(1) NOT NULL DEFAULT 1,
+				`UUID` VARCHAR(36) DEFAULT NULL,
+				`Alias` VARCHAR(16) NOT NULL DEFAULT '0' COMMENT 'Alias - aka username',
+				`Email` VARCHAR(64) NOT NULL DEFAULT '0' COMMENT 'Email - durr',
+				`PHash` VARCHAR(128) NOT NULL DEFAULT '0' COMMENT 'PHash - hash of the password we did not store',
+				`PSand` VARCHAR(128) NOT NULL DEFAULT '0' COMMENT 'PSand - shiftable sand for login invalidation',
+				PRIMARY KEY (`ID`),
+				INDEX `UsersAlias` (`Alias`),
+				INDEX `UsersEmail` (`Email`)
 			)
 			COMMENT='Identity table used by Nether\\Auth\\User to determine logins.'
 			COLLATE='utf8_general_ci'

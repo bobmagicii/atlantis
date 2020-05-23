@@ -31,7 +31,7 @@ extends AbstractMigration {
 				INDEX `BlogPostTimeCreated` (`TimeCreated`),
 				INDEX `BlogPostAlias` (`Alias`),
 				CONSTRAINT `FkBlogPostBlogID` FOREIGN KEY (`BlogID`) REFERENCES `Blogs` (`ID`) ON UPDATE CASCADE ON DELETE CASCADE,
-				CONSTRAINT `FkBlogPostUserID` FOREIGN KEY (`UserID`) REFERENCES `Users` (`user_id`) ON UPDATE CASCADE ON DELETE CASCADE
+				CONSTRAINT `FkBlogPostUserID` FOREIGN KEY (`UserID`) REFERENCES `Users` (`ID`) ON UPDATE CASCADE ON DELETE CASCADE
 			)
 			COLLATE='utf8_general_ci'
 			COMMENT='Defines a post made in a blog.'

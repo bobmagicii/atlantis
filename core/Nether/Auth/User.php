@@ -1,7 +1,10 @@
 <?php
 
 namespace Nether\Auth;
-use \Nether as Nether;
+
+use
+\Nether as Nether,
+\Ramsey as Ramsey;
 
 use \Exception as Exception;
 
@@ -21,41 +24,43 @@ extends Nether\Object\Mapped {
 
 	static public
 	$PropertyMap = [
-		'user_id'       => 'ID:int',
-		'user_ctime'    => 'TimeCreated:int',
-		'user_stime'    => 'TimeSeen:int',
-		'user_btime'    => 'TimeBanned:int',
-		'user_alias'    => 'Alias',
-		'user_email'    => 'Email',
-		'user_phash'    => 'PHash',
-		'user_psand'    => 'PSand'
+		'ID'          => 'ID:int',
+		'TimeCreated' => 'TimeCreated:int',
+		'TimeSeen'    => 'TimeSeen:int',
+		'TimeBanned'  => 'TimeBanned:int',
+		'Enabled'     => 'Enabled:int',
+		'UUID'        => 'UUID',
+		'Alias'       => 'Alias',
+		'Email'       => 'Email',
+		'PHash'       => 'PHash',
+		'PSand'       => 'PSand'
 	];
 
 	////////
 	////////
 
-	protected
+	public
 	$ID = 0;
 
-	protected
+	public
 	$TimeCreated = 0;
 
-	protected
+	public
 	$TimeSeen = 0;
 
-	protected
+	public
 	$TimeBanned = 0;
 
-	protected
+	public
 	$Alias = NULL;
 
-	protected
+	public
 	$Email = NULL;
 
-	protected
+	public
 	$PHash = NULL;
 
-	protected
+	public
 	$PSand = NULL;
 
 	////////////////////////////////////////////////////////////////
@@ -302,7 +307,7 @@ extends Nether\Object\Mapped {
 		$Result = $SQL
 		->Select($Table)
 		->Fields('*')
-		->Where('user_id=:ID')
+		->Where('ID=:ID')
 		->Limit(1)
 		->Query([ ':ID' => $ID ]);
 
@@ -335,7 +340,7 @@ extends Nether\Object\Mapped {
 		$Result = $SQL
 		->Select($Table)
 		->Fields('*')
-		->Where('user_alias LIKE :Alias')
+		->Where('Alias LIKE :Alias')
 		->Limit(1)
 		->Query([ ':Alias' => $Alias ]);
 
@@ -368,7 +373,7 @@ extends Nether\Object\Mapped {
 		$Result = $SQL
 		->Select($Table)
 		->Fields('*')
-		->Where('user_email LIKE :Email')
+		->Where('Email LIKE :Email')
 		->Limit(1)
 		->Query([ ':Email' => $Email ]);
 
@@ -426,11 +431,12 @@ extends Nether\Object\Mapped {
 			'TimeCreated' => time(),
 			'TimeSeen'    => 0,
 			'TimeBanned'  => 0,
+			'Enabled'     => 1,
+			'UUID'        => Ramsey\Uuid\Uuid::UUID4()->ToString(),
 			'Alias'       => NULL,
 			'Email'       => NULL,
 			'PHash'       => NULL,
 			'PSand'       => NULL,
-
 			// fields used to generate data.
 			'Password1'   => NULL,
 			'Password2'   => NULL
@@ -446,13 +452,15 @@ extends Nether\Object\Mapped {
 		->NewVerse()
 		->Insert(Nether\Option::Get('nether-user-table-name'))
 		->Fields([
-			'user_ctime' => ':TimeCreated',
-			'user_stime' => ':TimeSeen',
-			'user_btime' => ':TimeBanned',
-			'user_alias' => ':Alias',
-			'user_email' => ':Email',
-			'user_psand' => ':PSand',
-			'user_phash' => ':PHash'
+			'TimeCreated' => ':TimeCreated',
+			'TimeSeen'    => ':TimeSeen',
+			'TimeBanned'  => ':TimeBanned',
+			'Enabled'     => ':Enabled',
+			'UUID'        => ':UUID',
+			'Alias'       => ':Alias',
+			'Email'       => ':Email',
+			'PHash'       => ':PHash',
+			'PSand'       => ':PSand'
 		])
 		->Query($Opt);
 

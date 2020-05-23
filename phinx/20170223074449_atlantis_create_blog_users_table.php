@@ -27,7 +27,7 @@ extends AbstractMigration {
 				INDEX `BlogUsersBlogID` (`BlogID`),
 				INDEX `BlogUsersUserID` (`UserID`),
 				CONSTRAINT `FkBlogUserBlogID` FOREIGN KEY (`BlogID`) REFERENCES `Blogs` (`ID`) ON UPDATE CASCADE ON DELETE CASCADE,
-				CONSTRAINT `FkBlogUserUserID` FOREIGN KEY (`UserID`) REFERENCES `Users` (`user_id`) ON UPDATE CASCADE ON DELETE CASCADE
+				CONSTRAINT `FkBlogUserUserID` FOREIGN KEY (`UserID`) REFERENCES `Users` (`ID`) ON UPDATE CASCADE ON DELETE CASCADE
 			)
 			COMMENT='Defines the relationships between Blogs and Users'
 			COLLATE='utf8_general_ci'
