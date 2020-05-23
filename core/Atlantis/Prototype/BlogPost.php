@@ -48,8 +48,8 @@ extends Atlantis\Prototype {
 
 	// extension fields.
 
-	public Atlantis\Prototype\Blog $Blog;
-	public Atlantis\User $User;
+	public ?Atlantis\Prototype\Blog $Blog;
+	public ?Atlantis\User $User;
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
 
@@ -66,7 +66,7 @@ extends Atlantis\Prototype {
 		($this)
 		->OnReady_GetBlog($Raw)
 		->OnReady_GetUser($Raw)
-		->OnReady_GetDates();
+		->OnReady_GetDates($Raw);
 
 		return;
 	}
@@ -79,10 +79,14 @@ extends Atlantis\Prototype {
 	query or not.
 	//*/
 
+		$this->Blog = NULL;
+
 		if(array_key_exists('B_ID',$Raw))
-		$this->Blog = new Atlantis\Prototype\Blog([]);
-		else
-		$this->Blog = Atlantis\Prototype\Blog::GetByID((Int)$this->BlogID);
+		$this->Blog = new Atlantis\Prototype\Blog(
+			Atlantis\Util::StripPrefixedQueryFields(
+				$Raw, 'B_'
+			)
+		);
 
 		return $this;
 	}
@@ -91,20 +95,25 @@ extends Atlantis\Prototype {
 	OnReady_GetUser(Array $Raw):
 	self {
 	/*//
-	prepare a user object depending on if it was fetched with an inclusion
+	prepare a blog object depending on if it was fetched with an inclusion
 	query or not.
 	//*/
 
+		$this->User = NULL;
+
 		if(array_key_exists('U_ID',$Raw))
-		$this->User = new Atlantis\User([]);
-		else
-		$this->User = Atlantis\User::GetByID((Int)$this->UserID);
+		$this->User = new Atlantis\User(
+			Atlantis\Util::StripPrefixedQueryFields(
+				$Raw, 'U_'
+			),
+			TRUE
+		);
 
 		return $this;
 	}
 
 	protected function
-	OnReady_GetDates():
+	OnReady_GetDates(Array $Raw):
 	self {
 	/*//
 	prepare the date objects.
@@ -137,7 +146,7 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 
 	static protected function
-	GetExtendQuery($SQL):
+	ExtendQueryJoins($SQL):
 	Void {
 	/*//
 	@date 2018-06-08
@@ -146,6 +155,26 @@ extends Atlantis\Prototype {
 		$SQL
 		->Join('Blogs Bl ON Main.BlogID=Bl.ID')
 		->Join('Users Us ON Main.UserID=Us.ID');
+
+		return;
+	}
+
+	static protected function
+	ExtendQueryFields($SQL):
+	Void {
+	/*//
+	@date 2018-06-08
+	//*/
+
+		$SQL
+		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
+			Atlantis\Prototype\Blog::GetPropertyMap(),
+			'Bl', 'B_'
+		))
+		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
+			Atlantis\User::GetPropertyMap(),
+			'Us', 'U_'
+		));
 
 		return;
 	}

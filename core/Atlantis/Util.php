@@ -34,6 +34,8 @@ class Util {
 	BuildPrefixedFieldList(Array $Map, String $Prefix):
 	Array {
 
+		$Field = NULL;
+		$Prop = NULL;
 		$Output = [];
 
 		foreach($Map as $Field => $Prop)
@@ -46,6 +48,8 @@ class Util {
 	BuildPrefixedQueryFields(Array $Map, String $TblKey, String $Prefix):
 	Array {
 
+		$Field = NULL;
+		$Prop = NULL;
 		$Output = [];
 
 		foreach($Map as $Field => $Prop)
@@ -59,6 +63,8 @@ class Util {
 	StripPrefixedQueryFields($Dataset, String $Prefix):
 	Array {
 
+		$Property = NULL;
+		$Value = NULL;
 		$Output = [];
 
 		foreach($Dataset as $Property => $Value)
@@ -86,4 +92,3 @@ class Util {
 	}
 
 }
-

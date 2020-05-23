@@ -8,22 +8,22 @@ use
 class SearchResult {
 
 	public
-	$Page = 1;
+	String $Title = '';
 
 	public
-	$Count = 0;
+	Int $Page = 1;
 
 	public
-	$Total = 0;
+	Int $Count = 0;
 
 	public
-	$Limit = 0;
+	Int $Total = 0;
 
 	public
-	$Payload = [];
+	Int $Limit = 0;
 
 	public
-	$Title = '';
+	Array $Payload = [];
 
 	public function
 	GetPageCount():

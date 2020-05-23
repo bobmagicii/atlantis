@@ -155,7 +155,8 @@ namespace.
 		->Where(sprintf('Main.%s=:ID',static::$IDField))
 		->Limit(1);
 
-		static::GetExtendQuery($SQL);
+		static::ExtendQueryJoins($SQL);
+		static::ExtendQueryFields($SQL);
 
 		$Result = $SQL->Query([ ':ID' => $ID ]);
 
@@ -202,7 +203,8 @@ namespace.
 		->Where('Main.UUID=:UUID')
 		->Limit(1);
 
-		static::GetExtendQuery($SQL);
+		static::ExtendQueryJoins($SQL);
+		static::ExtendQueryFields($SQL);
 
 		$Result = $SQL->Query([ ':UUID' => $UUID ]);
 
@@ -222,10 +224,26 @@ namespace.
 	}
 
 	static protected function
-	GetExtendQuery($SQL):
+	ExtendQueryJoins($SQL):
 	Void {
 	/*//
-	@date 2018-06-08
+	@date 2020-05-23
+	extension classes should override this method for use to join
+	additional tables that may be needed for filters and sorts.
+	//*/
+
+		return;
+	}
+
+	static protected function
+	ExtendQueryFields($SQL):
+	Void {
+	/*//
+	@date 2020-05-23
+	extension classes should override this method for use to include
+	additional fields into selects from joined tables. it is provided
+	as an optimisation for performing searches without bloating the
+	result dataset with data you might use use in a specific case.
 	//*/
 
 		return;
@@ -249,19 +267,20 @@ namespace.
 		$Output = new Atlantis\Struct\SearchResult;
 
 		$BasicOpts = [
-			'Pagination'       => TRUE,
-			'ID'               => NULL,
-			'UserID'           => 0,
-			'Enabled'          => TRUE,
-			'Page'             => 1,
-			'Limit'            => 20,
-			'Sort'             => 'newest',
-			'Quick'            => FALSE,
-			'AfterID'          => FALSE,
-			'BeforeID'         => FALSE,
-			'CustomFilterFunc' => NULL,
-			'CustomSortFunc'   => NULL,
-			'GetExtendQuery'   => TRUE
+			'Pagination'           => TRUE,
+			'ID'                   => NULL,
+			'UserID'               => 0,
+			'Enabled'              => TRUE,
+			'Page'                 => 1,
+			'Limit'                => 20,
+			'Sort'                 => 'newest',
+			'Quick'                => FALSE,
+			'AfterID'              => FALSE,
+			'BeforeID'             => FALSE,
+			'CustomFilterFunc'     => NULL,
+			'CustomSortFunc'       => NULL,
+			'ExtendJoinTables'     => TRUE,
+			'ExtendSelectFields'   => TRUE
 		];
 
 		////////
@@ -361,8 +380,11 @@ namespace.
 			}
 		}
 
-		if($Opt->GetExtendQuery)
-		static::GetExtendQuery($SQL);
+		if($Opt->ExtendJoinTables || $Opt->ExtendSelectFields)
+		static::ExtendQueryJoins($SQL);
+
+		if($Opt->ExtendSelectFields)
+		static::ExtendQueryFields($SQL);
 
 		static::FindApplyFilters($Opt,$SQL);
 
@@ -448,6 +470,15 @@ namespace.
 	/*//
 	@date 2018-06-08
 	//*/
+
+		switch($Opt->Sort) {
+			case 'title-az':
+				$SQL->Sort('Main.Title',$SQL::SortAsc);
+			break;
+			case 'title-za':
+				$SQL->Sort('Main.Title',$SQL::SortDesc);
+			break;
+		}
 
 		return;
 	}

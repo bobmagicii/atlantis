@@ -10,12 +10,22 @@ class PublicWeb {
 	////////////////////////////////////////////////////////////////
 
 	public
-	$Get     = NULL,
-	$Post    = NULL,
-	$Router  = NULL,
-	$Surface = NULL,
-	$User    = NULL,
-	$Errors  = NULL;
+	Nether\Input\Filter $Get;
+
+	public
+	Nether\Input\Filter $Post;
+
+	public
+	Atlantis\Site\Router $Router;
+
+	public
+	Nether\Surface $Surface;
+
+	public
+	Nether\Object\Datastore $Errors;
+
+	public
+	?Atlantis\User $User;
 
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////

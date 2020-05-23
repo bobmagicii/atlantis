@@ -1,6 +1,36 @@
+<?php
+
+/**
+ * @var Atlantis\Struct\SearchResult $Blogs
+ * @var Atlantis\Prototype\BlogUser $Blog
+ * */
+
+$Blogs = $Surface->Get('Dashboard.Blogs');
+
+?>
 
 <div class="container">
 
-	This is the Dashboard.
+	<h1>Dashboard</h1>
+	<hr class="mt-0 mb-4" />
+
+	<?php if($Blogs->Total): ?>
+	<h3>Your Blogs</h3>
+	<hr class="mt-0 mb-4" />
+
+	<?php foreach($Blogs->Payload as $Blog): ?>
+	<div class="row">
+		<div class="col">
+			<?php echo $Blog->Blog->Title ?>
+		</div>
+		<div class="col-auto">
+			<a href="<?php echo $Blog->Blog->GetURL() ?>" class="btn btn-dark">Visit</a>
+		</div>
+	</div>
+	<?php endforeach; ?>
+
+	<?php else: ?>
+	<div class="text-center">You do not yet have any blogs mate.</div>
+	<?php endif; ?>
 
 </div>

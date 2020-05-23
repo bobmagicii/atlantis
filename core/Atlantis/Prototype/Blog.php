@@ -58,13 +58,13 @@ extends Atlantis\Prototype {
 	//*/
 
 		($this)
-		->OnReady_GetDates();
+		->OnReady_GetDates($Raw);
 
 		return;
 	}
 
 	protected function
-	OnReady_GetDates():
+	OnReady_GetDates(Array $Raw):
 	self {
 	/*//
 	prepare the date objects.
@@ -100,7 +100,17 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 
 	static protected function
-	GetExtendQuery($SQL):
+	ExtendQueryJoins($SQL):
+	Void {
+	/*//
+	@date 2018-06-08
+	//*/
+
+		return;
+	}
+
+	static protected function
+	ExtendQueryFields($SQL):
 	Void {
 	/*//
 	@date 2018-06-08

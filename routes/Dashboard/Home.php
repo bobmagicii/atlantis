@@ -12,6 +12,7 @@ extends Atlantis\Site\ProtectedWeb {
 	Void {
 
 		($this->Surface)
+		->Set('Dashboard.Blogs',$this->User->GetBlogs())
 		->Area('dashboard/home');
 
 		return;

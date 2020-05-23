@@ -21,8 +21,8 @@ class Theme {
 
 		else $Data = [
 			'Home'  => '/',
-			'Join'  => '/join/',
-			'Login' => '/login/'
+			'Login' => '/login/',
+			'Join'  => '/join/'
 		];
 
 		foreach($Data as $Title => $URL)
