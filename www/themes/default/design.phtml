@@ -47,7 +47,11 @@ echo $Surface->Get('Page.Promo');
 
 ?>
 
+<?php if($Route->Errors->Count()): ?>
+<div class="ErrorTray">
 <?php Theme::RenderInlineErrors($Route->Errors); ?>
+</div>
+<?php endif; ?>
 
 <section>
 
@@ -55,13 +59,19 @@ echo $Surface->Get('Page.Promo');
 
 </section>
 
-<footer class="Contain"><div>
-	<ul>
-		<li><a href="https://github.com/bobmagicii/atlantis" target="_blank"><i class="fa fa-github"></i> Github</a></li>
-	</ul>
-	<code><?php Theme::RenderAppStats(); ?></code>
-	<hr class="FloatClear" />
-</div></footer>
+<footer>
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-md-auto mb-4 mb-md-0">
+				<code><?php Theme::RenderAppStats(); ?></code>
+			</div>
+			<div class="col-12 col-md mb-4 mb-md-0"></div>
+			<div class="col-12 col-md-auto mb-4 mb-md-0">
+				<a href="https://github.com/bobmagicii/atlantis" target="_blank"><i class="fa fa-github"></i> Github</a>
+			</div>
+		</div>
+	</div>
+</footer>
 
 </body>
 </html>
