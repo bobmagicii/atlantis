@@ -15,17 +15,19 @@ extends AbstractMigration {
 			<<< LOL
 			CREATE TABLE `BlogPosts` (
 				`ID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-				`BlogID` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
-				`UserID` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
-				`TimeCreated` BIGINT(20) NOT NULL DEFAULT '0',
-				`TimeUpdated` BIGINT(20) NOT NULL DEFAULT '0',
-				`Draft` TINYINT(1) NOT NULL DEFAULT '0',
-				`Title` VARCHAR(128) NOT NULL,
-				`Alias` VARCHAR(128) NOT NULL,
-				`Content` TEXT NOT NULL,
+				`BlogID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+				`UserID` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
+				`TimeCreated` BIGINT(20) NOT NULL DEFAULT 0,
+				`TimeUpdated` BIGINT(20) NOT NULL DEFAULT 0,
+				`Enabled` TINYINT(1) NOT NULL DEFAULT 1,
+				`UUID` VARCHAR(36) DEFAULT NULL,
+				`Title` VARCHAR(128) DEFAULT NULL,
+				`Alias` VARCHAR(128) DEFAULT NULL,
+				`Content` TEXT DEFAULT NULL,
 				PRIMARY KEY (`ID`),
 				INDEX `BlogPostBlogID` (`BlogID`),
 				INDEX `BlogPostUserID` (`UserID`),
+				INDEX `BlogPostUUID` (`UUID`),
 				INDEX `BlogPostTimeCreated` (`TimeCreated`),
 				INDEX `BlogPostAlias` (`Alias`),
 				CONSTRAINT `BlogPostBlogID` FOREIGN KEY (`BlogID`) REFERENCES `Blogs` (`blog_id`) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -37,10 +39,12 @@ extends AbstractMigration {
 			LOL
 		);
 
+		//var_dump(Nether\Database::Get()->GetDriver()->ErrorInfo());
+
 		$User = Atlantis\User::Get(1);
 		$Blog = $User->GetBlogs()[0]->GetBlog();
 
-		$Post = Atlantis\Blog\Post::Create([
+		$Post = Atlantis\Prototype\BlogPost::Create([
 			'BlogID'  => $Blog->GetID(),
 			'UserID'  => $User->GetID(),
 			'Title'   => 'Test Blog Post',
