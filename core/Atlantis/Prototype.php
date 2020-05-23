@@ -478,7 +478,7 @@ namespace.
 		$Result = $DB->Query($SQL,$Opt);
 
 		if(!$Result->IsOK())
-		throw new Exception('Create failed');
+		throw new Atlantis\Error\DatabaseQueryError($Result);
 
 		return static::GetByID($Result->GetInsertID());
 	}

@@ -14,12 +14,16 @@ extends AbstractMigration {
 		$this->Execute(
 			<<< LOL
 			CREATE TABLE `Blogs` (
-				`blog_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-				`blog_title` VARCHAR(64) NOT NULL,
-				`blog_alias` VARCHAR(64) NOT NULL,
-				`blog_tagline` VARCHAR(128) NOT NULL,
-				PRIMARY KEY (`blog_id`),
-				INDEX `BlogAlias` (`blog_alias`)
+				`ID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				`Enabled` TINYINT(1) NOT NULL DEFAULT 1,
+				`TimeCreated` BIGINT(20) NOT NULL DEFAULT 0,
+				`TimeUpdated` BIGINT(20) NOT NULL DEFAULT 0,
+				`UUID` VARCHAR(36) DEFAULT NULL,
+				`Alias` VARCHAR(64) DEFAULT NULL,
+				`Title` VARCHAR(64) DEFAULT NULL,
+				`Tagline` VARCHAR(128) DEFAULT NULL,
+				PRIMARY KEY (`ID`),
+				INDEX `BlogAlias` (`Alias`)
 			)
 			COMMENT='Defines the various blogs a user may have access to.'
 			COLLATE='utf8_general_ci'

@@ -14,14 +14,20 @@ extends AbstractMigration {
 		$this->Execute(
 			<<< LOL
 			CREATE TABLE `BlogUsers` (
-				`blog_id` BIGINT(20) UNSIGNED NOT NULL,
-				`user_id` BIGINT(20) UNSIGNED NOT NULL,
-				`bloguser_level` VARCHAR(8) NOT NULL,
-				UNIQUE INDEX `BlogUserUniqueIdentity` (`blog_id`, `user_id`, `bloguser_level`),
-				INDEX `BlogID` (`blog_id`),
-				INDEX `UserID` (`user_id`),
-				CONSTRAINT `BlogUserBlogID` FOREIGN KEY (`blog_id`) REFERENCES `Blogs` (`blog_id`) ON UPDATE CASCADE ON DELETE CASCADE,
-				CONSTRAINT `BlogUserUserID` FOREIGN KEY (`user_id`) REFERENCES `Users` (`user_id`) ON UPDATE CASCADE ON DELETE CASCADE
+				`ID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+				`BlogID` BIGINT UNSIGNED NOT NULL,
+				`UserID` BIGINT UNSIGNED NOT NULL,
+				`Flags` BIGINT NOT NULL,
+				`Enabled` TINYINT(1) NOT NULL DEFAULT 1,
+				`TimeCreated` BIGINT NOT NULL DEFAULT 0,
+				`TimeUpdated` BIGINT NOT NULL DEFAULT 0,
+				`UUID` VARCHAR(36) DEFAULT NULL,
+				PRIMARY KEY (`ID`),
+				UNIQUE INDEX `BlogUserUniqueIdentity` (`BlogID`, `UserID`),
+				INDEX `BlogUsersBlogID` (`BlogID`),
+				INDEX `BlogUsersUserID` (`UserID`),
+				CONSTRAINT `FkBlogUserBlogID` FOREIGN KEY (`BlogID`) REFERENCES `Blogs` (`ID`) ON UPDATE CASCADE ON DELETE CASCADE,
+				CONSTRAINT `FkBlogUserUserID` FOREIGN KEY (`UserID`) REFERENCES `Users` (`user_id`) ON UPDATE CASCADE ON DELETE CASCADE
 			)
 			COMMENT='Defines the relationships between Blogs and Users'
 			COLLATE='utf8_general_ci'
@@ -29,16 +35,20 @@ extends AbstractMigration {
 			LOL
 		);
 
+		//var_dump(Nether\Database::Get()->GetDriver()->ErrorInfo());
+
 		$User = Atlantis\User::GetByID(1);
-		$Blog = Atlantis\Blog::Create([
+
+		$Blog = Atlantis\Prototype\Blog::Create([
 			'Title'   => 'Test Blog',
 			'Tagline' => 'It Is Best Blog'
 		]);
 
-		$Blog->AddUser(
-			$User->GetID(),
-			Atlantis\Blog\User::LevelOwner
-		);
+		$BlogUser = Atlantis\Prototype\BlogUser::Create([
+			'BlogID' => $Blog->ID,
+			'UserID' => $User->GetID(),
+			'Flags'  => Atlantis\Prototype\BlogUser::FlagOwner
+		]);
 
 		return;
 	}

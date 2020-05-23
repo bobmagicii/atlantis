@@ -10,11 +10,11 @@ use
 use
 \Exception as Exception;
 
-class BlogPost
+class Blog
 extends Atlantis\Prototype {
 
 	protected static
-	$Table = 'BlogPosts';
+	$Table = 'Blogs';
 
 	protected static
 	$IDField = 'ID';
@@ -22,33 +22,28 @@ extends Atlantis\Prototype {
 	protected static
 	$PropertyMap = [
 		'ID'          => 'ID:int',
-		'BlogID'      => 'BlogID:int',
-		'UserID'      => 'UserID:int',
+		'Enabled'     => 'Enabled:int',
 		'TimeCreated' => 'TimeCreated:int',
 		'TimeUpdated' => 'TimeUpdated:int',
 		'UUID'        => 'UUID',
-		'Title'       => 'Title',
 		'Alias'       => 'Alias',
-		'Content'     => 'Content'
+		'Title'       => 'Title',
+		'Tagline'     => 'Tagline'
 	];
 
 	// database fields.
 
 	public Int $ID;
-	public Int $BlogID;
-	public Int $UserID;
+	public Int $Enabled;
 	public Int $TimeCreated;
 	public Int $TimeUpdated;
-	public Int $Enabled;
 	public String $UUID;
 	public String $Title;
 	public String $Alias;
-	public String $Content;
+	public String $Tagline;
 
 	// extension fields.
 
-	public Atlantis\Prototype\Blog $Blog;
-	public Atlantis\User $User;
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
 
@@ -63,43 +58,9 @@ extends Atlantis\Prototype {
 	//*/
 
 		($this)
-		->OnReady_GetBlog($Raw)
-		->OnReady_GetUser($Raw)
 		->OnReady_GetDates();
 
 		return;
-	}
-
-	protected function
-	OnReady_GetBlog(Array $Raw):
-	self {
-	/*//
-	prepare a blog object depending on if it was fetched with an inclusion
-	query or not.
-	//*/
-
-		if(array_key_exists('B_ID',$Raw))
-		$this->Blog = new Atlantis\Prototype\Blog([]);
-		else
-		$this->Blog = Atlantis\Prototype\Blog::GetByID((Int)$this->BlogID);
-
-		return $this;
-	}
-
-	protected function
-	OnReady_GetUser(Array $Raw):
-	self {
-	/*//
-	prepare a user object depending on if it was fetched with an inclusion
-	query or not.
-	//*/
-
-		if(array_key_exists('U_ID',$Raw))
-		$this->User = new Atlantis\User([]);
-		else
-		$this->User = Atlantis\User::GetByID((Int)$this->UserID);
-
-		return $this;
 	}
 
 	protected function
@@ -122,27 +83,16 @@ extends Atlantis\Prototype {
 	self {
 
 		$Opt = new Nether\Object\Mapped($Opt,[
-			'BlogID'      => 0,
-			'UserID'      => 0,
 			'TimeCreated' => time(),
 			'TimeUpdated' => time(),
+			'UUID'        => Ramsey\Uuid\Uuid::UUID4()->ToString(),
 			'Title'       => NULL,
 			'Alias'       => NULL,
-			'Content'     => NULL,
-			'UUID'        => Ramsey\Uuid\Uuid::UUID4()->ToString()
+			'Tagline'     => NULL
 		]);
-
-		if(!$Opt->BlogID)
-		throw new Exception('BlogID cannot be empty.');
-
-		if(!$Opt->UserID)
-		throw new Exception('UserID cannot be empty.');
 
 		if(!$Opt->Title)
 		throw new Exception('Title cannot be empty.');
-
-		if(!$Opt->Content)
-		throw new Exception('Content cannot be empty it a blog ffs');
 
 		if(!$Opt->Alias)
 		$Opt->Alias = Atlantis\Util\Filters::RouteSafeAlias($Opt->Title);

@@ -30,8 +30,8 @@ extends AbstractMigration {
 				INDEX `BlogPostUUID` (`UUID`),
 				INDEX `BlogPostTimeCreated` (`TimeCreated`),
 				INDEX `BlogPostAlias` (`Alias`),
-				CONSTRAINT `BlogPostBlogID` FOREIGN KEY (`BlogID`) REFERENCES `Blogs` (`blog_id`) ON UPDATE CASCADE ON DELETE CASCADE,
-				CONSTRAINT `BlogPostUserID` FOREIGN KEY (`UserID`) REFERENCES `Users` (`user_id`) ON UPDATE CASCADE ON DELETE CASCADE
+				CONSTRAINT `FkBlogPostBlogID` FOREIGN KEY (`BlogID`) REFERENCES `Blogs` (`ID`) ON UPDATE CASCADE ON DELETE CASCADE,
+				CONSTRAINT `FkBlogPostUserID` FOREIGN KEY (`UserID`) REFERENCES `Users` (`user_id`) ON UPDATE CASCADE ON DELETE CASCADE
 			)
 			COLLATE='utf8_general_ci'
 			COMMENT='Defines a post made in a blog.'
@@ -42,10 +42,9 @@ extends AbstractMigration {
 		//var_dump(Nether\Database::Get()->GetDriver()->ErrorInfo());
 
 		$User = Atlantis\User::Get(1);
-		$Blog = $User->GetBlogs()[0]->GetBlog();
-
+		$Blog = Atlantis\Prototype\Blog::GetByID(1);
 		$Post = Atlantis\Prototype\BlogPost::Create([
-			'BlogID'  => $Blog->GetID(),
+			'BlogID'  => $Blog->ID,
 			'UserID'  => $User->GetID(),
 			'Title'   => 'Test Blog Post',
 			'Content' => 'This is a test post made by the migration script.'
