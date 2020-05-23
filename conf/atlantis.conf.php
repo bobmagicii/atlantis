@@ -2,6 +2,8 @@
 
 Nether\Option::Set([
 
+	'Atlantis.Date.DefaultTimeZone' => 'America/Chicago',
+
 	////////////////////////////////////////////////////////////////
 	// Application Config //////////////////////////////////////////
 
@@ -22,7 +24,7 @@ Nether\Option::Set([
 	'cache-stash-name'   => 'Cache',
 	'cache-key-prefix'   => 'atlantis-',
 	'cache-drivers-load' => [
-		'App'  => 'Nether\\Cache\\Appcache',
+		'App'  => 'Nether\\Cache\\Appcache'
 	]
 
 ]);

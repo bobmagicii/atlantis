@@ -14,22 +14,22 @@ extends AbstractMigration {
 		$this->Execute(
 			<<< LOL
 			CREATE TABLE `BlogPosts` (
-				`post_id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-				`blog_id` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
-				`user_id` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
-				`post_ptime` BIGINT(20) NOT NULL DEFAULT '0',
-				`post_utime` BIGINT(20) NOT NULL DEFAULT '0',
-				`post_draft` TINYINT(1) NOT NULL DEFAULT '0',
-				`post_title` VARCHAR(128) NOT NULL,
-				`post_alias` VARCHAR(128) NOT NULL,
-				`post_content` TEXT NOT NULL,
-				PRIMARY KEY (`post_id`),
-				INDEX `BlogPostBlogID` (`blog_id`),
-				INDEX `BlogPostUserID` (`user_id`),
-				INDEX `BlogPostTimePosted` (`post_ptime`),
-				INDEX `BlogPostAlias` (`post_alias`),
-				CONSTRAINT `BlogPostBlogID` FOREIGN KEY (`blog_id`) REFERENCES `Blogs` (`blog_id`) ON UPDATE CASCADE ON DELETE CASCADE,
-				CONSTRAINT `BlogPostUserID` FOREIGN KEY (`user_id`) REFERENCES `Users` (`user_id`) ON UPDATE CASCADE ON DELETE CASCADE
+				`ID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+				`BlogID` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
+				`UserID` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
+				`TimeCreated` BIGINT(20) NOT NULL DEFAULT '0',
+				`TimeUpdated` BIGINT(20) NOT NULL DEFAULT '0',
+				`Draft` TINYINT(1) NOT NULL DEFAULT '0',
+				`Title` VARCHAR(128) NOT NULL,
+				`Alias` VARCHAR(128) NOT NULL,
+				`Content` TEXT NOT NULL,
+				PRIMARY KEY (`ID`),
+				INDEX `BlogPostBlogID` (`BlogID`),
+				INDEX `BlogPostUserID` (`UserID`),
+				INDEX `BlogPostTimeCreated` (`TimeCreated`),
+				INDEX `BlogPostAlias` (`Alias`),
+				CONSTRAINT `BlogPostBlogID` FOREIGN KEY (`BlogID`) REFERENCES `Blogs` (`blog_id`) ON UPDATE CASCADE ON DELETE CASCADE,
+				CONSTRAINT `BlogPostUserID` FOREIGN KEY (`UserID`) REFERENCES `Users` (`user_id`) ON UPDATE CASCADE ON DELETE CASCADE
 			)
 			COLLATE='utf8_general_ci'
 			COMMENT='Defines a post made in a blog.'

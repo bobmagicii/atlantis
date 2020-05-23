@@ -14,22 +14,100 @@ extends Nether\Object\Mapped {
 
 	public static
 	$PropertyMap = [
-		'post_id'      => 'ID:int',
-		'blog_id'      => 'BlogID:int',
-		'user_id'      => 'UserID:int',
-		'post_ptime'   => 'TimePosted:int',
-		'post_utime'   => 'TimeUpdated:int',
-		'post_draft'   => 'Draft:bool',
-		'post_title'   => 'Title',
-		'post_alias'   => 'Alias',
-		'post_content' => 'Content'
+		'ID'          => 'ID:int',
+		'BlogID'      => 'BlogID:int',
+		'UserID'      => 'UserID:int',
+		'TimeCreated' => 'TimeCreated:int',
+		'TimeUpdated' => 'TimeUpdated:int',
+		'Draft'       => 'Draft:bool',
+		'Title'       => 'Title',
+		'Alias'       => 'Alias',
+		'Content'     => 'Content'
 	];
+
+	// database fields.
+
+	public Int $ID;
+	public Int $BlogID;
+	public Int $UserID;
+	public Int $TimeCreated;
+	public Int $TimeUpdated;
+	public Bool $Draft;
+	public String $Title;
+	public String $Alias;
+	public String $Content;
+
+	// extension fields.
+
+	public Atlantis\Blog $Blog;
+	public Atlantis\User $User;
+	public Atlantis\Util\Date $DateCreated;
+	public Atlantis\Util\Date $DateUpdated;
+
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
+	public function
+	OnReady(Array $Raw):
+	Void {
+	/*//
+	prepare some data for this object.
+	//*/
+
+		($this)
+		->OnReady_GetBlog($Raw)
+		->OnReady_GetUser($Raw)
+		->OnReady_GetDates();
+
+		return;
+	}
+
+	protected function
+	OnReady_GetBlog(Array $Raw):
+	self {
+	/*//
+	prepare a blog object depending on if it was fetched with an inclusion
+	query or not.
+	//*/
+
+		if(array_key_exists('_B_ID',$Raw))
+		$this->Blog = new Atlantis\Blog([]);
+		else
+		$this->Blog = Atlantis\Blog::GetByID((Int)$this->BlogID);
+
+		return $this;
+	}
+
+	protected function
+	OnReady_GetUser(Array $Raw):
+	self {
+	/*//
+	prepare a user object depending on if it was fetched with an inclusion
+	query or not.
+	//*/
+
+		if(array_key_exists('_U_ID',$Raw))
+		$this->User = new Atlantis\User([]);
+		else
+		$this->User = Atlantis\User::GetByID((Int)$this->UserID);
+
+		return $this;
+	}
+
+	protected function
+	OnReady_GetDates():
+	self {
+	/*//
+	prepare the date objects.
+	//*/
+
+		$this->DateCreated = new Atlantis\Util\Date("@{$this->TimeCreated}");
+		$this->DateUpdated = new Atlantis\Util\Date("@{$this->TimeUpdated}");
+		return $this;
+	}
 
 	///////////////////////////////////////////////////////////////////////////
 	// post properties & api //////////////////////////////////////////////////
-
-	protected
-	$ID = 0;
 
 	public function
 	GetID():
@@ -42,10 +120,6 @@ extends Nether\Object\Mapped {
 	}
 
 	///////////////////////////////////////////////////////////////////////////
-
-	protected
-	$BlogID = 0,
-	$Blog   = NULL;
 
 	public function
 	GetBlogID():
@@ -83,10 +157,6 @@ extends Nether\Object\Mapped {
 
 	///////////////////////////////////////////////////////////////////////////
 
-	protected
-	$UserID = 0,
-	$User   = NULL;
-
 	public function
 	GetUserID():
 	Int {
@@ -123,9 +193,6 @@ extends Nether\Object\Mapped {
 
 	///////////////////////////////////////////////////////////////////////////
 
-	protected
-	$TimePosted = 0;
-
 	public function
 	GetTimePosted():
 	Int {
@@ -161,9 +228,6 @@ extends Nether\Object\Mapped {
 	}
 
 	///////////////////////////////////////////////////////////////////////////
-
-	protected
-	$TimeUpdated = 0;
 
 	public function
 	GetTimeUpdated():
@@ -218,9 +282,6 @@ extends Nether\Object\Mapped {
 
 	///////////////////////////////////////////////////////////////////////////
 
-	protected
-	$Draft = FALSE;
-
 	public function
 	IsDraft():
 	Bool {
@@ -243,9 +304,6 @@ extends Nether\Object\Mapped {
 	}
 
 	///////////////////////////////////////////////////////////////////////////
-
-	protected
-	$Title = '';
 
 	public function
 	GetTitle():
@@ -270,9 +328,6 @@ extends Nether\Object\Mapped {
 
 	///////////////////////////////////////////////////////////////////////////
 
-	protected
-	$Alias = '';
-
 	public function
 	GetAlias():
 	String {
@@ -291,7 +346,7 @@ extends Nether\Object\Mapped {
 	update the alias for this post.
 	//*/
 
-		$Alias = $this::GetUniqueAlias($Alias);
+		$Alias = $this::GetUniqueAlias($this->BlogID,$Alias);
 
 		////////
 
@@ -320,9 +375,6 @@ extends Nether\Object\Mapped {
 
 	///////////////////////////////////////////////////////////////////////////
 
-	protected
-	$Content = '';
-
 	public function
 	GetContent():
 	String {
@@ -335,28 +387,13 @@ extends Nether\Object\Mapped {
 
 	public function
 	SetContent():
-	String {
+	self {
 	/*//
 	@todo
 	update the text content of this post.
 	//*/
 
 		return $this;
-	}
-
-	///////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////
-
-	public function
-	__Ready():
-	Void {
-	/*//
-	prepare some data for this object.
-	//*/
-
-		$this->Draft = (Bool)$this->Draft;
-
-		return;
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -452,7 +489,7 @@ extends Nether\Object\Mapped {
 		->NewVerse()
 		->Select('BlogPosts')
 		->Fields('*')
-		->Where('blog_id=:BlogID')
+		->Where('BlogID=:BlogID')
 		->Offset($Opt->Offset)
 		->Limit($Opt->Limit)
 		->Query([
@@ -491,10 +528,10 @@ extends Nether\Object\Mapped {
 		->NewVerse()
 		->Select('BlogPosts')
 		->Fields('*')
-		->Where('post_id=:PostID')
+		->Where('ID=:ID')
 		->Limit(1)
 		->Query([
-			':PostID' => $ID
+			':ID' => $ID
 		])
 		->Next();
 
@@ -533,8 +570,8 @@ extends Nether\Object\Mapped {
 		->Select('BlogPosts')
 		->Fields('*')
 		->Where([
-			'blog_id=:BlogID',
-			'post_alias=:Alias'
+			'BlogID=:BlogID',
+			'Alias=:Alias'
 		])
 		->Limit(1)
 		->Query([
@@ -677,7 +714,7 @@ extends Nether\Object\Mapped {
 	//*/
 
 		if(is_int($Opt->BlogID))
-		$SQL->Where('blog_id=:BlogID');
+		$SQL->Where('BlogID=:BlogID');
 
 		return;
 	}
@@ -710,16 +747,16 @@ extends Nether\Object\Mapped {
 
 		switch($Opt->Sort) {
 			case 'Newest':
-				$SQL->Sort('post_id',$SQL::SortDesc);
+				$SQL->Sort('ID',$SQL::SortDesc);
 			break;
 			case 'Oldest':
-				$SQL->Sort('post_id',$SQL::SortAsc);
+				$SQL->Sort('ID',$SQL::SortAsc);
 			break;
 			case 'TitleAZ':
-				$SQL->Sort('post_title',$SQL::SortDesc);
+				$SQL->Sort('Title',$SQL::SortDesc);
 			break;
 			case 'TitleZA':
-				$SQL->Sort('post_title',$SQL::SortAsc);
+				$SQL->Sort('Title',$SQL::SortAsc);
 			break;
 		}
 
@@ -752,7 +789,7 @@ extends Nether\Object\Mapped {
 			'Content'     => NULL,
 
 			// meta.
-			'TimePosted'  => time(),
+			'TimeCreated' => time(),
 			'TimeUpdated' => time(),
 			'Draft'       => 0
 		]);
@@ -784,14 +821,14 @@ extends Nether\Object\Mapped {
 		->NewVerse()
 		->Insert('BlogPosts')
 		->Values([
-			'blog_id'      => ':BlogID',
-			'user_id'      => ':UserID',
-			'post_ptime'   => ':TimePosted',
-			'post_utime'   => ':TimeUpdated',
-			'post_draft'   => ':Draft',
-			'post_title'   => ':Title',
-			'post_alias'   => ':Alias',
-			'post_content' => ':Content'
+			'BlogID'      => ':BlogID',
+			'UserID'      => ':UserID',
+			'TimeCreated' => ':TimeCreated',
+			'TimeUpdated' => ':TimeUpdated',
+			'Draft'       => ':Draft',
+			'Title'       => ':Title',
+			'Alias'       => ':Alias',
+			'Content'     => ':Content'
 		])
 		->Query($Opt);
 
