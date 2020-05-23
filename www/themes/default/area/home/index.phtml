@@ -15,13 +15,13 @@ $Posts = $Surface->Get('Home.Posts');
 
 			<h3>Latest Posts</h3>
 			<hr />
-			<?php foreach($Posts as $Post): ?>
+			<?php foreach($Posts->Payload as $Post): ?>
 			<div>
-				<div><a href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->GetTitle()) ?></a></div>
+				<div><a href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->Title) ?></a></div>
 				<div>
-					Posted on <?php echo $Post->GetDatePosted() ?>
-					From <a href="<?php echo $Post->GetBlogObject()->GetURL() ?>"><?php echo $Post->GetBlogObject()->GetTitle() ?></a>
-					By <?php echo $Post->GetUserObject()->GetAlias() ?>
+					Posted on <?php echo $Post->DateCreated->Format('F jS g:ia') ?>
+					From <a href="<?php ?>"><?php ?></a>
+					By <?php ?>
 				</div>
 			</div>
 			<?php endforeach; ?>

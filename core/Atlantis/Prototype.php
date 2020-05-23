@@ -412,7 +412,7 @@ namespace.
 		////////
 
 		while($Row = $Result->Next())
-		$Output->Data[] = new static($Row);
+		$Output->Payload[] = new static($Row);
 
 		$Output->Count = count($Output->Data);
 		$Output->Page = $Opt->Page;

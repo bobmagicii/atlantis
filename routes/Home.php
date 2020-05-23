@@ -19,39 +19,20 @@ extends Atlantis\Site\PublicWeb {
 		);
 
 		$this->Surface->Set('Page.Promo',$Promo);
-		$this->Surface->Set('Home.PopularBlogs',$this->GetPopularBlogs());
 		$this->Surface->Set('Home.Posts',$this->GetRecentPosts());
 		$this->Surface->Area('home/index');
 		return;
 	}
 
 	protected function
-	GetPopularBlogs():
-	Atlantis\Datastore {
-	/*//
-	fetch a list of the most popular blogs for displaying on the home page.
-	technically this is just an alphabetical list atm since there is no
-	stat tracking and i am the only blog...
-	//*/
-
-		$Output = Atlantis\Blog::Search([
-			'Sort'  => 'TitleAZ',
-			'Limit' => 8,
-			'Page'  => 1
-		]);
-
-		return $Output;
-	}
-
-	protected function
 	GetRecentPosts():
-	Atlantis\Datastore {
+	Atlantis\Struct\SearchResult {
 	/*//
 	fetch a list of the most recent blog posts site wide.
 	//*/
 
-		$Output = Atlantis\Blog\Post::Search([
-			'Sort'  => 'Newest',
+		$Output = Atlantis\Prototype\BlogPost::Find([
+			'Sort'  => 'newest',
 			'Limit' => 10,
 			'Page'  => 1
 		]);

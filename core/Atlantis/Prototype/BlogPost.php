@@ -26,6 +26,7 @@ extends Atlantis\Prototype {
 		'UserID'      => 'UserID:int',
 		'TimeCreated' => 'TimeCreated:int',
 		'TimeUpdated' => 'TimeUpdated:int',
+		'Enabled'     => 'Enabled:int',
 		'UUID'        => 'UUID',
 		'Title'       => 'Title',
 		'Alias'       => 'Alias',
@@ -117,6 +118,24 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
+	public function
+	GetURL():
+	String {
+	/*//
+	@date 2017-03-02
+	get the url to view this blog post.
+	//*/
+
+		return sprintf(
+			'%s/%s',
+			trim($this->Blog->GetURL(),'/'),
+			$this->Alias
+		);
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
 	static public function
 	Create($Opt):
 	self {
@@ -149,5 +168,8 @@ extends Atlantis\Prototype {
 
 		return parent::Create($Opt);
 	}
+
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
 
 }
