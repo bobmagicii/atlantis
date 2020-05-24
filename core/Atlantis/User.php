@@ -11,6 +11,9 @@ use \Exception as Exception;
 class User
 extends Nether\Auth\User {
 
+	public
+	String $URL;
+
 	public function
 	__Construct($Input, Bool $MakeSafer=FALSE) {
 
@@ -32,6 +35,8 @@ extends Nether\Auth\User {
 	public function
 	__Ready():
 	Void {
+
+		$this->URL = $this->GetURL();
 
 		return;
 	}
@@ -62,6 +67,7 @@ extends Nether\Auth\User {
 	//*/
 
 		$Router = Nether\Stash::Get('Router');
+		if(!$Router) return '';
 
 		return sprintf(
 			'%s://%s/~%s/',

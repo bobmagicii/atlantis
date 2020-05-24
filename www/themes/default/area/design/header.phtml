@@ -1,0 +1,58 @@
+
+<script type="text/javascript">
+jQuery(document)
+.ready(function(){
+
+	jQuery('.MenuBtn')
+	.on('click',function(){
+		let NavHeight = jQuery('body > header nav .row').height() + 'px';
+
+		(document.documentElement.style)
+		.setProperty('--navheight',NavHeight);
+
+		jQuery('body > header')
+		.toggleClass('Open');
+
+		return;
+	});
+
+	return;
+});
+
+</script>
+
+<header>
+	<div class="container">
+		<div class="row">
+			<div class="col-auto">
+				<h1>
+					<a href="/">
+						<img src="/themes/default/gfx/icon-tiny.png" alt="A" />
+						<?php echo htmlentities(Nether\Option::Get('app-name')) ?>
+					</a>
+				</h1>
+			</div>
+			<div class="col"></div>
+			<div class="col-auto d-md-none">
+				<div class="col-auto">
+					<a class="MenuBtn" href="#"><i class="fa fa-reorder"></i></a>
+				</div>
+			</div>
+			<div class="col-12 col-md-auto">
+				<nav>
+					<div class="row">
+						<div class="col-12 col-md-auto">
+							<a href="/">Home</a>
+						</div>
+						<div class="col-12 col-md-auto">
+							<a href="/login">Log In</a>
+						</div>
+						<div class="col-12 col-md-auto">
+							<a href="/signup">Sign Up</a>
+						</div>
+					</div>
+				</nav>
+			</div>
+		</div>
+	</div>
+</header>

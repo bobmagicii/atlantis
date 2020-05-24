@@ -31,14 +31,16 @@ given an image to display to art shit up.
 }
 
 .Promo h2 {
+	font-weight: bold;
 	margin-bottom: 24px;
-	letter-spacing: 0.75em;
+	letter-spacing: 0.25em;
 	text-transform: uppercase;
 }
 
 .Promo p {
 	color: #aaa;
-	letter-spacing: 0.15em;
+	font-weight: bold;
+	letter-spacing: 0.10em;
 	margin-bottom: 8px;
 	text-transform: uppercase;
 }

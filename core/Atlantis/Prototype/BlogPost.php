@@ -50,6 +50,7 @@ extends Atlantis\Prototype {
 
 	public ?Atlantis\Prototype\Blog $Blog;
 	public ?Atlantis\User $User;
+	public String $URL;
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
 
@@ -67,6 +68,8 @@ extends Atlantis\Prototype {
 		->OnReady_GetBlog($Raw)
 		->OnReady_GetUser($Raw)
 		->OnReady_GetDates($Raw);
+
+		$this->URL = $this->GetURL();
 
 		return;
 	}

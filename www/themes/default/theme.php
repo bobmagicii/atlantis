@@ -45,7 +45,16 @@ class Theme {
 			public function
 			__ToString():
 			String {
-				return "db{{$this->GetDatabase()}}<br />c{{$this->GetCache()}}";
+				return "database { {$this->GetDatabase()} }<br />cache{ {$this->GetCache()} }<br />atlantis { {$this->GetApp()} }";
+			}
+
+			public function
+			GetApp():
+			String {
+				return sprintf(
+					't=%.3f',
+					(microtime(TRUE)-ProjectTime)
+				);
 			}
 
 			public function
@@ -53,7 +62,7 @@ class Theme {
 			String {
 				$Stat = Nether\Stash::Get('Cache')->GetStats();
 				return sprintf(
-					'qc(%d), hc(%d %d%%)',
+					'qn=%d, hn=%d hp=%d%%',
 					$Stat->QueryCount,
 					$Stat->HitCount,
 					($Stat->QueryCount===0)?:
@@ -65,7 +74,7 @@ class Theme {
 			GetDatabase():
 			String {
 				return sprintf(
-					'cn(%d), ct(%.3f), qn(%d), qt(%.3f)',
+					'cn=%d, ct=%.3f, qn=%d, qt=%.3f',
 					Nether\Database::$ConnectCount,
 					Nether\Database::$ConnectTime,
 					Nether\Database::$QueryCount,

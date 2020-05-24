@@ -1,0 +1,89 @@
+:root {
+	--navheight: 0px;
+}
+
+body > header {
+	background: #efefef;
+}
+
+body > header * {
+	font-size: 16px;
+	text-transform: uppercase;
+	white-space: nowrap;
+}
+
+body > header a:link,
+body > header a:visited {
+	color: #000 !important;
+}
+
+body > header a:active,
+body > header a:hover {
+	color: #888 !important;
+}
+
+body > header > .container {
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+body > header h1 {
+	font-weight: bold;
+}
+
+body > header h1 a img {
+	margin-right: 3px;
+	transform: rotate(0deg);
+	transform-origin: 50% 70%;
+	transition: transform 0.60s;
+	vertical-align: initial;
+}
+
+body > header h1 a:hover img {
+	transform: rotate(-360deg);
+	transform-origin: 50% 70%;
+	transition: transform 0.90s;
+}
+
+body > header a.MenuBtn .fa {
+	margin-right: 3px;
+	transform: rotate(0deg);
+	transform-origin: 50% 50%;
+	transition: transform 0.60s;
+	vertical-align: initial;
+}
+
+body > header.Open a.MenuBtn .fa {
+	transform:  rotate(450deg) scale(1.25);
+	transform-origin: 50% 50%;
+	transition: transform 0.60s;
+}
+
+@media(max-width:768px) {
+	body > header nav {
+		height: 0px;
+		overflow: hidden;
+		transition: height 0.60s;
+	}
+
+	body > header.Open nav {
+		height: auto;
+		height: var(--navheight);
+		transition: height 0.60s;
+	}
+
+	body > header nav .col-12 {
+		padding-top: 10px;
+		padding-bottom: 10px;
+		border-bottom: 1px solid #ccc;
+	}
+
+	body > header nav .col-12:first-of-type {
+		padding-top: 16px;
+	}
+
+	body > header nav .col-12:last-of-type {
+		border: 0px;
+		padding-bottom: 0px;
+	}
+}

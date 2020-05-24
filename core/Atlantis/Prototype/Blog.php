@@ -127,6 +127,7 @@ extends Atlantis\Prototype {
 	//*/
 
 		$Router = Nether\Stash::Get('Router');
+		if(!$Router) return '';
 
 		return sprintf(
 			'%s://%s/+%s',

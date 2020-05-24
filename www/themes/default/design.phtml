@@ -15,10 +15,14 @@ $GetStylesheetURL = function(String $URI):String {
 <head>
 
 	<title><?php $surface->Show('page-title') ?></title>
-	<link rel="icon" href="/themes/default/gfx/icon-fav.png" type="image/png">
-	<link rel="shortcut icon" href="/themes/default/gfx/icon-fav.png" type="image/png">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<meta name="theme-color" content="#333" />
 
 	<!-- local packages -->
+	<link rel="icon" href="/themes/default/gfx/icon-fav.png" type="image/png">
+	<link rel="shortcut icon" href="/themes/default/gfx/icon-fav.png" type="image/png">
 	<script type="text/javascript" src="<?php echo $GetStylesheetURL('/share/dist/scripts.js'); ?>"></script>
 	<link type="text/css" rel="stylesheet" href="<?php echo $GetStylesheetURL('/share/dist/styles.css'); ?>" />
 	<script type="text/javascript" src="<?php echo $GetStylesheetURL('/themes/default/js/scripts.js'); ?>"></script>
@@ -31,20 +35,7 @@ $GetStylesheetURL = function(String $URI):String {
 </head>
 <body>
 
-<header>
-	<div class="container">
-		<div class="row">
-			<h1 class="col-auto Branding">
-				<a href="/">
-					<img src="/themes/default/gfx/icon-tiny.png" alt="A" />
-					<?php echo htmlentities(Nether\Option::Get('app-name')) ?>
-				</a>
-			</h1>
-			<div class="col"></div>
-			<?php Theme::RenderHeaderNavItems($Route->User) ?>
-		</div>
-	</div>
-</header>
+<?php $Surface->Area('design/header') ?>
 
 <?php if($Route->Errors->Count()): ?>
 <div class="ErrorTray">

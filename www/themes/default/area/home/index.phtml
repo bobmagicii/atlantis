@@ -11,22 +11,59 @@ echo (new Atlantis\Element\PagePromo)
 
 ?>
 
+<style type="text/css">
+.PostListing h2 {
+	border-bottom: 1px solid #999;
+	font-weight: bold;
+	margin-bottom: 24px;
+	letter-spacing: 0.25em;
+	text-transform: uppercase;
+}
+
+.PostListing h3 {
+	margin-bottom: 4px;
+}
+
+.PostListing h3 a {
+	border-bottom: 2px dotted #444;
+	font-size: 0.8em;
+	font-weight: bold;
+}
+
+.PostListing .Post {
+	margin-bottom: 24px;
+}
+
+.PostListing .About {
+	font-size: 0.9em;
+}
+
+.PostListing .Date,
+.PostListing .Source,
+.PostListing .Authour {
+	border-bottom: 1px dotted #444;
+	font-weight: bold;
+	text-transform: initial;
+}
+</style>
+
 <div class="container">
 	<div class="row">
 		<div class="col-12 col-md-8 mb-4">
 
-			<h3>Latest Posts</h3>
-			<hr />
-			<?php foreach($Posts->Payload as $Post): ?>
-			<div>
-				<div><a href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->Title) ?></a></div>
-				<div>
-					Posted on <?php echo $Post->DateCreated->Format('F jS g:ia') ?>
-					From <a href="<?php echo $Post->Blog->GetURL() ?>"><?php echo $Post->Blog->Title ?></a>
-					By <a href="<?php echo $Post->User->GetURL() ?>"><?php echo $Post->User->Alias ?></a>
+			<div class="PostListing">
+				<h2>Recent Posts</h2>
+				<?php foreach($Posts->Payload as $Post): ?>
+				<div class="Post">
+					<h3><a href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->Title) ?></a></h3>
+					<div class="About">
+						Posted on <a class="Date" href="<?php echo $Post->URL ?>"><?php echo $Post->DateCreated->Format('F jS g:ia') ?></a>
+						From <a class="Source" href="<?php echo $Post->Blog->URL ?>"><?php echo $Post->Blog->Title ?></a>
+						By <a class="Authour" href="<?php echo $Post->User->URL ?>"><?php echo $Post->User->Alias ?></a>
+					</div>
 				</div>
+				<?php endforeach; ?>
 			</div>
-			<?php endforeach; ?>
 
 		</div>
 		<div class="col-12 col-md-4 mb-4">
