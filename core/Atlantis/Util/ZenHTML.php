@@ -12,7 +12,7 @@ do some wrapping to make it a little nicer to use.
 //*/
 
 	public function
-	__construct(String $String) {
+	__Construct(String $String) {
 	/*//
 	wrap construction to cut off white space from the string that has been
 	found to cause the decoder to explode.

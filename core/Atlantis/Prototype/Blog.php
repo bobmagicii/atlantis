@@ -46,6 +46,7 @@ extends Atlantis\Prototype {
 
 	// extension fields.
 
+	public String $URL;
 	public ?Atlantis\User $User;
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
@@ -63,6 +64,8 @@ extends Atlantis\Prototype {
 		($this)
 		->OnReady_GetUser($Raw)
 		->OnReady_GetDates($Raw);
+
+		$this->URL = $this->GetURL();
 
 		return;
 	}
@@ -102,6 +105,18 @@ extends Atlantis\Prototype {
 
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
+
+	public function
+	GetRecentPosts(Int $Limit, Int $Page):
+	Atlantis\Struct\SearchResult {
+
+		return Atlantis\Prototype\BlogPost::Find([
+			'ID'     => $this->ID,
+			'Page'   => $Page,
+			'Limit'  => $Limit,
+			'Sort'   => 'newest'
+		]);
+	}
 
 	public function
 	GetURL():

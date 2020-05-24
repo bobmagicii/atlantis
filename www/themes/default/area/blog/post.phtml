@@ -6,11 +6,23 @@
 */
 
 echo (new Atlantis\Element\PagePromo)
-->SetTitle($Post->Title)
-->SetSubtitle($Blog->Title);
+->SetURL($Blog->URL)
+->SetTitle($Blog->Title)
+->SetSubtitle($Blog->Tagline);
 
 ?>
 
 <div class="container">
-	blog post view template: <?php echo $Post->Title, ' - ', $Blog->Title ?>
+
+	<h2><?php echo $Post->Title ?></h2>
+	<div class="mb-4">
+		Posted on <?php echo $Post->DateCreated->Format('F jS g:ia') ?>
+	</div>
+
+	<div>
+
+<?php echo $Post->Content, PHP_EOL ?>
+
+	</div>
+
 </div>

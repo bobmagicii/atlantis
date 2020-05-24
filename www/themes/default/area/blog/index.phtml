@@ -2,14 +2,29 @@
 
 /**
  * @var Atlantis\Prototype\Blog $Blog
-*/
+ * @var Atlantis\Struct\SearchResult $Posts
+ * @var Atlantis\Prototype\BlogPost $Post
+ */
 
 echo (new Atlantis\Element\PagePromo)
+->SetURL($Blog->GetURL())
 ->SetTitle($Blog->Title)
 ->SetSubtitle($Blog->Tagline);
 
 ?>
 
 <div class="container">
-	blog index template: <?php echo $Blog->Title ?>
+
+	<h3>Latest Posts</h3>
+	<hr />
+	<?php foreach($Posts->Payload as $Post): ?>
+	<div>
+		<div><a href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->Title) ?></a></div>
+		<div>
+			Posted on <?php echo $Post->DateCreated->Format('F jS g:ia') ?>
+			By <a href="<?php echo $Post->User->GetURL() ?>"><?php echo $Post->User->Alias ?></a>
+		</div>
+	</div>
+	<?php endforeach; ?>
+
 </div>

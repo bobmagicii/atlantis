@@ -16,6 +16,7 @@ purposes.
 
 	use
 	Atlantis\Properties\Title,
-	Atlantis\Properties\Subtitle;
+	Atlantis\Properties\Subtitle,
+	Atlantis\Properties\URL;
 
 }

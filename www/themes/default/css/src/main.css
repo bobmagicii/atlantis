@@ -110,10 +110,11 @@ h1 a:visited {
 
 body > header
 h1 a img {
+	margin-right: 3px;
 	transform: rotate(0deg);
 	transform-origin: 50% 70%;
 	transition: transform 0.60s;
-	vertical-align: initial;
+	vertical-align: initial;s
 }
 
 body > header

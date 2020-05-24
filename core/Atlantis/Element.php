@@ -16,7 +16,7 @@ class Element {
 	////////////////////////////////////////////////////////////////
 
 	public function
-	__construct() {
+	__Construct() {
 
 		$this->Surface = Nether\Stash::Get('Surface');
 
@@ -29,7 +29,7 @@ class Element {
 	}
 
 	public function
-	__toString():
+	__ToString():
 	String {
 
 		return $this->Render();
@@ -54,7 +54,7 @@ class Element {
 		Nether\Ki::Queue(
 			'surface-render-scope',
 			function(Array &$Scope):
-			Void { $Scope['element'] = $this; return; },
+			Void { $Scope['Element'] = $this; return; },
 			FALSE
 		);
 

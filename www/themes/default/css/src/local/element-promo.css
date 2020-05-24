@@ -16,8 +16,18 @@ given an image to display to art shit up.
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: cover;
-	color: #fff;
+	color: #eee;
 	margin-bottom: 32px;
+}
+
+.Promo a:link,
+.Promo a:visited {
+	color: #eee;
+}
+
+.Promo a:active,
+.Promo a:hover {
+	color: #fff;
 }
 
 .Promo h2 {
