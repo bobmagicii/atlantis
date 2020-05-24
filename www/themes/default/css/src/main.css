@@ -150,7 +150,7 @@ nav ul li a:visited {
 
 body > section {
 	background: #efefef;
-	padding: 32px 0px;
+	padding: 0px 0px 32px 0px;
 }
 
 /* the page footer which contains notices and stats. */
@@ -186,37 +186,5 @@ ul li {
 /*//////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////*/
 
-/* this contains the promotional stripe under the page header which can be
-given an image to display to art shit up.
 
-<div class="Contain Promo"><div>
-	<section>
-		<h2>Promo Title</h2>
-		<p>Generic text content then goes here.</p>
-	</section>
-	<hr class="FloatClear" />
-</div></div>
-*/
-
-.Promo {
-	background-color: #333;
-	background-image: url(../gfx/bg01.jpg);
-	background-position: center center;
-	background-repeat: no-repeat;
-	background-size: cover;
-	color: #fff;
-}
-
-.Promo h2 {
-	margin-bottom: 24px;
-	letter-spacing: 0.75em;
-	text-transform: uppercase;
-}
-
-.Promo p {
-	color: #aaa;
-	letter-spacing: 0.15em;
-	margin-bottom: 8px;
-	text-transform: uppercase;
-}
 

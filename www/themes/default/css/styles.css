@@ -1,7 +1,8 @@
 /*// nether-onescript //
-@date 2020-05-23 20:02:28
+@date 2020-05-24 02:52:10
 @files [
     "src\/main.css",
+    "src\/local\/element-promo.css",
     "src\/local\/error-tray.css"
 ]
 //*/
@@ -158,7 +159,7 @@ nav ul li a:visited {
 
 body > section {
 	background: #efefef;
-	padding: 32px 0px;
+	padding: 0px 0px 32px 0px;
 }
 
 /* the page footer which contains notices and stats. */
@@ -197,7 +198,7 @@ ul li {
 /* this contains the promotional stripe under the page header which can be
 given an image to display to art shit up.
 
-<div class="Contain Promo"><div>
+<div class="Promo"><div>
 	<section>
 		<h2>Promo Title</h2>
 		<p>Generic text content then goes here.</p>
@@ -213,6 +214,7 @@ given an image to display to art shit up.
 	background-repeat: no-repeat;
 	background-size: cover;
 	color: #fff;
+	margin-bottom: 32px;
 }
 
 .Promo h2 {

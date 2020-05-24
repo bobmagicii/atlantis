@@ -22,6 +22,7 @@ extends Atlantis\Prototype {
 	protected static
 	$PropertyMap = [
 		'ID'          => 'ID:int',
+		'UserID'      => 'UserID:int',
 		'Enabled'     => 'Enabled:int',
 		'TimeCreated' => 'TimeCreated:int',
 		'TimeUpdated' => 'TimeUpdated:int',
@@ -34,6 +35,7 @@ extends Atlantis\Prototype {
 	// database fields.
 
 	public Int $ID;
+	public Int $UserID;
 	public Int $Enabled;
 	public Int $TimeCreated;
 	public Int $TimeUpdated;
@@ -44,6 +46,7 @@ extends Atlantis\Prototype {
 
 	// extension fields.
 
+	public ?Atlantis\User $User;
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
 
@@ -58,9 +61,31 @@ extends Atlantis\Prototype {
 	//*/
 
 		($this)
+		->OnReady_GetUser($Raw)
 		->OnReady_GetDates($Raw);
 
 		return;
+	}
+
+	protected function
+	OnReady_GetUser(Array $Raw):
+	self {
+	/*//
+	prepare a blog object depending on if it was fetched with an inclusion
+	query or not.
+	//*/
+
+		$this->User = NULL;
+
+		if(array_key_exists('BU_ID',$Raw))
+		$this->User = new Atlantis\User(
+			Atlantis\Util::StripPrefixedQueryFields(
+				$Raw, 'BU_'
+			),
+			TRUE
+		);
+
+		return $this;
 	}
 
 	protected function
@@ -89,11 +114,47 @@ extends Atlantis\Prototype {
 		$Router = Nether\Stash::Get('Router');
 
 		return sprintf(
-			'%s://%s/%s/',
+			'%s://%s/+%s',
 			$Router->GetProtocol(),
 			$Router->GetFullDomain(),
 			$this->Alias
 		);
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
+	static public function
+	GetByAlias(String $Alias):
+	?self {
+
+		$SQL = Nether\Database::Get()->NewVerse();
+		$Result = NULL;
+
+		////////
+
+		$SQL
+		->Select(sprintf('%s Main',static::$Table))
+		->Fields('Main.*')
+		->Where('Main.Alias LIKE :Alias')
+		->Limit(1);
+
+		static::ExtendQueryJoins($SQL);
+		static::ExtendQueryFields($SQL);
+
+		$Result = $SQL->Query([
+			':Alias' => $Alias
+		]);
+
+		////////
+
+		if(!$Result->IsOK())
+		throw new Atlantis\Error\DatabaseQueryError($Result);
+
+		if($Result->GetCount() !== 1)
+		return NULL;
+
+		return new static($Result->Next());
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -106,6 +167,9 @@ extends Atlantis\Prototype {
 	@date 2018-06-08
 	//*/
 
+		$SQL
+		->Join('Users BU ON Main.UserID=BU.ID');
+
 		return;
 	}
 
@@ -115,6 +179,12 @@ extends Atlantis\Prototype {
 	/*//
 	@date 2018-06-08
 	//*/
+
+		$SQL
+		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
+			Atlantis\User::GetPropertyMap(),
+			'BU', 'BU_'
+		));
 
 		return;
 	}
@@ -152,6 +222,7 @@ extends Atlantis\Prototype {
 	self {
 
 		$Opt = new Nether\Object\Mapped($Opt,[
+			'UserID'      => NULL,
 			'TimeCreated' => time(),
 			'TimeUpdated' => time(),
 			'UUID'        => Ramsey\Uuid\Uuid::UUID4()->ToString(),
@@ -159,6 +230,9 @@ extends Atlantis\Prototype {
 			'Alias'       => NULL,
 			'Tagline'     => NULL
 		]);
+
+		if(!$Opt->UserID)
+		throw new Exception('Blog must have a primary owner.');
 
 		if(!$Opt->Title)
 		throw new Exception('Title cannot be empty.');

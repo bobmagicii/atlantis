@@ -46,13 +46,6 @@ $GetStylesheetURL = function(String $URI):String {
 	</div>
 </header>
 
-<?php
-
-if($Surface->Get('Page.Promo') instanceof Atlantis\Element\PagePromo)
-echo $Surface->Get('Page.Promo');
-
-?>
-
 <?php if($Route->Errors->Count()): ?>
 <div class="ErrorTray">
 <?php Theme::RenderInlineErrors($Route->Errors); ?>

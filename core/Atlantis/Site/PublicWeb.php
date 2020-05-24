@@ -41,18 +41,12 @@ class PublicWeb {
 		$this->User = Atlantis\User::FetchSession();
 		$this->Errors = new Nether\Object\Datastore;
 
-		Nether\Ki::Queue(
-			'surface-render-scope',
-			function(Array &$Scope):
-			Void {
-				$Scope['Router'] = $this->Router;
-				$Scope['Route'] = $this;
-				$Scope['Surface'] = $this->Surface;
-				$Scope['User'] = $this->User;
-				return;
-			},
-			TRUE
-		);
+		$this->Push([
+			'Router'  => $this->Router,
+			'Route'   => $this,
+			'Surface' => $this->Surface,
+			'User'    => $this->User
+		]);
 
 		return;
 	}
@@ -71,6 +65,64 @@ class PublicWeb {
 		return Atlantis\Util\Filters::Base64Encode($this->Router->GetURL());
 	}
 
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
+	public function
+	Push(Array $Items):
+	self {
+	/*//
+	@date 2020-05-24
+	push items into the surface scope array.
+	//*/
+
+		Nether\Ki::Queue(
+			'surface-render-scope',
+			function(Array &$Scope) use ($Items):
+			Void {
+				$Key = NULL;
+				$Val = NULL;
+
+				foreach($Items as $Key => $Val)
+				$Scope[$Key] = $Val;
+
+				return;
+			},
+			TRUE
+		);
+
+		return $this;
+	}
+
+	public function
+	Set(String $Key, $Value):
+	self {
+	/*//
+	@date 2020-05-24
+	a chainable call to the surface set.
+	//*/
+
+		($this->Surface)
+		->Set($Key,$Value);
+
+		return $this;
+	}
+
+
+	public function
+	Area(String $Area):
+	self {
+	/*//
+	@date 2020-05-24
+	a chainable call to the surface area.
+	//*/
+
+		($this->Surface)
+		->Area($Area);
+
+		return $this;
+	}
+
 	public function
 	Goto(String $URL, Int $Code=303):
 	Void {
@@ -79,10 +131,10 @@ class PublicWeb {
 	@date 2020-05-22
 	//*/
 
-		header("HTTP/1.1 303 See Other");
+		http_response_code($Code);
 		header("Location: {$URL}");
 
-		$this->Quit();
+		exit($Code);
 		return;
 	}
 
@@ -94,7 +146,9 @@ class PublicWeb {
 	so long and thanks for all the fish.
 	//*/
 
-		exit($ErrNum=0);
+		http_response_code($ErrNum);
+
+		exit($ErrNum);
 		return;
 	}
 

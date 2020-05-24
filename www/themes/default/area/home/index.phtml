@@ -5,7 +5,12 @@
  * @var Atlantis\Blog\Post $Post
  */
 
-$Posts = $Surface->Get('Home.Posts');
+echo (new Atlantis\Element\PagePromo)
+->SetTitle('Oh Snap')
+->SetSubtitle(
+	"This theme is not even blue.\n".
+	"With a name like that you think it would be."
+);
 
 ?>
 
@@ -21,7 +26,7 @@ $Posts = $Surface->Get('Home.Posts');
 				<div>
 					Posted on <?php echo $Post->DateCreated->Format('F jS g:ia') ?>
 					From <a href="<?php echo $Post->Blog->GetURL() ?>"><?php echo $Post->Blog->Title ?></a>
-					By <?php echo $Post->User->Alias ?>
+					By <a href="<?php echo $Post->User->GetURL() ?>"><?php echo $Post->User->Alias ?></a>
 				</div>
 			</div>
 			<?php endforeach; ?>

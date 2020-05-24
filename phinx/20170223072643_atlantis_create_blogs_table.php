@@ -15,6 +15,7 @@ extends AbstractMigration {
 			<<< LOL
 			CREATE TABLE `Blogs` (
 				`ID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				`UserID` BIGINT UNSIGNED NOT NULL,
 				`Enabled` TINYINT(1) NOT NULL DEFAULT 1,
 				`TimeCreated` BIGINT(20) NOT NULL DEFAULT 0,
 				`TimeUpdated` BIGINT(20) NOT NULL DEFAULT 0,
@@ -23,6 +24,7 @@ extends AbstractMigration {
 				`Title` VARCHAR(64) DEFAULT NULL,
 				`Tagline` VARCHAR(128) DEFAULT NULL,
 				PRIMARY KEY (`ID`),
+				INDEX `BlogUserID` (`UserID`),
 				INDEX `BlogAlias` (`Alias`)
 			)
 			COMMENT='Defines the various blogs a user may have access to.'

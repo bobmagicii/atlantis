@@ -9,18 +9,17 @@ class Home
 extends Atlantis\Site\PublicWeb {
 
 	public function
-	Index() {
+	Index():
+	Void {
 
-		$Promo = (new Atlantis\Element\PagePromo)
-		->SetTitle('Oh Snap')
-		->SetSubtitle(
-			"This theme is not even blue.\n".
-			"With a name like that you think it would be."
-		);
+		$Scope = [
+			'Posts' => $this->GetRecentPosts()
+		];
 
-		$this->Surface->Set('Page.Promo',$Promo);
-		$this->Surface->Set('Home.Posts',$this->GetRecentPosts());
-		$this->Surface->Area('home/index');
+		$this
+		->Push($Scope)
+		->Area('home/index');
+
 		return;
 	}
 
@@ -48,8 +47,11 @@ extends Atlantis\Site\PublicWeb {
 
 	public function
 	NotFound() {
-		header("404 Not Found");
-		echo "404 - Not Found";
+
+		$this
+		->Area('error/not-found')
+		->Quit(404);
+
 		return;
 	}
 

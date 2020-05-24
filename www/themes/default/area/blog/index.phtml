@@ -1,3 +1,14 @@
+<?php
+
+/**
+ * @var Atlantis\Prototype\Blog $Blog
+*/
+
+echo (new Atlantis\Element\PagePromo)
+->SetTitle($Blog->Title)
+->SetSubtitle($Blog->Tagline);
+
+?>
 
 <div class="container">
 	blog index template: <?php echo $Blog->Title ?>

@@ -1,13 +1,16 @@
 <?php
 
 /**
+ * @var Atlantis\Prototype\Blog $Blog
  * @var Atlantis\Prototype\BlogPost $Post
 */
 
-$Post = $Surface->Get('Blog.Post');
+echo (new Atlantis\Element\PagePromo)
+->SetTitle($Post->Title)
+->SetSubtitle($Blog->Title);
 
 ?>
 
 <div class="container">
-	blog post view template: <?php echo $Post->Title, ' - ', $Post->Blog->Title ?>
+	blog post view template: <?php echo $Post->Title, ' - ', $Blog->Title ?>
 </div>

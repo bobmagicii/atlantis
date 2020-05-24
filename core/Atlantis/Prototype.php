@@ -280,7 +280,8 @@ namespace.
 			'CustomFilterFunc'     => NULL,
 			'CustomSortFunc'       => NULL,
 			'ExtendJoinTables'     => TRUE,
-			'ExtendSelectFields'   => TRUE
+			'ExtendSelectFields'   => TRUE,
+			'DebugResult'          => FALSE
 		];
 
 		////////
@@ -422,7 +423,9 @@ namespace.
 		////////
 
 		$Result = $SQL->Query($Opt);
-		//Atlantis\Util::VarDump($Result);
+
+		if($Opt->DebugResult)
+		Atlantis\Util::VarDump($Result);
 
 		if(!$Result->IsOK())
 		throw new Atlantis\Error\DatabaseQueryError($Result);

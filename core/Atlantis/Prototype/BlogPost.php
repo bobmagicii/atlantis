@@ -81,13 +81,12 @@ extends Atlantis\Prototype {
 
 		$this->Blog = NULL;
 
-		if(array_key_exists('B_ID',$Raw)) {
-			$this->Blog = new Atlantis\Prototype\Blog(
-				Atlantis\Util::StripPrefixedQueryFields(
-					$Raw, 'B_'
-				)
-			);
-		}
+		if(array_key_exists('BL_ID',$Raw))
+		$this->Blog = new Atlantis\Prototype\Blog(
+			Atlantis\Util::StripPrefixedQueryFields(
+				$Raw, 'BL_'
+			)
+		);
 
 		return $this;
 	}
@@ -102,10 +101,10 @@ extends Atlantis\Prototype {
 
 		$this->User = NULL;
 
-		if(array_key_exists('U_ID',$Raw))
+		if(array_key_exists('PU_ID',$Raw))
 		$this->User = new Atlantis\User(
 			Atlantis\Util::StripPrefixedQueryFields(
-				$Raw, 'U_'
+				$Raw, 'PU_'
 			),
 			TRUE
 		);
@@ -146,6 +145,44 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
+	static public function
+	GetByAlias(String $BlogAlias, String $Alias):
+	?self {
+
+		$SQL = Nether\Database::Get()->NewVerse();
+		$Result = NULL;
+
+		////////
+
+		$SQL
+		->Select(sprintf('%s Main',static::$Table))
+		->Fields('Main.*')
+		->Where('BL.Alias LIKE :BlogAlias')
+		->Where('Main.Alias LIKE :Alias')
+		->Limit(1);
+
+		static::ExtendQueryJoins($SQL);
+		static::ExtendQueryFields($SQL);
+
+		$Result = $SQL->Query([
+			':BlogAlias' => $BlogAlias,
+			':Alias'     => $Alias
+		]);
+
+		////////
+
+		if(!$Result->IsOK())
+		throw new Atlantis\Error\DatabaseQueryError($Result);
+
+		if($Result->GetCount() !== 1)
+		return NULL;
+
+		return new static($Result->Next());
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
 	static protected function
 	ExtendQueryJoins($SQL):
 	Void {
@@ -154,8 +191,9 @@ extends Atlantis\Prototype {
 	//*/
 
 		$SQL
-		->Join('Blogs Bl ON Main.BlogID=Bl.ID')
-		->Join('Users Us ON Main.UserID=Us.ID');
+		->Join('Blogs BL ON Main.BlogID=BL.ID')
+		->Join('Users BU ON BL.UserID=BU.ID')
+		->Join('Users PU ON Main.UserID=PU.ID');
 
 		return;
 	}
@@ -170,12 +208,17 @@ extends Atlantis\Prototype {
 		$SQL
 		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
 			Atlantis\Prototype\Blog::GetPropertyMap(),
-			'Bl', 'B_'
+			'BL', 'BL_'
 		))
 		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
 			Atlantis\User::GetPropertyMap(),
-			'Us', 'U_'
+			'BU', 'BL_BU_'
+		))
+		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
+			Atlantis\User::GetPropertyMap(),
+			'PU', 'PU_'
 		));
+
 
 		return;
 	}
@@ -208,7 +251,7 @@ extends Atlantis\Prototype {
 		$SQL->Where('Main.BlogID=:BlogID');
 
 		if($Opt->BlogAlias !== NULL)
-		$SQL->Where('Bl.Alias=:BlogAlias');
+		$SQL->Where('BL.Alias=:BlogAlias');
 
 		return;
 	}
