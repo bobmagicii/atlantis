@@ -1,8 +1,10 @@
 <?php
 
-Nether\Option::Set([
+// if you wish to change any of these settings it is recommended you
+// copy them to your private.conf.php so that they cannot be
+// accidentally overwritten with an update.
 
-	'Atlantis.Date.DefaultTimeZone' => 'America/Chicago',
+Nether\Option::Set([
 
 	////////////////////////////////////////////////////////////////
 	// Application Config //////////////////////////////////////////
@@ -14,10 +16,12 @@ Nether\Option::Set([
 	'nether-web-root' => sprintf('%s/www',ProjectRoot),
 	'nether-web-path' => '/',
 
+	'Atlantis.Date.DefaultTimeZone' => 'America/Chicago',
+	'Atlantis.UUID.Version'         => 6,
+	'Atlantis.UUID.Node'            => NULL,
+
 	////////////////////////////////////////////////////////////////
 	// Library Config //////////////////////////////////////////////
-
-	// you wont want to mess with these much i promise.
 
 	'surface-auto-stash' => 'Surface',
 

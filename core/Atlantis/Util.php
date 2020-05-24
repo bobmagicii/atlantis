@@ -2,6 +2,13 @@
 
 namespace Atlantis;
 
+use
+\Nether as Nether,
+\Ramsey as Ramsey;
+
+use
+\Exception as Exception;
+
 class Util {
 
 	static public function
@@ -60,7 +67,7 @@ class Util {
 	}
 
 	static public function
-	StripPrefixedQueryFields($Dataset, String $Prefix):
+	StripPrefixedQueryFields(Array $Dataset, String $Prefix):
 	Array {
 
 		$Property = NULL;
@@ -72,6 +79,45 @@ class Util {
 		$Output[str_replace($Prefix,'',$Property)] = $Value;
 
 		return $Output;
+	}
+
+	static public function
+	UUID(?Int $Ver=NULL, $Node=NULL):
+	String {
+	/*//
+	@date 2020-05-24
+	wraps Ramsey/Uuid to get its most common use cases we need
+	out of it.
+	//*/
+
+		$Ver ??= Nether\Option::Get('Atlantis.UUID.Version');
+		$Node ??= Nether\Option::Get('Atlantis.UUID.Node');
+		$Method = "UUID{$Ver}";
+
+		if(!method_exists('Ramsey\Uuid\Uuid',$Method))
+		throw new Exception('Invalid UUID Version.');
+
+		// if we requested to randomize the node value.
+
+		if($Node === TRUE)
+		return Ramsey\Uuid\Uuid::$Method(
+			(new Ramsey\Uuid\Provider\Node\RandomNodeProvider)
+			->GetNode()
+		)->ToString();
+
+		// if we requested to specify a node value.
+
+		if(is_numeric($Node))
+		return Ramsey\Uuid\Uuid::$Method(
+			(new Ramsey\Uuid\Provider\Node\StaticNodeProvider(
+				new Ramsey\Uuid\Type\Hexadecimal((String)$Node)
+			))
+			->GetNode()
+		)->ToString();
+
+		// else return with their default behaviours.
+
+		return Ramsey\Uuid\Uuid::$Method()->ToString();
 	}
 
 	static public function

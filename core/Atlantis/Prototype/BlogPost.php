@@ -271,7 +271,7 @@ extends Atlantis\Prototype {
 			'Title'       => NULL,
 			'Alias'       => NULL,
 			'Content'     => NULL,
-			'UUID'        => Ramsey\Uuid\Uuid::UUID4()->ToString()
+			'UUID'        => Atlantis\Util::UUID()
 		]);
 
 		if(!$Opt->BlogID)

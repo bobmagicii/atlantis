@@ -225,7 +225,7 @@ extends Atlantis\Prototype {
 			'UserID'      => NULL,
 			'TimeCreated' => time(),
 			'TimeUpdated' => time(),
-			'UUID'        => Ramsey\Uuid\Uuid::UUID4()->ToString(),
+			'UUID'        => Atlantis\Util::UUID(),
 			'Title'       => NULL,
 			'Alias'       => NULL,
 			'Tagline'     => NULL

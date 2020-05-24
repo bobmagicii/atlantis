@@ -1,0 +1,14 @@
+#!/usr/bin/env php
+<?php
+
+require(sprintf(
+	'%s/conf/start.php',
+	dirname(__FILE__,2)
+));
+
+$Iter = $Ver = $Node = NULL;
+
+foreach([4,1,6] as $Ver)
+foreach([NULL,TRUE,42] as $Node)
+for($Iter = 0; $Iter < 3; $Iter++)
+echo "V{$Ver}: ", Atlantis\Util::UUID($Ver,$Node), PHP_EOL;

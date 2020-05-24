@@ -217,7 +217,7 @@ extends Atlantis\Prototype {
 			'Enabled'     => 1,
 			'TimeCreated' => time(),
 			'TimeUpdated' => time(),
-			'UUID'        => Ramsey\Uuid\Uuid::UUID4()->ToString()
+			'UUID'        => Atlantis\Util::UUID()
 		]);
 
 		if(!$Opt->BlogID)
