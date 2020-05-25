@@ -21,15 +21,17 @@ extends Atlantis\Prototype {
 
 	protected static
 	$PropertyMap = [
-		'ID'          => 'ID:int',
-		'UserID'      => 'UserID:int',
-		'Enabled'     => 'Enabled:int',
-		'TimeCreated' => 'TimeCreated:int',
-		'TimeUpdated' => 'TimeUpdated:int',
-		'UUID'        => 'UUID',
-		'Alias'       => 'Alias',
-		'Title'       => 'Title',
-		'Tagline'     => 'Tagline'
+		'ID'             => 'ID:int',
+		'UserID'         => 'UserID:int',
+		'Enabled'        => 'Enabled:int',
+		'TimeCreated'    => 'TimeCreated:int',
+		'TimeUpdated'    => 'TimeUpdated:int',
+		'UUID'           => 'UUID',
+		'Alias'          => 'Alias',
+		'Title'          => 'Title',
+		'Tagline'        => 'Tagline',
+		'ImageHeaderURL' => 'ImageHeaderURL',
+		'ImageIconURL'   => 'ImageIconURL'
 	];
 
 	// database fields.
@@ -42,7 +44,9 @@ extends Atlantis\Prototype {
 	public String $UUID;
 	public String $Title;
 	public String $Alias;
-	public String $Tagline;
+	public ?String $Tagline;
+	public ?String $ImageHeaderURL;
+	public ?String $ImageIconURL;
 
 	// extension fields.
 
@@ -63,7 +67,8 @@ extends Atlantis\Prototype {
 
 		($this)
 		->OnReady_GetUser($Raw)
-		->OnReady_GetDates($Raw);
+		->OnReady_GetDates($Raw)
+		->OnReady_GetImages($Raw);
 
 		$this->URL = $this->GetURL();
 
@@ -103,6 +108,22 @@ extends Atlantis\Prototype {
 		return $this;
 	}
 
+	protected function
+	OnReady_GetImages(Array $Raw):
+	self {
+	/*//
+	prepare image urls.
+	//*/
+
+		if($this->ImageHeaderURL === NULL)
+		$this->ImageHeaderURL = Nether\Option::Get('Atlantis.Blog.DefaultImageHeaderURL');
+
+		if($this->ImageIconURL === NULL)
+		$this->ImageIconURL = Nether\Option::Get('Atlantis.Blog.DefaultImageIconURL');
+
+		return $this;
+	}
+
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
@@ -111,7 +132,7 @@ extends Atlantis\Prototype {
 	Atlantis\Struct\SearchResult {
 
 		return Atlantis\Prototype\BlogPost::Find([
-			'ID'     => $this->ID,
+			'BlogID' => $this->ID,
 			'Page'   => $Page,
 			'Limit'  => $Limit,
 			'Sort'   => 'newest'
@@ -225,7 +246,7 @@ extends Atlantis\Prototype {
 	//*/
 
 		if($Opt->Alias !== NULL)
-		$SQL->Where('Main.Alias=:Alias');
+		$SQL->Where('Main.Alias LIKE :Alias');
 
 		return;
 	}

@@ -76,4 +76,34 @@ extends Nether\Auth\User {
 			$this->Alias
 		);
 	}
+
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
+	static protected function
+	ExtendQueryJoins($SQL):
+	Void {
+	/*//
+	@date 2020-05-23
+	extension classes should override this method for use to join
+	additional tables that may be needed for filters and sorts.
+	//*/
+
+		return;
+	}
+
+	static protected function
+	ExtendQueryFields($SQL):
+	Void {
+	/*//
+	@date 2020-05-23
+	extension classes should override this method for use to include
+	additional fields into selects from joined tables. it is provided
+	as an optimisation for performing searches without bloating the
+	result dataset with data you might use use in a specific case.
+	//*/
+
+		return;
+	}
+
 }

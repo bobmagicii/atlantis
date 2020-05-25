@@ -304,12 +304,18 @@ extends Nether\Object\Mapped {
 		$Table = Nether\Option::Get('nether-user-table-name');
 		$SQL = Nether\Database::Get()->NewVerse();
 
-		$Result = $SQL
+		$SQL
 		->Select($Table)
 		->Fields('*')
 		->Where('ID=:ID')
-		->Limit(1)
-		->Query([ ':ID' => $ID ]);
+		->Limit(1);
+
+		static::ExtendQueryJoins($SQL);
+		static::ExtendQueryFields($SQL);
+
+		$Result = $SQL->Query([
+			':ID' => $ID
+		]);
 
 		// boom boom pow
 		if(!$Result->IsOK())
@@ -337,12 +343,18 @@ extends Nether\Object\Mapped {
 		$Table = Nether\Option::Get('nether-user-table-name');
 		$SQL = Nether\Database::Get()->NewVerse();
 
-		$Result = $SQL
+		$SQL
 		->Select($Table)
 		->Fields('*')
 		->Where('Alias LIKE :Alias')
-		->Limit(1)
-		->Query([ ':Alias' => $Alias ]);
+		->Limit(1);
+
+		static::ExtendQueryJoins($SQL);
+		static::ExtendQueryFields($SQL);
+
+		$Result = $SQL->Query([
+			':Alias' => $Alias
+		]);
 
 		// boom boom pow
 		if(!$Result->IsOK())
@@ -370,12 +382,18 @@ extends Nether\Object\Mapped {
 		$Table = Nether\Option::Get('nether-user-table-name');
 		$SQL = Nether\Database::Get()->NewVerse();
 
-		$Result = $SQL
+		$SQL
 		->Select($Table)
 		->Fields('*')
 		->Where('Email LIKE :Email')
-		->Limit(1)
-		->Query([ ':Email' => $Email ]);
+		->Limit(1);
+
+		static::ExtendQueryJoins($SQL);
+		static::ExtendQueryFields($SQL);
+
+		$Result = $SQL->Query([
+			':Email' => $Email
+		]);
 
 		// boom boom pow
 		if(!$Result->IsOK())
@@ -405,6 +423,35 @@ extends Nether\Object\Mapped {
 		return NULL;
 
 		return $Result->Value;
+	}
+
+	////////////////////////////////////////////////////////////////
+	// User Creation API ///////////////////////////////////////////
+
+	static protected function
+	ExtendQueryJoins($SQL):
+	Void {
+	/*//
+	@date 2020-05-23
+	extension classes should override this method for use to join
+	additional tables that may be needed for filters and sorts.
+	//*/
+
+		return;
+	}
+
+	static protected function
+	ExtendQueryFields($SQL):
+	Void {
+	/*//
+	@date 2020-05-23
+	extension classes should override this method for use to include
+	additional fields into selects from joined tables. it is provided
+	as an optimisation for performing searches without bloating the
+	result dataset with data you might use use in a specific case.
+	//*/
+
+		return;
 	}
 
 	////////////////////////////////////////////////////////////////

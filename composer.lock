@@ -514,22 +514,23 @@
         },
         {
             "name": "netherphp/object",
-            "version": "v3.0.3",
+            "version": "v3.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/netherphp/object.git",
-                "reference": "9bbbee05dc6d7ed272577988fc8d0e813a20388a"
+                "reference": "a0f0862eb6427b2a5796933c075b67a578d2f47f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/netherphp/object/zipball/9bbbee05dc6d7ed272577988fc8d0e813a20388a",
-                "reference": "9bbbee05dc6d7ed272577988fc8d0e813a20388a",
+                "url": "https://api.github.com/repos/netherphp/object/zipball/a0f0862eb6427b2a5796933c075b67a578d2f47f",
+                "reference": "a0f0862eb6427b2a5796933c075b67a578d2f47f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1.0"
             },
             "require-dev": {
+                "netherphp/standards": "~0.1.0",
                 "phpunit/phpunit": "^7"
             },
             "type": "library",
@@ -545,8 +546,8 @@
             "authors": [
                 {
                     "name": "Bob Majdak Jr",
-                    "email": "bob@nether.io",
-                    "homepage": "http://nether.io",
+                    "email": "bmajdak@php.net",
+                    "homepage": "http://twitter.com/bobmagicii",
                     "role": "developer"
                 }
             ],
@@ -555,7 +556,7 @@
                 "object",
                 "php"
             ],
-            "time": "2019-07-06T00:54:02+00:00"
+            "time": "2020-05-25T00:42:22+00:00"
         },
         {
             "name": "netherphp/onescript",
@@ -693,16 +694,16 @@
         },
         {
             "name": "netherphp/standards",
-            "version": "v0.1.8",
+            "version": "v0.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/netherphp/standards.git",
-                "reference": "bf2f1309ae952f7264279d785af0342701f9cb4c"
+                "reference": "50967dba60b79d79300fe0979440fc0bde0d1579"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/netherphp/standards/zipball/bf2f1309ae952f7264279d785af0342701f9cb4c",
-                "reference": "bf2f1309ae952f7264279d785af0342701f9cb4c",
+                "url": "https://api.github.com/repos/netherphp/standards/zipball/50967dba60b79d79300fe0979440fc0bde0d1579",
+                "reference": "50967dba60b79d79300fe0979440fc0bde0d1579",
                 "shasum": ""
             },
             "require": {
@@ -733,7 +734,7 @@
                 "phpcodesniffer-standard",
                 "phpcs"
             ],
-            "time": "2020-05-13T18:03:22+00:00"
+            "time": "2020-05-22T18:33:17+00:00"
         },
         {
             "name": "netherphp/stash",

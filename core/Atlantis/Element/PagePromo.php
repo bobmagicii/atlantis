@@ -17,6 +17,8 @@ purposes.
 	use
 	Atlantis\Properties\Title,
 	Atlantis\Properties\Subtitle,
-	Atlantis\Properties\URL;
+	Atlantis\Properties\URL,
+	Atlantis\Properties\ImageURL,
+	Atlantis\Properties\IconURL;
 
 }

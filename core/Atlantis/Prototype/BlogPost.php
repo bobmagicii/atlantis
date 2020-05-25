@@ -248,13 +248,13 @@ extends Atlantis\Prototype {
 	//*/
 
 		if($Opt->Alias !== NULL)
-		$SQL->Where('Main.Alias=:Alias');
+		$SQL->Where('Main.Alias LIKE :Alias');
 
 		if($Opt->BlogID !== NULL)
 		$SQL->Where('Main.BlogID=:BlogID');
 
 		if($Opt->BlogAlias !== NULL)
-		$SQL->Where('BL.Alias=:BlogAlias');
+		$SQL->Where('BL.Alias LIKE :BlogAlias');
 
 		return;
 	}

@@ -16,7 +16,15 @@ classes in widgets and such.
 	//*/
 
 	public function
-	GetItems():
+	SetItemStore(Atlantis\Datastore $Input):
+	self {
+
+		$this->ItemListStore = $Input;
+		return $this;
+	}
+
+	public function
+	GetItemStore():
 	Atlantis\Datastore {
 	/*//
 	fetch the class store. creates it if it has not been initialised yet.

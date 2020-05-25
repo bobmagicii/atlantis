@@ -8,6 +8,8 @@
 
 echo (new Atlantis\Element\PagePromo)
 ->SetURL($Blog->GetURL())
+->SetImageURL($Blog->ImageHeaderURL)
+->SetIconURL($Blog->ImageIconURL)
 ->SetTitle($Blog->Title)
 ->SetSubtitle($Blog->Tagline);
 
@@ -15,16 +17,10 @@ echo (new Atlantis\Element\PagePromo)
 
 <div class="container">
 
-	<h3>Latest Posts</h3>
-	<hr />
-	<?php foreach($Posts->Payload as $Post): ?>
-	<div>
-		<div><a href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->Title) ?></a></div>
-		<div>
-			Posted on <?php echo $Post->DateCreated->Format('F jS g:ia') ?>
-			By <a href="<?php echo $Post->User->GetURL() ?>"><?php echo $Post->User->Alias ?></a>
-		</div>
-	</div>
-	<?php endforeach; ?>
+	<?php
+	echo (new Atlantis\Element\PostListing)
+	->SetTitle('Recent Posts')
+	->SetItemStore($Posts->Payload);
+	?>
 
 </div>

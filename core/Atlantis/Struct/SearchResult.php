@@ -3,6 +3,7 @@
 namespace Atlantis\Struct;
 
 use
+\Atlantis as Atlantis,
 \Nether as Nether;
 
 class SearchResult {
@@ -23,7 +24,16 @@ class SearchResult {
 	Int $Limit = 0;
 
 	public
-	Array $Payload = [];
+	Atlantis\Datastore $Payload;
+
+	public function
+	__Construct(?Array $Input=NULL) {
+
+		if(is_array($Input) || $Input === NULL)
+		$this->Payload = new Atlantis\Datastore($Input);
+
+		return;
+	}
 
 	public function
 	GetPageCount():
@@ -41,7 +51,7 @@ class SearchResult {
 
 		$Output = new static;
 
-		$Output->Payload = $Input;
+		$Output->Payload = new Atlantis\Datastore($Input);
 		$Output->Count = count($Input);
 		$Output->Total = $Output->Count;
 

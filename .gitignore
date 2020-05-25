@@ -1,5 +1,6 @@
 # ignore some application paths.
 /cache/
+/data/
 /vendor/
 
 # ignore my actual config files while allowing the templates.

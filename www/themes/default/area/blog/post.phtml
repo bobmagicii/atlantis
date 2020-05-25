@@ -7,16 +7,23 @@
 
 echo (new Atlantis\Element\PagePromo)
 ->SetURL($Blog->URL)
+->SetImageURL($Blog->ImageHeaderURL)
+->SetIconURL($Blog->ImageIconURL)
 ->SetTitle($Blog->Title)
 ->SetSubtitle($Blog->Tagline);
 
 ?>
 
 <div class="container">
-
-	<h2><?php echo $Post->Title ?></h2>
-	<div class="mb-4">
-		Posted on <?php echo $Post->DateCreated->Format('F jS g:ia'), PHP_EOL ?>
+	<div class="PostListing">
+		<div class="Post">
+			<h3><a href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->Title) ?></a></h3>
+			<div class="About">
+				Posted on <a class="Date" href="<?php echo $Post->URL ?>"><?php echo $Post->DateCreated->Format('F jS g:ia') ?></a>
+				From <a class="Source" href="<?php echo $Post->Blog->URL ?>"><?php echo $Post->Blog->Title ?></a>
+				By <a class="Authour" href="<?php echo $Post->User->URL ?>"><?php echo $Post->User->Alias ?></a>
+			</div>
+		</div>
 	</div>
 
 	<div>

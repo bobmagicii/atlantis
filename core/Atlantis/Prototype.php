@@ -437,7 +437,7 @@ namespace.
 		////////
 
 		while($Row = $Result->Next())
-		$Output->Payload[] = new static($Row);
+		$Output->Payload->Push(new static($Row));
 
 		$Output->Count = count($Output->Payload);
 		$Output->Page = $Opt->Page;

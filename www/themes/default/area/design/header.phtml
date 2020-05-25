@@ -41,6 +41,7 @@ jQuery(document)
 			<div class="col-12 col-md-auto">
 				<nav>
 					<div class="row">
+						<?php if(!$User): ?>
 						<div class="col-12 col-md-auto">
 							<a href="/">Home</a>
 						</div>
@@ -50,6 +51,17 @@ jQuery(document)
 						<div class="col-12 col-md-auto">
 							<a href="/signup">Sign Up</a>
 						</div>
+						<?php else: ?>
+						<div class="col-12 col-md-auto">
+							<a href="/">Home</a>
+						</div>
+						<div class="col-12 col-md-auto">
+							<a href="/dashboard">Dashboard</a>
+						</div>
+						<div class="col-12 col-md-auto">
+							<a href="/logout">Log Out</a>
+						</div>
+						<?php endif; ?>
 					</div>
 				</nav>
 			</div>

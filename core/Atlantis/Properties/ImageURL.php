@@ -8,8 +8,8 @@ provide a url property to an image that requests to have one with get, set,
 and an actionable method.
 //*/
 
-	protected
-	$ImageURL = '';
+	protected ?String
+	$ImageURL = NULL;
 
 	////////
 	////////
@@ -29,7 +29,7 @@ and an actionable method.
 	}
 
 	public function
-	SetImageURL(String $ImageURL):
+	SetImageURL(?String $ImageURL):
 	self {
 
 		$this->ImageURL = $ImageURL;

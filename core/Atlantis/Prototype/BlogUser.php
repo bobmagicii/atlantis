@@ -179,7 +179,7 @@ extends Atlantis\Prototype {
 	//*/
 
 		if($Opt->Alias !== NULL)
-		$SQL->Where('Main.Alias=:Alias');
+		$SQL->Where('Main.Alias LIKE :Alias');
 
 		return;
 	}

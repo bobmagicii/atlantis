@@ -16,7 +16,14 @@ Nether\Option::Set([
 	'nether-web-root' => sprintf('%s/www',ProjectRoot),
 	'nether-web-path' => '/',
 
+	// blog settings.
+	'Atlantis.Blog.DefaultImageHeaderURL' => '/themes/default/gfx/bg01.jpg',
+	'Atlantis.Blog.DefaultImageIconURL'   => '/themes/default/gfx/icon-default-light.png',
+
+	// date settings.
 	'Atlantis.Date.DefaultTimeZone' => 'America/Chicago',
+
+	// uuid settings.
 	'Atlantis.UUID.Version'         => 6,
 	'Atlantis.UUID.Node'            => NULL,
 

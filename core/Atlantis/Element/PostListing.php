@@ -14,4 +14,5 @@ extends Atlantis\Element {
 	Atlantis\Properties\Title,
 	Atlantis\Properties\ItemListStore;
 
+
 }
