@@ -23,11 +23,11 @@ extends Atlantis\Site\PublicWeb {
 		////////
 
 		$this
-		->Push([
+		->Set('Page.Title',$Blog->Title)
+		->Area('blog/index',[
 			'Blog'  => $Blog,
 			'Posts' => $Blog->GetRecentPosts($Limit,$Page)
-		])
-		->Area('blog/index');
+		]);
 
 		return;
 	}

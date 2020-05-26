@@ -15,21 +15,32 @@ echo (new Atlantis\Element\PagePromo)
 ?>
 
 <div class="container">
-	<div class="PostListing">
-		<div class="Post">
-			<h3><a href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->Title) ?></a></h3>
-			<div class="About">
-				Posted on <a class="Date" href="<?php echo $Post->URL ?>"><?php echo $Post->DateCreated->Format('F jS g:ia') ?></a>
-				From <a class="Source" href="<?php echo $Post->Blog->URL ?>"><?php echo $Post->Blog->Title ?></a>
-				By <a class="Authour" href="<?php echo $Post->User->URL ?>"><?php echo $Post->User->Alias ?></a>
-			</div>
-		</div>
-	</div>
 
-	<div>
+	<div class="row">
+		<div class="col-12 col-md-8 mb-4">
+			<div class="PostListing">
+				<div class="Post">
+					<h3><a href="<?php $Printer($Post->GetURL()) ?>"><?php $Printer($Post->Title) ?></a></h3>
+					<div class="About">
+						Posted on <a class="Date" href="<?php $Printer($Post->URL) ?>"><?php $Printer($Post->DateCreated->Format('F jS g:ia')) ?></a>
+						From <a class="Source" href="<?php $Printer($Post->Blog->URL) ?>"><?php $Printer($Post->Blog->Title) ?></a>
+						By <a class="Authour" href="<?php $Printer($Post->User->URL) ?>"><?php $Printer($Post->User->Alias) ?></a>
+					</div>
+				</div>
+			</div>
+			<div class="PostContent">
 
 <?php echo $Post->Content, PHP_EOL ?>
 
+			</div>
+		</div>
+		<div class="DefocusUntilHover col-12 col-md-4 mb-4">
+			<?php
+			echo (new Atlantis\Element\PostListingSidebar)
+			->SetTitle('Recent Posts')
+			->SetItemStore($RecentPosts->Payload);
+			?>
+		</div>
 	</div>
 
 </div>

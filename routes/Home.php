@@ -12,13 +12,10 @@ extends Atlantis\Site\PublicWeb {
 	Index():
 	Void {
 
-		$Scope = [
-			'Posts' => $this->GetRecentPosts()
-		];
 
-		$this
-		->Push($Scope)
-		->Area('home/index');
+		$this->Area('home/index',[
+			'Posts' => $this->GetRecentPosts()
+		]);
 
 		return;
 	}

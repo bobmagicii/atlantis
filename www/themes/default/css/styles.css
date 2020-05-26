@@ -1,12 +1,14 @@
 /*// nether-onescript //
-@date 2020-05-25 02:50:46
+@date 2020-05-26 01:50:47
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
     "src\/local\/200-element-post-list.css",
     "src\/local\/200-element-promo.css",
     "src\/local\/200-element-wallpaperedbox.css",
-    "src\/local\/200-error-tray.css"
+    "src\/local\/200-error-tray.css",
+    "src\/local\/500-bootstrap-ext.css",
+    "src\/local\/500-misc.css"
 ]
 //*/
 
@@ -326,5 +328,45 @@ given an image to display to art shit up.
 	color: #fff;
 	padding: 16px 0px;
 	text-align: center;
+}
+
+/* a series of bootstrapesque classes designed to blend in */
+
+.font-size-normal {
+	font-size: 1.0em;
+}
+
+.font-size-small {
+	font-size: 0.90em;
+}
+
+.font-size-smaller {
+	font-size: 0.80em;
+}
+
+.font-size-smallerer {
+	font-size: 0.65em;
+}
+
+.font-size-large {
+	font-size: 1.10em;
+}
+
+.font-size-larger {
+	font-size: 1.20em;
+}
+
+.font-size-largerer {
+	font-size: 1.30em;
+}
+
+.DefocusUntilHover {
+	opacity: 0.4;
+	transition: opacity 0.25s;
+}
+
+.DefocusUntilHover:hover {
+	opacity: 1.0;
+	transition: opacity 0.25s;
 }
 

@@ -42,10 +42,11 @@ class PublicWeb {
 		$this->Errors = new Nether\Object\Datastore;
 
 		$this->Push([
-			'Router'  => $this->Router,
-			'Route'   => $this,
-			'Surface' => $this->Surface,
-			'User'    => $this->User
+			'Router'    => $this->Router,
+			'Route'     => $this,
+			'Surface'   => $this->Surface,
+			'User'      => $this->User,
+			'Printer'   => function($Val){ echo Atlantis\Util\Filters::SafeForHTML($Val); return; }
 		]);
 
 		return;
@@ -69,27 +70,15 @@ class PublicWeb {
 	////////////////////////////////////////////////////////////////
 
 	public function
-	Push(Array $Items):
+	Push(Array $Items, ?String $Area=NULL):
 	self {
 	/*//
 	@date 2020-05-24
 	push items into the surface scope array.
 	//*/
 
-		Nether\Ki::Queue(
-			'surface-render-scope',
-			function(Array &$Scope) use ($Items):
-			Void {
-				$Key = NULL;
-				$Val = NULL;
-
-				foreach($Items as $Key => $Val)
-				$Scope[$Key] = $Val;
-
-				return;
-			},
-			TRUE
-		);
+		($this->Surface)
+		->Push($Items,$Area);
 
 		return $this;
 	}
@@ -108,14 +97,16 @@ class PublicWeb {
 		return $this;
 	}
 
-
 	public function
-	Area(String $Area):
+	Area(String $Area, ?Array $Scope=NULL):
 	self {
 	/*//
 	@date 2020-05-24
 	a chainable call to the surface area.
 	//*/
+
+		if(is_array($Scope))
+		$this->Push($Scope,$Area);
 
 		($this->Surface)
 		->Area($Area);

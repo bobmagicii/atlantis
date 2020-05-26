@@ -1,0 +1,10 @@
+
+.DefocusUntilHover {
+	opacity: 0.4;
+	transition: opacity 0.25s;
+}
+
+.DefocusUntilHover:hover {
+	opacity: 1.0;
+	transition: opacity 0.25s;
+}

@@ -4,11 +4,11 @@ namespace Atlantis\Element;
 use \Atlantis as Atlantis;
 use \Nether   as Nether;
 
-class PostListing
+class PostListingSidebar
 extends Atlantis\Element {
 
 	protected
-	$Area = 'element/post-listing';
+	$Area = 'element/post-listing-sidebar';
 
 	use
 	Atlantis\Properties\Title,

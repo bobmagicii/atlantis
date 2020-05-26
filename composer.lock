@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "695891e409509282544b658d0d5cc1e1",
+    "content-hash": "12d3778ea063942886e48bfa1bb32d1a",
     "packages": [
         {
             "name": "artem_c/emmet",
@@ -248,16 +248,16 @@
         },
         {
             "name": "netherphp/avenue",
-            "version": "v3.0.3",
+            "version": "v3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/netherphp/avenue.git",
-                "reference": "f8cb92c8d190f9040b8620eb8e2859c4b3b97a91"
+                "reference": "af1946a037297d2208278e348bacef4ea7a10668"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/netherphp/avenue/zipball/f8cb92c8d190f9040b8620eb8e2859c4b3b97a91",
-                "reference": "f8cb92c8d190f9040b8620eb8e2859c4b3b97a91",
+                "url": "https://api.github.com/repos/netherphp/avenue/zipball/af1946a037297d2208278e348bacef4ea7a10668",
+                "reference": "af1946a037297d2208278e348bacef4ea7a10668",
                 "shasum": ""
             },
             "require": {
@@ -265,8 +265,7 @@
                 "netherphp/option": "^1.0.0"
             },
             "require-dev": {
-                "netherphp/standards": "^0.1.9",
-                "phpunit/phpunit": "^9.1.5"
+                "netherphp/standards": "^0.1.9"
             },
             "type": "library",
             "autoload": {
@@ -291,7 +290,7 @@
                 "php",
                 "router"
             ],
-            "time": "2020-05-22T21:22:33+00:00"
+            "time": "2020-05-25T19:02:22+00:00"
         },
         {
             "name": "netherphp/cache",
@@ -514,24 +513,23 @@
         },
         {
             "name": "netherphp/object",
-            "version": "v3.0.7",
+            "version": "v3.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/netherphp/object.git",
-                "reference": "918cd5eee12014d8b8cf9cfcd353f348205088bc"
+                "reference": "084eaad8512e3b100876109b47eb57c5aa83f613"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/netherphp/object/zipball/918cd5eee12014d8b8cf9cfcd353f348205088bc",
-                "reference": "918cd5eee12014d8b8cf9cfcd353f348205088bc",
+                "url": "https://api.github.com/repos/netherphp/object/zipball/084eaad8512e3b100876109b47eb57c5aa83f613",
+                "reference": "084eaad8512e3b100876109b47eb57c5aa83f613",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1.0"
             },
             "require-dev": {
-                "netherphp/standards": "~0.1.0",
-                "phpunit/phpunit": "^7"
+                "netherphp/standards": "~0.1.0"
             },
             "type": "library",
             "autoload": {
@@ -556,7 +554,7 @@
                 "object",
                 "php"
             ],
-            "time": "2020-05-25T02:32:47+00:00"
+            "time": "2020-05-25T18:33:05+00:00"
         },
         {
             "name": "netherphp/onescript",
@@ -648,51 +646,6 @@
             "time": "2014-03-22T17:46:59+00:00"
         },
         {
-            "name": "netherphp/project",
-            "version": "v1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/netherphp/project.git",
-                "reference": "4122f9c43a55a06befd16c6b1f153d53df26248d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/netherphp/project/zipball/4122f9c43a55a06befd16c6b1f153d53df26248d",
-                "reference": "4122f9c43a55a06befd16c6b1f153d53df26248d",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "bin": [
-                "bin/nether-realboot"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Nether\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Bob Majdak Jr",
-                    "email": "bob@nether.io",
-                    "homepage": "http://nether.io",
-                    "role": "developer"
-                }
-            ],
-            "description": "Utilities (CLI) for project management.",
-            "keywords": [
-                "php",
-                "project"
-            ],
-            "time": "2015-05-16T02:48:39+00:00"
-        },
-        {
             "name": "netherphp/standards",
             "version": "v0.1.9",
             "source": {
@@ -781,16 +734,16 @@
         },
         {
             "name": "netherphp/surface",
-            "version": "v3.0.2",
+            "version": "v3.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/netherphp/surface.git",
-                "reference": "129211613c705c7edd7e9062331d3a9c906a8819"
+                "reference": "2512d2d152d3a956566b4ce2570e9177f42b36d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/netherphp/surface/zipball/129211613c705c7edd7e9062331d3a9c906a8819",
-                "reference": "129211613c705c7edd7e9062331d3a9c906a8819",
+                "url": "https://api.github.com/repos/netherphp/surface/zipball/2512d2d152d3a956566b4ce2570e9177f42b36d7",
+                "reference": "2512d2d152d3a956566b4ce2570e9177f42b36d7",
                 "shasum": ""
             },
             "require": {
@@ -823,58 +776,7 @@
                 "php",
                 "template"
             ],
-            "time": "2017-12-21T05:56:36+00:00"
-        },
-        {
-            "name": "netherphp/world",
-            "version": "v3.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/netherphp/world.git",
-                "reference": "aa2390aabf6d5c8f0c1a602b7c45b2e220b09bb0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/netherphp/world/zipball/aa2390aabf6d5c8f0c1a602b7c45b2e220b09bb0",
-                "reference": "aa2390aabf6d5c8f0c1a602b7c45b2e220b09bb0",
-                "shasum": ""
-            },
-            "require": {
-                "netherphp/avenue": "~3.0",
-                "netherphp/cache": "~2.0",
-                "netherphp/console": "~3.0",
-                "netherphp/database": "~3.0",
-                "netherphp/input": "~3.0",
-                "netherphp/ki": "~1.0",
-                "netherphp/object": "~3.0",
-                "netherphp/onescript": "~3.0",
-                "netherphp/option": "~1.0",
-                "netherphp/project": "~1.0",
-                "netherphp/stash": "~2.0",
-                "netherphp/surface": "~3.0",
-                "php": ">=7.1.0"
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-2-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Bob Majdak Jr",
-                    "email": "bob@nether.io",
-                    "homepage": "http://nether.io",
-                    "role": "developer"
-                }
-            ],
-            "description": "A meta package to include all the things.",
-            "keywords": [
-                "framework",
-                "nether",
-                "php",
-                "pony"
-            ],
-            "time": "2017-08-20T04:49:55+00:00"
+            "time": "2020-05-26T01:29:26+00:00"
         },
         {
             "name": "psr/log",

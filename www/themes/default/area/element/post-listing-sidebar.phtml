@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @var Atlantis\Element\PostListing $Element
+ * @var Atlantis\Prototype\BlogPost $Post
+ */
+
+?>
+
+<div class="PostListing">
+	<h2 class="font-size-normal"><?php echo $Element->GetTitle() ?></h2>
+	<?php foreach($Element->GetItemStore() as $Post): ?>
+	<div class="Post">
+		<div class="About">
+			<span class="font-size-small"><?php echo $Post->DateCreated->Format('F jS g:ia') ?></span>
+		</div>
+		<h3 class="font-size-normal font-weight-bold"><a href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->Title) ?></a></h3>
+	</div>
+	<?php endforeach; ?>
+</div>

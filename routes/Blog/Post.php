@@ -6,9 +6,6 @@ use \Atlantis as Atlantis;
 class Post
 extends Atlantis\Site\PublicWeb {
 
-	static protected
-	?Atlantis\Prototype\BlogPost $Found = NULL;
-
 	public function
 	Index(String $BlogAlias, String $PostAlias):
 	Void {
@@ -24,11 +21,21 @@ extends Atlantis\Site\PublicWeb {
 		if(!$Post)
 		$this->Area('error/not-found')->Quit(404);
 
+		$Recent = $Post->Blog->GetRecentPosts(5,1);
+
 		////////
 
 		$this
-		->Push([ 'Blog' => $Post->Blog, 'Post' => $Post ])
-		->Area('blog/post');
+		->Set('Page.Title',sprintf(
+			'%s - %s',
+			$Post->Title,
+			$Post->Blog->Title
+		))
+		->Area('blog/post',[
+			'Blog'        => $Post->Blog,
+			'Post'        => $Post,
+			'RecentPosts' => $Recent
+		]);
 
 		return;
 	}
