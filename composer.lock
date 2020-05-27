@@ -248,16 +248,16 @@
         },
         {
             "name": "netherphp/avenue",
-            "version": "v3.0.4",
+            "version": "v3.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/netherphp/avenue.git",
-                "reference": "af1946a037297d2208278e348bacef4ea7a10668"
+                "reference": "730c6b47634f7ecabbcfcc7a91164761f65a3916"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/netherphp/avenue/zipball/af1946a037297d2208278e348bacef4ea7a10668",
-                "reference": "af1946a037297d2208278e348bacef4ea7a10668",
+                "url": "https://api.github.com/repos/netherphp/avenue/zipball/730c6b47634f7ecabbcfcc7a91164761f65a3916",
+                "reference": "730c6b47634f7ecabbcfcc7a91164761f65a3916",
                 "shasum": ""
             },
             "require": {
@@ -290,7 +290,7 @@
                 "php",
                 "router"
             ],
-            "time": "2020-05-25T19:02:22+00:00"
+            "time": "2020-05-27T07:57:12+00:00"
         },
         {
             "name": "netherphp/cache",
