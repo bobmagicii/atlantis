@@ -130,12 +130,30 @@ extends Atlantis\Prototype {
 	public function
 	GetRecentPosts(Int $Limit, Int $Page):
 	Atlantis\Struct\SearchResult {
+	/*//
+	@date 2020-05-23
+	//*/
 
 		return Atlantis\Prototype\BlogPost::Find([
 			'BlogID' => $this->ID,
 			'Page'   => $Page,
 			'Limit'  => $Limit,
 			'Sort'   => 'newest'
+		]);
+	}
+
+	public function
+	GetPopularPosts(Int $Limit, Int $Page):
+	Atlantis\Struct\SearchResult {
+	/*//
+	@date 2020-05-26
+	//*/
+
+		return LogBlogPostTraffic::FindPopularPosts([
+			'BlogID'    => $this->ID,
+			'Page'      => 1,
+			'Limit'     => 5,
+			'Timeframe' => (time() - (86400*30))
 		]);
 	}
 

@@ -34,9 +34,18 @@ echo (new Atlantis\Element\PagePromo)
 
 			</div>
 		</div>
-		<div class="DefocusUntilHover col-12 col-md-4 mb-4">
+		<div class="col-12 col-md-4 mb-4">
+			<?php
+			if($PopularPosts->Total)
+			echo (new Atlantis\Element\PostListingSidebar)
+			->AddClasses('DefocusUntilHover','mb-8')
+			->SetTitle('Popular Posts')
+			->SetItemStore($PopularPosts->Payload);
+			?>
+
 			<?php
 			echo (new Atlantis\Element\PostListingSidebar)
+			->AddClasses('DefocusUntilHover')
 			->SetTitle('Recent Posts')
 			->SetItemStore($RecentPosts->Payload);
 			?>

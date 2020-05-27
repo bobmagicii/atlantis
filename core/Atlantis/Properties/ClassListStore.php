@@ -16,6 +16,21 @@ classes in widgets and such.
 	//*/
 
 	public function
+	AddClasses($Arg):
+	self {
+
+		if(is_array($Arg))
+		($this->GetClasses())
+		->MergeRight($Arg);
+
+		else
+		($this->GetClasses())
+		->MergeRight(func_get_args());
+
+		return $this;
+	}
+
+	public function
 	GetClasses():
 	Atlantis\Datastore {
 	/*//

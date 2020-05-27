@@ -495,6 +495,8 @@ namespace.
 	self {
 	/*//
 	@date 2020-04-10
+	the current suggestion is that you override this method to do your data
+	checks, and then call parent::Create with your verified Opt object.
 	//*/
 
 		$DB = Nether\Database::Get();
@@ -506,6 +508,58 @@ namespace.
 			static::GetPropertyMap(),
 			$Opt
 		));
+
+		////////
+
+		$Result = $DB->Query($SQL,$Opt);
+
+		if(!$Result->IsOK())
+		throw new Atlantis\Error\DatabaseQueryError($Result);
+
+		return static::GetByID($Result->GetInsertID());
+	}
+
+	static public function
+	Upsert($Opt=NULL,$Upt=NULL):
+	self {
+	/*//
+	@date 2020-04-10
+	the current suggestion is that you override this method to do your data
+	checks, and then call parent::Create with your verified Opt object.
+	//*/
+
+		if(!is_subclass_of(static::class,'Atlantis\\Packages\\Upsertable'))
+		throw new Exception('This class does not implement the Upsertable interface.');
+
+		$DB = Nether\Database::Get();
+		$SQL = $DB->NewVerse();
+
+		$SQL
+		->Insert(static::$Table)
+		->Fields(Atlantis\Util::BuildValueMap(
+			static::GetPropertyMap(),
+			$Opt
+		));
+
+		if(count($Upt))
+		$SQL = sprintf(
+			'%s ON DUPLICATE KEY UPDATE %s=LAST_INSERT_ID(%s), %s',
+			$SQL,
+			static::$IDField,
+			static::$IDField,
+			Atlantis\Util::BuildUpdateString($Upt)
+		);
+
+		else
+		$SQL = sprintf(
+			'%s ON DUPLICATE KEY UPDATE %s=LAST_INSERT_ID(%s)',
+			$SQL,
+			static::$IDField,
+			static::$IDField,
+			Atlantis\Util::BuildUpdateString($Upt)
+		);
+
+		//echo (String)$SQL; die();
 
 		////////
 

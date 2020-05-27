@@ -513,16 +513,16 @@
         },
         {
             "name": "netherphp/object",
-            "version": "v3.0.8",
+            "version": "v3.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/netherphp/object.git",
-                "reference": "084eaad8512e3b100876109b47eb57c5aa83f613"
+                "reference": "3e79c666b736b53f110ec18d2c607ae787e8c4f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/netherphp/object/zipball/084eaad8512e3b100876109b47eb57c5aa83f613",
-                "reference": "084eaad8512e3b100876109b47eb57c5aa83f613",
+                "url": "https://api.github.com/repos/netherphp/object/zipball/3e79c666b736b53f110ec18d2c607ae787e8c4f9",
+                "reference": "3e79c666b736b53f110ec18d2c607ae787e8c4f9",
                 "shasum": ""
             },
             "require": {
@@ -554,7 +554,7 @@
                 "object",
                 "php"
             ],
-            "time": "2020-05-25T18:33:05+00:00"
+            "time": "2020-05-27T01:12:22+00:00"
         },
         {
             "name": "netherphp/onescript",

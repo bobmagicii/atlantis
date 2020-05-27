@@ -7,7 +7,7 @@
 
 ?>
 
-<div class="PostListing">
+<div class="PostListing <?php echo $Element->GetClassesAttrString() ?>">
 	<h2 class="font-size-normal"><?php echo $Element->GetTitle() ?></h2>
 	<?php foreach($Element->GetItemStore() as $Post): ?>
 	<div class="Post">

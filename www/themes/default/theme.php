@@ -62,7 +62,7 @@ class Theme {
 			String {
 				$Stat = Nether\Stash::Get('Cache')->GetStats();
 				return sprintf(
-					'qn=%d, hn=%d hp=%d%%',
+					'qn=%d, hn=%d, hp=%d%%',
 					$Stat->QueryCount,
 					$Stat->HitCount,
 					($Stat->QueryCount===0)?:

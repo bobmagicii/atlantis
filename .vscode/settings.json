@@ -1,0 +1,41 @@
+{
+
+	// things to keep vscode from wasting time on this project.
+
+	"search.useIgnoreFiles": false,
+	"search.useGlobalIgnoreFiles": false,
+	"search.exclude": {
+		"**/.git": true,
+		"**/data": true,
+		"**/backups": true,
+		"**/cache": true,
+		"**/log": true,
+		"**/test": true,
+		"**/tests": true,
+		"**/vendor/**/{vendor,tests}/**": true,
+		"**/www/media/**": true
+	},
+	"files.watcherExclude": {
+		"**/.git": true,
+		"**/data": true,
+		"**/backups": true,
+		"**/cache": true,
+		"**/log": true,
+		"**/test": true,
+		"**/tests": true,
+		"**/vendor": true,
+		"**/www/media/**": true
+	},
+	"intelephense.files.exclude": [
+		"**/.git/**",
+		"**/backups/**",
+		"**/data/**",
+		"**/log/**",
+		"**/test/**",
+		"**/tests/**",
+		"**/tools/**",
+		"**/vendor/**/{vendor,tests}/**",
+		"**/www/**"
+	]
+
+}

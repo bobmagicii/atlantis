@@ -70,6 +70,21 @@ class PublicWeb {
 	////////////////////////////////////////////////////////////////
 
 	public function
+	GetHitHash():
+	String {
+
+		if($this->User)
+		return hash('sha512',sprintf(
+			'atlantis-%s-%s-%s',
+			$this->User->ID,
+			$this->Router->GetFullDomain(),
+			$this->Router->GetPath()
+		));
+
+		return $this->Router->GetHitHash();
+	}
+
+	public function
 	Push(Array $Items, ?String $Area=NULL):
 	self {
 	/*//

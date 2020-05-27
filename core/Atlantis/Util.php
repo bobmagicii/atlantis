@@ -12,6 +12,24 @@ use
 class Util {
 
 	static public function
+	BuildUpdateString(Array $Fields):
+	String {
+
+		$Dataset = [];
+		$Name = NULL;
+		$Value = NULL;
+
+		foreach($Fields as $Name => $Value) {
+			if($Value === NULL)
+			$Dataset[] = "{$Name}=NULL";
+			else
+			$Dataset[] = "{$Name}={$Value}";
+		}
+
+		return join(',',$Dataset);
+	}
+
+	static public function
 	BuildValueMap($PropertyMap, $Data):
 	Array {
 	/*//
