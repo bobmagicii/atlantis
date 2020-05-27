@@ -5,32 +5,33 @@
  * @var Atlantis\Prototype\BlogUser $Blog
  * */
 
-$Blogs = $Surface->Get('Dashboard.Blogs');
+?>
 
+<?php
+echo (new Atlantis\Element\PagePromo)
+->AddClasses('mb-6')
+->SetTitle('Dashboard')
+->SetSubtitle('This is your dashboard area for managing your things.');
 ?>
 
 <div class="container">
-
-	<h1>Dashboard</h1>
-	<hr class="mt-0 mb-4" />
-
-	<?php if($Blogs->Total): ?>
-	<h3>Your Blogs</h3>
-	<hr class="mt-0 mb-4" />
-
-	<?php foreach($Blogs->Payload as $Blog): ?>
 	<div class="row">
-		<div class="col">
-			<?php echo $Blog->Blog->Title ?>
+		<div class="col-md-8 mb-6">
+			<?php
+			echo (new Atlantis\Element\BlogListing)
+			->AddClasses('mb-6')
+			->SetTitle('Your Blogs')
+			->SetItemStore($Blogs->Payload);
+			?>
 		</div>
-		<div class="col-auto">
-			<a href="<?php echo $Blog->Blog->GetURL() ?>" class="btn btn-dark">Visit</a>
+		<div class="col-md-4 mb-6">
+			<h2>Blogging</h2>
+			<a href="" class="btn btn-secondary btn-block text-left"><i class="fa fa-fw mr-1 fa-plus-square"></i> Create New Blog</a>
+			<hr class="border-0 mt-6 mb-6" />
+			<h2>Account</h2>
+			<a href="" class="btn btn-dark btn-block text-left"><i class="fa fa-fw mr-1 fa-at"></i> Change Email</a>
+			<a href="" class="btn btn-dark btn-block text-left"><i class="fa fa-fw mr-1 fa-key"></i> Change Password</a>
 		</div>
 	</div>
-	<?php endforeach; ?>
-
-	<?php else: ?>
-	<div class="text-center">You do not yet have any blogs mate.</div>
-	<?php endif; ?>
 
 </div>

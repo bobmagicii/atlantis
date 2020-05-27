@@ -70,6 +70,7 @@ implements Atlantis\Packages\Upsertable {
 		->Select('LogBlogPostTraffic Log')
 		->Join('BlogPosts BP ON Log.PostID=BP.ID')
 		->Join('Blogs BL ON BP.BlogID=BP.BlogID')
+		->Join('Users PU ON BP.UserID=PU.ID')
 		->Fields('COUNT(*) AS Views')
 		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
 			Atlantis\Prototype\BlogPost::GetPropertyMap(),
@@ -79,18 +80,26 @@ implements Atlantis\Packages\Upsertable {
 			Atlantis\Prototype\Blog::GetPropertyMap(),
 			'BL', 'BP_BL_'
 		))
-		->Where('Log.BlogID=:BlogID')
+		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
+			Atlantis\User::GetPropertyMap(),
+			'PU', 'BP_PU_'
+		))
 		->Group('Log.PostID')
 		->Sort('Views',$SQL::SortDesc)
 		->Limit($Opt->Limit)
 		->Offset($Opt->Offset);
+
+		// most popular posts within a single blog.
+
+		if($Opt->BlogID !== NULL)
+		$SQL->Where('Log.BlogID=:BlogID');
 
 		// create a poor mans rotating popularity check.
 		// its a little silly because if no posts are hit
 		// in the timeframe we will have no results rather
 		// than moving the window.
 
-		if($Opt->Timeframe)
+		if($Opt->Timeframe !== NULL)
 		$SQL->Where('Log.Time >= :Timeframe');
 
 		////////
@@ -103,6 +112,8 @@ implements Atlantis\Packages\Upsertable {
 		////////
 
 		while($Row = $Result->Next()) {
+
+			// if we had an empty dataset.
 			if((Int)$Row->Views === 0)
 			continue;
 

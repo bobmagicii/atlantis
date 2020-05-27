@@ -1,11 +1,13 @@
 <?php
 
 /**
+ * @var Atlantis\Datastore $PopularPosts
  * @var Atlantis\Datastore $Posts
  * @var Atlantis\Blog\Post $Post
  */
 
 echo (new Atlantis\Element\PagePromo)
+->AddClasses('mb-6')
 ->SetTitle('Fancy Area')
 ->SetSubtitle('This would be a great place for something attention grabbing.');
 
@@ -16,14 +18,23 @@ echo (new Atlantis\Element\PagePromo)
 		<div class="col-12 col-md-8 mb-4">
 
 			<?php
+			if($Posts->Total)
 			echo (new Atlantis\Element\PostListing)
+			->AddClasses('mb-6')
 			->SetTitle('Recent Posts')
 			->SetItemStore($Posts->Payload);
 			?>
 
+			<?php
+			if($PopularPosts->Total)
+			echo (new Atlantis\Element\PostListing)
+			->SetTitle('Popular Posts')
+			->SetItemStore($PopularPosts->Payload);
+			?>
+
 		</div>
 		<div class="col-12 col-md-4 mb-4">
-			[Sidebar]
+			sidebar
 		</div>
 	</div>
 </div>

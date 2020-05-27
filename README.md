@@ -1,14 +1,13 @@
 # Atlantis
 
-Yet another thing using this name, being yet another blogging platform. Main
-difference here is that it is not WordPress and requires bleeding edge PHP.
+A multi user blogging platform. I'm just trying to make a thing to do a thing, and if people want to come along then lets go. Its designed/being designed to be a little network of blogs.
 
 # Requirements
 
-* PHP 7.4 - Will not work on older.
+* PHP 7.4
 * PHP-PDO
-* MySQL
-* Composer
+* MySQL 5.6+ or MariaDB 10.4+
+* Composer for PHP
 * A ReCaptcha API key (https://www.google.com/recaptcha/intro/)
 
 # Suggestions
@@ -16,54 +15,43 @@ difference here is that it is not WordPress and requires bleeding edge PHP.
 * PHP-OpenSSL
 * PHP-Memcached
 
-# Setting Up Dev Environment
+# Install and Configuration
 
-## Get Project.
+## Install
 
-```bash
-> git clone git@github.com:bobmagicii/atlantis
-```
+1) `git clone git@github.com:bobmagicii/atlantis`
 
-## Install dependencies.
+## Web Server
 
-```bash
-> composer install
-```
+I still use Apache. It will run fine on other things but you'll have to use your own experience to configure them. If you want to add example configs to the servers directory
+then please do.
 
-## Start Servers.
+1) Copy `conf/servers/apache24.conf.dist` to `conf/servers/apache24.conf` and edit the values
+according to how the file describes you should edit them. Note, if you are installing for the
+first time you should only use the `AtlantisHTTP` macro until you follow the SSL instructions below.
 
-If you are on windows with PHP and MySQL properly installed you can launch both
-the dev HTTP server and MySQL using `server-start.bat` and then shut it down
-using `server-stop.bat`.
+2) Copy `conf/priate.conf.dist` to `conf/private.conf.php` and edit its values.
 
-Else you will make sure MySQL is running yourself and launch the dev HTTP server
-manually.
+3) `$ composer install`
 
-```bash
-> php -S localhost:80 -t www
-```
+## Database
 
-## Configure Database
+1) Copy `conf/database.conf.dist` to `conf/database.conf.php` and edit its values.
 
-Copy `conf\database.conf.dist` to `conf\database.conf.php` and fill it in.
+2) `$ php vendor/bin/phinx migrate`
 
-## Setup Database
+## SSL
 
-Windows.
-```bash
-> vendor\bin\phinx migrate
-```
+1) If you have not set up the SSL you should have configured the webserver to only use
+HTTP so far. Additionally, you need to go into `www/.htaccess` and comment out the lines
+under `# Force HTTPS`
 
-Unixen.
-```bash
-$ php vendor/bin/phinx migrate
-```
+2) Copy `conf/tools/acmephp.yml.dist` to `conf/tools/acmephp.yml` and edit its values
+to be relevant to your website.
 
-## Configure Other Things
+3) `$ php bin/acmephp.phar run conf/tools/acmephp.yml`
 
-Copy `conf\private.conf.dist` to `conf\private.conf.php` and fill it in.
+4) Edit `conf/servers/apache24.conf` and replace `AtlantisHTTP` with `AtlantisHTTPS`, rehash the server, and restore the lines you commented out within the `.htaccess` file.
 
-## Ready
 
-You should now be able to visit [localhost](http://localhost) and get to work.
 

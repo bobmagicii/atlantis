@@ -153,7 +153,7 @@ extends Atlantis\Prototype {
 			'BlogID'    => $this->ID,
 			'Page'      => 1,
 			'Limit'     => 5,
-			'Timeframe' => (time() - (86400*30))
+			'Timeframe' => strtotime('-30 days')
 		]);
 	}
 

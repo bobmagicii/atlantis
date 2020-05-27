@@ -11,9 +11,11 @@ extends Atlantis\Site\ProtectedWeb {
 	Index():
 	Void {
 
-		($this->Surface)
-		->Set('Dashboard.Blogs',$this->User->GetBlogs())
-		->Area('dashboard/home');
+		$this
+		->Set('Page.Title','Dashboard')
+		->Area('dashboard/home',[
+			'Blogs' => $this->User->GetBlogs()
+		]);
 
 		return;
 	}
