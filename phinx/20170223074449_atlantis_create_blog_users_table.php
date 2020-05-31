@@ -39,14 +39,14 @@ extends AbstractMigration {
 
 		$User = Atlantis\User::GetByID(1);
 
-		$Blog = Atlantis\Prototype\Blog::Create([
+		$Blog = Atlantis\Prototype\Blog::Insert([
 			'UserID'  => $User->ID,
 			'Alias'   => 'root',
 			'Title'   => 'Root\'s Blog',
 			'Tagline' => 'It Is Best Blog'
 		]);
 
-		$BlogUser = Atlantis\Prototype\BlogUser::Create([
+		$BlogUser = Atlantis\Prototype\BlogUser::Insert([
 			'BlogID' => $Blog->ID,
 			'UserID' => $User->ID,
 			'Flags'  => Atlantis\Prototype\BlogUser::FlagOwner

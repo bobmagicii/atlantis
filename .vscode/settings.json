@@ -12,7 +12,7 @@
 		"**/log": true,
 		"**/test": true,
 		"**/tests": true,
-		"**/vendor/**/{vendor,tests}/**": true,
+		"**/vendor/**": true,
 		"**/www/media/**": true
 	},
 	"files.watcherExclude": {

@@ -60,7 +60,21 @@ require(sprintf(
 	return;
 })();
 
+if(defined('ProjectAutoloadOnly'))
+return;
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+
+if(Nether\Option::Get('Atlantis.Log.Application.File')) {
+	Nether\Stash::Set(
+		'Atlantis.Log.Application',
+		new Atlantis\Logger(
+			'Atlantis',
+			Nether\Option::Get('Atlantis.Log.Application.File'),
+			Nether\Option::Get('Atlantis.Log.Application.Level')
+		)
+	);
+}
 
 new Nether\Cache;

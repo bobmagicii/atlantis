@@ -491,12 +491,12 @@ namespace.
 	////////////////////////////////////////////////////////////////
 
 	static public function
-	Create($Opt):
+	Insert($Opt):
 	self {
 	/*//
 	@date 2020-04-10
 	the current suggestion is that you override this method to do your data
-	checks, and then call parent::Create with your verified Opt object.
+	checks, and then call parent::Insert with your verified Opt object.
 	//*/
 
 		$DB = Nether\Database::Get();
@@ -525,7 +525,7 @@ namespace.
 	/*//
 	@date 2020-04-10
 	the current suggestion is that you override this method to do your data
-	checks, and then call parent::Create with your verified Opt object.
+	checks, and then call parent::Insert with your verified Opt object.
 	//*/
 
 		if(!is_subclass_of(static::class,'Atlantis\\Packages\\Upsertable'))
@@ -533,6 +533,7 @@ namespace.
 
 		$DB = Nether\Database::Get();
 		$SQL = $DB->NewVerse();
+		$Output = NULL;
 
 		$SQL
 		->Insert(static::$Table)
@@ -568,7 +569,15 @@ namespace.
 		if(!$Result->IsOK())
 		throw new Atlantis\Error\DatabaseQueryError($Result);
 
-		return static::GetByID($Result->GetInsertID());
+		$Output = static::GetByID($Result->GetInsertID());
+
+		if(!$Output)
+		throw new Atlantis\Error\DatabaseQueryError($Result);
+
+		if($Result->GetCount() === 2)
+		$Output->SetUpdated(TRUE);
+
+		return $Output;
 	}
 
 }

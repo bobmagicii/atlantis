@@ -2,13 +2,20 @@
 <footer>
 	<div class="container">
 		<div class="row">
-			<div class="col-12 col-md-auto mb-4 mb-md-0">
+			<div class="col-12 col-md-auto mb-4">
 				<code><?php Theme::RenderAppStats(); ?></code>
 			</div>
-			<div class="col-12 col-md mb-4 mb-md-0"></div>
-			<div class="col-12 col-md-auto mb-4 mb-md-0">
+			<div class="col-12 col-md mb-4"></div>
+			<div class="col-12 col-md-auto mb-4">
 				<a href="https://github.com/bobmagicii/atlantis" target="_blank"><i class="fab fa-github"></i> Github</a>
 			</div>
+			<?php if(count(Nether\Database::$QueryLog)): ?>
+			<div class="col-12 mb-4">
+			<?php foreach(Nether\Database::$QueryLog as $Query): ?>
+			<code class="d-block mb-4"><?php echo $Query->Query ?></code>
+			<?php endforeach; ?>
+			</div>
+			<?php endif ;?>
 		</div>
 	</div>
 </footer>

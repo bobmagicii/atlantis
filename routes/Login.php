@@ -56,6 +56,11 @@ extends Atlantis\Site\PublicWeb {
 			return;
 		}
 
+		$this->LogInfo('User Login',[
+			'ID'    => $User->ID,
+			'Alias' => $User->Alias
+		]);
+
 		Atlantis\User::LaunchSession($User);
 		$this->Goto($Goto);
 		return;

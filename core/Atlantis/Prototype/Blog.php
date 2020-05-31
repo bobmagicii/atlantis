@@ -159,21 +159,15 @@ extends Atlantis\Prototype {
 
 	public function
 	GetURL():
-	String {
+	Atlantis\Site\Endpoint {
 	/*//
 	@date 2017-03-02
-	get the url to view this blog.
+	get the url to view this blog post.
 	//*/
 
-		$Router = Nether\Stash::Get('Router');
-		if(!$Router) return '';
-
-		return sprintf(
-			'%s://%s/+%s',
-			$Router->GetProtocol(),
-			$Router->GetFullDomain(),
-			$this->Alias
-		);
+		return Atlantis\Site\Endpoint::Get('Atlantis.Blog.Home',[
+			'BlogAlias' => $this->Alias
+		]);
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -273,7 +267,7 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 
 	static public function
-	Create($Opt):
+	Insert($Opt):
 	self {
 
 		$Opt = new Nether\Object\Mapped($Opt,[
@@ -295,7 +289,7 @@ extends Atlantis\Prototype {
 		if(!$Opt->Alias)
 		$Opt->Alias = Atlantis\Util\Filters::RouteSafeAlias($Opt->Title);
 
-		return parent::Create($Opt);
+		return parent::Insert($Opt);
 	}
 
 }

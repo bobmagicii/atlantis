@@ -2,7 +2,6 @@
 
 $Router
 ->AddRoute('{@}//index',           'Routes\\Home::Index')
-->AddRoute('{@}//about',           'Routes\\Home::About')
 ->AddRoute('{@}//login',           'Routes\\Login::Index')
 ->AddRoute('{@}//logout',          'Routes\\Login::Destroy')
 ->AddRoute('{@}//join',            'Routes\\Join::Index')
@@ -13,3 +12,15 @@ $Router
 ->AddRoute('{@}//\x7e($)',         'Routes\\User\\Index::Index') // /~user-alias
 ->AddRoute('{@}//(@)',             'Routes\\Page::Index')
 ->AddRoute('{@}//{@}',             'Routes\\Home::NotFound');
+
+Atlantis\Site\Endpoint::Register([
+	'Atlantis.Home'      => '/',
+	'Atlantis.Login'     => '/login',
+	'Atlantis.Logout'    => '/logout',
+	'Atlantis.Join'      => '/join',
+	'Atlantis.Dashboard' => '/dashboard',
+	'Atlantis.Blog.Home' => '/+{{BlogAlias}}',
+	'Atlantis.Blog.Post' => '/+{{BlogAlias}}/{{PostAlias}}',
+	'Atlantis.User.Home' => '/~{{UserAlias}}'
+]);
+

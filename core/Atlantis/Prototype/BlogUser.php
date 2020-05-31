@@ -207,7 +207,7 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 
 	static public function
-	Create($Opt):
+	Insert($Opt):
 	self {
 
 		$Opt = new Nether\Object\Mapped($Opt,[
@@ -226,7 +226,7 @@ extends Atlantis\Prototype {
 		if(!$Opt->UserID)
 		throw new Exception('Must have a UserID.');
 
-		return parent::Create($Opt);
+		return parent::Insert($Opt);
 	}
 
 }

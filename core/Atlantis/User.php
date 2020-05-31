@@ -60,21 +60,15 @@ extends Nether\Auth\User {
 
 	public function
 	GetURL():
-	String {
+	Atlantis\Site\Endpoint {
 	/*//
-	@date 2020-05-23
-	get the url to view this user's profile.
+	@date 2017-03-02
+	get the url to view this blog post.
 	//*/
 
-		$Router = Nether\Stash::Get('Router');
-		if(!$Router) return '';
-
-		return sprintf(
-			'%s://%s/~%s/',
-			$Router->GetProtocol(),
-			$Router->GetFullDomain(),
-			$this->Alias
-		);
+		return Atlantis\Site\Endpoint::Get('Atlantis.User.Home',[
+			'UserAlias' => $this->Alias
+		]);
 	}
 
 	////////////////////////////////////////////////////////////////

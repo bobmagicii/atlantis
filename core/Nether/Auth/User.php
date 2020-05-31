@@ -458,7 +458,7 @@ extends Nether\Object\Mapped {
 	// User Creation API ///////////////////////////////////////////
 
 	static public function
-	Create($Opt=NULL):
+	Insert($Opt=NULL):
 	?self {
 	/*//
 	@todo
@@ -489,9 +489,9 @@ extends Nether\Object\Mapped {
 			'Password2'   => NULL
 		]);
 
-		static::Create_ValidateAlias($Opt);
-		static::Create_ValidateEmail($Opt);
-		static::Create_ValidatePassword($Opt);
+		static::Insert_ValidateAlias($Opt);
+		static::Insert_ValidateEmail($Opt);
+		static::Insert_ValidatePassword($Opt);
 
 		////////
 
@@ -512,12 +512,12 @@ extends Nether\Object\Mapped {
 		->Query($Opt);
 
 		if(!$Result->IsOK())
-		throw new Exception('User::Create critical phail');
+		throw new Exception('User::Insert critical phail');
 
 		////////
 
 		if(!($UserID = (Int)$Result->GetInsertID()))
-		throw new Exception('User::Create interesting phail');
+		throw new Exception('User::Insert interesting phail');
 
 		////////
 

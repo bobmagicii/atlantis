@@ -17,7 +17,8 @@
 		"robmorgan\/phinx": "^0.6",
 		"google\/recaptcha": "^1.1",
 		"artem_c/emmet": "^1.0",
-		"dealerdirect/phpcodesniffer-composer-installer": "^0.6.2"
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.6.2",
+		"monolog/monolog": "^2.1"
 	},
 	"config": {
 		"preferred-install": {

@@ -44,7 +44,7 @@ extends AbstractMigration {
 		$User = Atlantis\User::Get(1);
 		$Blog = Atlantis\Prototype\Blog::GetByID(1);
 
-		Atlantis\Prototype\BlogPost::Create([
+		Atlantis\Prototype\BlogPost::Insert([
 			'BlogID'      => $Blog->ID,
 			'UserID'      => $User->GetID(),
 			'Title'       => 'Orion\'s Sword Rig Veda',
@@ -56,7 +56,7 @@ extends AbstractMigration {
 			)
 		]);
 
-		Atlantis\Prototype\BlogPost::Create([
+		Atlantis\Prototype\BlogPost::Insert([
 			'BlogID'      => $Blog->ID,
 			'UserID'      => $User->GetID(),
 			'Title'       => 'A Still More Glorious Dawn Awaits',
@@ -68,7 +68,7 @@ extends AbstractMigration {
 			)
 		]);
 
-		Atlantis\Prototype\BlogPost::Create([
+		Atlantis\Prototype\BlogPost::Insert([
 			'BlogID'      => $Blog->ID,
 			'UserID'      => $User->GetID(),
 			'Title'       => 'Distant Epochs Extraplanetary',

@@ -3,6 +3,7 @@
 namespace Atlantis\Site;
 use \Atlantis as Atlantis;
 use \Nether   as Nether;
+use \Monolog  as Monolog;
 
 class PublicWeb {
 
@@ -47,6 +48,13 @@ class PublicWeb {
 			'Surface'   => $this->Surface,
 			'User'      => $this->User,
 			'Printer'   => function($Val){ echo Atlantis\Util\Filters::SafeForHTML($Val); return; }
+		]);
+
+		$this->LogDebug('Route Hit',[
+			'Name'       => static::class,
+			'Path'       => $Router->GetPath(),
+			'Addr'       => $Router->GetRemoteAddr(),
+			'User'       => ($this->User)?($this->User->ID):(0)
 		]);
 
 		return;
@@ -156,6 +164,55 @@ class PublicWeb {
 
 		exit($ErrNum);
 		return;
+	}
+
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
+	public function
+	Log(String $Msg, Int $Level, ?Array $Context=[]):
+	self {
+
+		if(Nether\Stash::Get('Atlantis.Log.Application'))
+		Nether\Stash::Get('Atlantis.Log.Application')
+		->addRecord($Level,$Msg,$Context);
+
+		return $this;
+	}
+
+	public function
+	LogCritical(String $Msg, ?Array $Context=[]):
+	self {
+
+		return $this->Log($Msg,Monolog\Logger::CRITICAL,$Context);
+	}
+
+	public function
+	LogWarning(String $Msg, ?Array $Context=[]):
+	self {
+
+		return $this->Log($Msg,Monolog\Logger::WARNING,$Context);
+	}
+
+	public function
+	LogNotice(String $Msg, ?Array $Context=[]):
+	self {
+
+		return $this->Log($Msg,Monolog\Logger::NOTICE,$Context);
+	}
+
+	public function
+	LogDebug(String $Msg, ?Array $Context=[]):
+	self {
+
+		return $this->Log($Msg,Monolog\Logger::DEBUG,$Context);
+	}
+
+	public function
+	LogInfo(String $Msg, ?Array $Context=[]):
+	self {
+
+		return $this->Log($Msg,Monolog\Logger::INFO,$Context);
 	}
 
 }
