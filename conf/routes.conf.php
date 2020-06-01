@@ -68,13 +68,13 @@
 	'Atlantis.Blog.Home',
 	'{@}//\x2b($)',
 	'/+{{BlogAlias}}',
-	'Routes\\Blog\\Post::Index'
+	'Routes\\Blog\\Index::Index'
 )
 ->Register(
 	'Atlantis.User.Home',
 	'{@}//\x7e($)',
 	'/~{{UserAlias}}',
-	'Routes\\User\\Index::Destroy'
+	'Routes\\User\\Index::Index'
 )
 ->Register(
 	'Atlantis.Handler.PageCMS',
