@@ -7,12 +7,7 @@
 
 ?>
 
-<?php
-echo (new Atlantis\Element\PagePromo)
-->AddClasses('mb-6')
-->SetTitle('Dashboard')
-->SetSubtitle('This is your dashboard area for managing your things.');
-?>
+<?php $Surface->Area('dashboard/promo') ?>
 
 <div class="container">
 	<div class="row">
@@ -26,7 +21,7 @@ echo (new Atlantis\Element\PagePromo)
 		</div>
 		<div class="col-md-4 mb-6">
 			<h2>Blogging</h2>
-			<a href="" class="btn btn-secondary btn-block text-left"><i class="fa fa-fw mr-1 fa-plus-square"></i> Create New Blog</a>
+			<a href="<?php echo Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Blog.Create') ?>" class="btn btn-secondary btn-block text-left"><i class="fa fa-fw mr-1 fa-plus-square"></i> Create New Blog</a>
 			<hr class="border-0 mt-6 mb-6" />
 			<h2>Account</h2>
 			<a href="" class="btn btn-dark btn-block text-left"><i class="fa fa-fw mr-1 fa-at"></i> Change Email</a>

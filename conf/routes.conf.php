@@ -1,26 +1,90 @@
 <?php
 
-$Router
-->AddRoute('{@}//index',           'Routes\\Home::Index')
-->AddRoute('{@}//login',           'Routes\\Login::Index')
-->AddRoute('{@}//logout',          'Routes\\Login::Destroy')
-->AddRoute('{@}//join',            'Routes\\Join::Index')
-->AddRoute('{@}//dashboard',       'Routes\\Dashboard\\Home::Index')
-->AddRoute('{@}//api/v1/test/($)', 'Routes\\Api\\V1\\Test::Index')
-->AddRoute('{@}//\x2b($)/($)',     'Routes\\Blog\\Post::Index') // /+blog-alias/post-alias
-->AddRoute('{@}//\x2b($)',         'Routes\\Blog\\Index::Index') // /+blog-alias
-->AddRoute('{@}//\x7e($)',         'Routes\\User\\Index::Index') // /~user-alias
-->AddRoute('{@}//(@)',             'Routes\\Page::Index')
-->AddRoute('{@}//{@}',             'Routes\\Home::NotFound');
+/** @var Atlantis\Site\Router */
 
-Atlantis\Site\Endpoint::Register([
-	'Atlantis.Home'      => '/',
-	'Atlantis.Login'     => '/login',
-	'Atlantis.Logout'    => '/logout',
-	'Atlantis.Join'      => '/join',
-	'Atlantis.Dashboard' => '/dashboard',
-	'Atlantis.Blog.Home' => '/+{{BlogAlias}}',
-	'Atlantis.Blog.Post' => '/+{{BlogAlias}}/{{PostAlias}}',
-	'Atlantis.User.Home' => '/~{{UserAlias}}'
-]);
+///////////////////////////////////////////////////////////////////////////////
+// mostly static routes ///////////////////////////////////////////////////////
 
+($Router)
+->Register(
+	'Atlantis.Home',
+	'{@}//index',
+	'/',
+	'Routes\\Home::Index'
+)
+->Register(
+	'Atlantis.Login',
+	'{@}//login',
+	'/login',
+	'Routes\\Login::Index'
+)
+->Register(
+	'Atlantis.Logout',
+	'{@}//logout',
+	'/logout',
+	'Routes\\Login::Destroy'
+)
+->Register(
+	'Atlantis.Join',
+	'{@}//join',
+	'/join',
+	'Routes\\Join::Index'
+)
+->Register(
+	'Atlantis.Dashboard.Home',
+	'{@}//dashboard',
+	'/dashboard',
+	'Routes\\Dashboard\\Home::Index'
+)
+->Register(
+	'Atlantis.Dashboard.Blog.Create',
+	'{@}//dashboard/blog/create',
+	'/dashboard/blog/create',
+	'Routes\\Dashboard\\Blog::Create'
+);
+
+///////////////////////////////////////////////////////////////////////////////
+// json api routes ////////////////////////////////////////////////////////////
+
+($Router)
+->Register(
+	'Atlantis.API.Test',
+	'{@}//api/v1/test/($)',
+	'/api/v1/test/{Command}',
+	'Routes\\Api\\V1\\Test::Index'
+);
+
+///////////////////////////////////////////////////////////////////////////////
+// wildly wildcarded routes ///////////////////////////////////////////////////
+
+($Router)
+->Register(
+	'Atlantis.Blog.Post',
+	'{@}//\x2b($)/($)',
+	'/+{{BlogAlias}}/{{PostAlias}}',
+	'Routes\\Blog\\Index::Index'
+)
+->Register(
+	'Atlantis.Blog.Home',
+	'{@}//\x2b($)',
+	'/+{{BlogAlias}}',
+	'Routes\\Blog\\Post::Index'
+)
+->Register(
+	'Atlantis.User.Home',
+	'{@}//\x7e($)',
+	'/~{{UserAlias}}',
+	'Routes\\User\\Index::Destroy'
+)
+->Register(
+	'Atlantis.Handler.PageCMS',
+	'{@}//(@)',
+	'/{{PageURI}}',
+	'Routes\\Page::Index'
+)
+->Register(
+	'Atlantis.Handler.NotFound',
+	'{@}//{@}',
+	'/error/not-found',
+	'Routes\\Home::NotFound'
+);

@@ -1,0 +1,21 @@
+
+.form-control:focus {
+	border-color: #ccc;
+	box-shadow: 0 0 0 .2rem rgba(65, 65, 65, 0.25);
+}
+
+.breadcrumb {
+	background: #222;
+	color: #eee;
+}
+
+.breadcrumb a:link,
+.breadcrumb a:visited,
+.breadcrumb .active {
+	color: #eee;
+}
+
+.breadcrumb a:link,
+.breadcrumb a:visited {
+	border-bottom: 1px dotted #eee;
+}

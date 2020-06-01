@@ -3,6 +3,14 @@
 	font-family: "Roboto Condensed", sans-serif;
 }
 
+.font-family-regular {
+	font-family: 'Roboto Condensed', sans-serif;
+}
+
+.font-family-code {
+	font-family: 'Share Tech Mono', monospace;
+}
+
 html,
 body {
 	background: #ddd;

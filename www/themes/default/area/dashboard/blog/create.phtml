@@ -1,0 +1,134 @@
+<?php
+
+?>
+
+<?php $Surface->Area('dashboard/promo') ?>
+
+<div class="container">
+	<ol class="breadcrumb mb-6">
+		<li class="breadcrumb-item"><a href="<?php echo Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home') ?>">Dashboard</a></li>
+		<li class="breadcrumb-item">Blog</li>
+		<li class="breadcrumb-item active">Create New Blog</li>
+	</ol>
+
+	<h2 class="font-size-large font-weight-bold">Blog Title</h2>
+	<div class="form-text mb-2">Give your blog a clever name that will relate the type of content you intend to post.</div>
+	<div class="form-group mb-4">
+		<input autocomplete="off" id="Title" type="text" class="form-control text-size-large " placeholder="..." />
+	</div>
+
+	<h2 class="font-size-large font-weight-bold">Blog URL</h2>
+	<div class="form-text mb-2">This is the link your blog will have. It is auto generated from your blog title, but you can customize it if you wish. It is always good to try and make this as short as possible.</div>
+	<div class="form-group row tight align-items-center mb-4">
+		<div class="col-auto text-size-large font-family-code">
+			<?php echo $Router->GetDomain() ?>
+		</div>
+		<div class="col-auto text-size-large font-family-code">
+			/
+		</div>
+		<div class="col-auto text-size-large font-family-code">
+			+
+		</div>
+		<div class="col">
+			<input autocomplete="off" id="Alias" type="text" class="text-size-large form-control-plaintext font-family-code" placeholder="..." readonly />
+		</div>
+		<div class="col-auto">
+			<button id="CmdAlias" class="btn btn-secondary">Customize Link</button>
+		</div>
+	</div>
+
+	<div class="text-center">
+		<button id="CmdCreate" class="btn btn-dark btn-lg text-uppercase">Create</button>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+
+jQuery(document)
+.ready(function(){
+
+	let Mode = 1;
+
+	let EmulateServerSideAlias = function(Input) {
+		// emulate how the server will transform it so we
+		// can show what it will be without asking what it
+		// will be every time.
+
+		return (Input)
+		.toLowerCase()
+		.replace(/[^a-z0-9\x20-]/g,'')
+		.replace(/ /g,'-')
+		.substr(0,64);
+	};
+
+	jQuery('#Title')
+	.on('keyup',function(){
+		let Title = jQuery(this).val();
+		let Alias = Title;
+
+		if(Mode === 1) {
+			jQuery('#Alias')
+			.val(EmulateServerSideAlias(Alias));
+			return;
+		}
+
+		return;
+	});
+
+	jQuery('#Alias')
+	.on('keyup',function(){
+		let Alias = jQuery(this).val();
+
+		if(Mode === 0) {
+			jQuery('#Alias')
+			.val(EmulateServerSideAlias(Alias));
+			return;
+		}
+
+		return;
+	});
+
+	jQuery('#CmdAlias')
+	.on('click',function(){
+
+		if(Mode === 1) {
+			jQuery('#Alias')
+			.removeAttr('readonly')
+			.addClass('form-control')
+			.removeClass('form-control-plaintext');
+
+			Mode = 0;
+		}
+
+		else {
+			jQuery('#Alias')
+			.attr('readonly',true)
+			.addClass('form-control-plaintext')
+			.removeClass('form-control');
+
+			Mode = 1;
+
+			jQuery('#Title')
+			.trigger('keyup');
+		}
+
+		return;
+	});
+
+	jQuery('#CmdCreate')
+	.on('click',function(){
+
+		// confirm alias fits requirements and is unique.
+
+		// post and see what happens.
+
+		// do it all over json api.
+
+		alert('todo');
+		return;
+	});
+
+	return;
+});
+</script>

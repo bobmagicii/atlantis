@@ -26,6 +26,11 @@ extends Atlantis\Site\PublicWeb {
 	HandleJoin():
 	Void {
 
+		$this->Errors->Push(new InlineError([
+			'Message' => 'Not yet friend, still greenfielding this project.'
+		]));
+		return;
+
 		// check if they can fool google into believing they are real.
 
 		$Human = new ReCaptcha\ReCaptcha(Nether\Option::Get('recaptcha-secret'));

@@ -15,15 +15,15 @@ A multi user blogging platform. I'm just trying to make a thing to do a thing, a
 * PHP-OpenSSL
 * PHP-Memcached
 
+# Is It Ready To Use?
+
+No. I'm still greenfielding this.
+
 # Install and Configuration
 
 ## Install
 
 1) `$ git clone git@github.com:bobmagicii/atlantis`
-
-# Is It Ready To Use?
-
-No. I'm still greenfielding this.
 
 ## Web Server
 

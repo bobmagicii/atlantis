@@ -22,4 +22,14 @@ extends Nether\Avenue\Router {
 		return;
 	}
 
+	public function
+	Register(String $Name, String $Request, String $Pattern, String $Handler):
+	self {
+
+		$this->AddRoute($Request,$Handler);
+		Atlantis\Site\Endpoint::Register($Name,$Pattern);
+
+		return $this;
+	}
+
 }
