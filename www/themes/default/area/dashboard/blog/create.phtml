@@ -44,7 +44,6 @@
 
 <script type="text/javascript">
 
-
 jQuery(document)
 .ready(function(){
 
@@ -62,13 +61,51 @@ jQuery(document)
 		.substr(0,64);
 	};
 
+	let HandleAliasExists = function(Result) {
+
+		jQuery('#Alias')
+		.addClass('is-invalid');
+
+		jQuery('#CmdAlias')
+		.trigger('click');
+
+		return;
+	};
+
+	let HandleTitleLength = function(Result) {
+
+		jQuery('#Title')
+		.addClass('is-invalid');
+
+		return;
+	};
+
+	let HandleAliasLength = function(Result) {
+
+		jQuery('#Alias')
+		.addClass('is-invalid');
+
+		jQuery('#CmdAlias')
+		.trigger('click');
+
+		return;
+	};
+
+	let HandleBlogCreate = function(Title,Alias) {
+
+		return;
+	};
+
 	jQuery('#Title')
 	.on('keyup',function(){
 		let Title = jQuery(this).val();
 		let Alias = Title;
 
+		jQuery(this).removeClass('is-invalid');
+
 		if(Mode === 1) {
 			jQuery('#Alias')
+			.removeClass('is-invalid')
 			.val(EmulateServerSideAlias(Alias));
 			return;
 		}
@@ -79,6 +116,8 @@ jQuery(document)
 	jQuery('#Alias')
 	.on('keyup',function(){
 		let Alias = jQuery(this).val();
+
+		jQuery(this).removeClass('is-invalid');
 
 		if(Mode === 0) {
 			jQuery('#Alias')
@@ -119,13 +158,41 @@ jQuery(document)
 	jQuery('#CmdCreate')
 	.on('click',function(){
 
-		// confirm alias fits requirements and is unique.
+		let Title = jQuery.trim(jQuery('#Title').val());
+		let Alias = jQuery.trim(jQuery('#Alias').val());
 
-		// post and see what happens.
+		if(Title.length < 1) {
+			HandleTitleLength();
+			return;
+		}
 
-		// do it all over json api.
+		if(Alias.length < 1) {
+			HandleAliasLength();
+			return;
+		}
 
-		alert('todo');
+		Atlantis.Request({
+			'Method': 'GET',
+			'URL': '<?php echo $Endpoint('Atlantis.API.Blog',['Command'=>'entity']) ?>',
+			'Data': { 'Alias': Alias },
+			'OnSuccess': function(Result){
+				// a success is always an error here.
+				HandleAliasExists(Result);
+				return;
+			},
+			'OnError': function(Result) {
+				// an error is potentially a success.
+
+				if(Result.Error === 1) {
+					HandleBlogCreate(Title,Alias);
+					return;
+				}
+
+				alert(Result.Error + ': ' + Result.Message);
+				return;
+			}
+		})
+
 		return;
 	});
 

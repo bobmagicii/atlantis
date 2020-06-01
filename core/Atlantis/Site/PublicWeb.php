@@ -47,7 +47,8 @@ class PublicWeb {
 			'Route'     => $this,
 			'Surface'   => $this->Surface,
 			'User'      => $this->User,
-			'Printer'   => function($Val){ echo Atlantis\Util\Filters::SafeForHTML($Val); return; }
+			'Printer'   => function($Val){ echo Atlantis\Util\Filters::SafeForHTML($Val); return; },
+			'Endpoint'  => function(String $Key, ?Array $Val=NULL) { return Atlantis\Site\Endpoint::Get($Key,$Val); }
 		]);
 
 		$this->LogDebug('Route Hit',[

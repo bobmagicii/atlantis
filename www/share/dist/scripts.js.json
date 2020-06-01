@@ -3,7 +3,8 @@
     "AddScriptHeader": true,
     "ContentType": "text\/javascript",
     "Directories": [
-        "js"
+        "js/libs",
+        "js/local"
     ],
     "DistDir": ".",
     "Extensions": [

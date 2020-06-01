@@ -48,9 +48,15 @@
 
 ($Router)
 ->Register(
+	'Atlantis.API.Blog',
+	'{@}//api/v1/blog/($)',
+	'/api/v1/blog/{{Command}}',
+	'Routes\\Api\\V1\\Blog::Index'
+)
+->Register(
 	'Atlantis.API.Test',
 	'{@}//api/v1/test/($)',
-	'/api/v1/test/{Command}',
+	'/api/v1/test/{{Command}}',
 	'Routes\\Api\\V1\\Test::Index'
 );
 

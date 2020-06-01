@@ -6,10 +6,13 @@ use
 \Atlantis as Atlantis,
 \Nether   as Nether;
 
-use \Exception as Exception;
+use
+\Exception as Exception,
+\JsonSerializable as JsonSerializable;
 
 class User
-extends Nether\Auth\User {
+extends Nether\Auth\User
+implements JsonSerializable {
 
 	public
 	String $URL;
@@ -39,6 +42,24 @@ extends Nether\Auth\User {
 		$this->URL = $this->GetURL();
 
 		return;
+	}
+
+	public function
+	JsonSerialize():
+	Array {
+	/*//
+	@date 2020-06-01
+	@implements JsonSerializable
+	//*/
+
+		return [
+			'ID'             => $this->ID,
+			'UUID'           => $this->UUID,
+			'Alias'          => $this->Alias,
+			'URL'            => $this->URL,
+			'TimeCreated'    => $this->TimeCreated,
+			'TimeSeen'       => $this->TimeSeen
+		];
 	}
 
 	////////////////////////////////////////////////////////////////

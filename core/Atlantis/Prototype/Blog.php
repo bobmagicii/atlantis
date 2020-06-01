@@ -4,14 +4,15 @@ namespace Atlantis\Prototype;
 
 use
 \Atlantis as Atlantis,
-\Nether   as Nether,
-\Ramsey   as Ramsey;
+\Nether   as Nether;
 
 use
-\Exception as Exception;
+\Exception as Exception,
+\JsonSerializable as JsonSerializable;
 
 class Blog
-extends Atlantis\Prototype {
+extends Atlantis\Prototype
+implements JsonSerializable {
 
 	protected static
 	$Table = 'Blogs';
@@ -122,6 +123,29 @@ extends Atlantis\Prototype {
 		$this->ImageIconURL = Nether\Option::Get('Atlantis.Blog.DefaultImageIconURL');
 
 		return $this;
+	}
+
+	public function
+	JsonSerialize():
+	Array {
+	/*//
+	@date 2020-06-01
+	@implements JsonSerializable
+	//*/
+
+		return [
+			'ID'             => $this->ID,
+			'UUID'           => $this->UUID,
+			'Title'          => $this->Title,
+			'Tagline'        => $this->Tagline,
+			'Alias'          => $this->Alias,
+			'URL'            => $this->URL,
+			'TimeCreated'    => $this->TimeCreated,
+			'TimeUpdated'    => $this->TimeUpdated,
+			'ImageHeaderURL' => $this->ImageHeaderURL,
+			'ImageIconURL'   => $this->ImageIconURL,
+			'User'           => $this->User
+		];
 	}
 
 	///////////////////////////////////////////////////////////////////////////
