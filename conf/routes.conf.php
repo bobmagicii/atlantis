@@ -41,6 +41,12 @@
 	'{@}//dashboard/blog/create',
 	'/dashboard/blog/create',
 	'Routes\\Dashboard\\Blog::Create'
+)
+->Register(
+	'Atlantis.Admin.Home',
+	'{@}//ops',
+	'/ops',
+	'Routes\\Admin\\Home::Index'
 );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -68,7 +74,7 @@
 	'Atlantis.Blog.Post',
 	'{@}//\x2b($)/($)',
 	'/+{{BlogAlias}}/{{PostAlias}}',
-	'Routes\\Blog\\Index::Index'
+	'Routes\\Blog\\Post::Index'
 )
 ->Register(
 	'Atlantis.Blog.Home',

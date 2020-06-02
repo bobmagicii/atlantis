@@ -1,0 +1,50 @@
+<?php
+
+echo (new Atlantis\Element\PagePromo)
+->SetTitle('Operations')
+->SetSubtitle('Look, I\'m not asking you swim out there! I\'m asking you to push a few buttons!');
+
+?>
+
+<div class="container">
+
+	<div class="row">
+		<div class="col-12 col-md-6">
+			<div class="jumbotron font-size-largerer font-weight-bold p-4 mb-4">
+				<div class="row align-items-center">
+					<div class="col">Blogs</div>
+					<div class="col-auto"><div><?php echo $BlogCount ?></div></div>
+				</div>
+			</div>
+			<div class="jumbotron font-size-largerer font-weight-bold p-4 mb-4">
+				<div class="row align-items-center">
+					<div class="col">Posts</div>
+					<div class="col-auto"><div><?php echo $PostCount ?></div></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-12 col-md-6">
+			<div class="jumbotron p-4 mb-4">
+				<div class="row align-items-center font-size-largerer font-weight-bold mb-4">
+					<div class="col">Users</div>
+					<div class="col-auto"><div><?php echo $UsersRecent->Total ?></div></div>
+				</div>
+
+				<h2 class="font-size-normal">Newest Users</h2>
+				<?php foreach($UsersRecent->Payload as $User): ?>
+				<div class="row">
+					<div class="col-auto">
+						<?php $Printer($User->Alias) ?>
+					</div>
+					<div class="col"></div>
+					<div class="col-auto text-truncate">
+						<?php $Printer($User->Email) ?>
+					</div>
+				</div>
+				<?php endforeach; ?>
+
+			</div>
+		</div>
+	</div>
+
+</div>

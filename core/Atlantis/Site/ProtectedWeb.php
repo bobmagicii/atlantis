@@ -10,13 +10,7 @@ extends PublicWeb {
 	public function
 	__Construct(Atlantis\Site\Router $Router) {
 		parent::__Construct($Router);
-
-		if(!$this->User)
-		$this->Goto(sprintf(
-			'/login?goto=%s',
-			$this->GetEncodedURL()
-		));
-
+		$this->RequireUserSession();
 		return;
 	}
 

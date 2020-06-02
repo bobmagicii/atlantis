@@ -75,6 +75,46 @@ class PublicWeb {
 		return Atlantis\Util\Filters::Base64Encode($this->Router->GetURL());
 	}
 
+	protected function
+	RequireUserSession():
+	Void {
+	/*//
+	@date 2020-06-01
+	provide a method to force a user session being required.
+	//*/
+
+		if($this->User)
+		return;
+
+		if(!$this->User)
+		$this->Goto(sprintf(
+			'/login?goto=%s',
+			$this->GetEncodedURL()
+		));
+
+		return;
+	}
+
+	protected function
+	RequireAdminSession():
+	Void {
+	/*//
+	@date 2020-06-01
+	provide a method to force a user session being required.
+	//*/
+
+		if($this->User && $this->User->IsAdmin())
+		return;
+
+		if(!$this->User)
+		$this->Goto(sprintf(
+			'/login?goto=%s',
+			$this->GetEncodedURL()
+		));
+
+		return;
+	}
+
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
 

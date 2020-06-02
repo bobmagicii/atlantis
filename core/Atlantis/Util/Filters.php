@@ -98,6 +98,36 @@ methods here are safe for direct use or use as callback filtering.
 	}
 
 	static public function
+	TrimmedText($Val):
+	String {
+	/*//
+	@date 2020-06-01
+	//*/
+
+		return trim($Val);
+	}
+
+	static public function
+	EncodedText($Val):
+	String {
+	/*//
+	@date 2020-06-01
+	//*/
+
+		return htmlspecialchars(trim($Val));
+	}
+
+	static public function
+	StrippedText($Val):
+	String {
+	/*//
+	@date 2020-06-01
+	//*/
+
+		return strip_tags(trim($Val));
+	}
+
+	static public function
 	RouteSafeAlias($Val):
 	String {
 	/*//
@@ -106,10 +136,21 @@ methods here are safe for direct use or use as callback filtering.
 	want to see for generated urls.
 	//*/
 
-		return strtolower(str_replace(' ','-',preg_replace(
-			'/[^a-z0-9\x20]/i', '',
+		// format the general alias.
+
+		$Output = strtolower(str_replace(' ','-',preg_replace(
+			'/[^a-z0-9\x20\-]/i', '',
 			$Val
 		)));
+
+		// debounce any dashes.
+
+		$Output = preg_replace(
+			'/-{2,}/', '-',
+			$Output
+		);
+
+		return $Output;
 	}
 
 	static public function

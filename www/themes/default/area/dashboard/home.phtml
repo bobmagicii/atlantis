@@ -2,7 +2,7 @@
 
 /**
  * @var Atlantis\Struct\SearchResult $Blogs
- * @var Atlantis\Prototype\BlogUser $Blog
+ * @var Atlantis\Prototype\Blog $BlogUser
  * */
 
 ?>
@@ -12,12 +12,27 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-8 mb-6">
-			<?php
-			echo (new Atlantis\Element\BlogListing)
-			->AddClasses('mb-6')
-			->SetTitle('Your Blogs')
-			->SetItemStore($Blogs->Payload);
-			?>
+			<h2>Your Blogs</h2>
+			<?php foreach($Blogs->Payload as $Blog): ?>
+			<div class="row align-items-center tight mb-2">
+				<div class="col-auto">
+					<a href="<?php echo $Blog->Blog->URL ?>" class="font-size-large font-weight-bold"><?php echo $Blog->Blog->Title ?></a>
+				</div>
+				<div class="col">
+				</div>
+				<div class="col-auto">
+					<a href="<?php echo $Blog->Blog->URL ?>" class="btn btn-secondary text-uppercase">Read</a>
+				</div>
+				<div class="col-auto">
+					<a href="#" class="btn btn-dark text-uppercase">Manage</a>
+				</div>
+			</div>
+			<?php endforeach; ?>
+			<?php if(!$Blogs->Total): ?>
+			<div class="p-4 text-center">
+				You have not created any blogs yet.
+			</div>
+			<?php endif; ?>
 		</div>
 		<div class="col-md-4 mb-6">
 			<h2>Blogging</h2>

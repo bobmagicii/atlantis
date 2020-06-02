@@ -2,7 +2,9 @@
 
 namespace Routes\Api\V1;
 
-use \Atlantis as Atlantis;
+use
+\Atlantis as Atlantis,
+\Nether as Nether;
 
 class Blog
 extends Atlantis\Site\ProtectedAPI {
@@ -46,6 +48,59 @@ extends Atlantis\Site\ProtectedAPI {
 	final public function
 	EntityPost():
 	Void {
+
+		($this->Post)
+		->Title('Atlantis\Util\Filters::EncodedText')
+		->Alias('Atlantis\Util\Filters::RouteSafeAlias');
+
+		$Blog = NULL;
+		$BlogUser = NULL;
+		$DB = Nether\Database::Get();
+		$Title = $this->Post->Title;
+		$Alias = $this->Post->Alias;
+
+		if(!$Title)
+		$this->Quit(1,'Blog must have a title.');
+
+		if(!$Alias)
+		$this->Quit(2,'Blog must have a link alias.');
+
+		if($Blog = Atlantis\Prototype\Blog::GetByAlias($Alias))
+		$this->Quit(3,'A blog with this URL already exists.');
+
+		////////
+
+		$DB->Begin();
+
+		$Blog = Atlantis\Prototype\Blog::Insert([
+			'Title'  => $Title,
+			'Alias'  => $Alias,
+			'UserID' => $this->User->ID
+		]);
+
+		if(!$Blog) {
+			$DB->Rollback();
+			$this->Quit(100,'There was problem creating the blog.');
+		}
+
+		////////
+
+		$BlogUser = Atlantis\Prototype\BlogUser::Insert([
+			'BlogID' => $Blog->ID,
+			'UserID' => $this->User->ID,
+			'Flags'  => Atlantis\Prototype\BlogUser::FlagOwner
+		]);
+
+		if(!$BlogUser) {
+			$DB->Rollback();
+			$this->Quit(101,'There was problem creating the blog ownership.');
+		}
+
+		$DB->Commit();
+
+		$this
+		->SetLocation($Blog->URL)
+		->SetPayload($Blog);
 
 		return;
 	}

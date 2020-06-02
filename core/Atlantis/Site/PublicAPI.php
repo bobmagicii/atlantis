@@ -16,7 +16,8 @@ extends PublicWeb {
 //*/
 
 	const
-	ErrMethodNotFound = -100;
+	ErrMethodNotFound = -100,
+	ErrForbidden = -101;
 
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
@@ -82,6 +83,49 @@ extends PublicWeb {
 
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
+
+	protected function
+	RequireUserSession():
+	Void {
+	/*//
+	@date 2020-06-01
+	provide a method to force a user session being required.
+	//*/
+
+		if($this->User)
+		return;
+
+		($this)
+		->SetLocation(Atlantis\Site\Endpoint::Get('Atlantis.Login'))
+		->Quit(
+			static::ErrForbidden,
+			'This endpoint requires a user session.'
+		);
+
+		return;
+	}
+
+
+	protected function
+	RequireAdminSession():
+	Void {
+	/*//
+	@date 2020-06-01
+	provide a method to force a user session being required.
+	//*/
+
+		if($this->User && $this->User->IsAdmin())
+		return;
+
+		($this)
+		->SetLocation(Atlantis\Site\Endpoint::Get('Atlantis.Login'))
+		->Quit(
+			static::ErrForbidden,
+			'This endpoint requires an admin session.'
+		);
+
+		return;
+	}
 
 	protected function
 	SetLocation(String $Input):

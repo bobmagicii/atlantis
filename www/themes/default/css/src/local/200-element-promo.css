@@ -23,6 +23,7 @@ given an image to display to art shit up.
 .Promo a:link,
 .Promo a:visited {
 	color: #eee;
+	border: 0px;
 }
 
 .Promo a:active,

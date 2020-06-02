@@ -51,7 +51,7 @@ implements JsonSerializable {
 
 	// extension fields.
 
-	public String $URL;
+	public ?String $URL;
 	public ?Atlantis\User $User;
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
@@ -183,7 +183,7 @@ implements JsonSerializable {
 
 	public function
 	GetURL():
-	Atlantis\Site\Endpoint {
+	?Atlantis\Site\Endpoint {
 	/*//
 	@date 2017-03-02
 	get the url to view this blog post.

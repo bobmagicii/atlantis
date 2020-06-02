@@ -1,0 +1,16 @@
+
+.jumbotron {
+	background: #222;
+	color: #eee;
+}
+
+.jumbotron a:link,
+.jumbotron a:visited,
+.jumbotron .active {
+	color: #eee;
+}
+
+.jumbotron a:link,
+.jumbotron a:visited {
+	border-bottom: 1px dotted #eee;
+}

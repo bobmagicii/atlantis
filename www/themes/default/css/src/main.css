@@ -21,6 +21,7 @@ body {
 
 a:link:not(.btn),
 a:visited:not(.btn) {
+	border-bottom: 2px dotted #444;
 	color: #444;
 	text-decoration: none;
 }

@@ -22,6 +22,9 @@ Nether\Option::Define([
 class User
 extends Nether\Object\Mapped {
 
+	const
+	AdminTypeGlobal = 0b00000001;
+
 	static public
 	$PropertyMap = [
 		'ID'          => 'ID:int',
@@ -29,6 +32,7 @@ extends Nether\Object\Mapped {
 		'TimeSeen'    => 'TimeSeen:int',
 		'TimeBanned'  => 'TimeBanned:int',
 		'Enabled'     => 'Enabled:int',
+		'Admin'       => 'Admin:int',
 		'UUID'        => 'UUID',
 		'Alias'       => 'Alias',
 		'Email'       => 'Email',
@@ -154,6 +158,19 @@ extends Nether\Object\Mapped {
 	//*/
 
 		return (hash('sha512',$Password) === $this->PHash);
+	}
+
+	public function
+	IsAdmin(Int $Flags=1):
+	Bool {
+	/*//
+	@date 2020-06-02
+	//*/
+
+		if(($this->Admin & $Flags) === $Flags)
+		return TRUE;
+
+		return FALSE;
 	}
 
 	////////////////////////////////////////////////////////////////
@@ -525,7 +542,7 @@ extends Nether\Object\Mapped {
 	}
 
 	static protected function
-	Create_ValidateAlias($Opt):
+	Insert_ValidateAlias($Opt):
 	Void {
 	/*//
 	@date 2017-02-08
@@ -545,7 +562,7 @@ extends Nether\Object\Mapped {
 	}
 
 	static protected function
-	Create_ValidateEmail($Opt):
+	Insert_ValidateEmail($Opt):
 	Void {
 	/*//
 	@date 2017-02-08
@@ -565,7 +582,7 @@ extends Nether\Object\Mapped {
 	}
 
 	static protected function
-	Create_ValidatePassword($Opt):
+	Insert_ValidatePassword($Opt):
 	Void {
 	/*//
 	@date 2017-02-08

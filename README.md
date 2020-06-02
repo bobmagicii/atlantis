@@ -37,6 +37,8 @@ I still use Apache. It will run fine on other things but you'll have to use your
 
 4) `$ composer install`
 
+5) Look at `www/.htaccess` - in particular two sections marked `Force Remove WWW` and `Force Add WWW` - you will/may need to toggle these sections on or off depending on your needs. My demo project forces the WWW off by default to make URLs that much shorter. Only turn one of these two sections on at a time or you'll have a loop. You may also turn them both off if you want.
+
 ## Database
 
 1) Copy `conf/database.conf.dist` to `conf/database.conf.php` and edit its values.

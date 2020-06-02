@@ -26,10 +26,12 @@ extends Atlantis\Site\PublicWeb {
 	HandleJoin():
 	Void {
 
-		$this->Errors->Push(new InlineError([
-			'Message' => 'Not yet friend, still greenfielding this project.'
-		]));
-		return;
+		if($this->Post->Email !== 'bob@pegasusgate.net') {
+			$this->Errors->Push(new InlineError([
+				'Message' => 'Not yet friend, still greenfielding this project.'
+			]));
+			return;
+		}
 
 		// check if they can fool google into believing they are real.
 

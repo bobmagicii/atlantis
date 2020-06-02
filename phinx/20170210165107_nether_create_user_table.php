@@ -19,6 +19,7 @@ extends AbstractMigration {
 				`TimeSeen` BIGINT NOT NULL DEFAULT '0' COMMENT 'TimeSeen - unix time account was last used',
 				`TimeBanned` BIGINT NOT NULL DEFAULT '0' COMMENT 'TimeBanned - unix time account was banned from login',
 				`Enabled` TINYINT(1) NOT NULL DEFAULT 1,
+				`Admin` INT NOT NULL DEFAULT 0,
 				`UUID` VARCHAR(36) DEFAULT NULL,
 				`Alias` VARCHAR(16) NOT NULL DEFAULT '0' COMMENT 'Alias - aka username',
 				`Email` VARCHAR(64) NOT NULL DEFAULT '0' COMMENT 'Email - durr',

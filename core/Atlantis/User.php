@@ -15,7 +15,7 @@ extends Nether\Auth\User
 implements JsonSerializable {
 
 	public
-	String $URL;
+	?String $URL;
 
 	public function
 	__Construct($Input, Bool $MakeSafer=FALSE) {
@@ -81,7 +81,7 @@ implements JsonSerializable {
 
 	public function
 	GetURL():
-	Atlantis\Site\Endpoint {
+	?Atlantis\Site\Endpoint {
 	/*//
 	@date 2017-03-02
 	get the url to view this blog post.
@@ -120,5 +120,191 @@ implements JsonSerializable {
 
 		return;
 	}
+
+	static protected function
+	FindExtendOptions($Opt):
+	Array {
+	/*//
+	@date 2018-06-08
+	//*/
+
+		return [];
+	}
+
+	static protected function
+	FindApplyFilters($Opt,$SQL):
+	Void {
+	/*//
+	@date 2018-06-08
+	//*/
+
+		return;
+	}
+
+	static protected function
+	FindApplySorts($Opt,$SQL):
+	Void {
+	/*//
+	@date 2018-06-08
+	//*/
+
+		return;
+	}
+
+
+	static public function
+	Find($Opt=NULL):
+	Atlantis\Struct\SearchResult {
+	/*//
+	@date 2018-06-08
+	//*/
+
+		$DB = Nether\Database::Get();
+		$SQL = $DB->NewVerse();
+		$Result = NULL;
+		$Row = NULL;
+		$Dataset = NULL;
+		$Output = new Atlantis\Struct\SearchResult;
+
+		$BasicOpts = [
+			'Pagination'           => TRUE,
+			'ID'                   => NULL,
+			'Page'                 => 1,
+			'Limit'                => 20,
+			'Sort'                 => 'newest',
+			'Quick'                => FALSE,
+			'AfterID'              => FALSE,
+			'BeforeID'             => FALSE,
+			'CustomFilterFunc'     => NULL,
+			'CustomSortFunc'       => NULL,
+			'ExtendJoinTables'     => TRUE,
+			'ExtendSelectFields'   => TRUE,
+			'DebugResult'          => FALSE
+		];
+
+		////////
+
+		// prepare options.
+
+		$Opt = new Nether\Object\Mapped($Opt,array_merge(
+			$BasicOpts,
+			static::FindExtendOptions($Opt)
+		));
+
+		// quick searches.
+		// disable pagination and set the limit.
+
+		if($Opt->Quick !== FALSE) {
+			$Opt->Pagination = FALSE;
+
+			if(is_int($Opt->Quick))
+			$Opt->Limit = 1;
+		}
+
+		// calculate pagination.
+
+		$Opt->Offset = ($Opt->Page - 1) * $Opt->Limit;
+
+		////////
+
+		// prepare filters.
+
+		$SQL->Select(sprintf('%s Main','Users'));
+
+		// prepare pagination.
+
+		if($Opt->Pagination)
+		$SQL->Fields('SQL_CALC_FOUND_ROWS Main.*');
+		else
+		$SQL->Fields('Main.*');
+
+		if($Opt->Limit) {
+			$SQL->Offset($Opt->Offset);
+			$SQL->Limit($Opt->Limit);
+		}
+
+		// filter by object id.
+
+		if($Opt->ID !== NULL) {
+			if(is_array($Opt->ID)) {
+				if(count($Opt->ID))
+				$SQL->Where('Main.ID IN(:ID)');
+				else
+				$SQL->Where('Main.ID = -42');
+			}
+			elseif(is_numeric($Opt->ID)) {
+				$SQL->Where(sprintf(
+					'Main.%s=:ID',
+					'ID'
+				));
+			}
+		}
+
+		if($Opt->ExtendJoinTables || $Opt->ExtendSelectFields)
+		static::ExtendQueryJoins($SQL);
+
+		if($Opt->ExtendSelectFields)
+		static::ExtendQueryFields($SQL);
+
+		static::FindApplyFilters($Opt,$SQL);
+
+		if(is_callable($Opt->CustomFilterFunc))
+		($Opt->CustomFilterFunc)($Opt,$SQL);
+
+		////////
+
+		// prepare sorts.
+
+		switch($Opt->Sort) {
+			case 'newest':
+				$SQL->Sort(sprintf('Main.%s','ID'),$SQL::SortDesc);
+			break;
+			case 'oldest':
+				$SQL->Sort(sprintf('Main.%s','ID'),$SQL::SortAsc);
+			break;
+			case 'newest-real':
+				$SQL->Sort(sprintf('Main.%s','TimeCreated'),$SQL::SortDesc);
+			break;
+			case 'oldest-real':
+				$SQL->Sort(sprintf('Main.%s','TimeCreated'),$SQL::SortAsc);
+			break;
+			case 'random':
+				$SQL->Sort('RAND()');
+			break;
+			default:
+				static::FindApplySorts($Opt,$SQL);
+			break;
+		}
+
+		if(is_callable($Opt->CustomSortFunc))
+		($Opt->CustomSortFunc)($Opt,$SQL);
+
+		////////
+
+		$Result = $SQL->Query($Opt);
+
+		if($Opt->DebugResult)
+		Atlantis\Util::VarDump($Result);
+
+		if(!$Result->IsOK())
+		throw new Atlantis\Error\DatabaseQueryError($Result);
+
+		$Found = (Int)$DB->Query('SELECT FOUND_ROWS() AS Found')
+		->Next()
+		->Found;
+
+		////////
+
+		while($Row = $Result->Next())
+		$Output->Payload->Push(new static($Row));
+
+		$Output->Count = count($Output->Payload);
+		$Output->Page = $Opt->Page;
+		$Output->Limit = $Opt->Limit;
+		$Output->Total = $Found;
+
+		return $Output;
+	}
+
 
 }

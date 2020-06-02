@@ -16,9 +16,6 @@ $Blogs = $Element->GetItemStore();
 	<div class="Post">
 		<h3><a href="<?php $Printer($Blog->GetURL()) ?>"><?php $Printer($Blog->Title) ?></a></h3>
 		<div class="About">
-			Posted on <a class="Date" href="<?php echo $Post->URL ?>"><?php echo $Post->DateCreated->Format('F jS g:ia') ?></a>
-			From <a class="Source" href="<?php echo $Post->Blog->URL ?>"><?php echo $Post->Blog->Title ?></a>
-			By <a class="Authour" href="<?php echo $Post->User->URL ?>"><?php echo $Post->User->Alias ?></a>
 		</div>
 	</div>
 	<?php endforeach; ?>

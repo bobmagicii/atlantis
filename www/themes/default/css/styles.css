@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-06-01 02:42:22
+@date 2020-06-02 01:30:10
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -9,7 +9,8 @@
     "src\/local\/200-error-tray.css",
     "src\/local\/500-bootstrap-ext.css",
     "src\/local\/500-misc.css",
-    "src\/local\/900-bootstrap-breadcrumb.css"
+    "src\/local\/900-bootstrap-breadcrumb.css",
+    "src\/local\/900-bootstrap-jumbotron.css"
 ]
 //*/
 
@@ -36,6 +37,7 @@ body {
 
 a:link:not(.btn),
 a:visited:not(.btn) {
+	border-bottom: 2px dotted #444;
 	color: #444;
 	text-decoration: none;
 }
@@ -170,16 +172,18 @@ body > header * {
 body > header a:link,
 body > header a:visited {
 	color: #000 !important;
+	border: 0px !important;
 }
 
 body > header a:active,
 body > header a:hover {
 	color: #888 !important;
+	border: 0px !important;
 }
 
 body > header > .container {
-	padding-top: 20px;
-	padding-bottom: 20px;
+	padding-top: 12px;
+	padding-bottom: 12px;
 }
 
 body > header h1 {
@@ -212,6 +216,11 @@ body > header.Open a.MenuBtn .fa {
 	transform:  rotate(450deg) scale(1.25);
 	transform-origin: 50% 50%;
 	transition: transform 0.60s;
+}
+
+body > header a {
+	display: block;
+	padding: 8px 0px;
 }
 
 @media(max-width:768px) {
@@ -294,6 +303,7 @@ given an image to display to art shit up.
 .Promo a:link,
 .Promo a:visited {
 	color: #eee;
+	border: 0px;
 }
 
 .Promo a:active,
@@ -426,6 +436,22 @@ given an image to display to art shit up.
 
 .breadcrumb a:link,
 .breadcrumb a:visited {
+	border-bottom: 1px dotted #eee;
+}
+
+.jumbotron {
+	background: #222;
+	color: #eee;
+}
+
+.jumbotron a:link,
+.jumbotron a:visited,
+.jumbotron .active {
+	color: #eee;
+}
+
+.jumbotron a:link,
+.jumbotron a:visited {
 	border-bottom: 1px dotted #eee;
 }
 

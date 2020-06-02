@@ -13,28 +13,30 @@
 
 	<h2 class="font-size-large font-weight-bold">Blog Title</h2>
 	<div class="form-text mb-2">Give your blog a clever name that will relate the type of content you intend to post.</div>
-	<div class="form-group mb-4">
+	<div class="form-group mb-1">
 		<input autocomplete="off" id="Title" type="text" class="form-control text-size-large " placeholder="..." />
 	</div>
+	<div id="ErrorTitle" class="ErrorZone mb-4"></div>
 
 	<h2 class="font-size-large font-weight-bold">Blog URL</h2>
-	<div class="form-text mb-2">This is the link your blog will have. It is auto generated from your blog title, but you can customize it if you wish. It is always good to try and make this as short as possible.</div>
+	<div class="form-text mb-2">This is the link your blog will have. It is auto generated from your blog title, but you can customize it if you wish.</div>
 	<div class="form-group row tight align-items-center mb-4">
-		<div class="col-auto text-size-large font-family-code">
+		<div class="col-auto mb-1 text-size-large font-family-code">
 			<?php echo $Router->GetDomain() ?>
 		</div>
-		<div class="col-auto text-size-large font-family-code">
+		<div class="col-auto mb-1 text-size-large font-family-code">
 			/
 		</div>
-		<div class="col-auto text-size-large font-family-code">
+		<div class="col-auto mb-1 text-size-large font-family-code">
 			+
 		</div>
-		<div class="col">
+		<div class="col mb-1">
 			<input autocomplete="off" id="Alias" type="text" class="text-size-large form-control-plaintext font-family-code" placeholder="..." readonly />
 		</div>
-		<div class="col-auto">
-			<button id="CmdAlias" class="btn btn-secondary">Customize Link</button>
+		<div class="col-12 col-md-auto">
+			<button id="CmdAlias" class="btn btn-block btn-secondary">Customize Link</button>
 		</div>
+		<div id="ErrorAlias" class="col-12 mt-1 ErrorZone"></div>
 	</div>
 
 	<div class="text-center">
@@ -48,50 +50,126 @@ jQuery(document)
 .ready(function(){
 
 	let Mode = 1;
+	let TimerAlias = null;
+	let InputTitle = jQuery('#Title');
+	let InputAlias = jQuery('#Alias');
+	let CmdAlias = jQuery('#CmdAlias');
+	let CmdCreate = jQuery('#CmdCreate');
+	let ErrorTitle = jQuery('#ErrorTitle');
+	let ErrorAlias = jQuery('#ErrorAlias');
 
 	let EmulateServerSideAlias = function(Input) {
 		// emulate how the server will transform it so we
 		// can show what it will be without asking what it
 		// will be every time.
 
-		return (Input)
+		return jQuery.trim((Input)
 		.toLowerCase()
-		.replace(/[^a-z0-9\x20-]/g,'')
+		.replace(/[^a-z0-9\x20\-]/g,'')
 		.replace(/ /g,'-')
-		.substr(0,64);
+		.replace(/-{2,}/g,'-')
+		.substr(0,64));
 	};
 
-	let HandleAliasExists = function(Result) {
+	let TriggerAliasCheck = function(){
+		if(TimerAlias)
+		clearTimeout(TimerAlias);
 
-		jQuery('#Alias')
-		.addClass('is-invalid');
+		TimerAlias = setTimeout(CheckAliasExists,300);
+		return;
+	};
 
-		jQuery('#CmdAlias')
-		.trigger('click');
+	let CheckAliasExists = function(){
+
+		Atlantis.Request({
+			'Method': 'GET',
+			'URL': '<?php echo $Endpoint('Atlantis.API.Blog',['Command'=>'entity']) ?>',
+			'Data': { 'Alias': EmulateServerSideAlias(InputAlias.val()) },
+			'OnSuccess': function(Result){
+				// in this case, a success is always a failure.
+				HandleAliasExists();
+				return;
+			},
+			'OnError': function(Result){
+				// in this case, an error might be a success.
+				if(Result.Error === 1) {
+					ErrorAlias.empty();
+				}
+				return;
+			}
+		});
 
 		return;
 	};
 
-	let HandleTitleLength = function(Result) {
+	let HandleAliasExists = function() {
 
-		jQuery('#Title')
-		.addClass('is-invalid');
+		InputAlias.addClass('is-invalid');
+
+		ErrorAlias
+		.empty()
+		.append(
+			jQuery('<div />')
+			.addClass('alert alert-danger')
+			.text('A blog with this URL already exists. Please choose another by clicking the Customize Link button.')
+		);
 
 		return;
 	};
 
-	let HandleAliasLength = function(Result) {
+	let HandleTitleLength = function() {
 
-		jQuery('#Alias')
-		.addClass('is-invalid');
+		InputAlias.addClass('is-invalid');
 
-		jQuery('#CmdAlias')
-		.trigger('click');
+		ErrorTitle
+		.empty()
+		.append(
+			jQuery('<div />')
+			.addClass('alert alert-danger')
+			.text('Your blog needs to have a title.')
+		);
+
+		return;
+	};
+
+	let HandleAliasLength = function() {
+
+		InputAlias.addClass('is-invalid');
+
+		ErrorAlias
+		.empty()
+		.append(
+			jQuery('<div />')
+			.addClass('alert alert-danger')
+			.text('Your blog needs to have a link alias.')
+		);
 
 		return;
 	};
 
 	let HandleBlogCreate = function(Title,Alias) {
+
+		Atlantis.Request({
+			'Method': 'POST',
+			'URL': '<?php echo $Endpoint('Atlantis.API.Blog',['Command'=>'entity']) ?>',
+			'Data': { 'Title': Title, 'Alias': Alias },
+			'OnSuccess': function(Result){
+
+				location.href = Result.Location;
+				return;
+			},
+			'OnError': function(Result) {
+
+				switch(Result.Error) {
+					case 1: return HandleTitleLength();
+					case 2: return HandleAliasLength();
+					case 3: return HandleAliasExists();
+				}
+
+				alert(Result.Error + ': ' + Result.Message);
+				return;
+			}
+		});
 
 		return;
 	};
@@ -101,12 +179,15 @@ jQuery(document)
 		let Title = jQuery(this).val();
 		let Alias = Title;
 
-		jQuery(this).removeClass('is-invalid');
+		jQuery(this)
+		.removeClass('is-invalid');
 
 		if(Mode === 1) {
 			jQuery('#Alias')
 			.removeClass('is-invalid')
 			.val(EmulateServerSideAlias(Alias));
+
+			TriggerAliasCheck();
 			return;
 		}
 
@@ -117,11 +198,14 @@ jQuery(document)
 	.on('keyup',function(){
 		let Alias = jQuery(this).val();
 
-		jQuery(this).removeClass('is-invalid');
+		jQuery(this)
+		.removeClass('is-invalid');
 
 		if(Mode === 0) {
 			jQuery('#Alias')
 			.val(EmulateServerSideAlias(Alias));
+
+			TriggerAliasCheck();
 			return;
 		}
 
@@ -158,41 +242,11 @@ jQuery(document)
 	jQuery('#CmdCreate')
 	.on('click',function(){
 
-		let Title = jQuery.trim(jQuery('#Title').val());
-		let Alias = jQuery.trim(jQuery('#Alias').val());
+		let Title = jQuery.trim(InputTitle.val());
+		let Alias = jQuery.trim(InputAlias.val());
+		jQuery('.ErrorZone').empty();
 
-		if(Title.length < 1) {
-			HandleTitleLength();
-			return;
-		}
-
-		if(Alias.length < 1) {
-			HandleAliasLength();
-			return;
-		}
-
-		Atlantis.Request({
-			'Method': 'GET',
-			'URL': '<?php echo $Endpoint('Atlantis.API.Blog',['Command'=>'entity']) ?>',
-			'Data': { 'Alias': Alias },
-			'OnSuccess': function(Result){
-				// a success is always an error here.
-				HandleAliasExists(Result);
-				return;
-			},
-			'OnError': function(Result) {
-				// an error is potentially a success.
-
-				if(Result.Error === 1) {
-					HandleBlogCreate(Title,Alias);
-					return;
-				}
-
-				alert(Result.Error + ': ' + Result.Message);
-				return;
-			}
-		})
-
+		HandleBlogCreate(Title,Alias);
 		return;
 	});
 

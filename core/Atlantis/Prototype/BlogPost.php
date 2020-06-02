@@ -50,7 +50,7 @@ extends Atlantis\Prototype {
 
 	public ?Atlantis\Prototype\Blog $Blog;
 	public ?Atlantis\User $User;
-	public String $URL;
+	public ?String $URL;
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
 
@@ -132,7 +132,7 @@ extends Atlantis\Prototype {
 
 	public function
 	GetURL():
-	Atlantis\Site\Endpoint {
+	?Atlantis\Site\Endpoint {
 	/*//
 	@date 2017-03-02
 	get the url to view this blog post.
