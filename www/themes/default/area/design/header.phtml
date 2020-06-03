@@ -41,25 +41,27 @@ jQuery(document)
 			<div class="col-12 col-md-auto">
 				<nav>
 					<div class="row">
+						<div class="col-12 col-md-auto">
+							<a href="<?php echo $Endpoint('Atlantis.Home') ?>">Home</a>
+						</div>
 						<?php if(!$User): ?>
 						<div class="col-12 col-md-auto">
-							<a href="/">Home</a>
+							<a href="<?php echo $Endpoint('Atlantis.Login') ?>">Log In</a>
 						</div>
 						<div class="col-12 col-md-auto">
-							<a href="/login">Log In</a>
-						</div>
-						<div class="col-12 col-md-auto">
-							<a href="/join">Join</a>
+							<a href="<?php echo $Endpoint('Atlantis.Join') ?>">Join</a>
 						</div>
 						<?php else: ?>
 						<div class="col-12 col-md-auto">
-							<a href="/">Home</a>
+							<a href="<?php echo $Endpoint('Atlantis.Dashboard.Home') ?>">Dashboard</a>
 						</div>
+						<?php if($User && $User->IsAdmin()): ?>
 						<div class="col-12 col-md-auto">
-							<a href="/dashboard">Dashboard</a>
+							<a href="<?php echo $Endpoint('Atlantis.Admin.Home') ?>">Ops</a>
 						</div>
+						<?php endif; ?>
 						<div class="col-12 col-md-auto">
-							<a href="/logout">Log Out</a>
+							<a href="<?php echo $Endpoint('Atlantis.Logout') ?>">Log Out</a>
 						</div>
 						<?php endif; ?>
 					</div>

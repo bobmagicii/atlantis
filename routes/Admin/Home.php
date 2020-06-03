@@ -15,26 +15,35 @@ extends Atlantis\Site\PrivateWeb {
 		$this
 		->Set('Page.Title','Admin')
 		->Area('admin/home',[
-			'BlogCount'   => $this->GetBlogCount(),
-			'PostCount'   => $this->GetPostCount(),
-			'UsersRecent' => $this->GetRecentUsers()
+			'BlogsRecent'  => $this->GetRecentBlogs(),
+			'PostsRecent'  => $this->GetRecentPosts(),
+			'PostsPopular' => $this->GetPopularPosts(),
+			'UsersRecent'  => $this->GetRecentUsers()
 		]);
 
 		return;
 	}
 
 	public function
-	GetBlogCount():
-	Int {
+	GetRecentBlogs():
+	Atlantis\Struct\SearchResult {
 
-		return 0;
+		return Atlantis\Prototype\Blog::Find([
+			'Limit' => 10,
+			'Page'  => 1,
+			'Sort'  => 'newest'
+		]);
 	}
 
 	public function
-	GetPostCount():
-	Int {
+	GetRecentPosts():
+	Atlantis\Struct\SearchResult {
 
-		return 0;
+		return Atlantis\Prototype\BlogPost::Find([
+			'Limit' => 10,
+			'Page'  => 1,
+			'Sort'  => 'newest'
+		]);
 	}
 
 	public function
@@ -46,6 +55,19 @@ extends Atlantis\Site\PrivateWeb {
 			'Page'  => 1,
 			'Sort'  => 'newest'
 		]);
+	}
+
+	protected function
+	GetPopularPosts():
+	Atlantis\Struct\SearchResult {
+
+		$Output = Atlantis\Prototype\LogBlogPostTraffic::FindPopularPosts([
+			'Limit'     => 10,
+			'Page'      => 1,
+			'Timeframe' => strtotime('-30 days')
+		]);
+
+		return $Output;
 	}
 
 }

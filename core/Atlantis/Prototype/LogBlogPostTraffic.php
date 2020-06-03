@@ -71,9 +71,9 @@ implements Atlantis\Packages\Upsertable {
 
 		$SQL
 		->Select('LogBlogPostTraffic Log')
-		->Join('BlogPosts BP ON Log.PostID=BP.ID')
-		->Join('Blogs BL ON BP.BlogID=BP.BlogID')
-		->Join('Users PU ON BP.UserID=PU.ID')
+		->Join('BlogPosts BP ON BP.ID=Log.PostID')
+		->Join('Blogs BL ON BL.ID=BP.BlogID')
+		->Join('Users PU ON PU.ID=BP.UserID')
 		->Fields('COUNT(*) AS Views')
 		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
 			Atlantis\Prototype\BlogPost::GetPropertyMap(),
@@ -106,6 +106,8 @@ implements Atlantis\Packages\Upsertable {
 		$SQL->Where('Log.Time >= :Timeframe');
 
 		////////
+
+		//Atlantis\Util::VarDump((String)$SQL);
 
 		$Result = $SQL->Query($Opt);
 

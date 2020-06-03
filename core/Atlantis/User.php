@@ -17,6 +17,15 @@ implements JsonSerializable {
 	public
 	?String $URL;
 
+	public
+	Atlantis\Util\Date $DateCreated;
+
+	public
+	Atlantis\Util\Date $DateSeen;
+
+	public
+	Atlantis\Util\Date $DateBanned;
+
 	public function
 	__Construct($Input, Bool $MakeSafer=FALSE) {
 
@@ -32,6 +41,11 @@ implements JsonSerializable {
 		}
 
 		parent::__Construct($Input);
+
+		$this->DateCreated = new Atlantis\Util\Date("@{$this->TimeCreated}");
+		$this->DateSeen = new Atlantis\Util\Date("@{$this->TimeSeen}");
+		$this->DateBanned = new Atlantis\Util\Date("@{$this->TimeBanned}");
+
 		return;
 	}
 
