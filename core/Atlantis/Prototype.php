@@ -259,29 +259,38 @@ namespace.
 	@date 2018-06-08
 	//*/
 
+		$Output = new Atlantis\Struct\SearchResult;
 		$DB = Nether\Database::Get();
 		$SQL = $DB->NewVerse();
 		$Result = NULL;
 		$Row = NULL;
-		$Dataset = NULL;
-		$Output = new Atlantis\Struct\SearchResult;
 
 		$BasicOpts = [
-			'Pagination'           => TRUE,
 			'ID'                   => NULL,
+			'AfterID'              => FALSE,
+			'BeforeID'             => FALSE,
 			'UserID'               => 0,
 			'Enabled'              => TRUE,
 			'Page'                 => 1,
 			'Limit'                => 20,
 			'Sort'                 => 'newest',
-			'Quick'                => FALSE,
-			'AfterID'              => FALSE,
-			'BeforeID'             => FALSE,
 			'CustomFilterFunc'     => NULL,
 			'CustomSortFunc'       => NULL,
+
+			// short circuit as many things needed to make the query as fast
+			// as possible. mainly only used if you are are just looking
+			// for a count of rows that match some criteria.
+			'Quick'                => FALSE,
+
+			// toggle pagination support on or off.
+			'Pagination'           => TRUE,
+
+			// if true the result object will get dumped out.
+			'DebugResult'          => FALSE,
+
+			// toggle table extensions.
 			'ExtendJoinTables'     => TRUE,
-			'ExtendSelectFields'   => TRUE,
-			'DebugResult'          => FALSE
+			'ExtendSelectFields'   => TRUE
 		];
 
 		////////
@@ -293,23 +302,17 @@ namespace.
 			static::FindExtendOptions($Opt)
 		));
 
-		// quick searches.
-		// disable pagination and set the limit.
+		$Opt->Offset = ($Opt->Page - 1) * $Opt->Limit;
+
+		// quick mode short circuit
 
 		if($Opt->Quick !== FALSE) {
 			$Opt->Pagination = FALSE;
-
-			if(is_int($Opt->Quick))
+			$Opt->Page = 1;
 			$Opt->Limit = 1;
 		}
 
-		// calculate pagination.
-
-		$Opt->Offset = ($Opt->Page - 1) * $Opt->Limit;
-
-		////////
-
-		// prepare filters.
+		// preare table selection.
 
 		$SQL->Select(sprintf('%s Main',static::$Table));
 
@@ -317,6 +320,7 @@ namespace.
 
 		if($Opt->Pagination)
 		$SQL->Fields('SQL_CALC_FOUND_ROWS Main.*');
+
 		else
 		$SQL->Fields('Main.*');
 
@@ -325,15 +329,31 @@ namespace.
 			$SQL->Limit($Opt->Limit);
 		}
 
-		// filter by object id.
+		// prepare table extensions.
+
+		if($Opt->ExtendJoinTables || $Opt->ExtendSelectFields)
+		static::ExtendQueryJoins($SQL);
+
+		if($Opt->ExtendSelectFields)
+		static::ExtendQueryFields($SQL);
+
+		// filter by an object id or a list of object ids.
 
 		if($Opt->ID !== NULL) {
 			if(is_array($Opt->ID)) {
 				if(count($Opt->ID))
-				$SQL->Where('Main.ID IN(:ID)');
+				$SQL->Where(sprintf(
+					'Main.%s IN(:ID)',
+					static::$IDField
+				));
+
 				else
-				$SQL->Where('Main.ID = -42');
+				$SQL->Where(sprintf(
+					'Main.%s = -42',
+					static::$IDField
+				));
 			}
+
 			elseif(is_numeric($Opt->ID)) {
 				$SQL->Where(sprintf(
 					'Main.%s=:ID',
@@ -342,38 +362,31 @@ namespace.
 			}
 		}
 
-		if($Opt->AfterID) {
-			$SQL
-			->Where('Main.ID>:AfterID')
-			->Sort('Main.ID',$SQL::SortAsc);
-		}
+		// fetch objects that were inserted adjacent to these ones.
+		// currently depends on an auto incrementing pk.
 
-		elseif($Opt->BeforeID) {
-			$SQL
-			->Where('Main.ID<:BeforeID')
-			->Sort('Main.ID',$SQL::SortDesc);
-		}
+		if($Opt->AfterID) ($SQL)
+		->Where(sprintf('Main.%s > :AfterID',static::$IDField))
+		->Sort(sprintf('Main.%s',static::$IDField),$SQL::SortAsc);
 
-		// filter by owner id.
+		elseif($Opt->BeforeID) ($SQL)
+		->Where(sprintf('Main.%s < :BeforeID',static::$IDField))
+		->Sort(sprintf('Main.%s',static::$IDField),$SQL::SortDesc);
 
-		if($Opt->UserID) {
-			$SQL->Where('Main.UserID=:UserID');
-		}
+		// filter by the owner of the object.
+
+		if($Opt->UserID)
+		$SQL->Where('Main.UserID = :UserID');
 
 		// filter by the enabled status of the object.
 
 		if($Opt->Enabled !== NULL) {
 			if(is_bool($Opt->Enabled)) {
-				if($Opt->Enabled) {
-					if(property_exists($Opt,'IncludeOwned') && $Opt->IncludeOwned)
-					$SQL->Where('(Main.Enabled=1 || Main.UserID=:IncludeOwned)');
-					else
-					$SQL->Where('Main.Enabled=1');
-				}
+				if($Opt->Enabled)
+				$SQL->Where('Main.Enabled=1');
 
-				else {
-					$SQL->Where('Main.Enabled=0');
-				}
+				else
+				$SQL->Where('Main.Enabled=0');
 			}
 
 			elseif(is_int($Opt->Enabled)) {
@@ -381,11 +394,7 @@ namespace.
 			}
 		}
 
-		if($Opt->ExtendJoinTables || $Opt->ExtendSelectFields)
-		static::ExtendQueryJoins($SQL);
-
-		if($Opt->ExtendSelectFields)
-		static::ExtendQueryFields($SQL);
+		// allow subclasses to provide additional filters.
 
 		static::FindApplyFilters($Opt,$SQL);
 
@@ -430,9 +439,12 @@ namespace.
 		if(!$Result->IsOK())
 		throw new Atlantis\Error\DatabaseQueryError($Result);
 
-		$Found = (Int)$DB->Query('SELECT FOUND_ROWS() AS Found')
-		->Next()
-		->Found;
+		$Found = (Int)(
+			$DB
+			->Query('SELECT FOUND_ROWS() AS Found')
+			->Next()
+			->Found
+		);
 
 		////////
 

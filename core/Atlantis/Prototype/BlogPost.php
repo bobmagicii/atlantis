@@ -268,11 +268,13 @@ extends Atlantis\Prototype {
 		$Opt = new Nether\Object\Mapped($Opt,[
 			'BlogID'      => 0,
 			'UserID'      => 0,
-			'TimeCreated' => time(),
-			'TimeUpdated' => time(),
 			'Title'       => NULL,
 			'Alias'       => NULL,
 			'Content'     => NULL,
+
+			'TimeCreated' => time(),
+			'TimeUpdated' => time(),
+			'Enabled'     => 1,
 			'UUID'        => Atlantis\Util::UUID()
 		]);
 

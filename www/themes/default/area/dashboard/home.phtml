@@ -21,10 +21,10 @@
 				<div class="col">
 				</div>
 				<div class="col-auto">
-					<a href="<?php echo $Blog->Blog->URL ?>" class="btn btn-secondary text-uppercase">Read</a>
+					<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Post',['BlogID'=>$Blog->Blog->ID]) ?>" class="btn btn-dark text-uppercase"><i class="fa fa-fw fa-edit"></i></a>
 				</div>
 				<div class="col-auto">
-					<a href="#" class="btn btn-dark text-uppercase">Manage</a>
+					<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Settings',['BlogID'=>$Blog->Blog->ID]) ?>" class="btn btn-dark text-uppercase"><i class="fa fa-fw fa-wrench"></i></a>
 				</div>
 			</div>
 			<?php endforeach; ?>

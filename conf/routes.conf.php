@@ -43,6 +43,18 @@
 	'Routes\\Dashboard\\Blog::Create'
 )
 ->Register(
+	'Atlantis.Dashboard.Blog.Post',
+	'{@}//dashboard/blog/post',
+	'/dashboard/blog/post?blog={{BlogID}}',
+	'Routes\\Dashboard\\Blog::Post'
+)
+->Register(
+	'Atlantis.Dashboard.Blog.Settings',
+	'{@}//dashboard/blog/settings',
+	'/dashboard/blog/settings?blog={{BlogID}}',
+	'Routes\\Dashboard\\Blog::Post'
+)
+->Register(
 	'Atlantis.Admin.Home',
 	'{@}//ops',
 	'/ops',
@@ -58,6 +70,12 @@
 	'{@}//api/v1/blog/($)',
 	'/api/v1/blog/{{Command}}',
 	'Routes\\Api\\V1\\Blog::Index'
+)
+->Register(
+	'Atlantis.API.Post',
+	'{@}//api/v1/post/($)',
+	'/api/v1/post/{{Command}}',
+	'Routes\\Api\\V1\\Post::Index'
 )
 ->Register(
 	'Atlantis.API.Test',

@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-06-02 01:30:10
+@date 2020-06-03 23:46:06
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -10,6 +10,7 @@
     "src\/local\/500-bootstrap-ext.css",
     "src\/local\/500-misc.css",
     "src\/local\/900-bootstrap-breadcrumb.css",
+    "src\/local\/900-bootstrap-dropdown.css",
     "src\/local\/900-bootstrap-jumbotron.css"
 ]
 //*/
@@ -45,6 +46,15 @@ a:visited:not(.btn) {
 a:active:not(.btn),
 a:hover:not(.btn) {
 	color: #000;
+}
+
+.jodit_toolbar_btn a:link,
+.jodit_toolbar_btn a:visited,
+.jodit_toolbar_btn a:active,
+.jodit_toolbar_btn a:hover {
+	border-bottom: initial;
+	color: initial;
+	text-decoration: initial;
 }
 
 h1,
@@ -437,6 +447,12 @@ given an image to display to art shit up.
 .breadcrumb a:link,
 .breadcrumb a:visited {
 	border-bottom: 1px dotted #eee;
+}
+
+.dropdown-menu {
+	background: rgb(0,0,0);
+	background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(68,68,68,1) 100%);
+	color: #eee;
 }
 
 .jumbotron {

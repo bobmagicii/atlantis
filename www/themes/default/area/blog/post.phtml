@@ -10,7 +10,7 @@ echo (new Atlantis\Element\PagePromo)
 ->SetImageURL($Blog->ImageHeaderURL)
 ->SetIconURL($Blog->ImageIconURL)
 ->SetTitle($Blog->Title)
-->SetSubtitle($Blog->Tagline);
+->SetSubtitle($Blog->Tagline ?: '');
 
 ?>
 

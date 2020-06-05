@@ -14,7 +14,8 @@ class BlogUser
 extends Atlantis\Prototype {
 
 	const
-	FlagOwner = 0b00000001;
+	FlagOwner  = 0b00000001,
+	FlagWriter = 0b00000010;
 
 	protected static
 	$Table = 'BlogUsers';
@@ -125,6 +126,59 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
+	public function
+	HasFlagsAny(Int $Flags):
+	Bool {
+
+		return Atlantis\Util::BitwiseAndAny($this->Flags,$Flags);
+	}
+
+	public function
+	HasFlagsAll(Int $Flags):
+	Bool {
+
+		return Atlantis\Util::BitwiseAndAll($this->Flags,$Flags);
+	}
+
+	public function
+	HasOwnerPriv():
+	Bool {
+
+		return $this->HasFlagsAll(static::FlagOwner);
+	}
+
+	public function
+	HasWritePriv():
+	Bool {
+
+		return $this->HasFlagsAny(static::FlagOwner|static::FlagWriter);
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
+	static public function
+	GetByBlogUser(Int $BlogID, Int $UserID):
+	?self {
+	/*//
+	@date 2020-06-05
+	//*/
+
+		$Result = static::Find([
+			'BlogID' => $BlogID,
+			'UserID' => $UserID,
+			'Limit'  => 1
+		]);
+
+		if(!$Result->Total)
+		return NULL;
+
+		return $Result->Payload->Current();
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
 	static protected function
 	ExtendQueryJoins($SQL):
 	Void {
@@ -167,7 +221,8 @@ extends Atlantis\Prototype {
 	//*/
 
 		return [
-			'Alias' => NULL
+			'Alias'  => NULL,
+			'BlogID' => NULL
 		];
 	}
 
@@ -177,6 +232,9 @@ extends Atlantis\Prototype {
 	/*//
 	@date 2018-06-08
 	//*/
+
+		if($Opt->BlogID !== NULL)
+		$SQL->Where('Main.BlogID = :BlogID');
 
 		if($Opt->Alias !== NULL)
 		$SQL->Where('Main.Alias LIKE :Alias');

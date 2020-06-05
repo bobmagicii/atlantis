@@ -31,6 +31,15 @@ a:hover:not(.btn) {
 	color: #000;
 }
 
+.jodit_toolbar_btn a:link,
+.jodit_toolbar_btn a:visited,
+.jodit_toolbar_btn a:active,
+.jodit_toolbar_btn a:hover {
+	border-bottom: initial;
+	color: initial;
+	text-decoration: initial;
+}
+
 h1,
 h2,
 h3,

@@ -8,10 +8,12 @@ use
 
 use
 \DateTime as DateTime,
-\DateTimeZone as DateTimeZone;
+\DateTimeZone as DateTimeZone,
+\JsonSerializable as JsonSerializable;
 
 class Date
-extends DateTime {
+extends DateTime
+implements JsonSerializable {
 
 	public function
 	__Construct(...$Args) {
@@ -30,6 +32,21 @@ extends DateTime {
 	String {
 
 		return $this->Format($this->DefaultFormat);
+	}
+
+	public function
+	JsonSerialize():
+	Array {
+	/*//
+	@date 2020-06-05
+	@implements JsonSerializable
+	//*/
+
+		return [
+			'Timestamp' => (Int)$this->Format('U'),
+			'DateTime'  => $this->Format('Y-m-d H:i:s O'),
+			'Diff'      => (new Date)->Diff($this)->Format('%a days')
+		];
 	}
 
 	////////////////////////////////////////////////////////////////

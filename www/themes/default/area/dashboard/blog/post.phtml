@@ -1,0 +1,119 @@
+<?php
+
+/**
+ * @var Atlantis\Struct\SearchResult $Blogs
+ * @var Atlantis\Prototype\Blog $Blog
+ */
+
+?>
+
+<?php $Surface->Area('dashboard/promo') ?>
+
+
+<div class="container">
+	<ol class="breadcrumb mb-4">
+		<li class="breadcrumb-item"><a href="<?php echo $Endpoint('Atlantis.Dashboard.Home') ?>">Dashboard</a></li>
+		<li class="breadcrumb-item">Blog</li>
+		<li class="breadcrumb-item active">New Post</li>
+	</ol>
+
+	<div class="mb-4" style="position:relative;">
+		<button type="button" class="btn btn-block btn-lg btn-secondary pl-2 d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
+			<div class="flex-grow-0 mr-4">
+				<div id="SelectedBlogIcon" class="WallpaperedBox Square rounded" style="border:1px solid #444;width:64px;background-image:url(<?php echo Nether\Option::Get('Atlantis.Blog.DefaultImageIconURL') ?>);"></div>
+			</div>
+			<div id="SelectedBlogTitle" class="flex-grow-0 text-nowrap text-truncate">Select Blog...</div>
+			<div class="flex-grow-1"></div>
+		</button>
+		<div class="dropdown-menu w-100 p-4">
+			<?php foreach($Blogs as $Blog): ?>
+			<div id="BlogSelectItem-<?php $Printer($Blog->ID) ?>" class="row align-items-center BlogSelectItem" style="cursor:pointer;" data-blog-id="<?php $Printer($Blog->ID) ?>" data-blog-title="<?php echo htmlentities($Blog->Title) ?>" data-blog-icon="<?php $Printer($Blog->ImageIconURL) ?>">
+				<div class="col-1">
+					<div class="WallpaperedBox Square" style="background-image:url(<?php $Printer($Blog->ImageIconURL) ?>);"></div>
+				</div>
+				<div class="col">
+					<div class="font-size-large font-weight-bold"><?php $Printer($Blog->Title) ?></div>
+					<div><?php $Printer($Blog->Tagline) ?></div>
+				</div>
+			</div>
+			<?php endforeach; ?>
+		</div>
+	</div>
+
+	<div class="mb-4">
+		<input id="InputTitle" type="text" class="form-control form-control-lg" placeholder="Post Title..." />
+	</div>
+
+	<div class="mb-4">
+		<textarea id="Editor"></textarea>
+	</div>
+
+	<div class="mb-4">
+		<input id="InputBlogID" type="hidden" value="0" />
+		<button id="CmdSubmit" type="button" class="btn btn-lg btn-dark">Post</button>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+jQuery(document)
+.ready(function(){
+
+	let URL = new URI;
+	let Query = URL.query(true);
+	let InputBlogID = jQuery('#InputBlogID');
+	let InputTitle = jQuery('#InputTitle');
+	let ElementBlogIcon = jQuery('#SelectedBlogIcon');
+	let ElementBlogTitle = jQuery('#SelectedBlogTitle');
+
+	let Editor = new Jodit('#Editor',{
+		"autofocus": true,
+		"defaultActionOnPaste": "insert_as_text"
+	});
+
+	Editor.value = '';
+
+	////////
+
+	jQuery('.BlogSelectItem')
+	.on('click',function(){
+		let BlogID = jQuery(this).attr('data-blog-id');
+		let BlogTitle = jQuery(this).attr('data-blog-title');
+		let BlogIcon = jQuery(this).attr('data-blog-icon');
+
+		InputBlogID.val(BlogID);
+		ElementBlogIcon.css('background-image','url(' + BlogIcon + ')');
+		ElementBlogTitle.text(BlogTitle);
+
+		return;
+	});
+
+	jQuery('#CmdSubmit')
+	.on('click',function(){
+
+		let BlogID = parseInt(InputBlogID.val());
+		let Title = jQuery.trim(InputTitle.val());
+		let Content = Editor.value;
+
+		Atlantis.Request({
+			'Method': 'POST',
+			'URL': '<?php echo $Endpoint('Atlantis.API.Post',['Command'=>'entity']) ?>',
+			'Data': { 'BlogID': BlogID, 'Title':Title, 'Content':Content },
+			'OnSuccess': function(Result){
+				location.href = Result.Location;
+				return;
+			}
+		});
+
+		return;
+	});
+
+	////////
+
+	if(URL.hasQuery('blog'))
+	jQuery('#BlogSelectItem-' + Query.blog)
+	.trigger('click');
+
+	return;
+});
+</script>

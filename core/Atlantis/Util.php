@@ -99,6 +99,151 @@ class Util {
 		return $Output;
 	}
 
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
+	static public function
+	BitwiseAndAll($Val,$Mask):
+	Bool {
+	/*//
+	@date 2018-08-29
+	//*/
+
+		return (($Val & $Mask) === $Mask);
+	}
+
+	static public function
+	BitwiseAndAny($Val,$Mask):
+	Bool {
+	/*//
+	@date 2018-08-29
+	//*/
+
+		return (($Val & $Mask) !== 0);
+	}
+
+
+	static public function
+	MkDir(String $Path):
+	Bool {
+	/*//
+	@date 2018-04-03
+	//*/
+
+		$Mask = umask(0);
+		$Result = @mkdir($Path,0777,TRUE);
+		if($Result) chmod($Path,0777);
+		umask($Mask);
+
+		return $Result;
+	}
+
+	static public function
+	Chmod(String $Path, Int $Mode=0666):
+	Bool {
+	/*//
+	@date 2019-01-22
+	//*/
+
+		$Mask = umask(0);
+		$Result = chmod($Path,$Mode);
+		umask($Mask);
+
+		return $Result;
+	}
+
+	static public function
+	FilesizeReadable(String $Filename):
+	String {
+	/*//
+	@date 2019-01-22
+	//*/
+
+		$Bytes = filesize($Filename);
+		return static::BytesReadable($Bytes);
+	}
+
+	static public function
+	BytesReadable(Int $Bytes):
+	String {
+	/*//
+	@date 2019-01-22
+	//*/
+
+		if($Bytes >= pow(1000,4))
+		return sprintf('%.2f KB',static::BytesToTera($Bytes));
+
+		if($Bytes >= pow(1000,3))
+		return sprintf('%.2f GB',static::BytesToGigs($Bytes));
+
+		if($Bytes >= pow(1000,2))
+		return sprintf('%.2f MB',static::BytesToMegs($Bytes));
+
+		if($Bytes >= pow(1000,1))
+		return sprintf('%.2f KB',static::BytesToKilos($Bytes));
+
+		return sprintf('%d Bytes',$Bytes);
+	}
+
+	static public function
+	BytesToKilos(Int $Bytes):
+	Float {
+	/*//
+	@date 2019-01-22
+	//*/
+
+		return round(($Bytes/1024),2);
+	}
+
+	static public function
+	BytesToMegs(Int $Bytes):
+	Float {
+	/*//
+	@date 2019-01-22
+	//*/
+
+		return round((($Bytes/1024)/1024),2);
+	}
+
+	static public function
+	BytesToGigs(Int $Bytes):
+	Float {
+	/*//
+	@date 2019-01-22
+	//*/
+
+		return round(((($Bytes/1024)/1024)/1024),2);
+	}
+
+	static public function
+	BytesToTera(Int $Bytes):
+	Float {
+	/*//
+	@date 2019-01-22
+	//*/
+
+		return round((((($Bytes/1024)/1024)/1024)/1024),2);
+	}
+
+	static public function
+	IsUUID(?String $Input):
+	Bool {
+	/*//
+	@date 2018-03-29
+	//*/
+
+		if(!$Input)
+		return FALSE;
+
+		if(strlen($Input) !== 36)
+		return FALSE;
+
+		if(substr_count($Input,'-') !== 4)
+		return FALSE;
+
+		return TRUE;
+	}
+
 	static public function
 	UUID(?Int $Ver=NULL, $Node=NULL):
 	String {
