@@ -103,28 +103,10 @@ extends Atlantis\Site\ProtectedAPI {
 
 		////////
 
-		// make sure we generate a unique alias for this post.
-
-		$Alias = Atlantis\Util\Filters::RouteSafeAlias($Title);
-		$AliasTest = $Alias;
-		$AliasIter = time();
-
-		do {
-
-			$Existing = Atlantis\Prototype\BlogPost::GetByAlias(
-				$BlogUser->Blog->Alias,
-				$AliasTest
-			);
-
-			if($Existing)
-			$AliasTest = sprintf('%s-%s',$Alias,(++$AliasIter));
-
-		} while($Existing);
-
-		if($AliasTest !== $Alias)
-		$Alias = $AliasTest;
-
-		////////
+		$Alias = Atlantis\Prototype\BlogPost::GenerateUniqueAlias(
+			$BlogUser->Blog,
+			$Title
+		);
 
 		$Post = Atlantis\Prototype\BlogPost::Insert([
 			'BlogID'  => $BlogUser->BlogID,

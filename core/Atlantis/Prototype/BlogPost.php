@@ -182,6 +182,34 @@ extends Atlantis\Prototype {
 		return new static($Result->Next());
 	}
 
+	static public function
+	GenerateUniqueAlias(Blog $Blog, String $Title):
+	String {
+
+		$Alias = Atlantis\Util\Filters::RouteSafeAlias($Title);
+		$AliasTest = $Alias;
+		$Existing = NULL;
+		$Iter = 1;
+		$Next = NULL;
+
+		do {
+
+			$Existing = static::GetByAlias(
+				$Blog->Alias,
+				$AliasTest
+			);
+
+			if($Existing) {
+				$Next = str_replace('.','',(String)microtime(TRUE));
+				$AliasTest = sprintf('%s-%s',$Alias,$Next);
+			}
+
+			$Iter++;
+		} while($Existing);
+
+		return $AliasTest;
+	}
+
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
