@@ -38,16 +38,28 @@ extends PHPUnit\Framework\TestCase {
 	TestMicrotimeMode():
 	Void {
 
-		$Post = LocalAtlantisBlogPost::GetByAlias('conflict','test-post');
-		$AliasNew = LocalAtlantisBlogPost::GenerateUniqueAlias(
-			$Post->Blog,
+		$Conflict = LocalAtlantisBlogPost::GetByAlias('conflict','test-post');
+
+		$AliasConflict = LocalAtlantisBlogPost::GenerateUniqueAlias(
+			$Conflict->Blog,
 			'test-post'
+		);
+
+		$AliasHarmony = LocalAtlantisBlogPost::GenerateUniqueAlias(
+			$Conflict->Blog,
+			'yolo-swaggins'
 		);
 
 		$this->AssertMatchesRegularExpression(
 			'/^test-post-[\d]{7,}$/',
-			$AliasNew,
+			$AliasConflict,
 			'Generate a unique post alias with a microtime slug'
+		);
+
+		$this->AssertSame(
+			'yolo-swaggins',
+			$AliasHarmony,
+			'Allow alias as it was not found prior'
 		);
 
 		return;
