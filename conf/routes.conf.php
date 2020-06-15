@@ -78,6 +78,12 @@
 	'Routes\\Api\\V1\\Post::Index'
 )
 ->Register(
+	'Atlantis.API.Image',
+	'{@}//api/v1/image/($)',
+	'/api/v1/image/{{Command}}',
+	'Routes\\Api\\V1\\Image::Index'
+)
+->Register(
 	'Atlantis.API.Test',
 	'{@}//api/v1/test/($)',
 	'/api/v1/test/{{Command}}',
@@ -105,6 +111,12 @@
 	'{@}//\x7e($)',
 	'/~{{UserAlias}}',
 	'Routes\\User\\Index::Index'
+)
+->Register(
+	'Atlantis.Handler.UploadImage',
+	'{@}//media/usr/img/([a-f0-9]+/[a-f0-9]+/[a-f0-9]+/[a-f0-9]+/[a-f0-9]+)/(.+?)$',
+	'/media/usr/img/{{Path}}/{{Name}}',
+	'Routes\\Media::Image'
 )
 ->Register(
 	'Atlantis.Handler.PageCMS',

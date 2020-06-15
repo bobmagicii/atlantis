@@ -1,8 +1,9 @@
 /*// nether-onescript //
-@date 2020-06-03 23:46:06
+@date 2020-06-15 23:09:57
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
+    "src\/local\/200-blog-post.css",
     "src\/local\/200-element-post-list.css",
     "src\/local\/200-element-promo.css",
     "src\/local\/200-element-wallpaperedbox.css",
@@ -260,6 +261,11 @@ body > header a {
 		border: 0px;
 		padding-bottom: 0px;
 	}
+}
+
+.PostContent img {
+	border-radius: 3px;
+	max-width: 100%;
 }
 
 .PostListing h3 {

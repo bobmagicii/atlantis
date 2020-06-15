@@ -67,8 +67,54 @@ jQuery(document)
 	let ElementBlogTitle = jQuery('#SelectedBlogTitle');
 
 	let Editor = new Jodit('#Editor',{
-		"autofocus": true,
-		"defaultActionOnPaste": "insert_as_text"
+		'autofocus': true,
+		'defaultActionOnPaste': 'insert_as_text',
+		'enableDragAndDropFileToEditor': true,
+		'uploader': {
+			'method': 'POST',
+			'url': '/api/v1/image/entity',
+			'format': 'json',
+			'filesVariableName': function(Iter) { return 'File' + Iter; },
+			'prepareData': function(Data) { return Data; },
+			'getMessage': function (Result) { return Result.Message; },
+			'error': function (e) {
+				this.jodit.events.fire('errorMessage', e.message, 'error', 4000);
+				return;
+			},
+			'isSuccess': function(Result) { return Result.Error === 0; },
+			'process': function(Result) {
+				let Output = [];
+
+				jQuery(Result.Payload)
+				.each(function(){
+					console.log('Process: ' + this.URL);
+					Output.push(this.URL);
+					return;
+				});
+
+				return {
+					files: Output
+				};
+			},
+			'defaultHandlerSuccess': function (Data) {
+				let that = this;
+
+				jQuery.each(Data.files,function(Key,Val){
+					that.selection.insertImage(Val);
+					return;
+				});
+
+				return;
+			},
+			'defaultHandlerError': function (Result) {
+				console.log("Error Handler");
+
+				(this.jodit.events)
+				.fire('errorMessage',Result.Message);
+
+				return;
+			}
+		}
 	});
 
 	Editor.value = '';
