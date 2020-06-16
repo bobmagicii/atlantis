@@ -46,15 +46,12 @@ extends Atlantis\Site\PublicWeb {
 
 		////////
 
-		$ModifiedTime = filemtime($Filepath);
-		$LastModified = new Atlantis\Util\Date("@{$ModifiedTime}");
+		$Cache = new Atlantis\Util\FileCacheHandler([
+			'File' => $Filepath
+		]);
 
-		if(array_key_exists('HTTP_IF_MODIFIED_SINCE',$_SERVER)) {
-			$IfModifiedSince = new Atlantis\Util\Date($_SERVER['HTTP_IF_MODIFIED_SINCE']);
-
-			if($IfModifiedSince >= $LastModified)
-			$this->Quit(304);
-		}
+		$Cache->Send();
+		return;
 
 		////////
 

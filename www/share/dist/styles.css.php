@@ -14,5 +14,14 @@ $Project = Nether\OneScript\Project::FromFile(sprintf(
 	dirname(__FILE__)
 ));
 
-$Project->Print = TRUE;
+ob_start();
 $Project->Build();
+ob_get_clean();
+
+$Cache = new Atlantis\Util\FileCacheHandler([
+	'File'        => $Project->OutputFile,
+	'ContentType' => $Project->ContentType
+]);
+
+$Cache->Send();
+
