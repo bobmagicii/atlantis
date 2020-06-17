@@ -15,6 +15,9 @@ extends Nether\Auth\User
 implements JsonSerializable {
 
 	public
+	Int $OptAdult;
+
+	public
 	?String $URL;
 
 	public
@@ -28,6 +31,8 @@ implements JsonSerializable {
 
 	public function
 	__Construct($Input, Bool $MakeSafer=FALSE) {
+
+		static::$PropertyMap['_OptAdult'] = 'OptAdult:int';
 
 		// provide a way to still use user objects but omit various
 		// personal data that is not needed outside of auth or

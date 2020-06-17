@@ -52,7 +52,13 @@
 	'Atlantis.Dashboard.Blog.Settings',
 	'{@}//dashboard/blog/settings',
 	'/dashboard/blog/settings?blog={{BlogID}}',
-	'Routes\\Dashboard\\Blog::Post'
+	'Routes\\Dashboard\\Blog::Settings'
+)
+->Register(
+	'Atlantis.Dashboard.Account.Settings',
+	'{@}//dashboard/account/settings',
+	'/dashboard/account/settings',
+	'Routes\\Dashboard\\Account::Settings'
 )
 ->Register(
 	'Atlantis.Admin.Home',

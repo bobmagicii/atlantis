@@ -3,6 +3,7 @@
 /data/
 /logs/
 /vendor/
+/www/themes/local/
 
 # ignore my actual config files while allowing the templates.
 /conf/database.conf.php

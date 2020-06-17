@@ -32,7 +32,8 @@ implements JsonSerializable {
 		'Title'          => 'Title',
 		'Tagline'        => 'Tagline',
 		'ImageHeaderURL' => 'ImageHeaderURL',
-		'ImageIconURL'   => 'ImageIconURL'
+		'ImageIconURL'   => 'ImageIconURL',
+		'OptAdult'       => 'OptAdult:int'
 	];
 
 	// database fields.
@@ -48,6 +49,7 @@ implements JsonSerializable {
 	public ?String $Tagline;
 	public ?String $ImageHeaderURL;
 	public ?String $ImageIconURL;
+	public Int $OptAdult;
 
 	// extension fields.
 
@@ -55,6 +57,13 @@ implements JsonSerializable {
 	public ?Atlantis\User $User;
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
+
+	// some constants for context.
+
+	const
+	AdultDisabled = 0,
+	AdultEnabled  = 1,
+	AdultForced   = 2;
 
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
@@ -144,6 +153,7 @@ implements JsonSerializable {
 			'TimeUpdated'    => $this->TimeUpdated,
 			'ImageHeaderURL' => $this->ImageHeaderURL,
 			'ImageIconURL'   => $this->ImageIconURL,
+			'OptAdult'       => abs($this->OptAdult),
 			'User'           => $this->User
 		];
 	}
@@ -270,7 +280,8 @@ implements JsonSerializable {
 	//*/
 
 		return [
-			'Alias' => NULL
+			'Alias'    => NULL,
+			'Adult'    => 0
 		];
 	}
 
@@ -283,6 +294,9 @@ implements JsonSerializable {
 
 		if($Opt->Alias !== NULL)
 		$SQL->Where('Main.Alias LIKE :Alias');
+
+		if($Opt->Adult !== NULL)
+		$SQL->Where('Main.OptAdult=:Adult');
 
 		return;
 	}
@@ -301,7 +315,8 @@ implements JsonSerializable {
 			'UUID'        => Atlantis\Util::UUID(),
 			'Title'       => NULL,
 			'Alias'       => NULL,
-			'Tagline'     => NULL
+			'Tagline'     => NULL,
+			'OptAdult'    => 0
 		]);
 
 		if(!$Opt->UserID)

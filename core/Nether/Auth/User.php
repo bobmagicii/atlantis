@@ -105,6 +105,78 @@ extends Nether\Object\Mapped {
 		return $this;
 	}
 
+	public function
+	Drop():
+	Void {
+	/*//
+	@date 2018-04-03
+	//*/
+
+		$Table = Nether\Option::Get('nether-user-table-name');
+
+		////////
+
+		$Result = (Nether\Database::Get()->NewVerse())
+		->Delete($Table)
+		->Where('ID=:ID')
+		->Limit(1)
+		->Query($this);
+
+		return;
+	}
+
+	public function
+	Update(Array $Input):
+	self {
+	/*//
+	@date 2018-06-08
+	//*/
+
+		$Prop = NULL;
+		$Val = NULL;
+		$Field = NULL;
+		$Slot = NULL;
+		$Table = Nether\Option::Get('nether-user-table-name');
+
+		////////
+
+		// update the object with the new data.
+
+		foreach($Input as $Prop => $Val) switch($Prop) {
+			case 'ID': break;
+			default:
+				if(property_exists($this,$Prop))
+				$this->{$Prop} = $Val;
+			break;
+		}
+
+		////////
+
+		// generate a field map only containing the properties
+		// that were modified by the input.
+
+		$FieldMap = \Atlantis\Util::BuildValueMap(
+			static::GetPropertyMap(),
+			$this
+		);
+
+		foreach($FieldMap as $Field => $Slot)
+		if(!array_key_exists(substr($Slot,1),$Input))
+		unset($FieldMap[$Field]);
+
+		////////
+
+		$Result = Nether\Database::Get()
+		->NewVerse()
+		->Update($Table)
+		->Fields($FieldMap)
+		->Where('ID=:ID')
+		->Limit(1)
+		->Query($this);
+
+		return $this;
+	}
+
 	////////////////////////////////////////////////////////////////
 	// Instance Property Methods ///////////////////////////////////
 
@@ -322,9 +394,9 @@ extends Nether\Object\Mapped {
 		$SQL = Nether\Database::Get()->NewVerse();
 
 		$SQL
-		->Select($Table)
+		->Select(sprintf('%s Main',$Table))
 		->Fields('*')
-		->Where('ID=:ID')
+		->Where('Main.ID=:ID')
 		->Limit(1);
 
 		static::ExtendQueryJoins($SQL);
@@ -361,9 +433,9 @@ extends Nether\Object\Mapped {
 		$SQL = Nether\Database::Get()->NewVerse();
 
 		$SQL
-		->Select($Table)
+		->Select(sprintf('%s Main',$Table))
 		->Fields('*')
-		->Where('Alias LIKE :Alias')
+		->Where('Main.Alias LIKE :Alias')
 		->Limit(1);
 
 		static::ExtendQueryJoins($SQL);
@@ -400,9 +472,9 @@ extends Nether\Object\Mapped {
 		$SQL = Nether\Database::Get()->NewVerse();
 
 		$SQL
-		->Select($Table)
+		->Select(sprintf('%s Main',$Table))
 		->Fields('*')
-		->Where('Email LIKE :Email')
+		->Where('Main.Email LIKE :Email')
 		->Limit(1);
 
 		static::ExtendQueryJoins($SQL);

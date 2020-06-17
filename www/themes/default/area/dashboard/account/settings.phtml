@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * @var Atlantis\User $User
+ */
+
+?>
+
+<?php $Surface->Area('dashboard/promo') ?>
+
+<div class="container">
+
+	<ol class="breadcrumb mb-6">
+		<li class="breadcrumb-item"><a href="<?php echo Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home') ?>">Dashboard</a></li>
+		<li class="breadcrumb-item">Account</li>
+		<li class="breadcrumb-item active">Settings</li>
+	</ol>
+
+	<form method="post">
+		<div class="mb-6">
+			<h2 class="font-size-large font-weight-bold">Adult Content</h2>
+			<div class="form-text mb-2">In the event people start posting adult content on this site enable this if you want to be able to see it.</div>
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" id="InputOptAdult" name="OptAdult" value="1" <?php echo ($User->OptAdult)?('checked'):('') ?> />
+				<label class="form-check-label" for="InputOptAdult">Allow Adult Content</label>
+			</div>
+		</div>
+
+		<div class="text-center">
+			<input type="hidden" name="Action" value="update" />
+			<button type="submit" class="btn btn-dark btn-lg text-uppercase">Save Changes</button>
+		</div>
+	</form>
+
+</div>
+
+<script type="text/javascript">
+
+</script>

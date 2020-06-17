@@ -28,6 +28,7 @@ extends Atlantis\Prototype {
 		'TimeUpdated' => 'TimeUpdated:int',
 		'Enabled'     => 'Enabled:int',
 		'UUID'        => 'UUID',
+		'OptAdult'    => 'OptAdult:int',
 		'Title'       => 'Title',
 		'Alias'       => 'Alias',
 		'Content'     => 'Content'
@@ -45,6 +46,7 @@ extends Atlantis\Prototype {
 	public String $Title;
 	public String $Alias;
 	public String $Content;
+	public Int $OptAdult;
 
 	// extension fields.
 
@@ -261,6 +263,7 @@ extends Atlantis\Prototype {
 	//*/
 
 		return [
+			'Adult'     => 0,
 			'Alias'     => NULL,
 			'BlogID'    => NULL,
 			'BlogAlias' => NULL
@@ -273,6 +276,9 @@ extends Atlantis\Prototype {
 	/*//
 	@date 2018-06-08
 	//*/
+
+		if($Opt->Adult !== NULL)
+		$SQL->Where('Main.OptAdult=:Adult');
 
 		if($Opt->Alias !== NULL)
 		$SQL->Where('Main.Alias LIKE :Alias');
@@ -299,6 +305,7 @@ extends Atlantis\Prototype {
 			'Title'       => NULL,
 			'Alias'       => NULL,
 			'Content'     => NULL,
+			'OptAdult'    => 0,
 
 			'TimeCreated' => time(),
 			'TimeUpdated' => time(),

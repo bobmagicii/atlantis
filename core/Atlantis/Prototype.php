@@ -107,7 +107,7 @@ namespace.
 		);
 
 		foreach($FieldMap as $Field => $Slot)
-		if(!array_key_exists($Field,$Input))
+		if(!array_key_exists(substr($Slot,1),$Input))
 		unset($FieldMap[$Field]);
 
 		////////
