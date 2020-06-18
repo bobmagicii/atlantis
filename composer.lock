@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "033b72a9884d80125b7731b00226aa0f",
+    "content-hash": "a80471298c4b7d9cc47119963a2fd88f",
     "packages": [
         {
             "name": "artem_c/emmet",
@@ -517,21 +517,21 @@
         },
         {
             "name": "netherphp/input",
-            "version": "v3.0.0",
+            "version": "v3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/netherphp/input.git",
-                "reference": "0d20bbcf5817713c7915e18202f0ffe7c0c17cf8"
+                "reference": "a755e58ac4090b72da13ce6cb1ad6822df60e9b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/netherphp/input/zipball/0d20bbcf5817713c7915e18202f0ffe7c0c17cf8",
-                "reference": "0d20bbcf5817713c7915e18202f0ffe7c0c17cf8",
+                "url": "https://api.github.com/repos/netherphp/input/zipball/a755e58ac4090b72da13ce6cb1ad6822df60e9b9",
+                "reference": "a755e58ac4090b72da13ce6cb1ad6822df60e9b9",
                 "shasum": ""
             },
             "require": {
-                "netherphp/object": "^3.0.0",
-                "netherphp/option": "^1.0.0"
+                "netherphp/object": "~3.0.0",
+                "netherphp/option": "~1.0.0"
             },
             "type": "library",
             "autoload": {
@@ -558,7 +558,7 @@
                 "php",
                 "sanitisation"
             ],
-            "time": "2017-08-20T02:36:14+00:00"
+            "time": "2020-06-17T18:43:13+00:00"
         },
         {
             "name": "netherphp/ki",

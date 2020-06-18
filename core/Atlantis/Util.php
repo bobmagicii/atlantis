@@ -226,6 +226,23 @@ class Util {
 	}
 
 	static public function
+	ParseEncodedStandardInput():
+	Array {
+	/*//
+	@date 2020-06-17
+	//*/
+
+		$Output = NULL;
+
+		parse_str(
+			file_get_contents('php://input'),
+			$Output
+		);
+
+		return $Output;
+	}
+
+	static public function
 	IsUUID(?String $Input):
 	Bool {
 	/*//

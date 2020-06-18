@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-06-17 02:37:51
+@date 2020-06-17 19:38:04
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -388,6 +388,8 @@ given an image to display to art shit up.
 .font-size-large { font-size: 1.10em; }
 .font-size-larger { font-size: 1.20em; }
 .font-size-largerer { font-size: 1.30em; }
+.font-size-zero { font-size: 0em; }
+.font-size-anim { transition: font-size 0.5s; }
 
 .letter-space-normal { letter-spacing: 0.0em; }
 .letter-space-large { letter-spacing: 0.10em; }

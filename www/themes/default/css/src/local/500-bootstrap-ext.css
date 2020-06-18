@@ -13,6 +13,8 @@
 .font-size-large { font-size: 1.10em; }
 .font-size-larger { font-size: 1.20em; }
 .font-size-largerer { font-size: 1.30em; }
+.font-size-zero { font-size: 0em; }
+.font-size-anim { transition: font-size 0.5s; }
 
 .letter-space-normal { letter-spacing: 0.0em; }
 .letter-space-large { letter-spacing: 0.10em; }

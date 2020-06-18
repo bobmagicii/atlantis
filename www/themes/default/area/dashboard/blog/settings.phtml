@@ -17,41 +17,202 @@
 		<li class="breadcrumb-item active">Settings</li>
 	</ol>
 
-	<form method="post">
-		<div class="mb-6">
-			<h2 class="font-size-large font-weight-bold">Adult Content</h2>
-			<p>
-				Adult content is allowed but in return it is asked you flag the blog as adult so we can filter for those who desire it.
-				When your blog is flagged as adult we may do a few things like place a warning, blur images, or filter, based on the viewer's preferences.
-			</p>
-			<p>
-				Each post you make may also be flagged as adult or not. There is nothing stopping you from having 1 adult post on a non-adult blog, or 1 non-adult post on an adult blog. Keep in mind most readers will probably prefer if your blog remains on its original topic.
-				I reserve the right to force the adult flag on blogs or posts if you are being dishonorable about it, but please don't make me do that.
-			</p>
-			<?php if($Blog->OptAdult===$Blog::AdultForced): ?>
-			<div class="alert alert-dark mb-2 p-2">
-				<div class="row align-items-center">
-					<div class="col-3"><img src="/share/dist/gfx/honor.jpg" class="rounded" /></div>
-					<div class="col">Your honor has been tested and found lacking. This blog has been forced into Adult Mode and may no longer be changed. All future posts will also be forced into Adult Mode.</div>
+	<!-- TAGLINE -->
+	<div class="row tight align-items-center mb-6">
+		<div class="col-12 mb-2">
+			<h2 class="font-size-large font-weight-bold">Tag Line</h2>
+			Some little flavour text usually shown underneath your blog title.
+		</div>
+		<div class="col mb-2">
+			<input id="InputTagline" type="text" class="form-control" placeholder="Enter Tag Line Here..." value="<?php echo $Printer($Blog->Tagline) ?>" />
+		</div>
+		<div class="col-auto mb-2">
+			<div class="d-flex">
+				<i id="ThinkTagline" class="StatusTagline fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
+				<i id="GoodTagline" class="StatusTagline fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
+				<i id="BadTagline" class="StatusTagline fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
+			</div>
+		</div>
+		<div class="col-auto mb-2">
+			<button id="CmdTagline" type="button" class="btn btn-block btn-dark" data-blog-id="<?php $Printer($Blog->ID) ?>">Save</button>
+		</div>
+	</div>
+
+	<!-- ADULT CONTENT -->
+	<div class="mb-6">
+		<h2 class="font-size-large font-weight-bold">Adult Content</h2>
+		<p>
+			Adult content is allowed but in return it is asked you flag the blog as adult so we can filter for those who desire it.
+			When your blog is flagged as adult we may do a few things like place a warning, blur images, or filter, based on the viewer's preferences.
+		</p>
+		<p>
+			Each post you make may also be flagged as adult or not. There is nothing stopping you from having 1 adult post on a non-adult blog, or 1 non-adult post on an adult blog. Keep in mind most readers will probably prefer if your blog remains on its original topic.
+			I reserve the right to force the adult flag on blogs or posts if you are being dishonorable about it, but please don't make me do that.
+		</p>
+		<?php if($Blog->OptAdult===$Blog::AdultForced): ?>
+		<div class="alert alert-dark mb-2 p-2">
+			<div class="row align-items-center">
+				<div class="col-3"><img src="/share/dist/gfx/honor.jpg" class="rounded" /></div>
+				<div class="col">Your honor has been tested and found lacking. This blog has been forced into Adult Mode and may no longer be changed. All future posts will also be forced into Adult Mode.</div>
+			</div>
+		</div>
+		<?php else: ?>
+		<div class="row tight align-items-center">
+			<div class="col-auto">
+				<input id="InputOptAdult" type="checkbox" class="" data-blog-id="<?php $Printer($Blog->ID) ?>" <?php echo ($Blog->OptAdult)?('checked'):('') ?> />
+			</div>
+			<div class="col-auto">
+				<div class="d-flex">
+					<i id="ThinkOptAdult" class="StatusOptAdult fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
+					<i id="GoodOptAdult" class="StatusOptAdult fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
+					<i id="BadOptAdult" class="StatusOptAdult fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
 				</div>
 			</div>
-			<?php else: ?>
-			<div class="form-check">
-				<input class="form-check-input" type="checkbox" id="InputOptAdult" name="OptAdult" value="1" <?php echo ($Blog->OptAdult)?('checked'):('') ?> <?php echo ($Blog->OptAdult===$Blog::AdultForced)?('disabled'):('') ?> />
-				<label class="form-check-label" for="InputOptAdult">My blog contains Adult Content.</label>
+			<div class="col">
+				<label for="InputOptAdult" class="mb-0">My blog contains Adult Content.</label>
 			</div>
-			<?php endif; ?>
 		</div>
-
-		<div class="text-center">
-			<input type="hidden" name="Action" value="update" />
-			<input type="hidden" name="Blog" value="<?php $Printer($Blog->ID) ?>" />
-			<button type="submit" class="btn btn-dark btn-lg text-uppercase">Save Changes</button>
-		</div>
-	</form>
+		<?php endif; ?>
+	</div>
 
 </div>
 
 <script type="text/javascript">
+
+jQuery(document)
+.ready(function(){
+	"use strict";
+
+	let Tagline = new (function(){
+		let that = this;
+
+		this.Input = jQuery('#InputTagline');
+		this.Commit = jQuery('#CmdTagline');
+		this.BlogID = this.Commit.attr('data-blog-id');
+		this.Status = {
+			All: jQuery('.StatusTagline'),
+			Think: jQuery('#ThinkTagline'),
+			Good: jQuery('#GoodTagline'),
+			Bad: jQuery('#BadTagline')
+		};
+
+		this.SetStatus = function(Mode) {
+			(this.Status.All)
+			.addClass('font-size-zero');
+
+			switch(Mode) {
+				case 'think':
+					(this.Status.Think)
+					.removeClass('font-size-zero');
+				break;
+				case 'good':
+					(this.Status.Good)
+					.removeClass('font-size-zero');
+				break;
+				case 'bad':
+					(this.Status.Bad)
+					.removeClass('font-size-zero');
+				break;
+			}
+
+			return;
+		};
+
+		(this.Input)
+		.on('keypress',function(){
+			that.SetStatus(false);
+			return;
+		});
+
+		(this.Commit)
+		.on('click',function(){
+			let Input = jQuery.trim(that.Input.val());
+			that.SetStatus('think');
+
+			setTimeout(function(){
+				Atlantis.Request({
+					'Method': 'PATCH',
+					'URL': '/api/v1/blog/entity',
+					'Data': { 'ID': that.BlogID, 'Fields': { 'Tagline': Input } },
+					'OnSuccess': function(Result){
+						that.SetStatus('good');
+						return;
+					},
+					'OnError': function(Result) {
+						that.SetStatus('bad');
+						return;
+					}
+				});
+			},500);
+
+			return;
+		});
+
+		return this;
+	});
+
+	let OptAdult = new (function(){
+		let that = this;
+
+		this.Input = jQuery('#InputOptAdult');
+		this.BlogID = this.Input.attr('data-blog-id');
+		this.Status = {
+			All: jQuery('.StatusOptAdult'),
+			Think: jQuery('#ThinkOptAdult'),
+			Good: jQuery('#GoodOptAdult'),
+			Bad: jQuery('#BadOptAdult')
+		};
+
+		this.SetStatus = function(Mode) {
+			(this.Status.All)
+			.addClass('font-size-zero');
+
+			switch(Mode) {
+				case 'think':
+					(this.Status.Think)
+					.removeClass('font-size-zero');
+				break;
+				case 'good':
+					(this.Status.Good)
+					.removeClass('font-size-zero');
+				break;
+				case 'bad':
+					(this.Status.Bad)
+					.removeClass('font-size-zero');
+				break;
+			}
+
+			return;
+		};
+
+		(this.Input)
+		.on('change',function(){
+			let Input = that.Input.is(':checked') ? 1 : 0;
+			that.SetStatus('think');
+
+			setTimeout(function(){
+				Atlantis.Request({
+					'Method': 'PATCH',
+					'URL': '/api/v1/blog/entity',
+					'Data': { 'ID': that.BlogID, 'Fields': { 'OptAdult': Input } },
+					'OnSuccess': function(Result){
+						that.SetStatus('good');
+						return;
+					},
+					'OnError': function(Result) {
+						that.SetStatus('bad');
+						return;
+					}
+				});
+			},500);
+
+			return;
+		});
+
+		return this;
+	});
+
+	return;
+});
 
 </script>

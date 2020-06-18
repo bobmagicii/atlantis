@@ -7,6 +7,23 @@ use \Atlantis as Atlantis;
 class Blog
 extends Atlantis\Site\ProtectedWeb {
 
+	protected function
+	OnReady():
+	Void {
+
+		($this->Get)
+		->Blog('Atlantis\Util\Filters::TypeInt');
+
+		($this->Post)
+		->Blog('Atlantis\Util\Filters::TypeInt')
+		->OptAdult('Atlantis\Util\Filters::NumberValidRange',[0,2,0]);
+
+		return;
+	}
+
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
 	public function
 	Create():
 	Void {
@@ -46,18 +63,25 @@ extends Atlantis\Site\ProtectedWeb {
 	Settings():
 	Void {
 
-		$Blog = Atlantis\Prototype\Blog::GetByID((Int)$this->Get->Blog);
+		$BlogUser = Atlantis\Prototype\BlogUser::GetByBlogUser(
+			$this->Get->Blog,
+			$this->User->ID
+		);
 
-		if(!$Blog)
+		if(!$BlogUser)
 		$this->Goto(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home'));
 
-		if($this->HandleUpdateSettings($Blog))
+		if(!$BlogUser->HasManagePriv())
+		$this->Goto(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home'));
+
+		if($this->HandleUpdateSettings($BlogUser->Blog))
 		$this->Goto(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home'));
 
 		$this
 		->Set('Page.Title','Blog Settings')
 		->Area('dashboard/blog/settings',[
-			'Blog' => $Blog
+			'BlogUser' => $BlogUser,
+			'Blog'     => $BlogUser->Blog
 		]);
 
 		return;
@@ -70,14 +94,14 @@ extends Atlantis\Site\ProtectedWeb {
 		if($this->Post->Action !== 'update')
 		return FALSE;
 
-		$OptAdult = (Bool)(Int)$this->Post->OptAdult;
-
 		// if the owner of the blog had no honor and we had to force
 		// their blog into an adult state then we will not allow them
 		// to turn it off.
 
-		if($Blog->OptAdult === $Blog::AdultForced)
-		$OptAdult = $Blog->OptAdult;
+		$OptAdult = (
+			($Blog->OptAdult === $Blog::AdultForced)?
+			($Blog::AdultForced):($this->Post->OptAdult)
+		);
 
 		($Blog)
 		->Update([

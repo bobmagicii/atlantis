@@ -68,6 +68,20 @@ methods here are safe for direct use or use as callback filtering.
 	////////////////////////////////
 
 	static public function
+	NumberValidRange($Val, String $Var, Int $Min=0, Int $Max=0, Int $Def=0):
+	Int {
+	/*//
+	@date 2017-12-15
+	//*/
+
+		return filter_var($Val,FILTER_VALIDATE_INT,['options'=>[
+			'min_range' => $Min,
+			'max_range' => $Max,
+			'default'   => $Def
+		]]);
+	}
+
+	static public function
 	NumberLimit25($Val):
 	Int {
 	/*//

@@ -15,7 +15,8 @@ extends Atlantis\Prototype {
 
 	const
 	FlagOwner  = 0b00000001,
-	FlagWriter = 0b00000010;
+	FlagWriter = 0b00000010,
+	FlagManage = 0b00000100;
 
 	protected static
 	$Table = 'BlogUsers';
@@ -145,6 +146,13 @@ extends Atlantis\Prototype {
 	Bool {
 
 		return $this->HasFlagsAll(static::FlagOwner);
+	}
+
+	public function
+	HasManagePriv():
+	Bool {
+
+		return $this->HasFlagsAny(static::FlagOwner|static::FlagManage);
 	}
 
 	public function

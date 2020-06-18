@@ -35,12 +35,17 @@ class PublicWeb {
 	__Construct(Atlantis\Site\Router $Router) {
 
 		$this->Router = $Router;
+		$this->Method = $this->GetRequestMethod();
 		$this->Get = new Nether\Input\Filter($_GET);
-		$this->Post = new Nether\Input\Filter($_POST);
 		$this->Router = Nether\Stash::Get('Router');
 		$this->Surface = new Nether\Surface;
 		$this->User = Atlantis\User::FetchSession();
 		$this->Errors = new Nether\Object\Datastore;
+
+		if($this->Method === 'POST')
+		$this->Post = new Nether\Input\Filter($_POST);
+		else
+		$this->Post = new Nether\Input\Filter(Atlantis\Util::ParseEncodedStandardInput());
 
 		$this->Push([
 			'Router'    => $this->Router,
@@ -58,11 +63,34 @@ class PublicWeb {
 			'User'       => ($this->User)?($this->User->ID):(0)
 		]);
 
+		$this->OnReady();
+		return;
+	}
+
+	protected function
+	OnReady():
+	Void {
+
 		return;
 	}
 
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
+
+	public function
+	GetRequestMethod():
+	String {
+	/*//
+	@date 2017-10-25
+	figure out what type of request this is. how is this not in nether avenue
+	by default lulz.
+	//*/
+
+		if(array_key_exists('REQUEST_METHOD',$_SERVER))
+		return strtoupper((String)$_SERVER['REQUEST_METHOD']);
+
+		return 'GET';
+	}
 
 	public function
 	GetEncodedURL():
