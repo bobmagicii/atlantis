@@ -153,7 +153,7 @@ implements JsonSerializable {
 			'TimeUpdated'    => $this->TimeUpdated,
 			'ImageHeaderURL' => $this->ImageHeaderURL,
 			'ImageIconURL'   => $this->ImageIconURL,
-			'OptAdult'       => abs($this->OptAdult),
+			'OptAdult'       => $this->OptAdult,
 			'User'           => $this->User
 		];
 	}
@@ -168,8 +168,14 @@ implements JsonSerializable {
 	@date 2020-05-23
 	//*/
 
+		// for now pull adult posts when directly asking
+		// this blog for its posts. we are going to start
+		// with a warning banner until the user options
+		// are complete.
+
 		return Atlantis\Prototype\BlogPost::Find([
 			'BlogID' => $this->ID,
+			'Adult'  => NULL,
 			'Page'   => $Page,
 			'Limit'  => $Limit,
 			'Sort'   => 'newest'
@@ -185,6 +191,7 @@ implements JsonSerializable {
 
 		return LogBlogPostTraffic::FindPopularPosts([
 			'BlogID'    => $this->ID,
+			'Adult'     => NULL,
 			'Page'      => 1,
 			'Limit'     => 5,
 			'Timeframe' => strtotime('-30 days')
@@ -202,6 +209,27 @@ implements JsonSerializable {
 		return Atlantis\Site\Endpoint::Get('Atlantis.Blog.Home',[
 			'BlogAlias' => $this->Alias
 		]);
+	}
+
+	public function
+	IsAdult():
+	Bool {
+	/*//
+	@date 2020-06-18
+	//*/
+
+		return ($this->OptAdult !== static::AdultDisabled);
+	}
+
+
+	public function
+	IsAdultForced():
+	Bool {
+	/*//
+	@date 2020-06-18
+	//*/
+
+		return ($this->OptAdult === static::AdultForced);
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -292,11 +320,16 @@ implements JsonSerializable {
 	@date 2018-06-08
 	//*/
 
+		if($Opt->Adult === FALSE)
+		$Opt->Adult = 0;
+
+		////////
+
+		if(is_numeric($Opt->Adult))
+		$SQL->Where('Main.OptAdult=:Adult');
+
 		if($Opt->Alias !== NULL)
 		$SQL->Where('Main.Alias LIKE :Alias');
-
-		if($Opt->Adult !== NULL)
-		$SQL->Where('Main.OptAdult=:Adult');
 
 		return;
 	}

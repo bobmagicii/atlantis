@@ -143,6 +143,45 @@ class PublicWeb {
 		return;
 	}
 
+	public function
+	ShouldAdultAllow():
+	Bool {
+	/*//
+	@date 2020-06-18
+	//*/
+
+		if(!$this->User)
+		return FALSE;
+
+		return $this->User->ShouldAdultAllow();
+	}
+
+	public function
+	ShouldAdultWarn():
+	Bool {
+	/*//
+	@date 2020-06-18
+	//*/
+
+		if(!$this->User)
+		return TRUE;
+
+		return $this->User->ShouldAdultWarn();
+	}
+
+	public function
+	ShouldAdultSafespace():
+	Bool {
+	/*//
+	@date 2020-06-18
+	//*/
+
+		if(!$this->User)
+		return TRUE;
+
+		return $this->User->ShouldAdultSafespace();
+	}
+
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
 

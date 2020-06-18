@@ -8,3 +8,19 @@
 	opacity: 1.0;
 	transition: opacity 0.25s;
 }
+
+.BlogSelectMenu {
+	overflow: hidden;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.BlogSelectItem {
+	border-bottom: 1px solid #666;
+	cursor: pointer;
+	padding: 0.5em;
+}
+
+.BlogSelectItem:last-of-type {
+	border-bottom: 0px;
+}

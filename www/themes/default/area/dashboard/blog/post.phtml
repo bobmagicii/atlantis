@@ -25,9 +25,9 @@
 			<div id="SelectedBlogTitle" class="flex-grow-0 text-nowrap text-truncate">Select Blog...</div>
 			<div class="flex-grow-1"></div>
 		</button>
-		<div class="dropdown-menu w-100 p-4">
+		<div class="dropdown-menu w-100 BlogSelectMenu" style="max-height:50vh;overflow-y:scroll;">
 			<?php foreach($Blogs as $Blog): ?>
-			<div id="BlogSelectItem-<?php $Printer($Blog->ID) ?>" class="row align-items-center BlogSelectItem" style="cursor:pointer;" data-blog-id="<?php $Printer($Blog->ID) ?>" data-blog-title="<?php echo htmlentities($Blog->Title) ?>" data-blog-icon="<?php $Printer($Blog->ImageIconURL) ?>">
+			<div id="BlogSelectItem-<?php $Printer($Blog->ID) ?>" class="row align-items-center BlogSelectItem" data-blog-id="<?php $Printer($Blog->ID) ?>" data-blog-title="<?php echo htmlentities($Blog->Title) ?>" data-blog-icon="<?php $Printer($Blog->ImageIconURL) ?>" data-blog-optadult="<?php $Printer($Blog->OptAdult) ?>">
 				<div class="col-1">
 					<div class="WallpaperedBox Square" style="background-image:url(<?php $Printer($Blog->ImageIconURL) ?>);"></div>
 				</div>
@@ -49,6 +49,19 @@
 	</div>
 
 	<div class="mb-4">
+		<h2 class="font-size-large font-weight-bold">Post Settings</h2>
+		<div class="row tight align-items-center">
+			<div class="col-12 col-md-auto">
+				<button id="ElementOptAdult" class="btn btn-dark btn-block btn-toggle">
+					<i class="btn-toggle-off far fa-square mr-2"></i>
+					<i class="btn-toggle-on far fa-check-square mr-2"></i>
+					This post contains Adult Content
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="mb-4">
 		<input id="InputBlogID" type="hidden" value="0" />
 		<button id="CmdSubmit" type="button" class="btn btn-lg btn-dark">Post</button>
 	</div>
@@ -65,9 +78,11 @@ jQuery(document)
 	let InputTitle = jQuery('#InputTitle');
 	let ElementBlogIcon = jQuery('#SelectedBlogIcon');
 	let ElementBlogTitle = jQuery('#SelectedBlogTitle');
+	let ElementOptAdult = jQuery('#ElementOptAdult');
+	let ElementSubmit = jQuery('#CmdSubmit');
 
 	let Editor = new Jodit('#Editor',{
-		'autofocus': true,
+		'autofocus': false,
 		'defaultActionOnPaste': 'insert_as_text',
 		'enableDragAndDropFileToEditor': true,
 		'uploader': {
@@ -126,25 +141,34 @@ jQuery(document)
 		let BlogID = jQuery(this).attr('data-blog-id');
 		let BlogTitle = jQuery(this).attr('data-blog-title');
 		let BlogIcon = jQuery(this).attr('data-blog-icon');
+		let BlogAdult = parseInt(jQuery(this).attr('data-blog-optadult'));
 
 		InputBlogID.val(BlogID);
 		ElementBlogIcon.css('background-image','url(' + BlogIcon + ')');
 		ElementBlogTitle.text(BlogTitle);
 
+		if(BlogAdult === 0)
+		ElementOptAdult.removeClass('active disabled');
+		else if(BlogAdult === 1)
+		ElementOptAdult.addClass('active').removeClass('disabled');
+		else
+		ElementOptAdult.addClass('active disabled');
+
 		return;
 	});
 
-	jQuery('#CmdSubmit')
+	ElementSubmit
 	.on('click',function(){
 
 		let BlogID = parseInt(InputBlogID.val());
 		let Title = jQuery.trim(InputTitle.val());
+		let OptAdult = ElementOptAdult.hasClass('active') ? 1 : 0;
 		let Content = Editor.value;
 
 		Atlantis.Request({
 			'Method': 'POST',
 			'URL': '<?php echo $Endpoint('Atlantis.API.Post',['Command'=>'entity']) ?>',
-			'Data': { 'BlogID': BlogID, 'Title':Title, 'Content':Content },
+			'Data': { 'BlogID': BlogID, 'Title':Title, 'Content':Content, 'OptAdult':OptAdult },
 			'OnSuccess': function(Result){
 				location.href = Result.Location;
 				return;

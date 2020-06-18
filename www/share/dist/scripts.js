@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-06-18 17:02:15
+@date 2020-06-18 20:01:22
 @files [
     "src\/js\/libs\/000-jquery-3.1.1.min.js",
     "src\/js\/libs\/100-bootstrap.bundle.min.js",
@@ -1062,7 +1062,7 @@ class Atlantis {
 
 		let Config = {
 			'Title': 'Notification',
-			'Content': 'Ding Dong Motherfucker',
+			'Content': 'Consider yourself notified.',
 			'Icon': 'fa-cog',
 			'ContentClass': false,
 			'AutoHide': true,
@@ -1218,6 +1218,18 @@ jQuery(document)
 		that.tooltip(Opts);
 		return;
 	});
+
+	jQuery('.btn-toggle')
+	.on('click',function(){
+		// not using the bootstrap data-toggle=button because it fights with
+		// your on-ready things and also just kinda seemed to suck.
+
+		if(jQuery(this).hasClass('disabled'))
+		return;
+
+		jQuery(this).toggleClass('active');
+		return;
+	})
 
 	return;
 });

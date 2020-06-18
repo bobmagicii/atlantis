@@ -14,7 +14,12 @@ $Posts = $Element->GetItemStore();
 	<h2><?php echo $Element->GetTitle() ?></h2>
 	<?php foreach($Posts as $Post): ?>
 	<div class="Post">
-		<h3><a href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->Title) ?></a></h3>
+		<h3 class="d-flex align-items-center">
+			<?php if($Post->IsAdult() && $Route->ShouldAdultWarn()): ?>
+			<i class="flex-grow-0 fa fas fa-exclamation-circle font-size-smallerer mr-2 HasTooltip" title="This post contains Adult Content"></i>
+			<?php endif; ?>
+			<a class="flex-grow-0" href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->Title) ?></a>
+		</h3>
 		<div class="About">
 			Posted on <a class="Date" href="<?php echo $Post->URL ?>"><?php echo $Post->DateCreated->Format('F jS g:ia') ?></a>
 			From <a class="Source" href="<?php echo $Post->Blog->URL ?>"><?php echo $Post->Blog->Title ?></a>

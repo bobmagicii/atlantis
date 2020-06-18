@@ -26,6 +26,7 @@ extends Atlantis\Site\PublicWeb {
 	Atlantis\Struct\SearchResult {
 
 		$Output = Atlantis\Prototype\LogBlogPostTraffic::FindPopularPosts([
+			'Adult'     => $this->ShouldAdultAllow(),
 			'Limit'     => 10,
 			'Page'      => 1,
 			'Timeframe' => strtotime('-30 days')
@@ -45,6 +46,7 @@ extends Atlantis\Site\PublicWeb {
 	//*/
 
 		$Output = Atlantis\Prototype\BlogPost::Find([
+			'Adult' => $this->ShouldAdultAllow(),
 			'Sort'  => 'newest',
 			'Limit' => 10,
 			'Page'  => 1

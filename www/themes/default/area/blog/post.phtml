@@ -17,6 +17,15 @@ echo (new Atlantis\Element\PagePromo)
 <div class="container">
 
 	<div class="row">
+		<?php if($Post->IsAdult()): ?>
+		<div class="col-12 mb-4">
+			<div class="alert alert-warning text-center">
+				<i class="fa fas fa-exclamation-circle mr-2"></i>
+				Reader beware you're in for a scare. This post contains Adult Content.
+			</div>
+		</div>
+		<?php endif; ?>
+
 		<div class="col-12 col-md-8 mb-4">
 			<div class="PostListing">
 				<div class="Post">

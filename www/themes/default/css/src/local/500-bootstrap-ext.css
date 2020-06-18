@@ -56,6 +56,28 @@
 	padding-right: .25rem;
 }
 
+.btn:focus,
+select:focus {
+	box-shadow: none !important;
+}
+
 .btn.disabled {
 	opacity: 0.25;
 }
+
+.btn-toggle:not(.active) .btn-toggle-off {
+	display: inline-block;
+}
+
+.btn-toggle:not(.active) .btn-toggle-on {
+	display: none;
+}
+
+.btn-toggle .btn-toggle-off {
+	display: none;
+}
+
+.btn-toggle .btn-toggle-on {
+	display: inline-block;
+}
+

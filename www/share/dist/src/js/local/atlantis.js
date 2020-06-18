@@ -60,7 +60,7 @@ class Atlantis {
 
 		let Config = {
 			'Title': 'Notification',
-			'Content': 'Ding Dong Motherfucker',
+			'Content': 'Consider yourself notified.',
 			'Icon': 'fa-cog',
 			'ContentClass': false,
 			'AutoHide': true,
@@ -216,6 +216,18 @@ jQuery(document)
 		that.tooltip(Opts);
 		return;
 	});
+
+	jQuery('.btn-toggle')
+	.on('click',function(){
+		// not using the bootstrap data-toggle=button because it fights with
+		// your on-ready things and also just kinda seemed to suck.
+
+		if(jQuery(this).hasClass('disabled'))
+		return;
+
+		jQuery(this).toggleClass('active');
+		return;
+	})
 
 	return;
 });

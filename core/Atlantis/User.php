@@ -29,6 +29,11 @@ implements JsonSerializable {
 	public
 	Atlantis\Util\Date $DateBanned;
 
+	const
+	AdultDisable = 0, // do not list, safespace direct access.
+	AdultWarn    = 1, // list, apply visual warnings, blur images
+	AdultAllow   = 2; // yolo
+
 	public function
 	__Construct($Input, Bool $MakeSafer=FALSE) {
 
@@ -109,6 +114,39 @@ implements JsonSerializable {
 		return Atlantis\Site\Endpoint::Get('Atlantis.User.Home',[
 			'UserAlias' => $this->Alias
 		]);
+	}
+
+	public function
+	ShouldAdultSafespace():
+	Bool {
+	/*//
+	@date 2020-06-18
+	//*/
+
+		return $this->OptAdult === static::AdultDisable;
+	}
+
+	public function
+	ShouldAdultWarn():
+	Bool {
+	/*//
+	@date 2020-06-18
+	//*/
+
+		return $this->OptAdult !== static::AdultAllow;
+	}
+
+	public function
+	ShouldAdultAllow():
+	Bool {
+	/*//
+	@date 2020-06-18
+	if we should allow adult content to be shown. additional care needs
+	to be taken in the application side to determine if it needs to
+	apply warnings and whatnot in the ui.
+	//*/
+
+		return $this->OptAdult !== static::AdultDisable;
 	}
 
 	////////////////////////////////////////////////////////////////

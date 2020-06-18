@@ -146,6 +146,27 @@ extends Atlantis\Prototype {
 		]);
 	}
 
+	public function
+	IsAdult():
+	Bool {
+	/*//
+	@date 2020-06-18
+	//*/
+
+		return ($this->OptAdult !== Blog::AdultDisabled);
+	}
+
+
+	public function
+	IsAdultForced():
+	Bool {
+	/*//
+	@date 2020-06-18
+	//*/
+
+		return ($this->OptAdult === Blog::AdultForced);
+	}
+
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
@@ -277,7 +298,12 @@ extends Atlantis\Prototype {
 	@date 2018-06-08
 	//*/
 
-		if($Opt->Adult !== NULL)
+		if($Opt->Adult === FALSE)
+		$Opt->Adult = 0;
+
+		////////
+
+		if(is_numeric($Opt->Adult))
 		$SQL->Where('Main.OptAdult=:Adult');
 
 		if($Opt->Alias !== NULL)

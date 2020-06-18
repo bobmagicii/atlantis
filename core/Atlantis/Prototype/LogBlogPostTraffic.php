@@ -57,10 +57,14 @@ implements Atlantis\Packages\Upsertable {
 			'Page'      => 1,
 			'Limit'     => 5,
 			'Offset'    => NULL,
-			'Timeframe' => NULL
+			'Timeframe' => NULL,
+			'Adult'     => 0
 		]);
 
 		$Opt->Offset = ($Opt->Page - 1) * $Opt->Limit;
+
+		if($Opt->Adult === FALSE)
+		$Opt->Adult = 0;
 
 		$Output = new Atlantis\Struct\SearchResult;
 		$SQL = Nether\Database::Get()->NewVerse();
@@ -104,6 +108,11 @@ implements Atlantis\Packages\Upsertable {
 
 		if($Opt->Timeframe !== NULL)
 		$SQL->Where('Log.Time >= :Timeframe');
+
+		// adult content filter
+
+		if(is_numeric($Opt->Adult))
+		$SQL->Where('BP.OptAdult=:Adult');
 
 		////////
 

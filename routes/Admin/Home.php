@@ -29,6 +29,7 @@ extends Atlantis\Site\PrivateWeb {
 	Atlantis\Struct\SearchResult {
 
 		return Atlantis\Prototype\Blog::Find([
+			'Adult' => TRUE,
 			'Limit' => 10,
 			'Page'  => 1,
 			'Sort'  => 'newest'
@@ -40,6 +41,7 @@ extends Atlantis\Site\PrivateWeb {
 	Atlantis\Struct\SearchResult {
 
 		return Atlantis\Prototype\BlogPost::Find([
+			'Adult' => TRUE,
 			'Limit' => 10,
 			'Page'  => 1,
 			'Sort'  => 'newest'
@@ -62,6 +64,7 @@ extends Atlantis\Site\PrivateWeb {
 	Atlantis\Struct\SearchResult {
 
 		$Output = Atlantis\Prototype\LogBlogPostTraffic::FindPopularPosts([
+			'Adult'     => TRUE,
 			'Limit'     => 10,
 			'Page'      => 1,
 			'Timeframe' => strtotime('-30 days')

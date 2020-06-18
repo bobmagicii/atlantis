@@ -90,6 +90,12 @@
 	'Routes\\Api\\V1\\Image::Index'
 )
 ->Register(
+	'Atlantis.API.User',
+	'{@}//api/v1/user/($)',
+	'/api/v1/user/{{Command}}',
+	'Routes\\Api\\V1\\User::Index'
+)
+->Register(
 	'Atlantis.API.Test',
 	'{@}//api/v1/test/($)',
 	'/api/v1/test/{{Command}}',

@@ -11,6 +11,7 @@ extends Atlantis\Site\ProtectedAPI {
 
 	/**
 	 * @input ?Int ID
+	 * @input ?String BlogAlias
 	 * @input ?String Alias
 	 */
 
@@ -44,8 +45,10 @@ extends Atlantis\Site\ProtectedAPI {
 	}
 
 	/**
+	 * @input Int BlogID
 	 * @input String Title
-	 * @input ?String Alias
+	 * @input String Content
+	 * @input Int OptAdult
 	 */
 
 	final public function
@@ -62,11 +65,13 @@ extends Atlantis\Site\ProtectedAPI {
 		($this->Post)
 		->BlogID('Atlantis\Util\Filters::TypeInt')
 		->Title('Atlantis\Util\Filters::EncodedText')
-		->Content('Atlantis\Util\Filters::TrimmedText');
+		->Content('Atlantis\Util\Filters::TrimmedText')
+		->OptAdult('Atlantis\Util\Filters::NumberValidRange',[0,1,0]);
 
 		$BlogUser = NULL;
 		$Title = $this->Post->Title;
 		$Content = $this->Post->Content;
+		$OptAdult = NULL;
 		$Alias = NULL;
 		$AliasTest = NULL;
 		$AliasIter = NULL;
@@ -103,17 +108,23 @@ extends Atlantis\Site\ProtectedAPI {
 
 		////////
 
+		$OptAdult = (
+			$BlogUser->Blog->IsAdultForced()?
+			(Atlantis\Prototype\Blog::AdultForced):($this->Post->OptAdult)
+		);
+
 		$Alias = Atlantis\Prototype\BlogPost::GenerateUniqueAlias(
 			$BlogUser->Blog,
 			$Title
 		);
 
 		$Post = Atlantis\Prototype\BlogPost::Insert([
-			'BlogID'  => $BlogUser->BlogID,
-			'UserID'  => $BlogUser->UserID,
-			'Title'   => $Title,
-			'Alias'   => $Alias,
-			'Content' => $Content
+			'BlogID'   => $BlogUser->BlogID,
+			'UserID'   => $BlogUser->UserID,
+			'Title'    => $Title,
+			'Alias'    => $Alias,
+			'OptAdult' => $OptAdult,
+			'Content'  => $Content
 		]);
 
 		if(!$Post)
@@ -124,32 +135,6 @@ extends Atlantis\Site\ProtectedAPI {
 		$this
 		->SetLocation($Post->URL)
 		->SetPayload($Post);
-
-		return;
-	}
-
-	/**
-	 * @input Int ID
-	 * @input ?String Title
-	 * @input ?String Alias
-	 * @input ?File ImageHeader
-	 * @input ?File ImageIcon
-	 */
-
-	final public function
-	EntityPatch():
-	Void {
-
-		return;
-	}
-
-	/**
-	 * @input Int ID
-	 */
-
-	final public function
-	EntityDelete():
-	Void {
 
 		return;
 	}

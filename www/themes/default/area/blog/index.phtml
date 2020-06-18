@@ -24,6 +24,15 @@ echo (new Atlantis\Element\PagePromo)
 <div class="container">
 
 	<div class="row">
+		<?php if($Blog->IsAdult()): ?>
+		<div class="col-12 mb-4">
+			<div class="alert alert-warning">
+				<i class="fa fas fa-exclamation-circle mr-2"></i>
+				This blog contains Adult Content.
+			</div>
+		</div>
+		<?php endif; ?>
+
 		<div class="col-12 col-md-8 mb-4">
 
 			<?php

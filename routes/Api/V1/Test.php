@@ -20,6 +20,30 @@ extends Atlantis\Site\PublicAPI {
 	}
 
 	public function
+	OkPost():
+	Void {
+
+		$this
+		->SetPayload([
+			'Value' => TRUE
+		]);
+
+		return;
+	}
+
+	public function
+	OkPatch():
+	Void {
+
+		$this
+		->SetPayload([
+			'Value' => TRUE
+		]);
+
+		return;
+	}
+
+	public function
 	BadGet():
 	Void {
 

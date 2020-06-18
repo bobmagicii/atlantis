@@ -42,7 +42,8 @@ extends Atlantis\Site\ProtectedAPI {
 
 	/**
 	 * @input String Title
-	 * @input ?String Alias
+	 * @input String Alias
+	 * @input Int OptAdult
 	 */
 
 	final public function
@@ -109,8 +110,8 @@ extends Atlantis\Site\ProtectedAPI {
 	 * @input Int ID
 	 * @input ?String Title
 	 * @input ?String Alias
-	 * @input ?File ImageHeader
-	 * @input ?File ImageIcon
+	 * @input ?String Tagline
+	 * @input ?Int OptAdult
 	 */
 
 	final public function
@@ -181,17 +182,6 @@ extends Atlantis\Site\ProtectedAPI {
 		$this
 		->SetLocation($BlogUser->Blog->URL)
 		->SetPayload($BlogUser->Blog);
-
-		return;
-	}
-
-	/**
-	 * @input Int ID
-	 */
-
-	final public function
-	EntityDelete():
-	Void {
 
 		return;
 	}
