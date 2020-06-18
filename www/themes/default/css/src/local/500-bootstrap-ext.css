@@ -14,7 +14,7 @@
 .font-size-larger { font-size: 1.20em; }
 .font-size-largerer { font-size: 1.30em; }
 .font-size-zero { font-size: 0em; }
-.font-size-anim { transition: font-size 0.5s; }
+.font-size-anim { transition: font-size 0.3s; }
 
 .letter-space-normal { letter-spacing: 0.0em; }
 .letter-space-large { letter-spacing: 0.10em; }
@@ -54,4 +54,8 @@
 .row.tight [class^="col"] {
 	padding-left: .25rem;
 	padding-right: .25rem;
+}
+
+.btn.disabled {
+	opacity: 0.25;
 }

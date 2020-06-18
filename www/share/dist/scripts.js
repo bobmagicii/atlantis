@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-06-16 22:49:05
+@date 2020-06-18 17:02:15
 @files [
     "src\/js\/libs\/000-jquery-3.1.1.min.js",
     "src\/js\/libs\/100-bootstrap.bundle.min.js",
@@ -1058,6 +1058,76 @@ class Atlantis {
 		return;
 	};
 
+	static Toaster(Opt){
+
+		let Config = {
+			'Title': 'Notification',
+			'Content': 'Ding Dong Motherfucker',
+			'Icon': 'fa-cog',
+			'ContentClass': false,
+			'AutoHide': true,
+			'Delay': 3000
+		};
+
+		NUI.Util.MergeProperties(Opt,Config);
+
+		////////
+
+		let Header = null;
+		let Content = null;
+
+		let Toast = jQuery('<div />')
+		.addClass('toast m-3')
+		.attr('role','alert');
+
+		if(Config.Title !== false) {
+			Toast.append(
+				Header = jQuery('<div />')
+				.addClass('toast-header')
+				.append(
+					jQuery('<i />')
+					.addClass('rounded mr-2 fa fas')
+					.addClass(Config.Icon)
+				)
+				.append(
+					jQuery('<strong />')
+					.addClass('mr-auto')
+					.text(Config.Title)
+				)
+				.append(
+					jQuery('<button />')
+					.addClass('ml-2 mb-1 close')
+					.attr('type','button')
+					.attr('data-dismiss','toast')
+					.html('<span>&times;</span>')
+				)
+			);
+		}
+
+		if(Config.Content !== false) {
+			Toast.append(
+				Content = jQuery('<div />')
+				.addClass('toast-body')
+				.append(Config.Content)
+			);
+
+			if(Config.ContentClass)
+			Content.addClass(Config.ContentClass);
+		}
+
+		jQuery('#Toaster')
+		.append(Toast);
+
+		Toast
+		.toast({
+			'autohide': Config.AutoHide,
+			'delay': Config.Delay
+		})
+		.toast('show');
+
+		return;
+	};
+
 	static CopyToClipboard(What) {
 	/*//
 	copy the specified text to the clipboard. the source element will have its content
@@ -1138,6 +1208,16 @@ jQuery(document)
 
 	jQuery('.CopyValueToClipboard')
 	.on('click',Atlantis.CopyValueToClipboard);
+
+	jQuery('.HasTooltip')
+	.each(function(){
+		let that = jQuery(this);
+
+		let Opts = {};
+
+		that.tooltip(Opts);
+		return;
+	});
 
 	return;
 });

@@ -2,7 +2,7 @@
 
 /**
  * @var Atlantis\Struct\SearchResult $Blogs
- * @var Atlantis\Prototype\Blog $BlogUser
+ * @var Atlantis\Prototype\BlogUser $BlogUser
  * */
 
 ?>
@@ -13,19 +13,35 @@
 	<div class="row">
 		<div class="col-md-8 mb-6">
 			<h2>Your Blogs</h2>
-			<?php foreach($Blogs->Payload as $Blog): ?>
+			<?php foreach($Blogs->Payload as $BlogUser): ?>
 			<div class="row align-items-center tight mb-2">
 				<div class="col-auto">
-					<a href="<?php echo $Blog->Blog->URL ?>" class="font-size-large font-weight-bold"><?php echo $Blog->Blog->Title ?></a>
+					<a href="<?php echo $BlogUser->Blog->URL ?>" class="font-size-large font-weight-bold"><?php echo $BlogUser->Blog->Title ?></a>
 				</div>
+
 				<div class="col">
 				</div>
+
+				<?php if($BlogUser->HasWritePriv()): ?>
 				<div class="col-auto">
-					<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Post',['BlogID'=>$Blog->Blog->ID]) ?>" class="btn btn-dark text-uppercase"><i class="fa fa-fw fa-edit"></i></a>
+					<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Post',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-dark text-uppercase"><i class="fa fa-fw fa-edit"></i></a>
 				</div>
+				<?php else: ?>
 				<div class="col-auto">
-					<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Settings',['BlogID'=>$Blog->Blog->ID]) ?>" class="btn btn-dark text-uppercase"><i class="fa fa-fw fa-wrench"></i></a>
+					<span class="btn btn-dark text-uppercase disabled HasTooltip" title="You do not have writer privileges on this blog."><i class="fa fa-fw fa-edit"></i></span>
 				</div>
+				<?php endif; ?>
+
+				<?php if($BlogUser->HasManagePriv()): ?>
+				<div class="col-auto">
+					<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Settings',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-dark text-uppercase"><i class="fa fa-fw fa-wrench"></i></a>
+				</div>
+				<?php else: ?>
+				<div class="col-auto">
+					<span class="btn btn-dark text-uppercase disabled HasTooltip" title="You do not have manage privileges on this blog."><i class="fa fa-fw fa-wrench"></i></span>
+				</div>
+				<?php endif; ?>
+
 			</div>
 			<?php endforeach; ?>
 			<?php if(!$Blogs->Total): ?>

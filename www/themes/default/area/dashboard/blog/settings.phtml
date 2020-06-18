@@ -83,6 +83,28 @@ jQuery(document)
 .ready(function(){
 	"use strict";
 
+	let LocalSetStatusFunc = function(Mode) {
+		(this.Status.All)
+		.addClass('font-size-zero');
+
+		switch(Mode) {
+			case 'think':
+				(this.Status.Think)
+				.removeClass('font-size-zero');
+			break;
+			case 'good':
+				(this.Status.Good)
+				.removeClass('font-size-zero');
+			break;
+			case 'bad':
+				(this.Status.Bad)
+				.removeClass('font-size-zero');
+			break;
+		}
+
+		return;
+	};
+
 	let Tagline = new (function(){
 		let that = this;
 
@@ -96,27 +118,7 @@ jQuery(document)
 			Bad: jQuery('#BadTagline')
 		};
 
-		this.SetStatus = function(Mode) {
-			(this.Status.All)
-			.addClass('font-size-zero');
-
-			switch(Mode) {
-				case 'think':
-					(this.Status.Think)
-					.removeClass('font-size-zero');
-				break;
-				case 'good':
-					(this.Status.Good)
-					.removeClass('font-size-zero');
-				break;
-				case 'bad':
-					(this.Status.Bad)
-					.removeClass('font-size-zero');
-				break;
-			}
-
-			return;
-		};
+		this.SetStatus = LocalSetStatusFunc;
 
 		(this.Input)
 		.on('keypress',function(){
@@ -136,14 +138,24 @@ jQuery(document)
 					'Data': { 'ID': that.BlogID, 'Fields': { 'Tagline': Input } },
 					'OnSuccess': function(Result){
 						that.SetStatus('good');
+						Atlantis.Toaster({
+							'Title': 'Blog Settings',
+							'Content': 'Your blog tagline has been successfully updated.',
+							'ContentClass': 'alert-success'
+						});
 						return;
 					},
 					'OnError': function(Result) {
 						that.SetStatus('bad');
+						Atlantis.Toaster({
+							'Title': 'Blog Settings',
+							'Content': 'Error: ' + Result.Message,
+							'ContentClass': 'alert-danger'
+						});
 						return;
 					}
 				});
-			},500);
+			},300);
 
 			return;
 		});
@@ -163,27 +175,7 @@ jQuery(document)
 			Bad: jQuery('#BadOptAdult')
 		};
 
-		this.SetStatus = function(Mode) {
-			(this.Status.All)
-			.addClass('font-size-zero');
-
-			switch(Mode) {
-				case 'think':
-					(this.Status.Think)
-					.removeClass('font-size-zero');
-				break;
-				case 'good':
-					(this.Status.Good)
-					.removeClass('font-size-zero');
-				break;
-				case 'bad':
-					(this.Status.Bad)
-					.removeClass('font-size-zero');
-				break;
-			}
-
-			return;
-		};
+		this.SetStatus = LocalSetStatusFunc;
 
 		(this.Input)
 		.on('change',function(){
@@ -197,14 +189,24 @@ jQuery(document)
 					'Data': { 'ID': that.BlogID, 'Fields': { 'OptAdult': Input } },
 					'OnSuccess': function(Result){
 						that.SetStatus('good');
+						Atlantis.Toaster({
+							'Title': 'Blog Settings',
+							'Content': 'Your blog Adult Content setting has been updated.',
+							'ContentClass': 'alert-success'
+						});
 						return;
 					},
 					'OnError': function(Result) {
 						that.SetStatus('bad');
+						Atlantis.Toaster({
+							'Title': 'Blog Settings',
+							'Content': 'Error: ' + Result.Message,
+							'ContentClass': 'alert-danger'
+						});
 						return;
 					}
 				});
-			},500);
+			},300);
 
 			return;
 		});
