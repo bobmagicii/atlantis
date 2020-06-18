@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-06-18 20:23:12
+@date 2020-06-18 21:58:41
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -487,6 +487,32 @@ select:focus {
 	color: #e5d6c6;
 	background-color: #c15818;
 	border-color: #c15818;
+}
+
+.alert-adult {
+	color: #fff;
+	background: rgb(239,133,178);
+	background: linear-gradient(135deg, rgba(239,133,178,1) 0%, rgba(194,86,132,1) 100%);
+	border: 0px;
+	font-weight: 400;
+}
+
+.alert-adult a:link,
+.alert-adult a:visited,
+.alert-adult a:active,
+.alert-adult a:hover {
+	color: rgb(255, 230, 234);
+	border-bottom-color: rgb(255, 230, 234);
+}
+
+.alert-adult .btn-adult {
+	background: rgb(255, 230, 234);
+	border-color: rgb(255, 230, 234);
+	color: rgba(194,86,132,1);
+}
+
+.text-adult {
+	color: rgba(194,86,132,1);
 }
 
 .form-control:focus {

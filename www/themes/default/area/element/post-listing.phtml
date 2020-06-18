@@ -15,8 +15,8 @@ $Posts = $Element->GetItemStore();
 	<?php foreach($Posts as $Post): ?>
 	<div class="Post">
 		<h3 class="d-flex align-items-center">
-			<?php if($Post->IsAdult() && $Route->ShouldAdultWarn()): ?>
-			<i class="flex-grow-0 fa fas fa-exclamation-circle font-size-smallerer mr-2 HasTooltip" title="This post contains Adult Content"></i>
+			<?php if($Post->IsAdult()): ?>
+			<i class="flex-grow-0 fa fas fa-exclamation-square font-size-smallerer text-adult mr-2 HasTooltip" title="This post contains Adult Content"></i>
 			<?php endif; ?>
 			<a class="flex-grow-0" href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->Title) ?></a>
 		</h3>

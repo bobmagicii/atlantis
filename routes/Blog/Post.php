@@ -54,4 +54,18 @@ extends Atlantis\Site\PublicWeb {
 		return;
 	}
 
+	public function
+	ShouldAdultSafespace():
+	Bool {
+	/*//
+	@date 2020-06-18
+	@override Atlantis\Site\PublicWeb
+	//*/
+
+		if($this->Post->Action === 'ignore-adult-safespace')
+		return FALSE;
+
+		return parent::ShouldAdultSafespace();
+	}
+
 }

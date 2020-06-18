@@ -14,7 +14,12 @@
 		<div class="About">
 			<span class="font-size-small"><?php echo $Post->DateCreated->Format('F jS g:ia') ?></span>
 		</div>
-		<h3 class="font-size-normal font-weight-bold"><a href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->Title) ?></a></h3>
+		<h3 class="d-flex font-size-larger align-items-center">
+			<?php if($Post->IsAdult()): ?>
+			<i class="flex-grow-0 fa fas fa-exclamation-square font-size-smallerer text-adult mr-2 HasTooltip" title="This post contains Adult Content"></i>
+			<?php endif; ?>
+			<a class="flex-grow-0" href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->Title) ?></a>
+		</h3>
 	</div>
 	<?php endforeach; ?>
 </div>
