@@ -12,6 +12,7 @@ extends Atlantis\Site\ProtectedWeb {
 	Void {
 
 		($this->Get)
+		->Post('Atlantis\Util\Filters::TypeInt')
 		->Blog('Atlantis\Util\Filters::TypeInt');
 
 		($this->Post)
@@ -51,6 +52,40 @@ extends Atlantis\Site\ProtectedWeb {
 		->Set('Page.Title','New Post')
 		->Area('dashboard/blog/post',[
 			'Blogs' => $Blogs
+		]);
+
+		return;
+	}
+
+	public function
+	PostEdit():
+	Void {
+
+		$Post = Atlantis\Prototype\BlogPost::GetByID($this->Get->Post);
+
+		if(!$Post)
+		$this->Goto(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home'));
+
+		if($Post->User->ID !== $this->User->ID) {
+			// if the user is not the owner of this post, check if they have
+			// editor permissions to the blog it is on.
+
+			$BlogUser = Atlantis\Prototype\BlogUser::GetByBlogUser(
+				$Post->Blog->ID,
+				$this->User->ID
+			);
+
+			if(!$BlogUser || !$BlogUser->HasEditPriv())
+			$this->Goto(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home'));
+		}
+
+		////////
+
+		$this
+		->Set('Page.Title','Edit Post')
+		->Area('dashboard/blog/post-edit',[
+			'Blog' => $Post->Blog,
+			'Post' => $Post
 		]);
 
 		return;

@@ -139,4 +139,107 @@ extends Atlantis\Site\ProtectedAPI {
 		return;
 	}
 
+	/**
+	 * @input Int ID
+	 * @input ?String Title
+	 * @input ?String Content
+	 * @input ?Int OptAdult
+	 * @input ?Int AliasRegen
+	 */
+
+	final public function
+	EntityPatch():
+	Void {
+	/*//
+	@error 1 post not found
+	@error 2 user not allowed
+	@error 3 post must have a title
+	@error 4 post needs content
+	//*/
+
+		($this->Post)
+		->ID('Atlantis\Util\Filters::TypeInt')
+		->Title('Atlantis\Util\Filters::EncodedText')
+		->Content('Atlantis\Util\Filters::TrimmedText')
+		->OptAdult('Atlantis\Util\Filters::NumberValidRange',[0,1,0])
+		->AliasRegen('Atlantis\Util\Filters::NumberValidRange',[0,1,0]);
+
+		////////
+
+		$BlogUser = NULL;
+		$Post = NULL;
+		$Dataset = [];
+
+		////////
+
+		$Post = Atlantis\Prototype\BlogPost::GetByID($this->Post->ID);
+
+		if(!$Post)
+		$this->Quit(1,'post not found');
+
+		$BlogUser = Atlantis\Prototype\BlogUser::GetByBlogUser(
+			$Post->Blog->ID,
+			$this->User->ID
+		);
+
+		if(!$BlogUser || !$BlogUser->HasWritePriv())
+		$this->Quit(2,'no writer permissions to blog');
+
+		////////
+
+		// update the post title.
+
+		if($this->Post->Exists('Title')) {
+			if(!strlen($this->Post->Title))
+			$this->Quit(3,'post must have a title');
+
+			$Dataset['Title'] = $this->Post->Title;
+		}
+
+		// update the adult status if they are allowed to.
+
+		if($this->Post->Exists('OptAdult')) {
+			if($Post->IsAdultForced() || $Post->Blog->IsAdultForced())
+			$Dataset['OptAdult'] = Atlantis\Prototype\Blog::AdultForced;
+			else
+			$Dataset['OptAdult'] = $this->Post->OptAdult;
+		}
+
+		// generate a new alias if asked.
+		// only update it though if it ends up changing.
+
+		if($this->Post->Exists('AliasRegen')) {
+			if($this->Post->AliasRegen && array_key_exists('Title',$Dataset))
+			$Dataset['Alias'] = Atlantis\Prototype\BlogPost::GenerateUniqueAlias(
+				$Post->Blog,
+				$Dataset['Title']
+			);
+
+			if($Dataset['Alias'] === $Post->Alias)
+			unset($Dataset['Alias']);
+		}
+
+		// update content if we had some.
+
+		if($this->Post->Exists('Content')) {
+			if(!$this->Post->Content)
+			$this->Quit(4,'should a blog post not have content');
+
+			$Dataset['Content'] = $this->Post->Content;
+		}
+
+		////////
+
+		if(!count($Dataset))
+		$this->Quit(0,'zzz');
+
+		$Post->Update($Dataset);
+
+		$this
+		->SetLocation($Post->GetURL())
+		->SetPayload($Post);
+
+		return;
+	}
+
 }

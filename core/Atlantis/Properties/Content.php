@@ -42,7 +42,7 @@ set, and an actionable method.
 	public function
 	Content(?String $Content=NULL) {
 
-		if($Title === NULL)
+		if($Content === NULL)
 		return $this->GetContent();
 
 		else

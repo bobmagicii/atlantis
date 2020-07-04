@@ -4,6 +4,8 @@
  * @var Routes\Blog\Post $Route
  * @var Atlantis\Prototype\Blog $Blog
  * @var Atlantis\Prototype\BlogPost $Post
+ * @var Atlantis\Prototype\BlogUser $BlogUser
+ * @var Bool $UserCanEdit
 */
 
 echo (new Atlantis\Element\PagePromo)
@@ -27,7 +29,7 @@ echo (new Atlantis\Element\PagePromo)
 		</div>
 		<?php endif; ?>
 
-		<div class="col-12 col-md-8 mb-4">
+		<div class="col-12 mb-4">
 			<div class="PostListing">
 				<div class="Post">
 					<h3><a href="<?php $Printer($Post->GetURL()) ?>"><?php $Printer($Post->Title) ?></a></h3>
@@ -36,6 +38,13 @@ echo (new Atlantis\Element\PagePromo)
 						From <a class="Source" href="<?php $Printer($Post->Blog->URL) ?>"><?php $Printer($Post->Blog->Title) ?></a>
 						By <a class="Authour" href="<?php $Printer($Post->User->URL) ?>"><?php $Printer($Post->User->Alias) ?></a>
 					</div>
+					<?php if($UserCanEdit): ?>
+					<div class="font-size-smaller">
+						<i class="fa fa-angle-double-right"></i>
+						<b>Post Options:</b>
+						<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Post',['PostID'=>$Post->ID]) ?>">Edit Post</a>
+					</div>
+					<?php endif; ?>
 				</div>
 			</div>
 			<div class="PostContent">
@@ -63,7 +72,18 @@ echo (new Atlantis\Element\PagePromo)
 
 			</div>
 		</div>
-		<div class="col-12 col-md-4 mb-4">
+
+		<div class="col-12 mb-4">
+			<hr />
+			<h3 class="font-weight-bold">Comments (#)</h3>
+			<div class="About text-center">
+				I haven't built the comment system yet ^_^
+			</div>
+			<hr />
+		</div>
+
+		<div class="col-12 mb-4" style="">
+			<div style="overflow:hidden;">
 			<?php
 			if($PopularPosts->Total)
 			echo (new Atlantis\Element\PostListingSidebar)
@@ -78,7 +98,9 @@ echo (new Atlantis\Element\PagePromo)
 			->SetTitle('Recent Posts')
 			->SetItemStore($RecentPosts->Payload);
 			?>
+			</div>
 		</div>
+
 	</div>
 
 </div>

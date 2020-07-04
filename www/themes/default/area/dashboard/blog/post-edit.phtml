@@ -1,0 +1,155 @@
+<?php
+
+/**
+ * @var Atlantis\Struct\SearchResult $Blogs
+ * @var Atlantis\Prototype\Blog $Blog
+ */
+
+?>
+
+<?php $Surface->Area('dashboard/promo') ?>
+
+
+<div class="container">
+	<ol class="breadcrumb mb-4">
+		<li class="breadcrumb-item"><a href="<?php echo $Endpoint('Atlantis.Dashboard.Home') ?>">Dashboard</a></li>
+		<li class="breadcrumb-item">Blog</li>
+		<li class="breadcrumb-item active">New Post</li>
+	</ol>
+
+	<div class="mb-4" style="position:relative;">
+		<button disabled type="button" class="btn btn-block btn-lg btn-secondary pl-2 d-flex align-items-center">
+			<div class="flex-grow-0 mr-4">
+				<div id="SelectedBlogIcon" class="WallpaperedBox Square rounded" style="border:1px solid #444;width:64px;background-color:transparent;background-image:url(<?php $Printer($Blog->ImageIconURL) ?>);"></div>
+			</div>
+			<div id="SelectedBlogTitle" class="flex-grow-0 text-nowrap text-left text-truncate">
+				<div><?php echo $Printer($Blog->Title) ?></div>
+				<div class="font-weight-light font-size-smaller"><?php echo $Printer($Blog->Tagline) ?></div>
+			</div>
+			<div class="flex-grow-1"></div>
+		</button>
+	</div>
+
+	<div class="mb-4">
+		<input id="InputTitle" type="text" class="form-control form-control-lg" placeholder="Post Title..." />
+	</div>
+
+	<div class="mb-4">
+		<textarea id="Editor"></textarea>
+	</div>
+
+	<div class="mb-4">
+		<h2 class="font-size-large font-weight-bold">Post Settings</h2>
+		<div class="row tight align-items-center">
+			<div class="col-12 col-md-auto">
+				<button id="ElementOptAdult" class="btn btn-dark btn-block btn-toggle">
+					<i class="btn-toggle-off far fa-square mr-2"></i>
+					<i class="btn-toggle-on far fa-check-square mr-2"></i>
+					This post contains Adult Content
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="mb-4">
+		<input id="InputBlogID" type="hidden" value="0" />
+		<button id="CmdSubmit" type="button" class="btn btn-lg btn-dark">Post</button>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+jQuery(document)
+.ready(function(){
+
+	let URL = new URI;
+	let Query = URL.query(true);
+	let InputBlogID = jQuery('#InputBlogID');
+	let InputTitle = jQuery('#InputTitle');
+	let ElementBlogIcon = jQuery('#SelectedBlogIcon');
+	let ElementBlogTitle = jQuery('#SelectedBlogTitle');
+	let ElementOptAdult = jQuery('#ElementOptAdult');
+	let ElementSubmit = jQuery('#CmdSubmit');
+
+	let Editor = new Jodit('#Editor',{
+		'autofocus': false,
+		'defaultActionOnPaste': 'insert_as_text',
+		'enableDragAndDropFileToEditor': true,
+		'uploader': {
+			'method': 'POST',
+			'url': '/api/v1/image/entity',
+			'format': 'json',
+			'filesVariableName': function(Iter) { return 'File' + Iter; },
+			'prepareData': function(Data) { return Data; },
+			'getMessage': function (Result) { return Result.Message; },
+			'error': function (e) {
+				this.jodit.events.fire('errorMessage', e.message, 'error', 4000);
+				return;
+			},
+			'isSuccess': function(Result) { return Result.Error === 0; },
+			'process': function(Result) {
+				let Output = [];
+
+				jQuery(Result.Payload)
+				.each(function(){
+					console.log('Process: ' + this.URL);
+					Output.push(this.URL);
+					return;
+				});
+
+				return {
+					files: Output
+				};
+			},
+			'defaultHandlerSuccess': function (Data) {
+				let that = this;
+
+				jQuery.each(Data.files,function(Key,Val){
+					that.selection.insertImage(Val);
+					return;
+				});
+
+				return;
+			},
+			'defaultHandlerError': function (Result) {
+				console.log("Error Handler");
+
+				(this.jodit.events)
+				.fire('errorMessage',Result.Message);
+
+				return;
+			}
+		}
+	});
+
+	Editor.value = '';
+
+	////////
+
+	ElementSubmit
+	.on('click',function(){
+
+		let BlogID = parseInt(InputBlogID.val());
+		let Title = jQuery.trim(InputTitle.val());
+		let OptAdult = ElementOptAdult.hasClass('active') ? 1 : 0;
+		let Content = Editor.value;
+
+		Atlantis.Request({
+			'Method': 'POST',
+			'URL': '<?php echo $Endpoint('Atlantis.API.Post',['Command'=>'entity']) ?>',
+			'Data': { 'BlogID': BlogID, 'Title':Title, 'Content':Content, 'OptAdult':OptAdult },
+			'OnSuccess': function(Result){
+				location.href = Result.Location;
+				return;
+			}
+		});
+
+		return;
+	});
+
+	////////
+
+
+	return;
+});
+</script>

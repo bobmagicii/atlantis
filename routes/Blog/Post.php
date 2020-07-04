@@ -25,9 +25,21 @@ extends Atlantis\Site\PublicWeb {
 
 		$Recent = $Post->Blog->GetRecentPosts(5,1);
 		$Popular = $Post->Blog->GetPopularPosts(5,1);
+		$BlogUser = $Post->GetBlogUser($this->User);
 
 		($Popular->Payload)
 		->Remap(function($Val){ return $Val->Post; });
+
+		////////
+
+		// post owners can edit.
+
+		$UserCanEdit = $Post->IsUserOwner($this->User);
+
+		// blog editors can edit.
+
+		if(!$UserCanEdit && $BlogUser)
+		$UserCanEdit = $BlogUser->HasEditPriv();
 
 		////////
 
@@ -38,6 +50,8 @@ extends Atlantis\Site\PublicWeb {
 			'HitHash'=> $this->GetHitHash()
 		]);
 
+		////////
+
 		$this
 		->Set('Page.Title',sprintf(
 			'%s - %s',
@@ -47,6 +61,8 @@ extends Atlantis\Site\PublicWeb {
 		->Area('blog/post',[
 			'Blog'         => $Post->Blog,
 			'Post'         => $Post,
+			'BlogUser'     => $BlogUser,
+			'UserCanEdit'  => $UserCanEdit,
 			'RecentPosts'  => $Recent,
 			'PopularPosts' => $Popular
 		]);
@@ -62,6 +78,7 @@ extends Atlantis\Site\PublicWeb {
 	@override Atlantis\Site\PublicWeb
 	//*/
 
+		if($this->User)
 		if($this->Post->Action === 'ignore-adult-safespace')
 		return FALSE;
 

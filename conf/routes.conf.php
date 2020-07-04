@@ -49,6 +49,12 @@
 	'Routes\\Dashboard\\Blog::Post'
 )
 ->Register(
+	'Atlantis.Dashboard.Blog.Post',
+	'{@}//dashboard/blog/post-edit',
+	'/dashboard/blog/post-edit?post={{PostID}}',
+	'Routes\\Dashboard\\Blog::PostEdit'
+)
+->Register(
 	'Atlantis.Dashboard.Blog.Settings',
 	'{@}//dashboard/blog/settings',
 	'/dashboard/blog/settings?blog={{BlogID}}',

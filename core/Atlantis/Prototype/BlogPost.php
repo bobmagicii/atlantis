@@ -56,6 +56,10 @@ extends Atlantis\Prototype {
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
 
+	// misc fields
+
+	protected ?Atlantis\Prototype\BlogUser $UserCurrent;
+
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
@@ -147,6 +151,23 @@ extends Atlantis\Prototype {
 	}
 
 	public function
+	GetBlogUser(?Atlantis\User $User):
+	?Atlantis\Prototype\BlogUser {
+	/*//
+	@date 2020-07-04
+	fetch the blog's BlogUser object for checking extended user permissions.
+	//*/
+
+		if(!$User)
+		return NULL;
+
+		return Atlantis\Prototype\BlogUser::GetByBlogUser(
+			$this->Blog->ID,
+			$User->ID
+		);
+	}
+
+	public function
 	IsAdult():
 	Bool {
 	/*//
@@ -167,8 +188,32 @@ extends Atlantis\Prototype {
 		return ($this->OptAdult === Blog::AdultForced);
 	}
 
+	public function
+	IsUserOwner(?Atlantis\User $User):
+	Bool {
+	/*//
+	@date 2020-07-04
+	//*/
+
+		if(!$User)
+		return FALSE;
+
+		return ($this->User->ID === $User->ID);
+	}
+
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
+
+	static public function
+	GetByID(Int $ID):
+	?self {
+	/*//
+	@date 2020-06-19
+	@todo php8: make parent class return 'static' and delete this.
+	//*/
+
+		return parent::GetByID($ID);
+	}
 
 	static public function
 	GetByAlias(String $BlogAlias, String $Alias):

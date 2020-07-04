@@ -42,7 +42,7 @@ and an actionable method.
 	public function
 	Subtitle(?String $Subtitle=NULL) {
 
-		if($Title === NULL)
+		if($Subtitle === NULL)
 		return $this->GetSubtitle();
 
 		else
