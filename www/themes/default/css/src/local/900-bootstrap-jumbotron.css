@@ -1,4 +1,6 @@
 
+/* make the default jumbotron very bold for the theme */
+
 .jumbotron {
 	background: #222;
 	color: #eee;
@@ -13,4 +15,25 @@
 .jumbotron a:link,
 .jumbotron a:visited {
 	border-bottom: 1px dotted #eee;
+}
+
+.jumbotron hr {
+	border-top-color: #eee;
+}
+
+/* provide a more muted jumbotron for the theme */
+
+.jumbotron-secondary {
+	background: #ddd;
+	color: #444;
+}
+
+.jumbotron-secondary a:link,
+.jumbotron-secondary a:visited,
+.jumbotron-secondary .active {
+	color: #444;
+}
+
+.jumbotron-secondary hr {
+	border-top-color: #999;
 }

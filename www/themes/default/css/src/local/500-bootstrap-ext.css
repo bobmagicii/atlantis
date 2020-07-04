@@ -23,6 +23,7 @@
 .font-size-anim { transition: font-size 0.3s; }
 
 .letter-space-normal { letter-spacing: 0.0em; }
+.letter-space-barely { letter-spacing: 0.05em; }
 .letter-space-large { letter-spacing: 0.10em; }
 .letter-space-larger { letter-spacing: 0.25em; }
 
@@ -85,5 +86,25 @@ select:focus {
 
 .btn-toggle .btn-toggle-on {
 	display: inline-block;
+}
+
+.opacity-0 {
+	opacity: 0.0;
+}
+
+.opacity-25 {
+	opacity: 0.25;
+}
+
+.opacity-50 {
+	opacity: 0.50;
+}
+
+.opacity-75 {
+	opacity: 0.75;
+}
+
+.opacity-100 {
+	opacity: 1.0;
 }
 

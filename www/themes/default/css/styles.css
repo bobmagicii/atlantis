@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-07-03 20:06:32
+@date 2020-07-04 23:01:20
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -19,7 +19,6 @@
 
 * {
 	box-sizing: border-box;
-	font-family: "Roboto Condensed", sans-serif;
 }
 
 .font-family-regular {
@@ -284,6 +283,10 @@ body > header a {
 	margin-bottom: 24px;
 }
 
+.PostListing .Post:last-of-type {
+	margin-bottom: 0px;
+}
+
 .PostListing .About {
 	font-size: 0.9em;
 }
@@ -399,6 +402,7 @@ given an image to display to art shit up.
 .font-size-anim { transition: font-size 0.3s; }
 
 .letter-space-normal { letter-spacing: 0.0em; }
+.letter-space-barely { letter-spacing: 0.05em; }
 .letter-space-large { letter-spacing: 0.10em; }
 .letter-space-larger { letter-spacing: 0.25em; }
 
@@ -461,6 +465,26 @@ select:focus {
 
 .btn-toggle .btn-toggle-on {
 	display: inline-block;
+}
+
+.opacity-0 {
+	opacity: 0.0;
+}
+
+.opacity-25 {
+	opacity: 0.25;
+}
+
+.opacity-50 {
+	opacity: 0.50;
+}
+
+.opacity-75 {
+	opacity: 0.75;
+}
+
+.opacity-100 {
+	opacity: 1.0;
 }
 
 .DefocusUntilHover {
@@ -548,6 +572,8 @@ select:focus {
 	color: #eee;
 }
 
+/* make the default jumbotron very bold for the theme */
+
 .jumbotron {
 	background: #222;
 	color: #eee;
@@ -562,5 +588,26 @@ select:focus {
 .jumbotron a:link,
 .jumbotron a:visited {
 	border-bottom: 1px dotted #eee;
+}
+
+.jumbotron hr {
+	border-top-color: #eee;
+}
+
+/* provide a more muted jumbotron for the theme */
+
+.jumbotron-secondary {
+	background: #ddd;
+	color: #444;
+}
+
+.jumbotron-secondary a:link,
+.jumbotron-secondary a:visited,
+.jumbotron-secondary .active {
+	color: #444;
+}
+
+.jumbotron-secondary hr {
+	border-top-color: #999;
 }
 

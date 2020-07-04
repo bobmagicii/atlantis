@@ -12,6 +12,7 @@ extends Atlantis\Element {
 
 	use
 	Atlantis\Properties\Title,
+	Atlantis\Properties\Subtitle,
 	Atlantis\Properties\ItemListStore;
 
 }

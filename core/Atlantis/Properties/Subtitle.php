@@ -32,7 +32,7 @@ and an actionable method.
 	SetSubtitle(String $Subtitle):
 	self {
 
-		$this->Subtitle = $Subtitle;
+		$this->Subtitle = trim($Subtitle);
 		return $this;
 	}
 

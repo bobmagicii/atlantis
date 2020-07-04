@@ -43,13 +43,13 @@
 	'Routes\\Dashboard\\Blog::Create'
 )
 ->Register(
-	'Atlantis.Dashboard.Blog.Post',
+	'Atlantis.Dashboard.Blog.Post.New',
 	'{@}//dashboard/blog/post',
 	'/dashboard/blog/post?blog={{BlogID}}',
 	'Routes\\Dashboard\\Blog::Post'
 )
 ->Register(
-	'Atlantis.Dashboard.Blog.Post',
+	'Atlantis.Dashboard.Blog.Post.Edit',
 	'{@}//dashboard/blog/post-edit',
 	'/dashboard/blog/post-edit?post={{PostID}}',
 	'Routes\\Dashboard\\Blog::PostEdit'

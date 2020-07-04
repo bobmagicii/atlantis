@@ -24,7 +24,7 @@
 
 				<?php if($BlogUser->HasWritePriv()): ?>
 				<div class="col-auto">
-					<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Post',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-dark text-uppercase"><i class="fa fa-fw fa-edit"></i></a>
+					<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Post.New',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-dark text-uppercase"><i class="fa fa-fw fa-edit"></i></a>
 				</div>
 				<?php else: ?>
 				<div class="col-auto">

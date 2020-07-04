@@ -12,6 +12,10 @@
 	margin-bottom: 24px;
 }
 
+.PostListing .Post:last-of-type {
+	margin-bottom: 0px;
+}
+
 .PostListing .About {
 	font-size: 0.9em;
 }
