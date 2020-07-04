@@ -177,13 +177,10 @@ extends Atlantis\Site\ProtectedAPI {
 		if(!$Post)
 		$this->Quit(1,'post not found');
 
-		$BlogUser = Atlantis\Prototype\BlogUser::GetByBlogUser(
-			$Post->Blog->ID,
-			$this->User->ID
-		);
+		$BlogUser = $Post->GetBlogUser($this->User);
 
-		if(!$BlogUser || !$BlogUser->HasWritePriv())
-		$this->Quit(2,'no writer permissions to blog');
+		if(!$Post->IsUserOwner($this->User) && (!$BlogUser || !$BlogUser->HasEditPriv()))
+		$this->Quit(2,'no editor permissions to blog');
 
 		////////
 

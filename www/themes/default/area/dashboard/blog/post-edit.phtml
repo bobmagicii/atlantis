@@ -1,9 +1,17 @@
 <?php
 
 /**
- * @var Atlantis\Struct\SearchResult $Blogs
+ * @var Atlantis\Prototype\BlogPost $Post
  * @var Atlantis\Prototype\Blog $Blog
  */
+
+$OptAdultClass = '';
+
+if($Post->OptAdult !== Atlantis\Prototype\Blog::AdultDisabled)
+$OptAdultClass .= 'active ';
+
+if($Post->OptAdult === Atlantis\Prototype\Blog::AdultForced)
+$OptAdultClass .= 'disabled ';
 
 ?>
 
@@ -31,18 +39,19 @@
 	</div>
 
 	<div class="mb-4">
-		<input id="InputTitle" type="text" class="form-control form-control-lg" placeholder="Post Title..." />
+		<input id="InputTitle" type="text" class="form-control form-control-lg" placeholder="Post Title..." value="<?php $Printer($Post->Title) ?>" />
 	</div>
 
 	<div class="mb-4">
 		<textarea id="Editor"></textarea>
+		<div id="EditorContent" class="d-none"><?php echo $Post->Content ?></div>
 	</div>
 
 	<div class="mb-4">
 		<h2 class="font-size-large font-weight-bold">Post Settings</h2>
 		<div class="row tight align-items-center">
 			<div class="col-12 col-md-auto">
-				<button id="ElementOptAdult" class="btn btn-dark btn-block btn-toggle">
+				<button id="ElementOptAdult" class="btn btn-dark btn-block btn-toggle <?php $Printer(trim($OptAdultClass)) ?>">
 					<i class="btn-toggle-off far fa-square mr-2"></i>
 					<i class="btn-toggle-on far fa-check-square mr-2"></i>
 					This post contains Adult Content
@@ -52,8 +61,8 @@
 	</div>
 
 	<div class="mb-4">
-		<input id="InputBlogID" type="hidden" value="0" />
-		<button id="CmdSubmit" type="button" class="btn btn-lg btn-dark">Post</button>
+		<input id="InputPostID" type="hidden" value="<?php echo $Post->ID ?>" />
+		<button id="CmdSubmit" type="button" class="btn btn-lg btn-dark">Save Changes</button>
 	</div>
 
 </div>
@@ -64,10 +73,8 @@ jQuery(document)
 
 	let URL = new URI;
 	let Query = URL.query(true);
-	let InputBlogID = jQuery('#InputBlogID');
+	let InputPostID = jQuery('#InputPostID');
 	let InputTitle = jQuery('#InputTitle');
-	let ElementBlogIcon = jQuery('#SelectedBlogIcon');
-	let ElementBlogTitle = jQuery('#SelectedBlogTitle');
 	let ElementOptAdult = jQuery('#ElementOptAdult');
 	let ElementSubmit = jQuery('#CmdSubmit');
 
@@ -122,22 +129,22 @@ jQuery(document)
 		}
 	});
 
-	Editor.value = '';
+	Editor.value = jQuery('#EditorContent').html();
 
 	////////
 
 	ElementSubmit
 	.on('click',function(){
 
-		let BlogID = parseInt(InputBlogID.val());
+		let PostID = parseInt(InputPostID.val());
 		let Title = jQuery.trim(InputTitle.val());
 		let OptAdult = ElementOptAdult.hasClass('active') ? 1 : 0;
 		let Content = Editor.value;
 
 		Atlantis.Request({
-			'Method': 'POST',
+			'Method': 'PATCH',
 			'URL': '<?php echo $Endpoint('Atlantis.API.Post',['Command'=>'entity']) ?>',
-			'Data': { 'BlogID': BlogID, 'Title':Title, 'Content':Content, 'OptAdult':OptAdult },
+			'Data': { 'ID': PostID, 'Title':Title, 'Content':Content, 'OptAdult':OptAdult },
 			'OnSuccess': function(Result){
 				location.href = Result.Location;
 				return;

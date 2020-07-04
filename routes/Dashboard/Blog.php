@@ -66,14 +66,8 @@ extends Atlantis\Site\ProtectedWeb {
 		if(!$Post)
 		$this->Goto(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home'));
 
-		if($Post->User->ID !== $this->User->ID) {
-			// if the user is not the owner of this post, check if they have
-			// editor permissions to the blog it is on.
-
-			$BlogUser = Atlantis\Prototype\BlogUser::GetByBlogUser(
-				$Post->Blog->ID,
-				$this->User->ID
-			);
+		if(!$Post->IsUserOwner($this->User)) {
+			$BlogUser = $Post->GetBlogUser($this->User);
 
 			if(!$BlogUser || !$BlogUser->HasEditPriv())
 			$this->Goto(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home'));
