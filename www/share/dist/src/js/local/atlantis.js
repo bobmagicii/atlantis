@@ -201,6 +201,13 @@ class Atlantis {
 jQuery(document)
 .ready(function(){
 
+	// notes about codemirror:
+	// lib/codemirror.[js|css] was copied into share/dist/src/libs
+	// addon/mode/loadmode.js was copied into share/dist/src/libs
+	// mode/meta.js was copied into share/dist/src/libs
+	// mode subfolders were copied to share/dist/src/codemirror-modes
+	CodeMirror.modeURL = "/share/dist/src/codemirror-modes/%N/%N.js";
+
 	jQuery('.CopyElementToClipboard')
 	.on('click',Atlantis.CopyElementToClipboard);
 
@@ -227,7 +234,48 @@ jQuery(document)
 
 		jQuery(this).toggleClass('active');
 		return;
-	})
+	});
+
+	jQuery('code.CodeViewer')
+	.each(function(){
+
+		let Element = jQuery(this);
+
+		if(Element.parents('.EditorContainer').length > 0)
+		return;
+
+		let Editor = null;
+		let Container = null;
+		let Lang = Element.attr('data-lang') ?? 'txt';
+		let LangData = CodeMirror.findModeByExtension(Lang);
+		let Theme = Element.attr('data-theme');
+
+		Element.after(
+			Container = jQuery('<div />').addClass('CodeViewer')
+		);
+
+		Element.hide();
+
+		Editor = CodeMirror(Container.get(0),{
+			'value': jQuery.trim(Element.text()),
+			'lineNumbers': true,
+			'indentWithTabs': true,
+			'readOnly': true,
+			'indentUnit': 4,
+			'tabSize': 4
+		});
+
+		if(LangData && LangData.mode)
+		CodeMirror.autoLoadMode(Editor,LangData.mode);
+
+		if(LangData && LangData.mime)
+		Editor.setOption('mode',LangData.mime);
+
+		if(Theme)
+		Editor.setOption('theme',Theme);
+
+		return;
+	});
 
 	return;
 });

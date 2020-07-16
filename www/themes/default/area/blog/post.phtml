@@ -49,7 +49,7 @@ echo (new Atlantis\Element\PagePromo)
 			</div>
 			<div class="PostContent">
 
-			<?php if($Route->ShouldAdultSafespace()): ?>
+			<?php if($Post->IsAdult() && $Route->ShouldAdultSafespace()): ?>
 			<div class="alert alert-adult">
 				<?php if($User): ?>
 				<p>
