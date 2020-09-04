@@ -3,6 +3,10 @@
 namespace Routes\Blog;
 use \Atlantis as Atlantis;
 
+use
+\Atlantis\Prototype\Blog as Blog,
+\Atlantis\Prototype\BlogPost as Post;
+
 class Index
 extends Atlantis\Site\PublicWeb {
 
@@ -13,12 +17,25 @@ extends Atlantis\Site\PublicWeb {
 	@date 2020-05-24
 	//*/
 
-		$Blog = Atlantis\Prototype\Blog::GetByAlias($BlogAlias);
+		$Blog = Blog::GetByAlias($BlogAlias);
+		$BlogUser = $Blog->GetBlogUser($this->User);
 		$Page = 1;
 		$Limit = 10;
+		$Opt = [
+			'Adult'   => NULL,
+			'Enabled' => Post::EnableStatePublic
+		];
+
+		// bail if no blog.
 
 		if(!$Blog)
 		$this->Area('error/not-found')->Quit(404);
+
+		// allow editors to see draft posts.
+
+		if($BlogUser)
+		if($BlogUser->HasEditPriv())
+		$Opt['Enabled'] = Post::EnableStateAny;
 
 		////////
 
@@ -26,7 +43,7 @@ extends Atlantis\Site\PublicWeb {
 		->Set('Page.Title',$Blog->Title)
 		->Area('blog/index',[
 			'Blog'  => $Blog,
-			'Posts' => $Blog->GetRecentPosts($Limit,$Page)
+			'Posts' => $Blog->GetRecentPosts($Limit,$Page,$Opt)
 		]);
 
 		return;

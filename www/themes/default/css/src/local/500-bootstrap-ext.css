@@ -125,3 +125,6 @@ select:focus {
 	opacity: 1.0;
 }
 
+.fa-stack { font-size: 0.325em; }
+.fa-stack i { vertical-align: middle; }
+

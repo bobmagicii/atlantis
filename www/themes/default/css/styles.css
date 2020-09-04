@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-09-04 07:58:43
+@date 2020-09-04 18:03:34
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -307,6 +307,11 @@ body > header a {
 	text-transform: initial;
 }
 
+.PostListing .Post.PostFlagDraft,
+.PostListing .Post.PostFlagNuked {
+	opacity: 0.5;
+}
+
 /* this contains the promotional stripe under the page header which can be
 given an image to display to art shit up.
 
@@ -511,6 +516,9 @@ select:focus {
 .opacity-100 {
 	opacity: 1.0;
 }
+
+.fa-stack { font-size: 0.325em; }
+.fa-stack i { vertical-align: middle; }
 
 .DefocusUntilHover {
 	opacity: 0.3;

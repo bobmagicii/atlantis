@@ -58,6 +58,7 @@ implements Atlantis\Packages\Upsertable {
 			'Limit'     => 5,
 			'Offset'    => NULL,
 			'Timeframe' => NULL,
+			'Enabled'   => 1,
 			'Adult'     => 0
 		]);
 
@@ -113,6 +114,9 @@ implements Atlantis\Packages\Upsertable {
 
 		if(is_numeric($Opt->Adult))
 		$SQL->Where('BP.OptAdult=:Adult');
+
+		if($Opt->Enabled !== NULL)
+		$SQL->Where('BP.Enabled=:Enabled');
 
 		////////
 

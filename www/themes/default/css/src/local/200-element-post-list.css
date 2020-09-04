@@ -27,3 +27,8 @@
 	font-weight: bold;
 	text-transform: initial;
 }
+
+.PostListing .Post.PostFlagDraft,
+.PostListing .Post.PostFlagNuked {
+	opacity: 0.5;
+}

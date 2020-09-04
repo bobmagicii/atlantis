@@ -56,9 +56,14 @@ extends Atlantis\Prototype {
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
 
-	// misc fields
+	// flags and stuff
 
-	protected ?Atlantis\Prototype\BlogUser $UserCurrent;
+	public const
+	EnableStateAny     = NULL,
+	EnableStateNuked   = -1,
+	EnableStateDraft   = 0,
+	EnableStatePublic  = 1,
+	EnableStateFriends = 2;
 
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
@@ -168,6 +173,43 @@ extends Atlantis\Prototype {
 	}
 
 	public function
+	GetStyleClassList():
+	Array {
+	/*//
+	@date 2020-09-04
+	//*/
+
+		$Output = [];
+
+		if($this->IsAdult())
+		$Output[] = 'PostFlagAdult';
+
+		if($this->IsDraft())
+		$Output[] = 'PostFlagDraft';
+		elseif($this->IsPublic())
+		$Output[] = 'PostFlagPublic';
+		elseif($this->IsFriendsOnly())
+		$Output[] = 'PostFlagFriends';
+		elseif($this->IsNuked())
+		$Output[] = 'PostFlagNuled';
+
+		return $Output;
+	}
+
+	public function
+	GetStyleClassAttr():
+	String {
+	/*//
+	@date 2020-09-04
+	//*/
+
+		return join(' ',$this->GetStyleClassList());
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
+	public function
 	IsAdult():
 	Bool {
 	/*//
@@ -177,7 +219,6 @@ extends Atlantis\Prototype {
 		return ($this->OptAdult !== Blog::AdultDisabled);
 	}
 
-
 	public function
 	IsAdultForced():
 	Bool {
@@ -186,6 +227,46 @@ extends Atlantis\Prototype {
 	//*/
 
 		return ($this->OptAdult === Blog::AdultForced);
+	}
+
+	public function
+	IsNuked():
+	Bool {
+	/*//
+	@date 2020-09-04
+	//*/
+
+		return ($this->Enabled === static::EnableStateNuked);
+	}
+
+	public function
+	IsDraft():
+	Bool {
+	/*//
+	@date 2020-09-04
+	//*/
+
+		return ($this->Enabled === static::EnableStateDraft);
+	}
+
+	public function
+	IsPublic():
+	Bool {
+	/*//
+	@date 2020-09-04
+	//*/
+
+		return ($this->Enabled === static::EnableStatePublic);
+	}
+
+	public function
+	IsFriendsOnly():
+	Bool {
+	/*//
+	@date 2020-09-04
+	//*/
+
+		return ($this->Enabled === static::EnableStateFriends);
 	}
 
 	public function

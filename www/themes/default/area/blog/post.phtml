@@ -22,9 +22,18 @@ echo (new Atlantis\Element\PagePromo)
 	<div class="row">
 		<?php if($Post->IsAdult()): ?>
 		<div class="col-12 mb-4">
-			<div class="alert alert-adult">
+			<div class="alert alert-adult mb-0">
 				<i class="fa fas fa-exclamation-square mr-2"></i>
 				This post contains Adult Content.
+			</div>
+		</div>
+		<?php endif; ?>
+
+		<?php if($Post->IsDraft()): ?>
+		<div class="col-12 mb-4">
+			<div class="alert alert-dark mb-0">
+				<i class="fa fas fa-pen-square mr-2"></i>
+				This post is saved as a Draft.
 			</div>
 		</div>
 		<?php endif; ?>
@@ -48,7 +57,6 @@ echo (new Atlantis\Element\PagePromo)
 				</div>
 			</div>
 			<div class="PostContent">
-
 			<?php if($Post->IsAdult() && $Route->ShouldAdultSafespace()): ?>
 			<div class="alert alert-adult">
 				<?php if($User): ?>

@@ -162,7 +162,7 @@ implements JsonSerializable {
 	///////////////////////////////////////////////////////////////////////////
 
 	public function
-	GetRecentPosts(Int $Limit, Int $Page):
+	GetRecentPosts(Int $Limit, Int $Page, ?Array $Opt=NULL):
 	Atlantis\Struct\SearchResult {
 	/*//
 	@date 2020-05-23
@@ -173,25 +173,38 @@ implements JsonSerializable {
 		// with a warning banner until the user options
 		// are complete.
 
+		$Opt = new Nether\Object\Mapped($Opt,[
+			'Adult'   => 0,
+			'Enabled' => 1,
+			'Sort'    => 'newest'
+		]);
+
 		return Atlantis\Prototype\BlogPost::Find([
-			'BlogID' => $this->ID,
-			'Adult'  => NULL,
-			'Page'   => $Page,
-			'Limit'  => $Limit,
-			'Sort'   => 'newest'
+			'BlogID'  => $this->ID,
+			'Enabled' => $Opt->Enabled,
+			'Adult'   => $Opt->Adult,
+			'Page'    => $Page,
+			'Limit'   => $Limit,
+			'Sort'    => $Opt->Sort
 		]);
 	}
 
 	public function
-	GetPopularPosts(Int $Limit, Int $Page):
+	GetPopularPosts(Int $Limit, Int $Page, ?Array $Opt=NULL):
 	Atlantis\Struct\SearchResult {
 	/*//
 	@date 2020-05-26
 	//*/
 
+		$Opt = new Nether\Object\Mapped($Opt,[
+			'Adult'   => 0,
+			'Enabled' => 1
+		]);
+
 		return LogBlogPostTraffic::FindPopularPosts([
 			'BlogID'    => $this->ID,
-			'Adult'     => NULL,
+			'Enabled'   => $Opt->Enabled,
+			'Adult'     => $Opt->Adult,
 			'Page'      => 1,
 			'Limit'     => 5,
 			'Timeframe' => strtotime('-30 days')
@@ -209,6 +222,23 @@ implements JsonSerializable {
 		return Atlantis\Site\Endpoint::Get('Atlantis.Blog.Home',[
 			'BlogAlias' => $this->Alias
 		]);
+	}
+
+	public function
+	GetBlogUser(?Atlantis\User $User):
+	?Atlantis\Prototype\BlogUser {
+	/*//
+	@date 2020-09-04
+	get the user's blog access.
+	//*/
+
+		if(!$User)
+		return NULL;
+
+		return Atlantis\Prototype\BlogUser::GetByBlogUser(
+			$this->ID,
+			$User->ID
+		);
 	}
 
 	public function

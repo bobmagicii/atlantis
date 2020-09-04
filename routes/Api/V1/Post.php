@@ -203,9 +203,13 @@ extends Atlantis\Site\ProtectedAPI {
 
 		if($this->Post->Exists('OptDraft')) {
 			if($this->Post->OptDraft)
-			$Dataset['Enabled'] = 0;
+			$Dataset['Enabled'] = $Post::EnableStateDraft;
 			else
-			$Dataset['Enabled'] = 1;
+			$Dataset['Enabled'] = $Post::EnableStatePublic;
+
+			if($Post->Enabled === $Post::EnableStateDraft)
+			if($Dataset['Enabled'] == $Post::EnableStatePublic)
+			$Dataset['TimeCreated'] = time();
 		}
 
 		// update the adult status if they are allowed to.
