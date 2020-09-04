@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-07-06 20:46:08
+@date 2020-07-17 21:10:20
 @files [
     "src\/js\/libs\/000-jquery-3.1.1.min.js",
     "src\/js\/libs\/100-bootstrap.bundle.min.js",
@@ -11317,7 +11317,7 @@ jQuery(document)
 		return;
 	});
 
-	jQuery('code.CodeViewer')
+	jQuery('.CodeViewer')
 	.each(function(){
 
 		let Element = jQuery(this);

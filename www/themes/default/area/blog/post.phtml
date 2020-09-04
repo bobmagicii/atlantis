@@ -63,7 +63,15 @@ echo (new Atlantis\Element\PagePromo)
 					</form>
 				</div>
 				<?php else: ?>
-				This post has been hidden because you are not <a href="<?php echo $Endpoint('Atlantis.Login') ?>">logged in</a> and have opted-in to have adult content displayed.
+				<p>
+					This post has been hidden because you are not <a href="<?php echo $Endpoint('Atlantis.Login') ?>">logged in</a> and have opted-in to have adult content displayed.
+				</p>
+				<div class="text-center">
+					<form method="post">
+						<input type="hidden" name="Action" value="ignore-adult-safespace" />
+						<button type="submit" class="btn btn-adult">View Post Anyway</button>
+					</form>
+				</div>
 				<?php endif; ?>
 			</div>
 			<?php else: ?>

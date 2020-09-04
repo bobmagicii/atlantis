@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-07-06 20:53:31
+@date 2020-07-17 21:08:38
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -75,7 +75,8 @@ h2 {
 	text-transform: uppercase;
 }
 
-code {
+code,
+pre {
 	border: 2px solid #ddd;
 	border-radius: 4px;
 	color: #333;

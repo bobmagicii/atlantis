@@ -236,7 +236,7 @@ jQuery(document)
 		return;
 	});
 
-	jQuery('code.CodeViewer')
+	jQuery('.CodeViewer')
 	.each(function(){
 
 		let Element = jQuery(this);

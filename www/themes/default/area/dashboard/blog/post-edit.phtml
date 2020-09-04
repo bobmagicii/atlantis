@@ -42,7 +42,7 @@ $OptAdultClass .= 'disabled ';
 		<input id="InputTitle" type="text" class="form-control form-control-lg" placeholder="Post Title..." value="<?php $Printer($Post->Title) ?>" />
 	</div>
 
-	<div class="EditorContainer mb-4">
+	<div id="EditorContainer" class="EditorContainer mb-4">
 		<div id="Editor"></div>
 		<div id="EditorContent" class="d-none"><?php echo $Post->Content ?></div>
 	</div>
@@ -75,13 +75,90 @@ jQuery(document)
 	let Query = URL.query(true);
 	let InputPostID = jQuery('#InputPostID');
 	let InputTitle = jQuery('#InputTitle');
+	let ElementContain = jQuery('#EditorContainer');
 	let ElementOptAdult = jQuery('#ElementOptAdult');
 	let ElementSubmit = jQuery('#CmdSubmit');
+
+	////////
+
+	let InsertCodeBlockDef = {
+		name: 'Insert Code Block',
+		iconURL: './build/images/icons/269-info.png',
+		exec: function(me) {
+			me.selection.insertHTML('<code class="CodeViewer" data-lang="null" spellcheck="false"></code>');
+			return;
+		}
+	};
+
+	let OnCodeConfig = function(ElementCode){
+
+		let Overlay;
+		let Dialog;
+		let ElementLang = jQuery('<select />').addClass('form-control');
+		let CurrentLang = ElementCode.attr('data-lang');
+		let ListLang = CodeMirror.modeInfo.slice(0);
+
+		ListLang.sort(function(A,B){
+			let AName = A.name.toLowerCase();
+			let BName = B.name.toLowerCase();
+
+			return (
+				(AName === BName)?
+				(0):((AName < BName)?(-1):(1))
+			);
+		});
+
+		jQuery.each(ListLang,function(Key,Val){
+			ElementLang
+			.append(
+				jQuery('<option />')
+				.attr('value',Val.mode)
+				.text(Val.name)
+			);
+			return;
+		});
+
+		ElementLang
+		.val(CurrentLang)
+		.on('change',function(){
+			ElementCode.attr(
+				'data-lang',
+				jQuery(this).val()
+			);
+			return;
+		});
+
+		Overlay = new NUI.Overlay({
+			'Content': (Dialog = new NUI.Dialog({
+				'Title': 'Code Block Config',
+				'Content': (
+					jQuery('<div />')
+					.addClass('row')
+					.append(
+						jQuery('<div />')
+						.addClass('col-12 mb-2')
+						.append(ElementLang)
+					)
+				),
+				'OnCancel': function(){
+					Overlay.Destroy();
+					return;
+				}
+			}))
+		});
+
+		return;
+	};
+
+	////////
 
 	let Editor = new Jodit('#Editor',{
 		'autofocus': false,
 		'defaultActionOnPaste': 'insert_as_text',
 		'enableDragAndDropFileToEditor': true,
+		'extraButtons':[
+			InsertCodeBlockDef
+		],
 		'uploader': {
 			'method': 'POST',
 			'url': '/api/v1/image/entity',
@@ -139,7 +216,13 @@ jQuery(document)
 		let PostID = parseInt(InputPostID.val());
 		let Title = jQuery.trim(InputTitle.val());
 		let OptAdult = ElementOptAdult.hasClass('active') ? 1 : 0;
-		let Content = Editor.value;
+		let Content = null;
+
+		jQuery('.jodit_wysiwyg')
+		.find('.CodeConfig')
+		.remove();
+
+		Content = Editor.value;
 
 		Atlantis.Request({
 			'Method': 'PATCH',
@@ -149,6 +232,58 @@ jQuery(document)
 				location.href = Result.Location;
 				return;
 			}
+		});
+
+		return;
+	});
+
+	ElementContain
+	.on('mouseenter','.CodeViewer',function(){
+		let that = jQuery(this);
+		let Lang = that.attr('data-lang') || 'text';
+		let ElementLang;
+
+		that
+		.find('.CodeConfig')
+		.remove();
+
+		that
+		.css({ 'position':'relative', 'overflow':'visible' })
+		.append(
+			jQuery('<div />')
+			.addClass('CodeConfig p-2')
+			.css({ 'position':'absolute', 'top':'0px', 'right':'0px' })
+			.append(
+				ElementLang = jQuery('<button />')
+				.addClass('btn btn-sm btn-dark')
+				.html('<i class="fa fa-code"></i>')
+				.on('click',function(){ OnCodeConfig(that); })
+			)
+		);
+
+		return;
+	});
+
+	ElementContain
+	.on('mouseleave','.CodeViewer',function(){
+
+		// remove the little option panel.
+
+		jQuery(this)
+		.find('.CodeConfig')
+		.remove();
+
+		// if you are directly typing code into the editor they insert line breaks
+		// so when we leave, we convert them to real breaks.
+
+		jQuery('.CodeViewer')
+		.each(function(){
+			let Text = jQuery(this)
+			.html()
+			.replace(/<br ?\/?>/i,"\n");
+
+			jQuery(this).html(Text);
+			return;
 		});
 
 		return;
