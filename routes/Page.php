@@ -14,6 +14,9 @@ class Page
 extends Atlantis\Site\PublicWeb
 implements Nether\Avenue\Interfaces\RouteAcceptance {
 
+	protected static
+	?String $Filename = NULL;
+
 	public static function
 	WillHandleRequest(Router $Router, Handler $Handler):
 	Bool {
@@ -40,7 +43,7 @@ implements Nether\Avenue\Interfaces\RouteAcceptance {
 		);
 
 		if(file_exists($Filename) && is_readable($Filename)) {
-			Nether\Stash::Set('Route.Page.Filename',$Filename);
+			static::$Filename = $Filename;
 			return TRUE;
 		}
 
@@ -56,10 +59,22 @@ implements Nether\Avenue\Interfaces\RouteAcceptance {
 	@date 2020-05-27
 	//*/
 
-		(function($File){
+		(function(
+			String $File,
+			Atlantis\Site\PublicWeb $Route,
+			Nether\Avenue\Router $Router,
+			Nether\Surface $Surface,
+			?Atlantis\User $User
+		){
 			require($File);
 			return;
-		})(Nether\Stash::Get('Route.Page.Filename'));
+		})(
+			static::$Filename,
+			$this,
+			$this->Router,
+			$this->Surface,
+			$this->User
+		);
 
 		return;
 	}
