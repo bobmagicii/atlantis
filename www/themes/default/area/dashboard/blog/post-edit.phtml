@@ -6,12 +6,16 @@
  */
 
 $OptAdultClass = '';
+$OptDraftClass = '';
 
 if($Post->OptAdult !== Atlantis\Prototype\Blog::AdultDisabled)
 $OptAdultClass .= 'active ';
 
 if($Post->OptAdult === Atlantis\Prototype\Blog::AdultForced)
 $OptAdultClass .= 'disabled ';
+
+if($Post->Enabled === 0)
+$OptDraftClass = 'active ';
 
 ?>
 
@@ -51,16 +55,23 @@ $OptAdultClass .= 'disabled ';
 		<h2 class="font-size-large font-weight-bold">Post Settings</h2>
 		<div class="row tight align-items-center">
 			<div class="col-12 col-md-auto">
-				<button id="ElementOptAdult" class="btn btn-dark btn-block btn-toggle <?php $Printer(trim($OptAdultClass)) ?>">
+				<button id="ElementOptDraft" class="btn btn-dark btn-block btn-toggle <?php $Printer(trim($OptDraftClass)) ?>">
 					<i class="btn-toggle-off far fa-square mr-2"></i>
 					<i class="btn-toggle-on far fa-check-square mr-2"></i>
-					This post contains Adult Content
+					Draft
+				</button>
+			</div>
+			<div class="col-12 col-md-auto">
+				<button id="ElementOptAdult" class="btn btn-adult btn-block btn-toggle <?php $Printer(trim($OptAdultClass)) ?>">
+					<i class="btn-toggle-off far fa-square mr-2"></i>
+					<i class="btn-toggle-on far fa-check-square mr-2"></i>
+					Adult
 				</button>
 			</div>
 		</div>
 	</div>
 
-	<div class="mb-4">
+	<div class="text-center mb-4">
 		<input id="InputPostID" type="hidden" value="<?php echo $Post->ID ?>" />
 		<button id="CmdSubmit" type="button" class="btn btn-lg btn-dark">Save Changes</button>
 	</div>
@@ -77,6 +88,7 @@ jQuery(document)
 	let InputTitle = jQuery('#InputTitle');
 	let ElementContain = jQuery('#EditorContainer');
 	let ElementOptAdult = jQuery('#ElementOptAdult');
+	let ElementOptDraft = jQuery('#ElementOptDraft');
 	let ElementSubmit = jQuery('#CmdSubmit');
 
 	////////
@@ -216,6 +228,7 @@ jQuery(document)
 		let PostID = parseInt(InputPostID.val());
 		let Title = jQuery.trim(InputTitle.val());
 		let OptAdult = ElementOptAdult.hasClass('active') ? 1 : 0;
+		let OptDraft = ElementOptDraft.hasClass('active') ? 1 : 0;
 		let Content = null;
 
 		jQuery('.jodit_wysiwyg')
@@ -227,7 +240,13 @@ jQuery(document)
 		Atlantis.Request({
 			'Method': 'PATCH',
 			'URL': '<?php echo $Endpoint('Atlantis.API.Post',['Command'=>'entity']) ?>',
-			'Data': { 'ID': PostID, 'Title':Title, 'Content':Content, 'OptAdult':OptAdult },
+			'Data': {
+				'ID': PostID,
+				'Title': Title,
+				'Content': Content,
+				'OptDraft': OptDraft,
+				'OptAdult': OptAdult
+			},
 			'OnSuccess': function(Result){
 				location.href = Result.Location;
 				return;

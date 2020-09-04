@@ -17,16 +17,12 @@
 .alert-adult a:visited,
 .alert-adult a:active,
 .alert-adult a:hover {
-	color: rgb(255, 230, 234);
-	border-bottom-color: rgb(255, 230, 234);
+	color: #ffe6ea;
+	border-bottom-color: #ffe6ea;
 }
 
 .alert-adult .btn-adult {
-	background: rgb(255, 230, 234);
-	border-color: rgb(255, 230, 234);
-	color: rgba(194,86,132,1);
-}
-
-.text-adult {
-	color: rgba(194,86,132,1);
+	background: #ffe6ea;
+	border-color: #ffe6ea;
+	color: #c25684;
 }

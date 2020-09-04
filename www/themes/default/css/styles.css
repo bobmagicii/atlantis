@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-07-17 21:08:38
+@date 2020-09-04 07:58:43
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -475,6 +475,23 @@ select:focus {
 	display: inline-block;
 }
 
+.btn-adult {
+	background: #c25684;
+	border-color: #c25684;
+	color: #ffe6ea;
+}
+
+.btn-adult:hover,
+.btn-adult.active {
+	background: #cf6694;
+	border-color: #cf6694;
+	color: #ffe6ea;
+}
+
+.text-adult {
+	color: #c25684;
+}
+
 .opacity-0 {
 	opacity: 0.0;
 }
@@ -539,18 +556,14 @@ select:focus {
 .alert-adult a:visited,
 .alert-adult a:active,
 .alert-adult a:hover {
-	color: rgb(255, 230, 234);
-	border-bottom-color: rgb(255, 230, 234);
+	color: #ffe6ea;
+	border-bottom-color: #ffe6ea;
 }
 
 .alert-adult .btn-adult {
-	background: rgb(255, 230, 234);
-	border-color: rgb(255, 230, 234);
-	color: rgba(194,86,132,1);
-}
-
-.text-adult {
-	color: rgba(194,86,132,1);
+	background: #ffe6ea;
+	border-color: #ffe6ea;
+	color: #c25684;
 }
 
 .form-control:focus {

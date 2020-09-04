@@ -88,6 +88,23 @@ select:focus {
 	display: inline-block;
 }
 
+.btn-adult {
+	background: #c25684;
+	border-color: #c25684;
+	color: #ffe6ea;
+}
+
+.btn-adult:hover,
+.btn-adult.active {
+	background: #cf6694;
+	border-color: #cf6694;
+	color: #ffe6ea;
+}
+
+.text-adult {
+	color: #c25684;
+}
+
 .opacity-0 {
 	opacity: 0.0;
 }

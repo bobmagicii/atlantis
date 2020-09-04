@@ -49,6 +49,7 @@ extends Atlantis\Site\ProtectedAPI {
 	 * @input String Title
 	 * @input String Content
 	 * @input Int OptAdult
+	 * @Input Bool OptDraft
 	 */
 
 	final public function
@@ -66,11 +67,13 @@ extends Atlantis\Site\ProtectedAPI {
 		->BlogID('Atlantis\Util\Filters::TypeInt')
 		->Title('Atlantis\Util\Filters::EncodedText')
 		->Content('Atlantis\Util\Filters::TrimmedText')
-		->OptAdult('Atlantis\Util\Filters::NumberValidRange',[0,1,0]);
+		->OptAdult('Atlantis\Util\Filters::NumberValidRange',[0,1,0])
+		->OptDraft('Atlantis\Util\Filters::TypeBool');
 
 		$BlogUser = NULL;
 		$Title = $this->Post->Title;
 		$Content = $this->Post->Content;
+		$Enabled = $this->Post->OptDraft ? 0 : 1;
 		$OptAdult = NULL;
 		$Alias = NULL;
 		$AliasTest = NULL;
@@ -121,6 +124,7 @@ extends Atlantis\Site\ProtectedAPI {
 		$Post = Atlantis\Prototype\BlogPost::Insert([
 			'BlogID'   => $BlogUser->BlogID,
 			'UserID'   => $BlogUser->UserID,
+			'Enabled'  => $Enabled,
 			'Title'    => $Title,
 			'Alias'    => $Alias,
 			'OptAdult' => $OptAdult,
@@ -144,6 +148,7 @@ extends Atlantis\Site\ProtectedAPI {
 	 * @input ?String Title
 	 * @input ?String Content
 	 * @input ?Int OptAdult
+	 * @input ?Bool OptDraft
 	 * @input ?Int AliasRegen
 	 */
 
@@ -162,6 +167,7 @@ extends Atlantis\Site\ProtectedAPI {
 		->Title('Atlantis\Util\Filters::EncodedText')
 		->Content('Atlantis\Util\Filters::TrimmedText')
 		->OptAdult('Atlantis\Util\Filters::NumberValidRange',[0,1,0])
+		->OptDraft('Atlantis\Util\Filters::TypeBool')
 		->AliasRegen('Atlantis\Util\Filters::NumberValidRange',[0,1,0]);
 
 		////////
@@ -191,6 +197,15 @@ extends Atlantis\Site\ProtectedAPI {
 			$this->Quit(3,'post must have a title');
 
 			$Dataset['Title'] = $this->Post->Title;
+		}
+
+		// update draft status.
+
+		if($this->Post->Exists('OptDraft')) {
+			if($this->Post->OptDraft)
+			$Dataset['Enabled'] = 0;
+			else
+			$Dataset['Enabled'] = 1;
 		}
 
 		// update the adult status if they are allowed to.
