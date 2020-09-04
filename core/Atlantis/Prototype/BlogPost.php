@@ -59,11 +59,12 @@ extends Atlantis\Prototype {
 	// flags and stuff
 
 	public const
-	EnableStateAny     = NULL,
-	EnableStateNuked   = -1,
-	EnableStateDraft   = 0,
-	EnableStatePublic  = 1,
-	EnableStateFriends = 2;
+	EnableStateAny      = NULL,
+	EnableStateNuked    = -1,
+	EnableStateDraft    = 0,
+	EnableStatePublic   = 1,
+	EnableStateUnlisted = 2,
+	EnableStateFriends  = 3;
 
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////

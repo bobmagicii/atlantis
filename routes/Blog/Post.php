@@ -23,23 +23,24 @@ extends Atlantis\Site\PublicWeb {
 
 		////////
 
-		$Recent = $Post->Blog->GetRecentPosts(5,1);
-		$Popular = $Post->Blog->GetPopularPosts(5,1);
 		$BlogUser = $Post->GetBlogUser($this->User);
+		$UserCanEdit = (
+			$Post->IsUserOwner($this->User)
+			|| ($BlogUser && $BlogUser->HasEditPriv())
+		);
 
-		($Popular->Payload)
-		->Remap(function($Val){ return $Val->Post; });
+		if($Post->Enabled === $Post::EnableStateDraft) {
+			if(!$UserCanEdit)
+			$this->Area('error/not-found')->Quit(404);
+		}
 
 		////////
 
-		// post owners can edit.
+		$Recent = $Post->Blog->GetRecentPosts(5,1);
+		$Popular = $Post->Blog->GetPopularPosts(5,1);
 
-		$UserCanEdit = $Post->IsUserOwner($this->User);
-
-		// blog editors can edit.
-
-		if(!$UserCanEdit && $BlogUser)
-		$UserCanEdit = $BlogUser->HasEditPriv();
+		($Popular->Payload)
+		->Remap(function($Val){ return $Val->Post; });
 
 		////////
 

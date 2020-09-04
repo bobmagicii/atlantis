@@ -16,7 +16,7 @@ $Posts = $Element->GetItemStore();
 	<div class="Post <?php echo $Post->GetStyleClassAttr() ?>">
 		<h3 class="d-flex align-items-center">
 			<?php if($Post->IsDraft()): ?>
-			<i class="flex-grow-0 fas fa-fw fa-pen-square font-size-smallerer mr-1 HasTooltip" title="Draft"></i>
+			<i class="flex-grow-0 fas fa-fw fa-sticky-note font-size-smallerer mr-1 HasTooltip" title="Draft"></i>
 			<?php elseif($Post->IsPublic()): ?>
 			<?php elseif($Post->IsFriendsOnly()): ?>
 			<span class="fa-stack fa-2x mr-1 HasTooltip" title="Friends Only">
