@@ -258,4 +258,48 @@ extends Atlantis\Site\ProtectedAPI {
 		return;
 	}
 
+	/**
+	 * @input ?Int ID
+	 */
+
+	final public function
+	EntityDelete():
+	Void {
+	/*//
+	@error 1 post not found
+	@error 2 invalid user
+	//*/
+
+		($this->Post)
+		->ID('Atlantis\\Util\\Filters::TypeInt');
+
+		$Post = NULL;
+		$BlogUser = NULL;
+		$Goto = NULL;
+
+		////////
+
+		$Post = Atlantis\Prototype\BlogPost::GetByID($this->Post->ID);
+
+		if(!$Post)
+		$this->Quit(1,'not found');
+
+		////////
+
+		$BlogUser = $Post->Blog->GetBlogUser($this->User);
+
+		if(!$BlogUser || !$BlogUser->HasManagePriv())
+		$this->Quit(2,'invalid user');
+
+		////////
+
+		$Goto = $Post->Blog->GetURL();
+		$Post->Drop();
+
+		////////
+
+		$this->SetLocation($Goto);
+		return;
+	}
+
 }

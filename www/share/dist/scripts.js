@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-07-17 21:10:20
+@date 2020-09-05 04:43:22
 @files [
     "src\/js\/libs\/000-jquery-3.1.1.min.js",
     "src\/js\/libs\/100-bootstrap.bundle.min.js",
@@ -12,6 +12,7 @@
     "src\/js\/libs\/500-jodit.es2018.min.js",
     "src\/js\/libs\/600-codemirror.loadmode.js",
     "src\/js\/libs\/600-codemirror.mode.meta.js",
+    "src\/js\/local\/atlantis-post.js",
     "src\/js\/local\/atlantis.js"
 ]
 //*/
@@ -11074,6 +11075,53 @@ NUI.Overlay.prototype.valueOf = NUI.Traits.GetFromStruct;
         if (info.alias[j].toLowerCase() == name) return info;
     }
   };
+});
+
+///////////////////////////////////////////////////////////////////////////
+// src/js/local/atlantis-post.js //////////////////////////////////////////
+
+let AtlantisPost = {
+
+	'Delete': function(PostID){
+
+		(new Promise(function(Next,Fail){
+			Atlantis.Request({
+				'Method': 'DELETE',
+				'URL': '/api/v1/post/entity',
+				'Data': { 'ID': PostID },
+				'OnSuccess': function(Result){
+					Next(Result);
+					return;
+				}
+			});
+		}))
+		.then(function(Result){
+			if(typeof Result.Location === 'string') {
+				location.href = Result.Location;
+				return;
+			}
+			return;
+		});
+
+		return;
+	}
+
+};
+
+jQuery(document)
+.ready(function(){
+
+	jQuery('.AtlantisActionPostDelete')
+	.on('click',function(){
+		let PostID = parseInt(jQuery(this).attr('data-post-id'));
+
+		if(PostID > 0)
+		AtlantisPost.Delete(PostID);
+
+		return false;
+	});
+
+	return;
 });
 
 ///////////////////////////////////////////////////////////////////////////

@@ -6,6 +6,7 @@
  * @var Atlantis\Prototype\BlogPost $Post
  * @var Atlantis\Prototype\BlogUser $BlogUser
  * @var Bool $UserCanEdit
+ * @var Bool $UserCanDelete
 */
 
 echo (new Atlantis\Element\PagePromo)
@@ -47,11 +48,16 @@ echo (new Atlantis\Element\PagePromo)
 						From <a class="Source" href="<?php $Printer($Post->Blog->URL) ?>"><?php $Printer($Post->Blog->Title) ?></a>
 						By <a class="Authour" href="<?php $Printer($Post->User->URL) ?>"><?php $Printer($Post->User->Alias) ?></a>
 					</div>
-					<?php if($UserCanEdit): ?>
+					<?php if($UserCanEdit || $UserCanDelete): ?>
 					<div class="font-size-smaller">
 						<i class="fa fa-angle-double-right"></i>
 						<b>Post Options:</b>
+						<?php if($UserCanEdit): ?>
 						<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Post.Edit',['PostID'=>$Post->ID]) ?>">Edit Post</a>
+						<?php endif; ?>
+						<?php if($UserCanDelete): ?>
+						<a href="#" class="AtlantisActionPostDelete" data-post-id="<?php echo $Post->ID ?>">Delete Post</a>
+						<?php endif; ?>
 					</div>
 					<?php endif; ?>
 				</div>

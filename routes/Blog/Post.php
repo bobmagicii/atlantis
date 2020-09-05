@@ -24,9 +24,15 @@ extends Atlantis\Site\PublicWeb {
 		////////
 
 		$BlogUser = $Post->GetBlogUser($this->User);
+
 		$UserCanEdit = (
 			$Post->IsUserOwner($this->User)
 			|| ($BlogUser && $BlogUser->HasEditPriv())
+		);
+
+		$UserCanDelete = (
+			$Post->IsUserOwner($this->User)
+			|| ($BlogUser && $BlogUser->HasManagePriv())
 		);
 
 		if($Post->Enabled === $Post::EnableStateDraft) {
@@ -60,12 +66,13 @@ extends Atlantis\Site\PublicWeb {
 			$Post->Blog->Title
 		))
 		->Area('blog/post',[
-			'Blog'         => $Post->Blog,
-			'Post'         => $Post,
-			'BlogUser'     => $BlogUser,
-			'UserCanEdit'  => $UserCanEdit,
-			'RecentPosts'  => $Recent,
-			'PopularPosts' => $Popular
+			'Blog'          => $Post->Blog,
+			'Post'          => $Post,
+			'BlogUser'      => $BlogUser,
+			'UserCanEdit'   => $UserCanEdit,
+			'UserCanDelete' => $UserCanDelete,
+			'RecentPosts'   => $Recent,
+			'PopularPosts'  => $Popular
 		]);
 
 		return;
