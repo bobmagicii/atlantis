@@ -97,7 +97,8 @@ class Theme {
 		if($Errors->Count())
 		$Errors->Each(function(Atlantis\Site\Error\Inline $Inline):Void {
 			printf(
-				'<div class="Error"><div>%s%s</div></div>',
+				'<div class="ErrorItem %s"><div>%s%s</div></div>',
+				$Inline->GetClass(),
 				($Inline->GetIcon())?
 					("<i class=\"fa {$Inline->GetIcon()}\"></i> "):
 					(''),

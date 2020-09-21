@@ -93,8 +93,8 @@ extends Atlantis\Prototype {
 	prepare the date objects.
 	//*/
 
-		$this->DateCreated = new Atlantis\Util\Date("@{$this->TimeCreated}");
-		$this->DateUpdated = new Atlantis\Util\Date("@{$this->TimeUpdated}");
+		$this->DateCreated = new Atlantis\Util\Date("@{$Raw['TimeCreated']}");
+		$this->DateUpdated = new Atlantis\Util\Date("@{$Raw['TimeUpdated']}");
 		return $this;
 	}
 

@@ -206,6 +206,9 @@ extends Atlantis\Prototype {
 		->Join('Blogs Bl ON Main.BlogID=Bl.ID')
 		->Join('Users Us ON Main.UserID=Us.ID');
 
+		Atlantis\Prototype\Blog::ExtendQueryJoins($SQL,'Bl');
+		Atlantis\Prototype\Blog::ExtendQueryFields($SQL,'B_');
+
 		return;
 	}
 

@@ -31,7 +31,9 @@ implements JsonSerializable {
 		'Alias'          => 'Alias',
 		'Title'          => 'Title',
 		'Tagline'        => 'Tagline',
+		'ImageHeaderID'  => 'ImageHeaderID:int',
 		'ImageHeaderURL' => 'ImageHeaderURL',
+		'ImageIconID'    => 'ImageIconID:int',
 		'ImageIconURL'   => 'ImageIconURL',
 		'OptAdult'       => 'OptAdult:int'
 	];
@@ -47,7 +49,9 @@ implements JsonSerializable {
 	public String $Title;
 	public String $Alias;
 	public ?String $Tagline;
+	public ?Int $ImageHeaderID;
 	public ?String $ImageHeaderURL;
+	public ?Int $ImageIconID;
 	public ?String $ImageIconURL;
 	public Int $OptAdult;
 
@@ -57,6 +61,9 @@ implements JsonSerializable {
 	public ?Atlantis\User $User;
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
+
+	protected ?Atlantis\Prototype\UploadImage $ImageHeader;
+	protected ?Atlantis\Prototype\UploadImage $ImageIcon;
 
 	// some constants for context.
 
@@ -113,8 +120,8 @@ implements JsonSerializable {
 	prepare the date objects.
 	//*/
 
-		$this->DateCreated = new Atlantis\Util\Date("@{$this->TimeCreated}");
-		$this->DateUpdated = new Atlantis\Util\Date("@{$this->TimeUpdated}");
+		$this->DateCreated = new Atlantis\Util\Date("@{$Raw['TimeCreated']}");
+		$this->DateUpdated = new Atlantis\Util\Date("@{$Raw['TimeUpdated']}");
 		return $this;
 	}
 
@@ -125,11 +132,33 @@ implements JsonSerializable {
 	prepare image urls.
 	//*/
 
-		if($this->ImageHeaderURL === NULL)
-		$this->ImageHeaderURL = Nether\Option::Get('Atlantis.Blog.DefaultImageHeaderURL');
+		//Atlantis\Util::VarDump($Raw);
 
-		if($this->ImageIconURL === NULL)
-		$this->ImageIconURL = Nether\Option::Get('Atlantis.Blog.DefaultImageIconURL');
+		if(array_key_exists('IH_ID',$Raw) && $Raw['IH_ID']) {
+			$this->ImageHeader = new Atlantis\Prototype\UploadImage(
+				Atlantis\Util::StripPrefixedQueryFields($Raw,'IH_')
+			);
+
+			$this->ImageHeaderURL = $this->ImageHeader->GetURL();
+		}
+
+		elseif($this->ImageHeaderURL === NULL) {
+			$this->ImageHeaderURL = Nether\Option::Get('Atlantis.Blog.DefaultImageHeaderURL');
+		}
+
+		////////
+
+		if(array_key_exists('II_ID',$Raw) && $Raw['II_ID']) {
+			$this->ImageIcon = new Atlantis\Prototype\UploadImage(
+				Atlantis\Util::StripPrefixedQueryFields($Raw,'II_')
+			);
+
+			$this->ImageIconURL = $this->ImageIcon->GetURL();
+		}
+
+		elseif($this->ImageIconURL === NULL) {
+			$this->ImageIconURL = Nether\Option::Get('Atlantis.Blog.DefaultImageIconURL');
+		}
 
 		return $this;
 	}
@@ -225,6 +254,26 @@ implements JsonSerializable {
 	}
 
 	public function
+	GetImageHeaderURL():
+	String {
+
+		if($this->ImageHeaderURL === NULL)
+		return Nether\Option::Get('Atlantis.Blog.DefaultImageHeaderURL');
+
+		return $this->ImageHeaderURL;
+	}
+
+	public function
+	GetImageIconURL():
+	String {
+
+		if($this->ImageIconURL === NULL)
+		return Nether\Option::Get('Atlantis.Blog.DefaultImageIconURL');
+
+		return $this->ImageIconURL;
+	}
+
+	public function
 	GetBlogUser(?Atlantis\User $User):
 	?Atlantis\Prototype\BlogUser {
 	/*//
@@ -313,20 +362,22 @@ implements JsonSerializable {
 	///////////////////////////////////////////////////////////////////////////
 
 	static protected function
-	ExtendQueryJoins($SQL):
+	ExtendQueryJoins($SQL, String $Prefix='Main'):
 	Void {
 	/*//
 	@date 2018-06-08
 	//*/
 
 		$SQL
-		->Join('Users BU ON Main.UserID=BU.ID');
+		->Join(sprintf('Users BU ON %s.UserID=BU.ID',$Prefix))
+		->Join(sprintf('UploadImages BII ON BII.ID=%s.ImageIconID',$Prefix))
+		->Join(sprintf('UploadImages BIH ON BIH.ID=%s.ImageHeaderID',$Prefix));
 
 		return;
 	}
 
 	static protected function
-	ExtendQueryFields($SQL):
+	ExtendQueryFields($SQL, String $Prefix=''):
 	Void {
 	/*//
 	@date 2018-06-08
@@ -335,7 +386,15 @@ implements JsonSerializable {
 		$SQL
 		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
 			Atlantis\User::GetPropertyMap(),
-			'BU', 'BU_'
+			'BU', "{$Prefix}BU_"
+		))
+		->Fields(Atlantis\Util::BuildPrefixedQueryfields(
+			Atlantis\Prototype\UploadImage::GetPropertyMap(),
+			'BII', "{$Prefix}II_"
+		))
+		->Fields(Atlantis\Util::BuildPrefixedQueryfields(
+			Atlantis\Prototype\UploadImage::GetPropertyMap(),
+			'BIH', "{$Prefix}IH_"
 		));
 
 		return;

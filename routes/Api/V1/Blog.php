@@ -4,7 +4,10 @@ namespace Routes\Api\V1;
 
 use
 \Atlantis as Atlantis,
-\Nether as Nether;
+\Nether as Nether,
+\Routes as Routes;
+
+use \Exception as Exception;
 
 class Blog
 extends Atlantis\Site\ProtectedAPI {
@@ -112,6 +115,8 @@ extends Atlantis\Site\ProtectedAPI {
 	 * @input ?String Alias
 	 * @input ?String Tagline
 	 * @input ?Int OptAdult
+	 * @input ?Bool RemoveImageHeader
+	 * @input ?Bool RemoveImageIcon
 	 */
 
 	final public function
@@ -171,6 +176,16 @@ extends Atlantis\Site\ProtectedAPI {
 		if($Fields->Exists('Tagline'))
 		$Dataset['Tagline'] = $Fields->Tagline;
 
+		if($Fields->Exists('RemoveImageHeader') && $Fields->RemoveImageHeader) {
+			$Dataset['ImageHeaderID'] = NULL;
+			$Dataset['ImageHeaderURL'] = NULL;
+		}
+
+		if($Fields->Exists('RemoveImageIcon') && $Fields->RemoveImageIcon) {
+			$Dataset['ImageIconID'] = NULL;
+			$Dataset['ImageIconURL'] = NULL;
+		}
+
 		////////
 
 		if(!count($Dataset))
@@ -182,6 +197,101 @@ extends Atlantis\Site\ProtectedAPI {
 		$this
 		->SetLocation($BlogUser->Blog->URL)
 		->SetPayload($BlogUser->Blog);
+
+		return;
+	}
+
+	/**
+	 * @input Int ID
+	 * @input File Image
+	 */
+
+	final public function
+	IconPost():
+	Void {
+	/*//
+	@error 1 blog not found
+	@error 2 not a blog manaager
+	@error 3 no images uploaded
+	@error 4 upload too large?
+	//*/
+
+		if(!$this->Post->ID) {
+			// this is usually actually caused by file uploads being too large
+			// so php did not even parse the request.
+			$this->Quit(4,'upload may have been too large');
+		}
+
+		$Uploads = NULL;
+		$BlogUser = Atlantis\Prototype\BlogUser::GetByBlogUser($this->Post->ID,$this->User->ID);
+
+		if(!$BlogUser)
+		$this->Quit(1,'blog not found');
+
+		if(!$BlogUser->HasManagePriv())
+		$this->Quit(2,'not a blog manager');
+
+		////////
+
+		$Uploads = Atlantis\Util\UploadImageProcessor::HandlePost($this->User);
+
+		if(!count($Uploads->Success))
+		$this->Quit(3,'no images successfully uploaded.');
+
+		////////
+
+		$BlogUser->Blog->Update([
+			'ImageIconID' => $Uploads->Success[0]->ID
+		]);
+
+		$this->SetPayload([
+			'BlogID'  => $BlogUser->Blog->ID,
+			'ImageID' => $BlogUser->Blog->ImageIconID
+		]);
+
+		return;
+	}
+
+	/**
+	 * @input Int ID
+	 * @input File Image
+	 */
+
+	final public function
+	HeaderPost():
+	Void {
+	/*//
+	@error 1 blog not found
+	@error 2 not a blog manaager
+	@error 3 no images uploaded
+	//*/
+
+		$Uploads = NULL;
+		$BlogUser = Atlantis\Prototype\BlogUser::GetByBlogUser($this->Post->ID,$this->User->ID);
+
+		if(!$BlogUser)
+		$this->Quit(1,'blog not found');
+
+		if(!$BlogUser->HasManagePriv())
+		$this->Quit(2,'not a blog manager');
+
+		////////
+
+		$Uploads = Atlantis\Util\UploadImageProcessor::HandlePost($this->User);
+
+		if(!count($Uploads->Success))
+		$this->Quit(3,'no images successfully uploaded.');
+
+		////////
+
+		$BlogUser->Blog->Update([
+			'ImageHeaderID' => $Uploads->Success[0]->ID
+		]);
+
+		$this->SetPayload([
+			'BlogID'  => $BlogUser->Blog->ID,
+			'ImageID' => $BlogUser->Blog->ImageHeaderID
+		]);
 
 		return;
 	}

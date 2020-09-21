@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-07-06 20:53:31
+@date 2020-09-14 23:02:24
 @files [
     "src\/css\/libs\/000-font-awesome.min.css",
     "src\/css\/libs\/100-bootstrap.min.css",
@@ -8,7 +8,8 @@
     "src\/css\/libs\/200-nui.css",
     "src\/css\/libs\/500-jodit.es2018.min.css",
     "src\/css\/libs\/codemirror.css",
-    "src\/css\/local\/atlantis-codemirror.css"
+    "src\/css\/local\/atlantis-codemirror.css",
+    "src\/css\/local\/atlantis-nui.css"
 ]
 //*/
 
@@ -550,5 +551,10 @@ span.CodeMirror-selectedtext { background: none; }
 	border-radius: 4px;
 	height: initial;
 	margin-bottom: 10px;
+}
+
+.NUI-Dialog header button {
+	padding-top: 0px;
+	padding-bottom: 0px;
 }
 

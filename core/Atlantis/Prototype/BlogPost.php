@@ -96,10 +96,10 @@ extends Atlantis\Prototype {
 
 		$this->Blog = NULL;
 
-		if(array_key_exists('BL_ID',$Raw))
+		if(array_key_exists('B_ID',$Raw))
 		$this->Blog = new Atlantis\Prototype\Blog(
 			Atlantis\Util::StripPrefixedQueryFields(
-				$Raw, 'BL_'
+				$Raw, 'B_'
 			)
 		);
 
@@ -134,8 +134,8 @@ extends Atlantis\Prototype {
 	prepare the date objects.
 	//*/
 
-		$this->DateCreated = new Atlantis\Util\Date("@{$this->TimeCreated}");
-		$this->DateUpdated = new Atlantis\Util\Date("@{$this->TimeUpdated}");
+		$this->DateCreated = new Atlantis\Util\Date("@{$Raw['TimeCreated']}");
+		$this->DateUpdated = new Atlantis\Util\Date("@{$Raw['TimeUpdated']}");
 		return $this;
 	}
 
@@ -372,8 +372,9 @@ extends Atlantis\Prototype {
 
 		$SQL
 		->Join('Blogs BL ON Main.BlogID=BL.ID')
-		->Join('Users BU ON BL.UserID=BU.ID')
 		->Join('Users PU ON Main.UserID=PU.ID');
+
+		Atlantis\Prototype\Blog::ExtendQueryJoins($SQL,'BL');
 
 		return;
 	}
@@ -388,17 +389,14 @@ extends Atlantis\Prototype {
 		$SQL
 		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
 			Atlantis\Prototype\Blog::GetPropertyMap(),
-			'BL', 'BL_'
-		))
-		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
-			Atlantis\User::GetPropertyMap(),
-			'BU', 'BL_BU_'
+			'BL', 'B_'
 		))
 		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
 			Atlantis\User::GetPropertyMap(),
 			'PU', 'PU_'
 		));
 
+		Atlantis\Prototype\Blog::ExtendQueryFields($SQL,'B_');
 
 		return;
 	}

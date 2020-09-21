@@ -58,7 +58,7 @@
 	margin-right: -0.25rem;
 }
 
-.row.tight [class^="col"] {
+.row.tight > [class^="col"] {
 	padding-left: .25rem;
 	padding-right: .25rem;
 }

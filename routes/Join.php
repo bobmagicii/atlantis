@@ -15,6 +15,11 @@ extends Atlantis\Site\PublicWeb {
 	Index():
 	Void {
 
+		$this->Errors->Push(new Atlantis\Site\Error\Inline([
+			'Class'   => 'Info',
+			'Message' => 'Registration is currently invite only as I am still greenfielding this project.'
+		]));
+
 		if($this->Post->Action)
 		$this->HandleJoin();
 
@@ -28,7 +33,7 @@ extends Atlantis\Site\PublicWeb {
 
 		if($this->Post->Email !== 'bob@pegasusgate.net') {
 			$this->Errors->Push(new InlineError([
-				'Message' => 'Not yet friend, still greenfielding this project.'
+				'Message' => 'Did you not believe me or something?'
 			]));
 			return;
 		}

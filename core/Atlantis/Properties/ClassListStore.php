@@ -16,7 +16,7 @@ classes in widgets and such.
 	//*/
 
 	public function
-	AddClasses($Arg):
+	AddClasses(...$Arg):
 	self {
 
 		if(is_array($Arg))

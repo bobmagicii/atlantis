@@ -57,80 +57,11 @@ extends Atlantis\Site\ProtectedAPI {
 	@error 4 failure to create database row for file
 	//*/
 
-		$UUID = NULL;
-		$File = NULL;
-		$Filepath = NULL;
-		$Image = NULL;
-		$Error = NULL;
-		$Format = NULL;
-		$Upload = NULL;
-		$Current = NULL;
-		$Output = [];
+		$Output = Atlantis\Util\UploadImageProcessor::HandlePost(
+			$this->User
+		);
 
-		if(!count($_FILES))
-		$this->Quit(1,'no File found');
-
-		foreach($_FILES as $Current) {
-			$UUID = Atlantis\Util::UUID(NULL,TRUE);
-			$File = new Nether\Object\Mapped($Current);
-
-			try {
-				$Image = new Imagick($File->tmp_name);
-				$Format = $Image->GetImageFormat();
-
-				// TODO: a specialized image handler class
-				// TODO: gif support
-
-				if($Format !== 'PNG') {
-					$Image->SetImageFormat($Format = 'JPG');
-					$Image->SetCompressionQuality(95);
-				}
-			}
-
-			catch(Throwable $Error) {
-				//var_dump($_FILES);
-				$this->Quit(2,'error parsing file as image ');
-			}
-
-			////////
-
-			$Filepath = sprintf(
-				'%s/%s/%s/%s.%s',
-				ProjectRoot,
-				'data/usr/img',
-				str_replace('-',DIRECTORY_SEPARATOR,$UUID),
-				'o',
-				strtolower($Format)
-			);
-
-			////////
-
-			Atlantis\Util::MkDir(dirname($Filepath));
-			rename($File->tmp_name,$Filepath);
-			Atlantis\Util::Chmod($Filepath);
-
-			if(!file_exists($Filepath))
-			$this->Quit(3,'error installing file');
-
-			////////
-
-			$Upload = Atlantis\Prototype\UploadImage::Insert([
-				'UserID' => $this->User->ID,
-				'UUID'   => $UUID,
-				'Format' => $Format
-			]);
-
-			if(!$Upload)
-			$this->Quit(4,'error creating db entry for file');
-
-			$Output[] = $Upload;
-		}
-
-		////////
-
-		$this
-		->SetPayload($Output);
-
+		$this->SetPayload($Output->Success);
 		return;
 	}
 

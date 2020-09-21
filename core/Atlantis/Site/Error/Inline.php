@@ -6,6 +6,27 @@ use \Nether as Nether;
 class Inline {
 
 	protected
+	String $Class = 'Error';
+
+	public function
+	GetClass():
+	String {
+
+		return $this->Class;
+	}
+
+	public function
+	SetClass(String $Class):
+	self {
+
+		$this->Class = $Class;
+		return $this;
+	}
+
+	////////////////
+	////////////////
+
+	protected
 	$Error = 0;
 
 	public function
@@ -72,11 +93,13 @@ class Inline {
 	__construct($Opt=NULL) {
 
 		$Opt = new Nether\Object\Mapped($Opt,[
+			'Class'   => 'Error',
 			'Message' => '',
 			'Error'   => 0,
 			'Icon'    => ''
 		]);
 
+		$this->Class = $Opt->Class;
 		$this->Error = $Opt->Error;
 		$this->Message = $Opt->Message;
 		$this->Icon = $Opt->Icon;

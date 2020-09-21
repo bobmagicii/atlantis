@@ -29,11 +29,11 @@ $Icon = $Element->GetIconURL();
 ?>
 
 <div class="Promo <?php echo $Element->GetClassesAttrString() ?>" style="<?php echo $Image ?>">
-	<div class="container pt-4 pb-4">
+	<div class="container p-4">
 		<div class="row align-items-center">
 			<?php if($Icon): ?>
 			<div class="col-auto col-3 col-md-2">
-				<div class="WallpaperedBox Square" style="background-image:url(<?php echo $Icon ?>);"><a href="<?php echo $Element->GetURL() ?>"></a></div>
+				<div class="ImageIcon WallpaperedBox Square rounded" style="background-image:url(<?php echo $Icon ?>);"><a href="<?php echo $Element->GetURL() ?>"></a></div>
 			</div>
 			<?php endif; ?>
 			<div class="col">

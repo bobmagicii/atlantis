@@ -86,7 +86,7 @@ implements Atlantis\Packages\Upsertable {
 		))
 		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
 			Atlantis\Prototype\Blog::GetPropertyMap(),
-			'BL', 'BP_BL_'
+			'BL', 'BP_B_'
 		))
 		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
 			Atlantis\User::GetPropertyMap(),
@@ -96,6 +96,9 @@ implements Atlantis\Packages\Upsertable {
 		->Sort('Views',$SQL::SortDesc)
 		->Limit($Opt->Limit)
 		->Offset($Opt->Offset);
+
+		Atlantis\Prototype\Blog::ExtendQueryJoins($SQL,'BL');
+		Atlantis\Prototype\Blog::ExtendQueryFields($SQL,'B_');
 
 		// most popular posts within a single blog.
 

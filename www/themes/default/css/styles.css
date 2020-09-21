@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-09-04 18:03:34
+@date 2020-09-21 18:07:00
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -350,14 +350,20 @@ given an image to display to art shit up.
 	font-weight: bold;
 	margin-bottom: 12px;
 	text-transform: uppercase;
+	text-shadow: 0px 0px 4px #00000066, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
 .Promo p {
-	color: #aaa;
+	color: #ccc;
 	font-weight: bold;
 	letter-spacing: 0.10em;
 	margin-bottom: 8px;
 	text-transform: uppercase;
+	text-shadow: 0px 0px 4px #00000066, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.Promo .ImageIcon {
+	box-shadow: 0px 0px 4px #00000066;
 }
 
 .WallpaperedBox {
@@ -386,9 +392,24 @@ given an image to display to art shit up.
 
 .ErrorTray .Error {
 	background: #886464;
+	border-top: 0px solid #5a4141;
+	border-bottom: 2px solid #5a4141;
 	color: #fff;
 	padding: 16px 0px;
 	text-align: center;
+}
+
+.ErrorTray .Info {
+	background: #776488;
+	border-top: 0px solid #51445e;
+	border-bottom: 2px solid #51445e;
+	color: #fff;
+	padding: 16px 0px;
+	text-align: center;
+}
+
+.ErrorTray .ErrorItem:first-of-type {
+	border-top-width: 2px;
 }
 
 /* a series of bootstrapesque classes designed to blend in */
@@ -450,7 +471,7 @@ given an image to display to art shit up.
 	margin-right: -0.25rem;
 }
 
-.row.tight [class^="col"] {
+.row.tight > [class^="col"] {
 	padding-left: .25rem;
 	padding-right: .25rem;
 }
