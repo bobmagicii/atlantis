@@ -223,8 +223,20 @@ namespace.
 		return new static($Row);
 	}
 
+	static public function
+	ExtendMainFields($SQL, String $TableAlias, String $FieldPrefix):
+	Void {
+
+		$SQL->Fields(Atlantis\Util::BuildPrefixedQueryFields(
+			static::GetPropertyMap(),
+			$TableAlias, $FieldPrefix
+		));
+
+		return;
+	}
+
 	static protected function
-	ExtendQueryJoins($SQL):
+	ExtendQueryJoins($SQL, String $TableAlias='Main', String $FieldPrefix=''):
 	Void {
 	/*//
 	@date 2020-05-23
@@ -236,7 +248,7 @@ namespace.
 	}
 
 	static protected function
-	ExtendQueryFields($SQL):
+	ExtendQueryFields($SQL, String $TablePrefix='', String $FieldPrefix=''):
 	Void {
 	/*//
 	@date 2020-05-23

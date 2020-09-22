@@ -152,8 +152,20 @@ implements JsonSerializable {
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
 
-	static protected function
-	ExtendQueryJoins($SQL):
+	static public function
+	ExtendMainFields($SQL, String $TableAlias, String $FieldPrefix):
+	Void {
+
+		$SQL->Fields(Atlantis\Util::BuildPrefixedQueryFields(
+			static::GetPropertyMap(),
+			$TableAlias, $FieldPrefix
+		));
+
+		return;
+	}
+
+	static public function
+	ExtendQueryJoins($SQL, String $TableAlias='Main', String $FieldPrefix=''):
 	Void {
 	/*//
 	@date 2020-05-23
@@ -164,8 +176,8 @@ implements JsonSerializable {
 		return;
 	}
 
-	static protected function
-	ExtendQueryFields($SQL):
+	static public function
+	ExtendQueryFields($SQL, String $TablePrefix='', String $FieldPrefix=''):
 	Void {
 	/*//
 	@date 2020-05-23

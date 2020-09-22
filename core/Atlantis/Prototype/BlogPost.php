@@ -364,39 +364,31 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 
 	static protected function
-	ExtendQueryJoins($SQL):
+	ExtendQueryJoins($SQL, String $TableAlias='Main', String $FieldPrefix=''):
 	Void {
 	/*//
 	@date 2018-06-08
 	//*/
 
 		$SQL
-		->Join('Blogs BL ON Main.BlogID=BL.ID')
-		->Join('Users PU ON Main.UserID=PU.ID');
+		->Join("Blogs {$FieldPrefix}BL ON {$TableAlias}.BlogID={$FieldPrefix}BL.ID")
+		->Join("Users {$FieldPrefix}PU ON {$TableAlias}.UserID={$FieldPrefix}PU.ID");
 
-		Atlantis\Prototype\Blog::ExtendQueryJoins($SQL,'BL');
+		Atlantis\Prototype\Blog::ExtendQueryJoins($SQL,"{$FieldPrefix}BL","{$FieldPrefix}B_");
 
 		return;
 	}
 
 	static protected function
-	ExtendQueryFields($SQL):
+	ExtendQueryFields($SQL, String $TablePrefix='', String $FieldPrefix=''):
 	Void {
 	/*//
 	@date 2018-06-08
 	//*/
 
-		$SQL
-		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
-			Atlantis\Prototype\Blog::GetPropertyMap(),
-			'BL', 'B_'
-		))
-		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
-			Atlantis\User::GetPropertyMap(),
-			'PU', 'PU_'
-		));
-
-		Atlantis\Prototype\Blog::ExtendQueryFields($SQL,'B_');
+		Atlantis\User::ExtendMainFields($SQL,"{$FieldPrefix}PU","{$FieldPrefix}PU_");
+		Atlantis\Prototype\Blog::ExtendMainFields($SQL,"{$FieldPrefix}BL","{$FieldPrefix}B_");
+		Atlantis\Prototype\Blog::ExtendQueryFields($SQL,"{$FieldPrefix}BL","{$FieldPrefix}B_");
 
 		return;
 	}

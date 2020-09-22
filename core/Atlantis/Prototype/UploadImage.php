@@ -119,20 +119,20 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 
 	static protected function
-	ExtendQueryJoins($SQL):
+	ExtendQueryJoins($SQL, String $TableAlias='Main', String $FieldPrefix=''):
 	Void {
 	/*//
 	@date 2018-06-08
 	//*/
 
 		$SQL
-		->Join('Users PU ON Main.UserID=PU.ID');
+		->Join(sprintf('Users %2$sPU ON %1$s.UserID=%2$sPU.ID',$TableAlias,$FieldPrefix));
 
 		return;
 	}
 
 	static protected function
-	ExtendQueryFields($SQL):
+	ExtendQueryFields($SQL, String $TablePrefix='', String $FieldPrefix=''):
 	Void {
 	/*//
 	@date 2018-06-08
@@ -141,7 +141,7 @@ extends Atlantis\Prototype {
 		$SQL
 		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
 			Atlantis\User::GetPropertyMap(),
-			'PU', 'PU_'
+			"{$FieldPrefix}PU", "{$FieldPrefix}PU_"
 		));
 
 		return;

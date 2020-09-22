@@ -77,28 +77,15 @@ implements Atlantis\Packages\Upsertable {
 		$SQL
 		->Select('LogBlogPostTraffic Log')
 		->Join('BlogPosts BP ON BP.ID=Log.PostID')
-		->Join('Blogs BL ON BL.ID=BP.BlogID')
-		->Join('Users PU ON PU.ID=BP.UserID')
 		->Fields('COUNT(*) AS Views')
-		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
-			Atlantis\Prototype\BlogPost::GetPropertyMap(),
-			'BP', 'BP_'
-		))
-		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
-			Atlantis\Prototype\Blog::GetPropertyMap(),
-			'BL', 'BP_B_'
-		))
-		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
-			Atlantis\User::GetPropertyMap(),
-			'PU', 'BP_PU_'
-		))
 		->Group('Log.PostID')
 		->Sort('Views',$SQL::SortDesc)
 		->Limit($Opt->Limit)
 		->Offset($Opt->Offset);
 
-		Atlantis\Prototype\Blog::ExtendQueryJoins($SQL,'BL');
-		Atlantis\Prototype\Blog::ExtendQueryFields($SQL,'B_');
+		Atlantis\Prototype\BlogPost::ExtendQueryJoins($SQL,'BP','BP_');
+		Atlantis\Prototype\BlogPost::ExtendMainFields($SQL,'BP','BP_');
+		Atlantis\Prototype\BlogPost::ExtendQueryFields($SQL,'BP','BP_');
 
 		// most popular posts within a single blog.
 

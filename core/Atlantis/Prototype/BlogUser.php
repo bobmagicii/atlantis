@@ -196,38 +196,32 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 
 	static protected function
-	ExtendQueryJoins($SQL):
+	ExtendQueryJoins($SQL, String $TableAlias='Main', String $FieldPrefix=''):
 	Void {
 	/*//
 	@date 2018-06-08
 	//*/
 
 		$SQL
-		->Join('Blogs Bl ON Main.BlogID=Bl.ID')
-		->Join('Users Us ON Main.UserID=Us.ID');
+		->Join("Blogs {$FieldPrefix}BL ON {$TableAlias}.BlogID={$FieldPrefix}BL.ID")
+		->Join("Users {$FieldPrefix}US ON {$TableAlias}.UserID={$FieldPrefix}US.ID");
 
-		Atlantis\Prototype\Blog::ExtendQueryJoins($SQL,'Bl');
-		Atlantis\Prototype\Blog::ExtendQueryFields($SQL,'B_');
+		Atlantis\Prototype\Blog::ExtendQueryJoins($SQL,"{$FieldPrefix}BL","{$FieldPrefix}B_");
+		Atlantis\User::ExtendQueryJoins($SQL,"{$FieldPrefix}US","{$FieldPrefix}US_");
 
 		return;
 	}
 
 	static protected function
-	ExtendQueryFields($SQL):
+	ExtendQueryFields($SQL, String $TablePrefix='', String $FieldPrefix=''):
 	Void {
 	/*//
 	@date 2018-06-08
 	//*/
 
-		$SQL
-		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
-			Atlantis\Prototype\Blog::GetPropertyMap(),
-			'Bl', 'B_'
-		))
-		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
-			Atlantis\User::GetPropertyMap(),
-			'Us', 'U_'
-		));
+		Atlantis\User::ExtendMainFields($SQL,"{$FieldPrefix}US","{$FieldPrefix}U_");
+		Atlantis\Prototype\Blog::ExtendMainFields($SQL,"{$FieldPrefix}BL","{$FieldPrefix}B_");
+		Atlantis\Prototype\Blog::ExtendQueryFields($SQL,"{$FieldPrefix}BL","{$FieldPrefix}B_");
 
 		return;
 	}
@@ -270,10 +264,10 @@ extends Atlantis\Prototype {
 
 		switch($Opt->Sort) {
 			case 'blog-title-az':
-				$SQL->Sort('Bl.Title',$SQL::SortAsc);
+				$SQL->Sort('BL.Title',$SQL::SortAsc);
 			break;
 			case 'blog-title-za':
-				$SQL->Sort('Bl.Title',$SQL::SortDesc);
+				$SQL->Sort('BL.Title',$SQL::SortDesc);
 			break;
 		}
 

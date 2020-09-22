@@ -362,40 +362,30 @@ implements JsonSerializable {
 	///////////////////////////////////////////////////////////////////////////
 
 	static protected function
-	ExtendQueryJoins($SQL, String $Prefix='Main'):
+	ExtendQueryJoins($SQL, String $TableAlias='Main', String $FieldPrefix=''):
 	Void {
 	/*//
 	@date 2018-06-08
 	//*/
 
 		$SQL
-		->Join(sprintf('Users BU ON %s.UserID=BU.ID',$Prefix))
-		->Join(sprintf('UploadImages BII ON BII.ID=%s.ImageIconID',$Prefix))
-		->Join(sprintf('UploadImages BIH ON BIH.ID=%s.ImageHeaderID',$Prefix));
+		->Join("Users {$FieldPrefix}BU ON {$TableAlias}.UserID={$FieldPrefix}BU.ID")
+		->Join("UploadImages {$FieldPrefix}BII ON {$TableAlias}.ImageIconID={$FieldPrefix}BII.ID")
+		->Join("UploadImages {$FieldPrefix}BIH ON {$TableAlias}.ImageHeaderID={$FieldPrefix}BIH.ID");
 
 		return;
 	}
 
 	static protected function
-	ExtendQueryFields($SQL, String $Prefix=''):
+	ExtendQueryFields($SQL, String $TablePrefix='', String $FieldPrefix=''):
 	Void {
 	/*//
 	@date 2018-06-08
 	//*/
 
-		$SQL
-		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
-			Atlantis\User::GetPropertyMap(),
-			'BU', "{$Prefix}BU_"
-		))
-		->Fields(Atlantis\Util::BuildPrefixedQueryfields(
-			Atlantis\Prototype\UploadImage::GetPropertyMap(),
-			'BII', "{$Prefix}II_"
-		))
-		->Fields(Atlantis\Util::BuildPrefixedQueryfields(
-			Atlantis\Prototype\UploadImage::GetPropertyMap(),
-			'BIH', "{$Prefix}IH_"
-		));
+		Atlantis\User::ExtendMainFields($SQL,"{$FieldPrefix}BU","{$FieldPrefix}BU_");
+		Atlantis\Prototype\UploadImage::ExtendMainFields($SQL,"{$FieldPrefix}BII","{$FieldPrefix}II_");
+		Atlantis\Prototype\UploadImage::ExtendMainFields($SQL,"{$FieldPrefix}BIH","{$FieldPrefix}IH_");
 
 		return;
 	}
