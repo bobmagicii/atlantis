@@ -133,13 +133,15 @@ extends Atlantis\Site\ProtectedAPI {
 
 		$Dataset = [];
 		$BlogUser = Atlantis\Prototype\BlogUser::GetByBlogUser($this->Post->ID,$this->User->ID);
-		$Fields = new Nether\Input\Filter($this->Post->Fields);
+		$Fields = new Nether\Input\Filter($this->Post->Fields ?: []);
 
 		$Fields
 		->Title('Atlantis\Util\Filters::TrimmedText')
 		->Alias('Atlantis\Util\Filters::RouteSafeAlias')
 		->Tagline('Atlantis\Util\Filters::TrimmedText')
-		->OptAdult('Atlantis\Util\Filters::NumberValidRange',[0,2,0]);
+		->OptAdult('Atlantis\Util\Filters::NumberValidRange',[0,2,0])
+		->RemoveImageHeader('Atlantis\Util\Filters::NumberValidRange',[0,1,0])
+		->RemoveImageIcon('Atlantis\Util\Filters::NumberValidRange',[0,1,0]);
 
 		if(!$BlogUser)
 		$this->Quit(1,'blog not found');
@@ -176,12 +178,12 @@ extends Atlantis\Site\ProtectedAPI {
 		if($Fields->Exists('Tagline'))
 		$Dataset['Tagline'] = $Fields->Tagline;
 
-		if($Fields->Exists('RemoveImageHeader') && $Fields->RemoveImageHeader) {
+		if($Fields->Exists('RemoveImageHeader') && (Int)$Fields->RemoveImageHeader) {
 			$Dataset['ImageHeaderID'] = NULL;
 			$Dataset['ImageHeaderURL'] = NULL;
 		}
 
-		if($Fields->Exists('RemoveImageIcon') && $Fields->RemoveImageIcon) {
+		if($Fields->Exists('RemoveImageIcon') && (Int)$Fields->RemoveImageIcon) {
 			$Dataset['ImageIconID'] = NULL;
 			$Dataset['ImageIconURL'] = NULL;
 		}

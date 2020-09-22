@@ -224,6 +224,34 @@ jQuery(document)
 		}
 	});
 
+	jQuery('#CmdRemoveImageIcon')
+	.on('click',function(){
+
+		if(confirm('Reset the icon image to default?'))
+		Atlantis.Request({
+			'Method': 'PATCH',
+			'URL': '/api/v1/blog/entity',
+			'Data': { 'ID': BlogID, 'Fields': { 'RemoveImageIcon': 1 } },
+			'OnSuccess': function(){ location.reload(true); return; }
+		});
+
+		return;
+	});
+
+	jQuery('#CmdRemoveImageHeader')
+	.on('click',function(){
+
+		if(confirm('Reset the header image to default?'))
+		Atlantis.Request({
+			'Method': 'PATCH',
+			'URL': '/api/v1/blog/entity',
+			'Data': { 'ID': BlogID, 'Fields': { 'RemoveImageHeader': 1 } },
+			'OnSuccess': function(){ location.reload(true); return; }
+		});
+
+		return;
+	});
+
 	return;
 });
 
