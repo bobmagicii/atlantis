@@ -3,8 +3,8 @@ RewriteEngine On
 RewriteBase /
 Options +MultiViews
 MultiViewsMatch Any
-php_value upload_max_filesize 1M
-php_value post_max_size 1M
+php_value upload_max_filesize 8M
+php_value post_max_size 9M
 
 ################################################################################
 ################################################################################
