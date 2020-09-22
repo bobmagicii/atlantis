@@ -139,7 +139,7 @@ implements JsonSerializable {
 				Atlantis\Util::StripPrefixedQueryFields($Raw,'IH_')
 			);
 
-			$this->ImageHeaderURL = $this->ImageHeader->GetURL();
+			$this->ImageHeaderURL = $this->ImageHeader->GetURL('lg');
 		}
 
 		elseif($this->ImageHeaderURL === NULL) {
@@ -153,7 +153,7 @@ implements JsonSerializable {
 				Atlantis\Util::StripPrefixedQueryFields($Raw,'II_')
 			);
 
-			$this->ImageIconURL = $this->ImageIcon->GetURL();
+			$this->ImageIconURL = $this->ImageIcon->GetURL('th');
 		}
 
 		elseif($this->ImageIconURL === NULL) {

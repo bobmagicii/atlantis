@@ -4,20 +4,23 @@ namespace Routes;
 
 use
 \Atlantis as Atlantis,
-\Nether as Nether;
+Nether as Nether;
 
 use
-\Nether\Avenue\Router as Router,
-\Nether\Avenue\RouteHandler as Handler;
+Nether\Avenue\Router as Router,
+Nether\Avenue\RouteHandler as Handler,
+Imagick as Imagick;
 
 class Media
 extends Atlantis\Site\PublicWeb {
 
 	public function
-	Image(String $Path, String $Name):
+	Image(String $Path, String $Name, String $Ext):
 	Void {
 	/*//
 	@date 2020-05-27
+	we are intentionally trying to avoid hitting the database here
+	as much as that would make this code a lot cleaner.
 	//*/
 
 		$Type = NULL;
@@ -34,15 +37,59 @@ extends Atlantis\Site\PublicWeb {
 		->SetAutoRender(FALSE)
 		->Stop();
 
-		$Filepath = sprintf(
-			'%s/data/usr/img/%s/%s',
+		$Original = sprintf(
+			'%s/data/usr/img/%s/o.%s',
 			ProjectRoot,
 			$Path,
-			$Name
+			$Ext
 		);
 
-		if(!file_exists($Filepath))
-		$this->Quit(404);
+		$Filepath = sprintf(
+			'%s/data/usr/img/%s/%s.%s',
+			ProjectRoot,
+			$Path,
+			$Name,
+			$Ext
+		);
+
+		if(!file_exists($Filepath)) {
+			if($Name === 'o')
+			$this->Quit(404);
+
+			$Size = 69;
+
+			switch($Name) {
+				case 'th': {
+					$Size = 300;
+					break;
+				}
+				case 'sm': {
+					$Size = 500;
+					break;
+				}
+				case 'md': {
+					$Size = 800;
+					break;
+				}
+				default: {
+					$Size = 1200;
+					$Name = 'lg';
+					break;
+				}
+			}
+
+			$Image = new Imagick($Original);
+
+			if($Ext === 'jpg') {
+				$Image->SetImageFormat('jpeg');
+				$Image->SetImageCompression(Imagick::COMPRESSION_JPEG);
+				$Image->SetImageCompressionQuality(92);
+			}
+
+			$Image->ResizeImage($Size,$Size,Imagick::FILTER_CATROM,1.0,TRUE);
+			$Image->WriteImage(sprintf('%s/%s.%s',dirname($Original),$Name,$Ext));
+			$Image->Destroy();
+		}
 
 		////////
 

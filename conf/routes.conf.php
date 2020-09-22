@@ -132,8 +132,8 @@
 )
 ->Register(
 	'Atlantis.Handler.UploadImage',
-	'{@}//media/usr/img/([a-f0-9]+/[a-f0-9]+/[a-f0-9]+/[a-f0-9]+/[a-f0-9]+)/(.+?)$',
-	'/media/usr/img/{{Path}}/{{Name}}',
+	'{@}//media/usr/img/([a-f0-9]+/[a-f0-9]+/[a-f0-9]+/[a-f0-9]+/[a-f0-9]+)/(.+?)\.(.+?)$',
+	'/media/usr/img/{{Path}}/{{Name}}.{{Ext}}',
 	'Routes\\Media::Image'
 )
 ->Register(

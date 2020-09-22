@@ -102,7 +102,7 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 
 	public function
-	GetURL():
+	GetURL(String $Size='lg'):
 	?Atlantis\Site\Endpoint {
 	/*//
 	@date 2017-03-02
@@ -111,7 +111,8 @@ extends Atlantis\Prototype {
 
 		return Atlantis\Site\Endpoint::Get('Atlantis.Handler.UploadImage',[
 			'Path' => str_replace('-','/',$this->UUID),
-			'Name' => sprintf('o.%s',strtolower($this->Format))
+			'Name' => $Size,
+			'Ext'  => strtolower($this->Format)
 		]);
 	}
 
