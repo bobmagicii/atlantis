@@ -61,7 +61,7 @@ extends Atlantis\Site\ProtectedAPI {
 			$this->User
 		);
 
-		$this->SetPayload($Output->Success);
+		$this->SetPayload($Output);
 		return;
 	}
 

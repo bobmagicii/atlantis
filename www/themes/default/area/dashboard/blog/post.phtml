@@ -108,7 +108,7 @@ jQuery(document)
 			'process': function(Result) {
 				let Output = [];
 
-				jQuery(Result.Payload)
+				jQuery(Result.Payload.Success)
 				.each(function(){
 					console.log('Process: ' + this.URL);
 					Output.push(this.URL);

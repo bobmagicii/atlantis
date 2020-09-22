@@ -17,10 +17,13 @@ let AtlantisUpload = {
 			'Method': 'POST',
 			'URL': null,
 			'Data': null,
-			'OnItemComplete': function(File){
+			'OnItemComplete': function(Status,Result,File){
+				if(Result.Error !== 0)
+				alert(Result.Message);
+
 				return;
 			},
-			'OnQueueComplete': function(){
+			'OnQueueComplete': function(Result){
 				location.reload(true);
 				return;
 			}
@@ -114,25 +117,6 @@ let AtlantisUpload = {
 			(that.Button.find('.StatusThinking'))
 			.removeClass('font-size-zero');
 
-			/*
-			(Xfer)
-			.addEventListener(
-				'readystatechange',
-				function() {
-					if(this.readyState == XMLHttpRequest.DONE) {
-						let Result = JSON.parse(Xfer.responseText);
-
-						if(Result.Error !== 0)
-						alert(Result.Message);
-
-						return;
-					}
-
-					return;
-				}
-			);
-			*/
-
 			(Xfer.upload)
 			.addEventListener(
 				'progress',
@@ -150,13 +134,17 @@ let AtlantisUpload = {
 				false
 			);
 
-			(Xfer.upload)
+			(Xfer)
 			.addEventListener(
 				'load',
 				function(Ev) {
 
 					if(typeof Config.OnItemComplete === 'function')
-					(Config.OnItemComplete(File));
+					(Config.OnItemComplete)(
+						Xfer.status,
+						Xfer.response,
+						File
+					);
 
 					OnQueueNext();
 					return;
@@ -168,6 +156,7 @@ let AtlantisUpload = {
 			Uploader.append(Prop,Config.Data[Prop]);
 
 			Uploader.append('Filedata',File);
+			Xfer.responseType = 'json';
 			Xfer.open(Config.Method,Config.URL);
 			Xfer.send(Uploader);
 

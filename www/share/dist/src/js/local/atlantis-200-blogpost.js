@@ -1,4 +1,4 @@
-let AtlantisPost = {
+Atlantis.BlogPost = {
 
 	'Delete': function(PostID){
 
@@ -35,7 +35,7 @@ jQuery(document)
 
 		if(PostID > 0)
 		if(confirm('Really delete this post? This cannot be undone.'))
-		AtlantisPost.Delete(PostID);
+		Atlantis.BlogPost.Delete(PostID);
 
 		return false;
 	});

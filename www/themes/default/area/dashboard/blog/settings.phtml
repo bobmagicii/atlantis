@@ -23,7 +23,7 @@
 	</ol>
 
 	<!-- TAGLINE -->
-	<div class="row tight align-items-center mb-6">
+	<div id="DashBlogTagline" class="row tight align-items-center mb-6">
 		<div class="col-12 mb-2">
 			<h2 class="font-size-large font-weight-bold">Tag Line</h2>
 			Some little flavour text usually shown underneath your blog title.
@@ -33,13 +33,13 @@
 		</div>
 		<div class="col-auto mb-2">
 			<div class="d-flex">
-				<i id="ThinkTagline" class="StatusTagline fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
-				<i id="GoodTagline" class="StatusTagline fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
-				<i id="BadTagline" class="StatusTagline fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
+				<i class="ActionStatus ActionStatusThink fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
+				<i class="ActionStatus ActionStatusGood fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
+				<i class="ActionStatus ActionStatusBad fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
 			</div>
 		</div>
 		<div class="col-auto mb-2">
-			<button id="CmdTagline" type="button" class="btn btn-block btn-dark" data-blog-id="<?php $Printer($Blog->ID) ?>">Save</button>
+			<button id="CmdTagline" type="button" class="btn btn-block btn-dark ActionCommit">Save</button>
 		</div>
 	</div>
 
@@ -85,7 +85,7 @@
 	</div>
 
 	<!-- ADULT CONTENT -->
-	<div class="mb-6">
+	<div id="DashBlogOptAdult" class="mb-6">
 		<h2 class="font-size-large font-weight-bold">Adult Content</h2>
 		<p>
 			Adult content is allowed but in return it is asked you flag the blog as adult so we can filter for those who desire it.
@@ -105,17 +105,21 @@
 		<?php else: ?>
 		<div class="row tight align-items-center">
 			<div class="col-auto">
-				<input id="InputOptAdult" type="checkbox" class="" data-blog-id="<?php $Printer($Blog->ID) ?>" <?php echo ($Blog->OptAdult)?('checked'):('') ?> />
+				<button id="InputOptAdult" class="ActionCommit btn btn-adult btn-block btn-toggle <?php $Printer($Blog->OptAdult?'active':'') ?>">
+					<i class="btn-toggle-off far fa-square mr-2"></i>
+					<i class="btn-toggle-on far fa-check-square mr-2"></i>
+					My blog contains Adult Content.
+				</button>
 			</div>
 			<div class="col-auto">
 				<div class="d-flex">
-					<i id="ThinkOptAdult" class="StatusOptAdult fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
-					<i id="GoodOptAdult" class="StatusOptAdult fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
-					<i id="BadOptAdult" class="StatusOptAdult fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
+					<i class="ActionStatus ActionStatusThink fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
+					<i class="ActionStatus ActionStatusGood fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
+					<i class="ActionStatus ActionStatusBad fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
 				</div>
 			</div>
 			<div class="col">
-				<label for="InputOptAdult" class="mb-0">My blog contains Adult Content.</label>
+
 			</div>
 		</div>
 		<?php endif; ?>
@@ -154,113 +158,72 @@ jQuery(document)
 		return;
 	};
 
-	let Tagline = new (function(){
-		let that = this;
+	let Tagline = new Atlantis.Action.StatusHandler({
+		'Element': '#DashBlogTagline',
+		'OnCommit': function(Handler){
+			let Input = jQuery.trim(jQuery('#InputTagline').val());
 
-		this.Input = jQuery('#InputTagline');
-		this.Commit = jQuery('#CmdTagline');
-		this.BlogID = this.Commit.attr('data-blog-id');
-		this.Status = {
-			All: jQuery('.StatusTagline'),
-			Think: jQuery('#ThinkTagline'),
-			Good: jQuery('#GoodTagline'),
-			Bad: jQuery('#BadTagline')
-		};
-
-		this.SetStatus = LocalSetStatusFunc;
-
-		(this.Input)
-		.on('keypress',function(){
-			that.SetStatus(false);
-			return;
-		});
-
-		(this.Commit)
-		.on('click',function(){
-			let Input = jQuery.trim(that.Input.val());
-			that.SetStatus('think');
-
-			setTimeout(function(){
-				Atlantis.Request({
-					'Method': 'PATCH',
-					'URL': '/api/v1/blog/entity',
-					'Data': { 'ID': that.BlogID, 'Fields': { 'Tagline': Input } },
-					'OnSuccess': function(Result){
-						that.SetStatus('good');
-						Atlantis.Toaster({
-							'Title': 'Blog Settings',
-							'Content': 'Your blog tagline has been successfully updated.',
-							'ContentClass': 'alert-success'
-						});
-						return;
-					},
-					'OnError': function(Result) {
-						that.SetStatus('bad');
-						Atlantis.Toaster({
-							'Title': 'Blog Settings',
-							'Content': 'Error: ' + Result.Message,
-							'ContentClass': 'alert-danger'
-						});
-						return;
-					}
-				});
-			},300);
+			Atlantis.Request({
+				'Method': 'PATCH',
+				'URL': '/api/v1/blog/entity',
+				'Data': { 'ID': BlogID, 'Fields': { 'Tagline': Input } },
+				'OnSuccess': function(Result){
+					Handler.SetStatus('good');
+					Atlantis.Toaster({
+						'Title': 'Blog Settings',
+						'Content': 'Your blog tagline has been successfully updated.',
+						'ContentClass': 'alert-success'
+					});
+					return;
+				},
+				'OnError': function(Result) {
+					Handler.SetStatus('bad');
+					Atlantis.Toaster({
+						'Title': 'Blog Settings',
+						'Content': 'Error: ' + Result.Message,
+						'ContentClass': 'alert-danger'
+					});
+					return;
+				}
+			});
 
 			return;
-		});
-
-		return this;
+		}
 	});
 
-	let OptAdult = new (function(){
-		let that = this;
+	let OptAdult = new Atlantis.Action.StatusHandler({
+		'Element': '#DashBlogOptAdult',
+		'OnCommit': function(Handler){
+			let Input = jQuery('#InputOptAdult').hasClass('active') ? 1 : 0;
 
-		this.Input = jQuery('#InputOptAdult');
-		this.BlogID = this.Input.attr('data-blog-id');
-		this.Status = {
-			All: jQuery('.StatusOptAdult'),
-			Think: jQuery('#ThinkOptAdult'),
-			Good: jQuery('#GoodOptAdult'),
-			Bad: jQuery('#BadOptAdult')
-		};
-
-		this.SetStatus = LocalSetStatusFunc;
-
-		(this.Input)
-		.on('change',function(){
-			let Input = that.Input.is(':checked') ? 1 : 0;
-			that.SetStatus('think');
-
-			setTimeout(function(){
-				Atlantis.Request({
-					'Method': 'PATCH',
-					'URL': '/api/v1/blog/entity',
-					'Data': { 'ID': that.BlogID, 'Fields': { 'OptAdult': Input } },
-					'OnSuccess': function(Result){
-						that.SetStatus('good');
-						Atlantis.Toaster({
-							'Title': 'Blog Settings',
-							'Content': 'Your blog Adult Content setting has been updated.',
-							'ContentClass': 'alert-success'
-						});
-						return;
-					},
-					'OnError': function(Result) {
-						that.SetStatus('bad');
-						Atlantis.Toaster({
-							'Title': 'Blog Settings',
-							'Content': 'Error: ' + Result.Message,
-							'ContentClass': 'alert-danger'
-						});
-						return;
-					}
-				});
-			},300);
+			Atlantis.Request({
+				'Method': 'PATCH',
+				'URL': '/api/v1/blog/entity',
+				'Data': { 'ID': BlogID, 'Fields': { 'OptAdult': Input } },
+				'OnSuccess': function(Result){
+					Handler
+					.SetStatus('good')
+					.Notify({
+						'Title': 'Blog Settings',
+						'Content': 'Your blog Adult Content setting has been updated.',
+						'ContentClass': 'alert-success'
+					});
+					return;
+				},
+				'OnError': function(Result) {
+					Handler
+					.SetStatus('bad')
+					.Notify({
+						'Title': 'Blog Settings',
+						'Content': 'Error: ' + Result.Message,
+						'ContentClass': 'alert-danger'
+					});
+					return;
+				}
+			});
 
 			return;
-		});
-
-		return this;
+		}
 	});
 
 	let UploadIcon = new AtlantisUpload.Button({
