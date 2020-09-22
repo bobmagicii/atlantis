@@ -136,28 +136,6 @@ jQuery(document)
 	let BlogConfig = jQuery('#BlogConfig');
 	let BlogID = BlogConfig.attr('data-blog-id');
 
-	let LocalSetStatusFunc = function(Mode) {
-		(this.Status.All)
-		.addClass('font-size-zero');
-
-		switch(Mode) {
-			case 'think':
-				(this.Status.Think)
-				.removeClass('font-size-zero');
-			break;
-			case 'good':
-				(this.Status.Good)
-				.removeClass('font-size-zero');
-			break;
-			case 'bad':
-				(this.Status.Bad)
-				.removeClass('font-size-zero');
-			break;
-		}
-
-		return;
-	};
-
 	let Tagline = new Atlantis.Action.StatusHandler({
 		'Element': '#DashBlogTagline',
 		'OnCommit': function(Handler){
@@ -226,20 +204,20 @@ jQuery(document)
 		}
 	});
 
-	let UploadIcon = new AtlantisUpload.Button({
+	let UploadIcon = new Atlantis.Upload.Button({
 		'SelectorButton': '#CmdImageIcon',
 		'SelectorInput': '#InputImageIcon',
-		'FileType': AtlantisUpload.FileTypeImage,
+		'FileType': Atlantis.Upload.FileTypeImage,
 		'URL': '/api/v1/blog/icon',
 		'Data': {
 			'ID': BlogConfig.attr('data-blog-id')
 		}
 	});
 
-	let UploadHeader = new AtlantisUpload.Button({
+	let UploadHeader = new Atlantis.Upload.Button({
 		'SelectorButton': '#CmdImageHeader',
 		'SelectorInput': '#InputImageHeader',
-		'FileType': AtlantisUpload.FileTypeImage,
+		'FileType': Atlantis.Upload.FileTypeImage,
 		'URL': '/api/v1/blog/header',
 		'Data': {
 			'ID': BlogConfig.attr('data-blog-id')

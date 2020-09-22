@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-09-22 19:42:14
+@date 2020-09-22 19:50:39
 @files [
     "src\/js\/libs\/000-jquery-3.1.1.min.js",
     "src\/js\/libs\/100-bootstrap.bundle.min.js",
@@ -13,11 +13,12 @@
     "src\/js\/libs\/600-codemirror.loadmode.js",
     "src\/js\/libs\/600-codemirror.mode.meta.js",
     "src\/js\/local\/atlantis-000-main.js",
+    "src\/js\/local\/atlantis-200-action-status-handler.js",
     "src\/js\/local\/atlantis-200-blogpost.js",
     "src\/js\/local\/atlantis-200-request.js",
-    "src\/js\/local\/atlantis-200-submit.js",
     "src\/js\/local\/atlantis-200-toaster.js",
-    "src\/js\/local\/atlantis-200-upload.js"
+    "src\/js\/local\/atlantis-200-upload.js",
+    "src\/js\/local\/atlantis-300-upload-button.js"
 ]
 //*/
 
@@ -11240,116 +11241,7 @@ jQuery(document)
 });
 
 ///////////////////////////////////////////////////////////////////////////
-// src/js/local/atlantis-200-blogpost.js //////////////////////////////////
-
-Atlantis.BlogPost = {
-
-	'Delete': function(PostID){
-
-		(new Promise(function(Next,Fail){
-			Atlantis.Request({
-				'Method': 'DELETE',
-				'URL': '/api/v1/post/entity',
-				'Data': { 'ID': PostID },
-				'OnSuccess': function(Result){
-					Next(Result);
-					return;
-				}
-			});
-		}))
-		.then(function(Result){
-			if(typeof Result.Location === 'string') {
-				location.href = Result.Location;
-				return;
-			}
-			return;
-		});
-
-		return;
-	}
-
-};
-
-jQuery(document)
-.ready(function(){
-
-	jQuery('.AtlantisActionPostDelete')
-	.on('click',function(){
-		let PostID = parseInt(jQuery(this).attr('data-post-id'));
-
-		if(PostID > 0)
-		if(confirm('Really delete this post? This cannot be undone.'))
-		Atlantis.BlogPost.Delete(PostID);
-
-		return false;
-	});
-
-	return;
-});
-
-///////////////////////////////////////////////////////////////////////////
-// src/js/local/atlantis-200-request.js ///////////////////////////////////
-
-"use strict";
-
-Atlantis.Request = function(Opt){
-
-	var Config = {
-		Method: 'Get',
-		URL: '/no/url/lol',
-		Data: null,
-		IsFormData: false,
-		OnSuccess: null,
-		OnError: null
-	};
-
-	NUI.Util.MergeProperties(Opt,Config);
-
-	////////
-
-	let Request = {
-		type: Config.Method.toUpperCase(),
-		url: Config.URL,
-		data: Config.Data,
-		dataType: 'json'
-	};
-
-	if(Config.IsFormData) {
-		Request.processData = false;
-		Request.contentType = false;
-		Request.mimeType = 'multipart/form-data';
-	}
-
-	jQuery
-	.ajax(Request)
-	.done(function(Result){
-
-		// handle api result errors.
-
-		if(Result.Error != 0) {
-
-			if(typeof Config.OnError == 'function')
-			Config.OnError(Result);
-
-			else
-			alert(Result.Message);
-
-			return;
-		}
-
-		// handle api success.
-
-		if(typeof Config.OnSuccess == 'function')
-		Config.OnSuccess(Result);
-
-		return;
-	});
-
-	return;
-};
-
-///////////////////////////////////////////////////////////////////////////
-// src/js/local/atlantis-200-submit.js ////////////////////////////////////
+// src/js/local/atlantis-200-action-status-handler.js /////////////////////
 
 "use strict";
 
@@ -11464,6 +11356,115 @@ Atlantis.Action.StatusHandler = function(Opt){
 };
 
 ///////////////////////////////////////////////////////////////////////////
+// src/js/local/atlantis-200-blogpost.js //////////////////////////////////
+
+Atlantis.BlogPost = {
+
+	'Delete': function(PostID){
+
+		(new Promise(function(Next,Fail){
+			Atlantis.Request({
+				'Method': 'DELETE',
+				'URL': '/api/v1/post/entity',
+				'Data': { 'ID': PostID },
+				'OnSuccess': function(Result){
+					Next(Result);
+					return;
+				}
+			});
+		}))
+		.then(function(Result){
+			if(typeof Result.Location === 'string') {
+				location.href = Result.Location;
+				return;
+			}
+			return;
+		});
+
+		return;
+	}
+
+};
+
+jQuery(document)
+.ready(function(){
+
+	jQuery('.AtlantisActionPostDelete')
+	.on('click',function(){
+		let PostID = parseInt(jQuery(this).attr('data-post-id'));
+
+		if(PostID > 0)
+		if(confirm('Really delete this post? This cannot be undone.'))
+		Atlantis.BlogPost.Delete(PostID);
+
+		return false;
+	});
+
+	return;
+});
+
+///////////////////////////////////////////////////////////////////////////
+// src/js/local/atlantis-200-request.js ///////////////////////////////////
+
+"use strict";
+
+Atlantis.Request = function(Opt){
+
+	var Config = {
+		Method: 'Get',
+		URL: '/no/url/lol',
+		Data: null,
+		IsFormData: false,
+		OnSuccess: null,
+		OnError: null
+	};
+
+	NUI.Util.MergeProperties(Opt,Config);
+
+	////////
+
+	let Request = {
+		type: Config.Method.toUpperCase(),
+		url: Config.URL,
+		data: Config.Data,
+		dataType: 'json'
+	};
+
+	if(Config.IsFormData) {
+		Request.processData = false;
+		Request.contentType = false;
+		Request.mimeType = 'multipart/form-data';
+	}
+
+	jQuery
+	.ajax(Request)
+	.done(function(Result){
+
+		// handle api result errors.
+
+		if(Result.Error != 0) {
+
+			if(typeof Config.OnError == 'function')
+			Config.OnError(Result);
+
+			else
+			alert(Result.Message);
+
+			return;
+		}
+
+		// handle api success.
+
+		if(typeof Config.OnSuccess == 'function')
+		Config.OnSuccess(Result);
+
+		return;
+	});
+
+	return;
+};
+
+///////////////////////////////////////////////////////////////////////////
 // src/js/local/atlantis-200-toaster.js ///////////////////////////////////
 
 "use strict";
@@ -11543,194 +11544,197 @@ Atlantis.Toaster = function(Opt){
 
 'use strict';
 
-let AtlantisUpload = {
+Atlantis.Upload = {
+	FileTypeAny: 0,
+	FileTypeImage: 1
+};
 
-	'FileTypeAny': 0,
-	'FileTypeImage': 1,
+///////////////////////////////////////////////////////////////////////////
+// src/js/local/atlantis-300-upload-button.js /////////////////////////////
 
-	'Button': function(Opt) {
-		let that = this;
+'use strict';
 
-		let Config = {
-			'SelectorButton': null,
-			'SelectorInput': null,
-			'SelectorUpload': null,
-			'FileType': AtlantisUpload.Any,
-			'AutoUpload': true,
-			'Method': 'POST',
-			'URL': null,
-			'Data': null,
-			'OnItemComplete': function(Status,Result,File){
-				if(Result.Error !== 0)
-				alert(Result.Message);
+Atlantis.Upload.Button = function(Opt) {
+	let that = this;
+
+	let Config = {
+		'SelectorButton': null,
+		'SelectorInput': null,
+		'SelectorUpload': null,
+		'FileType': Atlantis.Upload.FileTypeAny,
+		'AutoUpload': true,
+		'Method': 'POST',
+		'URL': null,
+		'Data': null,
+		'OnItemComplete': function(Status,Result,File){
+			if(Result.Error !== 0)
+			alert(Result.Message);
+
+			return;
+		},
+		'OnQueueComplete': function(Result){
+			location.reload(true);
+			return;
+		}
+	};
+
+	let OnButtonClick;
+	let OnSelectFiles;
+	let OnFileTypeError;
+	let OnQueueNext;
+	let UploadFile;
+
+	let Queue = new Array;
+
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
+	NUI.Util.MergeProperties(Opt,Config);
+	this.Button = jQuery(Config.SelectorButton);
+	this.Input = jQuery(Config.SelectorInput);
+
+	OnButtonClick = function(){
+		that.Input.trigger('click');
+		return false;
+	};
+
+	OnSelectFiles = function(){
+
+		jQuery(this.files)
+		.each(function(){
+			console.log('Upload Icon: ' + this.name + ' ' + this.type);
+
+			if(Config.FileType === Atlantis.Upload.FileTypeImage) {
+				if(!this.type.match(/^image\//)) {
+					OnFileTypeError(this);
+					return false;
+				}
+			}
+
+			Queue.push(this);
+			return;
+		});
+
+		if(Config.AutoUpload)
+		OnQueueNext();
+
+		return;
+	};
+
+	OnFileTypeError = function(File){
+
+		let Overlay;
+		let Dialog;
+
+		Overlay = new NUI.Overlay({
+			'Content': (
+				Dialog = new NUI.Dialog({
+					'Title': 'Invalid File Type',
+					'Buttons': [
+						new NUI.Button({ 'Label':'OK', 'Class':'NUI-Dialog-Cancel btn btn-dark' })
+					],
+					'Content': File.name,
+					'OnCancel': function(){ Overlay.Destroy(); return; }
+				})
+			)
+		});
+
+		return;
+	};
+
+	OnQueueNext = function(){
+
+		let Next = Queue.shift();
+
+		if(typeof Next === 'object') {
+			UploadFile(Next);
+			return;
+		}
+
+		if(typeof Config.OnQueueComplete === 'function')
+		(Config.OnQueueComplete)();
+
+		return;
+	};
+
+	UploadFile = function(File) {
+
+		let Uploader = new FormData;
+		let Xfer = new XMLHttpRequest();
+		let Prop = null;
+
+		(that.Button.find('.StatusThinking'))
+		.removeClass('font-size-zero');
+
+		(Xfer.upload)
+		.addEventListener(
+			'progress',
+			function(Ev){
+				let Per = 0;
+
+				if(Ev.lengthComputable) {
+					Per = Math.round((Ev.loaded * 100) / Ev.total);
+					(that.Button.find('.UploadButtonBar'))
+					.css('width',(Per + '%'));
+				}
 
 				return;
 			},
-			'OnQueueComplete': function(Result){
-				location.reload(true);
+			false
+		);
+
+		(Xfer)
+		.addEventListener(
+			'load',
+			function(Ev) {
+
+				if(typeof Config.OnItemComplete === 'function')
+				(Config.OnItemComplete)(
+					Xfer.status,
+					Xfer.response,
+					File
+				);
+
+				OnQueueNext();
 				return;
 			}
-		};
+		);
 
-		let OnButtonClick;
-		let OnSelectFiles;
-		let OnFileTypeError;
-		let OnQueueNext;
-		let UploadFile;
+		if(typeof Config.Data === 'object')
+		for(Prop in Config.Data)
+		Uploader.append(Prop,Config.Data[Prop]);
 
-		let Queue = new Array;
+		Uploader.append('Filedata',File);
+		Xfer.responseType = 'json';
+		Xfer.open(Config.Method,Config.URL);
+		Xfer.send(Uploader);
 
-		////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////
+		return;
+	};
 
-		NUI.Util.MergeProperties(Opt,Config);
-		this.Button = jQuery(Config.SelectorButton);
-		this.Input = jQuery(Config.SelectorInput);
+	(this.Button)
+	.css('position','relative')
+	.append(
+		jQuery('<i />')
+		.addClass('Status StatusThinking fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero ml-2')
+	)
+	.append(
+		jQuery('<div />')
+		.addClass('UploadButtonBar')
+		.css({
+			'position': 'absolute',
+			'top': '0px',
+			'left': '0px',
+			'width': '0%',
+			'height': '100%',
+			'background-color': '#cccc'
+		})
+	)
+	.on('click',OnButtonClick);
 
-		OnButtonClick = function(){
-			that.Input.trigger('click');
-			return false;
-		};
+	(this.Input)
+	.on('change',OnSelectFiles);
 
-		OnSelectFiles = function(){
-
-			jQuery(this.files)
-			.each(function(){
-				console.log('Upload Icon: ' + this.name + ' ' + this.type);
-
-				if(Config.FileType === AtlantisUpload.FileTypeImage) {
-					if(!this.type.match(/^image\//)) {
-						OnFileTypeError(this);
-						return false;
-					}
-				}
-
-				Queue.push(this);
-				return;
-			});
-
-			if(Config.AutoUpload)
-			OnQueueNext();
-
-			return;
-		};
-
-		OnFileTypeError = function(File){
-
-			let Overlay;
-			let Dialog;
-
-			Overlay = new NUI.Overlay({
-				'Content': (
-					Dialog = new NUI.Dialog({
-						'Title': 'Invalid File Type',
-						'Buttons': [
-							new NUI.Button({ 'Label':'OK', 'Class':'NUI-Dialog-Cancel btn btn-dark' })
-						],
-						'Content': File.name,
-						'OnCancel': function(){ Overlay.Destroy(); return; }
-					})
-				)
-			});
-
-			return;
-		};
-
-		OnQueueNext = function(){
-
-			let Next = Queue.shift();
-
-			if(typeof Next === 'object') {
-				UploadFile(Next);
-				return;
-			}
-
-			if(typeof Config.OnQueueComplete === 'function')
-			(Config.OnQueueComplete)();
-
-			return;
-		};
-
-		UploadFile = function(File) {
-
-			let Uploader = new FormData;
-			let Xfer = new XMLHttpRequest();
-			let Prop = null;
-
-			(that.Button.find('.StatusThinking'))
-			.removeClass('font-size-zero');
-
-			(Xfer.upload)
-			.addEventListener(
-				'progress',
-				function(Ev){
-					let Per = 0;
-
-					if(Ev.lengthComputable) {
-						Per = Math.round((Ev.loaded * 100) / Ev.total);
-						(that.Button.find('.UploadButtonBar'))
-						.css('width',(Per + '%'));
-					}
-
-					return;
-				},
-				false
-			);
-
-			(Xfer)
-			.addEventListener(
-				'load',
-				function(Ev) {
-
-					if(typeof Config.OnItemComplete === 'function')
-					(Config.OnItemComplete)(
-						Xfer.status,
-						Xfer.response,
-						File
-					);
-
-					OnQueueNext();
-					return;
-				}
-			);
-
-			if(typeof Config.Data === 'object')
-			for(Prop in Config.Data)
-			Uploader.append(Prop,Config.Data[Prop]);
-
-			Uploader.append('Filedata',File);
-			Xfer.responseType = 'json';
-			Xfer.open(Config.Method,Config.URL);
-			Xfer.send(Uploader);
-
-			return;
-		};
-
-		(this.Button)
-		.css('position','relative')
-		.append(
-			jQuery('<i />')
-			.addClass('Status StatusThinking fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero ml-2')
-		)
-		.append(
-			jQuery('<div />')
-			.addClass('UploadButtonBar')
-			.css({
-				'position': 'absolute',
-				'top': '0px',
-				'left': '0px',
-				'width': '0%',
-				'height': '100%',
-				'background-color': '#cccc'
-			})
-		)
-		.on('click',OnButtonClick);
-
-		(this.Input)
-		.on('change',OnSelectFiles);
-
-		return this;
-	}
-
+	return this;
 };
 
