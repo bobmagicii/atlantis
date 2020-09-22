@@ -19,6 +19,8 @@ RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 
 # Force HTTPS
 RewriteCond %{HTTPS} !=on
+RewriteCond %{REQUEST_URI} !^/.well-known
+RewriteCond %{QUERY_STRING} !http=yep
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 ################################################################################
