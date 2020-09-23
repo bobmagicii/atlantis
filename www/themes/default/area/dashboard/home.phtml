@@ -12,43 +12,57 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-8 mb-6">
-			<h2>Your Blogs</h2>
-			<?php foreach($Blogs->Payload as $BlogUser): ?>
-			<div class="row align-items-center tight mb-2">
-				<div class="col-auto">
-					<a href="<?php echo $BlogUser->Blog->URL ?>" class="font-size-large font-weight-bold"><?php echo $BlogUser->Blog->Title ?></a>
-				</div>
+			<div class="mb-6">
+				<h2>Your Blogs</h2>
+				<?php foreach($Blogs->Payload as $BlogUser): ?>
+				<div class="row align-items-center tight mb-2">
+					<div class="col-auto">
+						<a href="<?php echo $BlogUser->Blog->URL ?>" class="font-size-large font-weight-bold"><?php echo $BlogUser->Blog->Title ?></a>
+					</div>
 
-				<div class="col">
-				</div>
+					<div class="col">
+					</div>
 
-				<?php if($BlogUser->HasWritePriv()): ?>
-				<div class="col-auto">
-					<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Post.New',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-dark text-uppercase"><i class="fa fa-fw fa-edit"></i></a>
+					<?php if($BlogUser->HasWritePriv()): ?>
+					<div class="col-auto">
+						<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Post.New',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-dark text-uppercase"><i class="fa fa-fw fa-edit"></i></a>
+					</div>
+					<?php else: ?>
+					<div class="col-auto">
+						<span class="btn btn-dark text-uppercase disabled HasTooltip" title="You do not have writer privileges on this blog."><i class="fa fa-fw fa-edit"></i></span>
+					</div>
+					<?php endif; ?>
+
+					<?php if($BlogUser->HasManagePriv()): ?>
+					<div class="col-auto">
+						<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Settings',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-dark text-uppercase"><i class="fa fa-fw fa-wrench"></i></a>
+					</div>
+					<?php else: ?>
+					<div class="col-auto">
+						<span class="btn btn-dark text-uppercase disabled HasTooltip" title="You do not have manage privileges on this blog."><i class="fa fa-fw fa-wrench"></i></span>
+					</div>
+					<?php endif; ?>
+
 				</div>
-				<?php else: ?>
-				<div class="col-auto">
-					<span class="btn btn-dark text-uppercase disabled HasTooltip" title="You do not have writer privileges on this blog."><i class="fa fa-fw fa-edit"></i></span>
+				<?php endforeach; ?>
+				<?php if(!$Blogs->Total): ?>
+				<div class="p-4 text-center">
+					You have not created any blogs yet.
 				</div>
 				<?php endif; ?>
-
-				<?php if($BlogUser->HasManagePriv()): ?>
-				<div class="col-auto">
-					<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Settings',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-dark text-uppercase"><i class="fa fa-fw fa-wrench"></i></a>
-				</div>
-				<?php else: ?>
-				<div class="col-auto">
-					<span class="btn btn-dark text-uppercase disabled HasTooltip" title="You do not have manage privileges on this blog."><i class="fa fa-fw fa-wrench"></i></span>
-				</div>
-				<?php endif; ?>
-
 			</div>
-			<?php endforeach; ?>
-			<?php if(!$Blogs->Total): ?>
-			<div class="p-4 text-center">
-				You have not created any blogs yet.
+			<div class="mb-6">
+				<h2>Your Storage</h2>
+				<div class="row">
+					<div class="col">
+						<div class="font-weight-bold">Images</div>
+						<div class="text-muted">Includes the uploads and the generated sizes.</div>
+					</div>
+					<div class="col-auto">
+						<div class="font-weight-bold"><?php $Printer(Atlantis\Util::BytesReadable($User->BytesImages)) ?></div>
+					</div>
+				</div>
 			</div>
-			<?php endif; ?>
 		</div>
 		<div class="col-md-4 mb-6">
 			<h2>Blogging</h2>

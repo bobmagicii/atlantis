@@ -10,36 +10,46 @@ $Posts = $Element->GetItemStore();
 
 ?>
 
-<div class="PostListing <?php echo $Element->GetClassesAttrString() ?>">
+<div class="PostListing HideTheLastHr <?php echo $Element->GetClassesAttrString() ?>">
 	<h2><?php echo $Element->GetTitle() ?></h2>
 	<?php foreach($Posts as $Post): ?>
 	<div class="Post <?php echo $Post->GetStyleClassAttr() ?>">
-		<h3 class="d-flex align-items-center">
-			<?php if($Post->IsDraft()): ?>
-			<i class="flex-grow-0 fas fa-fw fa-sticky-note font-size-smallerer mr-1 HasTooltip" title="Draft"></i>
-			<?php elseif($Post->IsPublic()): ?>
-			<?php elseif($Post->IsFriendsOnly()): ?>
-			<span class="fa-stack fa-2x mr-1 HasTooltip" title="Friends Only">
-				<i class="fas fa-fw fa-square fa-stack-2x"></i>
-				<i class="fas fa-fw fa-user-friends fa-stack-1x fa-inverse"></i>
-			</span>
-			<?php elseif($Post->IsNuked()): ?>
-			<span class="fa-stack fa-2x mr-1 HasTooltip" title="Nuked">
-				<i class="fas fa-fw fa-square fa-stack-2x"></i>
-				<i class="fas fa-fw fa-radiation fa-stack-1x fa-inverse"></i>
-			</span>
-			<?php endif; ?>
-			<?php if($Post->IsAdult()): ?>
-			<i class="flex-grow-0 fas fa-fw fa-exclamation-square font-size-smallerer text-adult mr-1 HasTooltip" title="Adult Content"></i>
-			<?php endif; ?>
-			<a class="flex-grow-0" href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->Title) ?></a>
-		</h3>
-		<div class="About">
-			Posted on <a class="Date" href="<?php echo $Post->URL ?>"><?php echo $Post->DateCreated->Format('F jS g:ia') ?></a>
-			From <a class="Source" href="<?php echo $Post->Blog->URL ?>"><?php echo $Post->Blog->Title ?></a>
-			By <a class="Authour" href="<?php echo $Post->User->URL ?>"><?php echo $Post->User->Alias ?></a>
+
+		<div class="row align-items-center">
+			<div class="col-3 col-sm-2">
+				<div class="WallpaperedBox Square rounded" style="background-color: #000; background-image:url(<?php $Printer($Post->Blog->ImageIconURL) ?>);"></div>
+			</div>
+			<div class="col">
+				<h3 class="d-flex align-items-center">
+					<?php if($Post->IsDraft()): ?>
+					<i class="flex-grow-0 fas fa-fw fa-sticky-note font-size-smallerer mr-1 HasTooltip" title="Draft"></i>
+					<?php elseif($Post->IsPublic()): ?>
+					<?php elseif($Post->IsFriendsOnly()): ?>
+					<span class="fa-stack fa-2x mr-1 HasTooltip" title="Friends Only">
+						<i class="fas fa-fw fa-square fa-stack-2x"></i>
+						<i class="fas fa-fw fa-user-friends fa-stack-1x fa-inverse"></i>
+					</span>
+					<?php elseif($Post->IsNuked()): ?>
+					<span class="fa-stack fa-2x mr-1 HasTooltip" title="Nuked">
+						<i class="fas fa-fw fa-square fa-stack-2x"></i>
+						<i class="fas fa-fw fa-radiation fa-stack-1x fa-inverse"></i>
+					</span>
+					<?php endif; ?>
+					<?php if($Post->IsAdult()): ?>
+					<i class="flex-grow-0 fas fa-fw fa-exclamation-square font-size-smallerer text-adult mr-1 HasTooltip" title="Adult Content"></i>
+					<?php endif; ?>
+					<a class="flex-grow-0" href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->Title) ?></a>
+				</h3>
+				<div class="About">
+					Posted on <a class="Date" href="<?php echo $Post->URL ?>"><?php echo $Post->DateCreated->Format('F jS g:ia') ?></a>
+					From <a class="Source" href="<?php echo $Post->Blog->URL ?>"><?php echo $Post->Blog->Title ?></a>
+					By <a class="Authour" href="<?php echo $Post->User->URL ?>"><?php echo $Post->User->Alias ?></a>
+				</div>
+			</div>
 		</div>
+
 	</div>
+	<hr />
 	<?php endforeach; ?>
 	<?php if(!$Posts->Count()): ?>
 	<div class="p-4 text-center">

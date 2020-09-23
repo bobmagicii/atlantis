@@ -37,7 +37,10 @@ implements JsonSerializable {
 	public function
 	__Construct($Input, Bool $MakeSafer=FALSE) {
 
+		// i do not like this method of adding fields.
+
 		static::$PropertyMap['_OptAdult'] = 'OptAdult:int';
+		static::$PropertyMap['_BytesImages'] = 'BytesImages:int';
 
 		// provide a way to still use user objects but omit various
 		// personal data that is not needed outside of auth or
@@ -147,6 +150,29 @@ implements JsonSerializable {
 	//*/
 
 		return $this->OptAdult !== static::AdultDisable;
+	}
+
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
+	public function
+	QueryBytesImages():
+	Int {
+
+		$Result = (
+			(Nether\Database::Get()->NewVerse())
+			->Select('UploadImages')
+			->Fields('SUM(Bytes) AS TotalBytes')
+			->Where('UserID=:UserID')
+			->Query([
+				':UserID' => $this->ID
+			])
+		);
+
+		if(!$Result->IsOK())
+		throw new Atlantis\Error\DatabaseQueryError($Result);
+
+		return (Int)$Result->Next()->TotalBytes;
 	}
 
 	////////////////////////////////////////////////////////////////

@@ -312,8 +312,9 @@ implements Atlantis\Packages\Upsertable {
 		////////
 
 		$Output = new Nether\Object\Mapped([
-			'Success' => [],
-			'Fail'    => []
+			'Success'         => [],
+			'Fail'            => [],
+			'UserBytesImages' => 0
 		]);
 
 		if(!count($_FILES))
@@ -411,6 +412,12 @@ implements Atlantis\Packages\Upsertable {
 			$Output->Success[] = $Upload;
 			unlink($Current['tmp_name']);
 		}
+
+		$Output->UserBytesImages = $User->QueryBytesImages();
+
+		$User->Update([
+			'BytesImages' => $Output->UserBytesImages
+		]);
 
 		return $Output;
 	}
