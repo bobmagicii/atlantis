@@ -18,7 +18,10 @@
 		"google\/recaptcha": "^1.1",
 		"artem_c/emmet": "^1.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.6.2",
-		"monolog/monolog": "^2.1"
+		"monolog/monolog": "^2.1",
+		"league/flysystem": "^1.1",
+		"league/flysystem-replicate-adapter": "^1.0",
+		"league/flysystem-aws-s3-v3": "^1.0"
 	},
 	"config": {
 		"preferred-install": {

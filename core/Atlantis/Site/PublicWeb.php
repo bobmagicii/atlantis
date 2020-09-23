@@ -41,6 +41,7 @@ class PublicWeb {
 		$this->Surface = new Nether\Surface;
 		$this->User = Atlantis\User::FetchSession();
 		$this->Errors = new Nether\Object\Datastore;
+		$this->Storage = new Atlantis\StorageManager;
 
 		if($this->Method === 'POST')
 		$this->Post = new Nether\Input\Filter($_POST);

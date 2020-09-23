@@ -373,6 +373,9 @@ implements JsonSerializable {
 		->Join("UploadImages {$FieldPrefix}BII ON {$TableAlias}.ImageIconID={$FieldPrefix}BII.ID")
 		->Join("UploadImages {$FieldPrefix}BIH ON {$TableAlias}.ImageHeaderID={$FieldPrefix}BIH.ID");
 
+		Atlantis\Prototype\UploadImage::ExtendQueryJoins($SQL,"{$FieldPrefix}BII","{$FieldPrefix}II_");
+		Atlantis\Prototype\UploadImage::ExtendQueryJoins($SQL,"{$FieldPrefix}BIH","{$FieldPrefix}IH_");
+
 		return;
 	}
 
@@ -386,7 +389,8 @@ implements JsonSerializable {
 		Atlantis\User::ExtendMainFields($SQL,"{$FieldPrefix}BU","{$FieldPrefix}BU_");
 		Atlantis\Prototype\UploadImage::ExtendMainFields($SQL,"{$FieldPrefix}BII","{$FieldPrefix}II_");
 		Atlantis\Prototype\UploadImage::ExtendMainFields($SQL,"{$FieldPrefix}BIH","{$FieldPrefix}IH_");
-
+		Atlantis\Prototype\UploadImage::ExtendQueryFields($SQL,"{$FieldPrefix}BII","{$FieldPrefix}II_");
+		Atlantis\Prototype\UploadImage::ExtendQueryFields($SQL,"{$FieldPrefix}BIH","{$FieldPrefix}IH_");
 		return;
 	}
 

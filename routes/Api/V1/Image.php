@@ -57,8 +57,9 @@ extends Atlantis\Site\ProtectedAPI {
 	@error 4 failure to create database row for file
 	//*/
 
-		$Output = Atlantis\Util\UploadImageProcessor::HandlePost(
-			$this->User
+		$Output = Atlantis\Prototype\UploadImage::HandlePost(
+			$this->User,
+			$this->Storage
 		);
 
 		$this->SetPayload($Output);

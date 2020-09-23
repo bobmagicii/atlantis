@@ -235,7 +235,7 @@ extends Atlantis\Site\ProtectedAPI {
 
 		////////
 
-		$Uploads = Atlantis\Util\UploadImageProcessor::HandlePost($this->User);
+		$Uploads = Atlantis\Prototype\UploadImage::HandlePost($this->User,$this->Storage);
 
 		if(!count($Uploads->Success))
 		$this->Quit(3,'no images successfully uploaded.');
@@ -279,10 +279,12 @@ extends Atlantis\Site\ProtectedAPI {
 
 		////////
 
-		$Uploads = Atlantis\Util\UploadImageProcessor::HandlePost($this->User);
+		$Uploads = Atlantis\Prototype\UploadImage::HandlePost($this->User,$this->Storage);
 
-		if(!count($Uploads->Success))
-		$this->Quit(3,'no images successfully uploaded.');
+		if(!count($Uploads->Success)) {
+			$this->SetPayload($Uploads->Fail);
+			$this->Quit(3,'no images successfully uploaded.');
+		}
 
 		////////
 

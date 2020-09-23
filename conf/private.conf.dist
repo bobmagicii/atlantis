@@ -6,11 +6,27 @@
 Nether\Option::Set([
 
 	////////////////////////////////////////////////////////////////
+	// Filesystem Settings /////////////////////////////////////////
+
+	'Atlantis.File.Filesystems' => [
+		'local' => new Atlantis\FileSystem\Local(
+			'local',
+			sprintf('%s/data',ProjectRoot)
+		),
+		'upl' => new Atlantis\FileSystem\AwsBucket(
+			'upl',
+			'aws-public-key',
+			'aws-private-key',
+			'aws-region',
+			'aws-bucket-name'
+		)
+	],
+
+	////////////////////////////////////////////////////////////////
 	// Google reCaptcha Config /////////////////////////////////////
 
 	// you will need to create api keys for recaptcha and put them
-	// or else nobody will be able to sign up. it is free obvs like
-	// i have any money.
+	// or else nobody will be able to sign up.
 
 	// https://www.google.com/recaptcha/intro/
 
