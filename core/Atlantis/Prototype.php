@@ -543,6 +543,27 @@ namespace.
 		return static::GetByID($Result->GetInsertID());
 	}
 
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
+	protected
+	Bool $Updated = FALSE;
+
+	public function
+	IsUpdated():
+	Bool {
+
+		return $this->Updated;
+	}
+
+	public function
+	SetUpdated(Bool $Updated):
+	self {
+
+		$this->Updated = $Updated;
+		return $this;
+	}
+
 	static public function
 	Upsert($Opt=NULL,$Upt=NULL):
 	self {
@@ -558,6 +579,9 @@ namespace.
 		$DB = Nether\Database::Get();
 		$SQL = $DB->NewVerse();
 		$Output = NULL;
+
+		if(is_object($Upt))
+		$Upt = (Array)$Upt;
 
 		$SQL
 		->Insert(static::$Table)
