@@ -8,7 +8,8 @@ Nether as Nether,
 League as League,
 Aws as Aws;
 
-class AwsBucket {
+class B2Bucket
+extends AwsBucket {
 
 	protected
 	String $MountName;
@@ -51,9 +52,10 @@ class AwsBucket {
 	public function
 	GetAdapter() {
 
-		$Client = new Aws\S3\S3Client([
-			'region'      => $this->Region,
-			'version'     => 'latest',
+		$Client = Aws\S3\S3Client::factory([
+			'region' => $this->Region,
+			'endpoint' => "https://s3.{$this->Region}.backblazeb2.com",
+			'version' => 'latest',
 			'credentials' => [
 				'key'    => $this->PubKey,
 				'secret' => $this->PrivKey
@@ -78,7 +80,7 @@ class AwsBucket {
 	String {
 
 		return sprintf(
-			'https://%s.s3-%s.amazonaws.com/%s',
+			'https://%s.s3.%s.backblazeb2.com/%s',
 			$this->Bucket,
 			$this->Region,
 			$Path
