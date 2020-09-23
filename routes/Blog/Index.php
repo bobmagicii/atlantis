@@ -18,7 +18,7 @@ extends Atlantis\Site\PublicWeb {
 	//*/
 
 		$Blog = Blog::GetByAlias($BlogAlias);
-		$BlogUser = $Blog->GetBlogUser($this->User);
+		$BlogUser = NULL;
 		$Page = 1;
 		$Limit = 10;
 		$Opt = [
@@ -30,6 +30,8 @@ extends Atlantis\Site\PublicWeb {
 
 		if(!$Blog)
 		$this->Area('error/not-found')->Quit(404);
+
+		$BlogUser = $Blog->GetBlogUser($this->User);
 
 		// allow editors to see draft posts.
 
