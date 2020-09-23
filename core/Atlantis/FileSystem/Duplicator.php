@@ -10,9 +10,6 @@ League as League;
 class Duplicator {
 
 	protected
-	String $MountName;
-
-	protected
 	$Source;
 
 	protected
@@ -22,20 +19,12 @@ class Duplicator {
 	////////////////
 
 	public function
-	__Construct($MountName,$Source,$Dest) {
+	__Construct($Source,$Dest) {
 
-		$this->MountName = $MountName;
 		$this->Source = $Source;
 		$this->Dest = $Dest;
 
 		return;
-	}
-
-	public function
-	GetMountName():
-	String {
-
-		return $this->MountName;
 	}
 
 	public function

@@ -12,9 +12,6 @@ class B2Bucket
 extends AwsBucket {
 
 	protected
-	String $MountName;
-
-	protected
 	String $PubKey;
 
 	protected
@@ -30,9 +27,8 @@ extends AwsBucket {
 	////////////////
 
 	public function
-	__Construct($MountName,$PubKey,$PrivKey,$Region,$Bucket,$ACL) {
+	__Construct($PubKey,$PrivKey,$Region,$Bucket,$ACL) {
 
-		$this->MountName = $MountName;
 		$this->PubKey = $PubKey;
 		$this->PrivKey = $PrivKey;
 		$this->Region = $Region;
@@ -40,13 +36,6 @@ extends AwsBucket {
 		$this->ACL = $ACL;
 
 		return;
-	}
-
-	public function
-	GetMountName():
-	String {
-
-		return $this->MountName;
 	}
 
 	public function

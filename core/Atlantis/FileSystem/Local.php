@@ -10,28 +10,17 @@ League as League;
 class Local {
 
 	protected
-	String $MountName;
-
-	protected
 	String $Root;
 
 	////////////////
 	////////////////
 
 	public function
-	__Construct($MountName,$Root) {
+	__Construct($Root) {
 
-		$this->MountName = $MountName;
 		$this->Root = $Root;
 
 		return;
-	}
-
-	public function
-	GetMountName():
-	String {
-
-		return $this->MountName;
 	}
 
 	public function
