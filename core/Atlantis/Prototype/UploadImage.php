@@ -14,7 +14,8 @@ Throwable   as Throwable,
 SplFileInfo as SplFileInfo;
 
 class UploadImage
-extends Atlantis\Prototype {
+extends Atlantis\Prototype
+implements Atlantis\Packages\Upsertable {
 
 	protected static
 	$Table = 'UploadImages';
@@ -30,7 +31,8 @@ extends Atlantis\Prototype {
 		'TimeUpdated' => 'TimeUpdated:int',
 		'Enabled'     => 'Enabled:int',
 		'UUID'        => 'UUID',
-		'Format'      => 'Format'
+		'Format'      => 'Format',
+		'Bytes'       => 'Bytes:int'
 	];
 
 	// database fields.
@@ -235,6 +237,7 @@ extends Atlantis\Prototype {
 			'UserID'      => 0,
 			'UUID'        => NULL,
 			'Format'      => NULL,
+			'Bytes'       => 0,
 
 			'TimeCreated' => time(),
 			'TimeUpdated' => time(),
@@ -253,22 +256,55 @@ extends Atlantis\Prototype {
 		return parent::Insert($Opt);
 	}
 
+	static public function
+	Upsert($Opt=NULL,$Upt=NULL):
+	self {
+
+		$Opt = new Nether\Object\Mapped($Opt,[
+			'UserID'      => 0,
+			'UUID'        => NULL,
+			'Format'      => NULL,
+			'Bytes'       => 0,
+			'TimeCreated' => time(),
+			'TimeUpdated' => time(),
+			'Enabled'     => 1
+		]);
+
+		$Upt = new Nether\Object\Mapped($Upt,[
+			'Format'      => $Opt->Format,
+			'Bytes'       => $Opt->Bytes,
+			'TimeCreated' => $Opt->TimeCreated,
+			'TimeUpdated' => $Opt->TimeUpdated,
+			'Enabled'     => 1
+		]);
+
+		if(!$Opt->UserID)
+		throw new Exception('UserID cannot be empty.');
+
+		if(!$Opt->UUID)
+		throw new Exception('UUID cannot be empty.');
+
+		if(!$Opt->Format)
+		throw new Exception('Format cannot be empty.');
+
+		return parent::Upsert($Opt,$Upt);
+	}
+
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
 	static public function
-	HandlePost(Atlantis\User $User, Atlantis\StorageManager $Storage):
+	HandlePost(Atlantis\User $User, Atlantis\StorageManager $Storage, ?String $OverUUID=NULL):
 	Nether\Object\Mapped {
 	/*//
-	returns an object containing Success and Fail uploads.
+	loop over all the files sent via post and handling all the images that
+	it found. returns an object containing Success and Error arrays.
 	//*/
 
 		$UUID = NULL;
-		$File = NULL;
 		$Filepath = NULL;
-		$Image = NULL;
 		$Error = NULL;
-		$Format = NULL;
+		$Stored = NULL;
 		$Upload = NULL;
 		$Current = NULL;
 		$Now = new Atlantis\Util\Date;
@@ -287,8 +323,12 @@ extends Atlantis\Prototype {
 
 		foreach($_FILES as $Current) {
 			$UUID = Atlantis\Util::UUID(NULL,TRUE);
+
+			if($OverUUID !== NULL)
+			$UUID = $OverUUID;
+
 			$Mime = mime_content_type($Current['tmp_name']);
-			$Filepath = static::GenerateFilePath($User->UUID,$UUID,'image',strtolower($Format));
+			$Filepath = static::GenerateFilePath($User->UUID,$UUID,'image','lol');
 
 			////////
 
@@ -306,8 +346,10 @@ extends Atlantis\Prototype {
 
 			////////
 
+			// try to push the image and scaled down versions into storage.
+
 			try {
-				$Format = static::HandleWriteImageToStorage(
+				$Stored = static::HandleWriteImageToStorage(
 					$Storage,
 					$Current['tmp_name'],
 					dirname($Filepath)
@@ -321,7 +363,9 @@ extends Atlantis\Prototype {
 				];
 
 				try {
+					if($OverUUID === NULL)
 					$Storage->DeleteDir(dirname($Filepath));
+
 					unlink($Current['tmp_name']);
 				}
 
@@ -332,25 +376,30 @@ extends Atlantis\Prototype {
 
 			////////
 
+			// try to create the reference row in the db.
+
 			try {
-				$Upload = Atlantis\Prototype\UploadImage::Insert([
+				$Upload = Atlantis\Prototype\UploadImage::Upsert([
 					'UserID'      => $User->ID,
 					'TimeCreated' => $Now->Format('U'),
 					'UUID'        => $UUID,
-					'Format'      => strtolower($Format)
+					'Format'      => strtolower($Stored->Format),
+					'Bytes'       => $Stored->Bytes
 				]);
 			}
 
-			catch(Throwable $Err) { }
+			catch(Throwable $Error) { }
 
 			if(!$Upload) {
 				$Output->Fail[] = [
 					'Name'  => $Current['name'],
-					'Error' => 'error creating database entry'
+					'Error' => 'error creating database entry: ' . $Error->GetMessage()
 				];
 
 				try {
+					if($OverUUID === NULL)
 					$Storage->DeleteDir(dirname($Filepath));
+
 					unlink($Current['tmp_name']);
 				}
 
@@ -368,19 +417,25 @@ extends Atlantis\Prototype {
 
 	static public function
 	HandleWriteImageToStorage(Atlantis\StorageManager $Storage, String $Source, String $DestDir):
-	String {
+	Nether\Object\Mapped {
 	/*//
 	@date 2020-09-23
 	@todo 2020-09-23 add gif support
 	@todo 2020-09-23 add phone photo rotation fixing
+	handing pushing the image and its resizes into storage. reutrns an object containing
+	the Format of the image and how many Bytes total all the sizes.
 	//*/
 
 		$Image = new Imagick($Source);
-		$Format = $Image->GetImageFormat();
 		$Name = NULL;
 		$Width = NULL;
 		$Filename = NULL;
 		$Saved = FALSE;
+
+		$Output = new Nether\Object\Mapped([
+			'Format' => $Image->GetImageFormat(),
+			'Bytes'  => 0
+		]);
 
 		$Sizes = [
 			'image' => 2048,
@@ -390,29 +445,32 @@ extends Atlantis\Prototype {
 			'th'    => 250
 		];
 
-		if($Format === 'PNG') {
-			$Image->SetCompressionQuality('95');
-		}
-
-		elseif($Format === 'GIF') {
-			// ...
-		}
-
-		else {
-			$Image->SetImageFormat($Format = 'JPG');
-			$Image->SetCompressionQuality(95);
+		switch($Output->Format) {
+			case 'PNG':
+				$Image->SetCompressionQuality('95');
+			break;
+			case 'GIF':
+				// gif handling probably needs to be done where the
+				// resize process below is sharded out because if i
+				// recall looping over every frame was required.
+			break;
+			default:
+				$Image->SetImageFormat($Output->Format = 'JPG');
+				$Image->SetCompressionQuality(95);
+			break;
 		}
 
 		$Image->StripImage();
 
 		foreach($Sizes as $Name => $Width) {
-			$Filename = sprintf('%s/%s.%s',$DestDir,$Name,strtolower($Format));
+			$Filename = sprintf('%s/%s.%s',$DestDir,$Name,strtolower($Output->Format));
 
 			if(is_int($Width))
 			if($Image->GetImageWidth() > $Width)
 			$Image->ScaleImage($Width,$Width,TRUE);
 
-			$Saved = $Storage->Write($Filename,$Image->GetImageBlob());
+			$Saved = $Storage->Put($Filename,$Image->GetImageBlob());
+			$Output->Bytes += $Image->GetImageLength();
 
 			if(!$Saved)
 			throw new Exception('error writing to storage');
@@ -420,7 +478,7 @@ extends Atlantis\Prototype {
 			$Storage->SetVisibility($Filename,'public');
 		}
 
-		return $Format;
+		return $Output;
 	}
 
 

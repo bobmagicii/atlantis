@@ -235,7 +235,11 @@ extends Atlantis\Site\ProtectedAPI {
 
 		////////
 
-		$Uploads = Atlantis\Prototype\UploadImage::HandlePost($this->User,$this->Storage);
+		$Uploads = Atlantis\Prototype\UploadImage::HandlePost(
+			$this->User,
+			$this->Storage,
+			"-blog-icon-{$BlogUser->Blog->ID}"
+		);
 
 		if(!count($Uploads->Success))
 		$this->Quit(3,'no images successfully uploaded.');
@@ -279,7 +283,11 @@ extends Atlantis\Site\ProtectedAPI {
 
 		////////
 
-		$Uploads = Atlantis\Prototype\UploadImage::HandlePost($this->User,$this->Storage);
+		$Uploads = Atlantis\Prototype\UploadImage::HandlePost(
+			$this->User,
+			$this->Storage,
+			"-blog-header-{$BlogUser->Blog->ID}"
+		);
 
 		if(!count($Uploads->Success)) {
 			$this->SetPayload($Uploads->Fail);
