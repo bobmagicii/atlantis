@@ -158,7 +158,7 @@ extends Atlantis\Site\ProtectedAPI {
 			$Dataset['Title'] = $Fields->Title;
 		}
 
-		if($Fields->Exists('Alias')) {
+		if($Fields->Exists('Alias') && $Fields->Alias !== $BlogUser->Blog->Alias) {
 			if(!strlen($Fields->Alias))
 			$this->Quit(5,'blog must have an alias');
 

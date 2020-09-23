@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-09-23 19:33:49
+@date 2020-09-23 19:50:31
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -310,6 +310,10 @@ body > header a {
 .PostListing .Post.PostFlagDraft,
 .PostListing .Post.PostFlagNuked {
 	opacity: 0.5;
+}
+
+.PostListing.NoBlogIcon .BlogIcon {
+	display: none;
 }
 
 /* this contains the promotional stripe under the page header which can be

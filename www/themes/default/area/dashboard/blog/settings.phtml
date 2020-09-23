@@ -22,14 +22,14 @@
 		<li class="breadcrumb-item active">Settings</li>
 	</ol>
 
-	<!-- TAGLINE -->
-	<div id="DashBlogTagline" class="row tight align-items-center mb-6">
+	<!-- TITLE -->
+	<div id="DashBlogTitle" class="row tight align-items-center mb-6">
 		<div class="col-12 mb-2">
-			<h2 class="font-size-large font-weight-bold">Tag Line</h2>
-			Some little flavour text usually shown underneath your blog title.
+			<h2 class="font-size-large font-weight-bold">Title</h2>
+			The primary name of your blog.
 		</div>
 		<div class="col mb-2">
-			<input id="InputTagline" type="text" class="form-control" placeholder="Enter Tag Line Here..." value="<?php echo $Printer($Blog->Tagline) ?>" />
+			<input id="InputTitle" type="text" autocomplete="off" class="form-control" placeholder="Enter Blog Title Here..." value="<?php echo $Printer($Blog->Title) ?>" />
 		</div>
 		<div class="col-auto mb-2">
 			<div class="d-flex">
@@ -39,7 +39,58 @@
 			</div>
 		</div>
 		<div class="col-auto mb-2">
-			<button id="CmdTagline" type="button" class="btn btn-block btn-dark ActionCommit">Save</button>
+			<butt type="button" class="btn btn-block btn-dark ActionCommit">Save</button>
+		</div>
+	</div>
+
+	<!-- TAGLINE -->
+	<div id="DashBlogTagline" class="row tight align-items-center mb-6">
+		<div class="col-12 mb-2">
+			<h2 class="font-size-large font-weight-bold">Tag Line</h2>
+			Some little flavour text usually shown underneath your blog title.
+		</div>
+		<div class="col mb-2">
+			<input id="InputTagline" type="text" autocomplete="off" class="form-control" placeholder="Enter Tag Line Here..." value="<?php echo $Printer($Blog->Tagline) ?>" />
+		</div>
+		<div class="col-auto mb-2">
+			<div class="d-flex">
+				<i class="ActionStatus ActionStatusThink fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
+				<i class="ActionStatus ActionStatusGood fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
+				<i class="ActionStatus ActionStatusBad fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
+			</div>
+		</div>
+		<div class="col-auto mb-2">
+			<button type="button" class="btn btn-block btn-dark ActionCommit">Save</button>
+		</div>
+	</div>
+
+	<!-- ALIAS -->
+	<div id="DashBlogAlias" class="row tight align-items-center mb-6">
+		<div class="col-12 mb-2">
+			<h2 class="font-size-large font-weight-bold">Blog URL</h2>
+			This is the address of your blog. Changing it will break any links you have shared in the past.
+		</div>
+		<div class="col-auto mb-2">
+			<span class="font-family-code"><?php echo $Router->GetDomain() ?></span>
+		</div>
+		<div class="col-auto mb-2">
+			<span class="font-family-code">/</span>
+		</div>
+		<div class="col-auto mb-2">
+			<span class="font-family-code">+</span>
+		</div>
+		<div class="col mb-2">
+			<input id="InputAlias" type="text" autocomplete="off" class="form-control font-family-code" placeholder="Enter URL Here..." value="<?php echo $Printer($Blog->Alias) ?>" />
+		</div>
+		<div class="col-auto mb-2">
+			<div class="d-flex">
+				<i class="ActionStatus ActionStatusThink fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
+				<i class="ActionStatus ActionStatusGood fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
+				<i class="ActionStatus ActionStatusBad fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
+			</div>
+		</div>
+		<div class="col-auto mb-2">
+			<button type="button" class="btn btn-block btn-dark ActionCommit">Save</button>
 		</div>
 	</div>
 
@@ -136,6 +187,39 @@ jQuery(document)
 	let BlogConfig = jQuery('#BlogConfig');
 	let BlogID = BlogConfig.attr('data-blog-id');
 
+	let Title = new Atlantis.Action.StatusHandler({
+		'Element': '#DashBlogTitle',
+		'OnCommit': function(Handler){
+			let Input = jQuery.trim(jQuery('#InputTitle').val());
+
+			Atlantis.Request({
+				'Method': 'PATCH',
+				'URL': '/api/v1/blog/entity',
+				'Data': { 'ID': BlogID, 'Fields': { 'Title': Input } },
+				'OnSuccess': function(Result){
+					Handler.SetStatus('good');
+					Atlantis.Toaster({
+						'Title': 'Blog Settings',
+						'Content': 'Your blog title has been successfully updated.',
+						'ContentClass': 'alert-success'
+					});
+					return;
+				},
+				'OnError': function(Result) {
+					Handler.SetStatus('bad');
+					Atlantis.Toaster({
+						'Title': 'Blog Settings',
+						'Content': 'Error: ' + Result.Message,
+						'ContentClass': 'alert-danger'
+					});
+					return;
+				}
+			});
+
+			return;
+		}
+	});
+
 	let Tagline = new Atlantis.Action.StatusHandler({
 		'Element': '#DashBlogTagline',
 		'OnCommit': function(Handler){
@@ -165,6 +249,55 @@ jQuery(document)
 				}
 			});
 
+			return;
+		}
+	});
+
+	let Alias = new Atlantis.Action.StatusHandler({
+		'Element': '#DashBlogAlias',
+		'OnCommit': function(Handler){
+			let Input = jQuery.trim(jQuery('#InputAlias').val());
+
+			Atlantis.Request({
+				'Method': 'PATCH',
+				'URL': '/api/v1/blog/entity',
+				'Data': { 'ID': BlogID, 'Fields': { 'Alias': Input } },
+				'OnSuccess': function(Result){
+					Handler.SetStatus('good');
+					Atlantis.Toaster({
+						'Title': 'Blog Settings',
+						'Content': 'Your blog URL has been successfully updated.',
+						'ContentClass': 'alert-success'
+					});
+					return;
+				},
+				'OnError': function(Result) {
+					Handler.SetStatus('bad');
+					Atlantis.Toaster({
+						'Title': 'Blog Settings',
+						'Content': 'Error: ' + Result.Message,
+						'ContentClass': 'alert-danger'
+					});
+					return;
+				}
+			});
+
+			return;
+		},
+		'OnKeyPress': function(Handler){
+
+			let Final = jQuery.trim(
+				jQuery('#InputAlias')
+				.val()
+				.toLowerCase()
+				.replace(/[^a-z0-9\x20\-]/g,'')
+				.replace(/ /g,'-')
+				.replace(/-{2,}/g,'-')
+				.substr(0,64)
+			);
+
+			Handler.SetStatus(null);
+			jQuery('#InputAlias').val(Final);
 			return;
 		}
 	});
