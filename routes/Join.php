@@ -40,7 +40,7 @@ extends Atlantis\Site\PublicWeb {
 
 		// check if they can fool google into believing they are real.
 
-		$Human = new ReCaptcha\ReCaptcha(Nether\Option::Get('recaptcha-secret'));
+		$Human = new ReCaptcha\ReCaptcha(Nether\Option::Get('Google.ReCaptcha.Secret'));
 		$CVal = $this->Post->{'g-recaptcha-response'};
 		$IP = $_SERVER['REMOTE_ADDR'];
 

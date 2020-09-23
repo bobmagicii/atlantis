@@ -15,10 +15,10 @@ Nether\Option::Set([
 		),
 		'upl' => new Atlantis\FileSystem\AwsBucket(
 			'upl',
-			'aws-public-key',
-			'aws-private-key',
-			'aws-region',
-			'aws-bucket-name'
+			'ur-aws-public-key',
+			'ur-aws-private-key',
+			'ur-aws-region',
+			'ur-aws-bucket-name'
 		)
 	],
 
@@ -30,7 +30,7 @@ Nether\Option::Set([
 
 	// https://www.google.com/recaptcha/intro/
 
-	'recaptcha-key'    => 'ur-recaptcha-public-key',
-	'recaptcha-secret' => 'ur-recaptcha-sekret-key'
+	'Google.ReCaptcha.Key'    => 'ur-recaptcha-public-key',
+	'Google.ReCaptcha.Secret' => 'ur-recaptcha-sekret-key'
 ]);
 
