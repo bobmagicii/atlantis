@@ -23,7 +23,7 @@ class Util {
 			if($Value === NULL)
 			$Dataset[] = "{$Name}=NULL";
 			else
-			$Dataset[] = "{$Name}={$Value}";
+			$Dataset[] = "{$Name}=:{$Name}";
 		}
 
 		return join(',',$Dataset);
