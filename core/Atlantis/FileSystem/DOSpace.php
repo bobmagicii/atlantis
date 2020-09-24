@@ -8,7 +8,7 @@ Nether as Nether,
 League as League,
 Aws as Aws;
 
-class B2Bucket
+class DOSpace
 extends AwsBucket {
 
 	public function
@@ -16,7 +16,7 @@ extends AwsBucket {
 
 		$this->Client = Aws\S3\S3Client::factory([
 			'region' => $this->Region,
-			'endpoint' => "https://s3.{$this->Region}.backblazeb2.com",
+			'endpoint' => "https://{$this->Region}.digitaloceanspaces.com",
 			'version' => 'latest',
 			'credentials' => [
 				'key'    => $this->PubKey,
@@ -34,7 +34,7 @@ extends AwsBucket {
 	String {
 
 		return sprintf(
-			'https://%s.s3.%s.backblazeb2.com/%s',
+			'https://%s.%s.digitaloceanspaces.com/%s',
 			$this->Bucket,
 			$this->Region,
 			$Path

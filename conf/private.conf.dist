@@ -5,22 +5,23 @@
 
 Nether\Option::Set([
 
+	'Atlantis.Website' => 'https://ur-domain-name',
+
 	////////////////////////////////////////////////////////////////
 	// Filesystem Settings /////////////////////////////////////////
 
 	'Atlantis.File.Filesystems' => [
 		'local' => new Atlantis\FileSystem\Local(
-			'local',
 			sprintf('%s/data',ProjectRoot)
 		),
 		'upl' => new Atlantis\FileSystem\AwsBucket(
-			'upl',
 			'ur-aws-public-key',
 			'ur-aws-private-key',
 			'ur-aws-region',
 			'ur-aws-bucket-name'
 		)
 	],
+	'Atlantis.File.DefaultMount' => 'upl',
 
 	////////////////////////////////////////////////////////////////
 	// Google reCaptcha Config /////////////////////////////////////

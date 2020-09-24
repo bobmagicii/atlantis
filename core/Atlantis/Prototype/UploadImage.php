@@ -30,6 +30,7 @@ implements Atlantis\Packages\Upsertable {
 		'TimeCreated' => 'TimeCreated:int',
 		'TimeUpdated' => 'TimeUpdated:int',
 		'Enabled'     => 'Enabled:int',
+		'Mount'       => 'Mount',
 		'UUID'        => 'UUID',
 		'Format'      => 'Format',
 		'Bytes'       => 'Bytes:int'
@@ -107,7 +108,7 @@ implements Atlantis\Packages\Upsertable {
 	///////////////////////////////////////////////////////////////////////////
 
 	static public function
-	GenerateFilePath(String $OwnerUUID, String $UUID, String $Size, String $Ext):
+	GenerateFilePath(String $Mount, String $OwnerUUID, String $UUID, String $Size, String $Ext):
 	String {
 	/*//
 	@date 2020-09-22
@@ -116,7 +117,8 @@ implements Atlantis\Packages\Upsertable {
 		// /upl/O-U-I-D/I-U-I-D/image.jpg
 
 		return sprintf(
-			'upl:///%s/%s/%s.%s',
+			'%s:///%s/%s/%s.%s',
+			$Mount,
 			$OwnerUUID,
 			$UUID,
 			$Size,
@@ -125,15 +127,18 @@ implements Atlantis\Packages\Upsertable {
 	}
 
 	static public function
-	GenerateFileURL(String $OwnerUUID, String $UUID, String $Size, String $Ext):
+	GenerateFileURL(String $Mount, String $OwnerUUID, String $UUID, String $Size, String $Ext):
 	String {
 	/*//
 	@date 2020-09-22
 	//*/
 
-		$Filesystem = Nether\Option::Get('Atlantis.File.Filesystems')['upl'];
+		$Systems = Nether\Option::Get('Atlantis.File.Filesystems');
 
-		return $Filesystem->GetURL(sprintf(
+		if(!array_key_exists($Mount,$Systems))
+		return "-filesystem-{$Mount}-not-found-";
+
+		return $Systems[$Mount]->GetURL(sprintf(
 			'%s/%s/%s.%s',
 			$OwnerUUID,
 			$UUID,
@@ -150,6 +155,7 @@ implements Atlantis\Packages\Upsertable {
 	//*/
 
 		return static::GenerateFilePath(
+			$this->Mount,
 			$this->User->UUID,
 			$this->UUID,
 			$Size,
@@ -166,6 +172,7 @@ implements Atlantis\Packages\Upsertable {
 	//*/
 
 		return static::GenerateFileURL(
+			$this->Mount,
 			$this->User->UUID,
 			$this->UUID,
 			$Size,
@@ -262,6 +269,7 @@ implements Atlantis\Packages\Upsertable {
 
 		$Opt = new Nether\Object\Mapped($Opt,[
 			'UserID'      => 0,
+			'Mount'       => NULL,
 			'UUID'        => NULL,
 			'Format'      => NULL,
 			'Bytes'       => 0,
@@ -271,6 +279,7 @@ implements Atlantis\Packages\Upsertable {
 		]);
 
 		$Upt = new Nether\Object\Mapped($Upt,[
+			'Mount'       => $Opt->Mount,
 			'Format'      => $Opt->Format,
 			'Bytes'       => $Opt->Bytes,
 			'TimeCreated' => $Opt->TimeCreated,
@@ -280,6 +289,9 @@ implements Atlantis\Packages\Upsertable {
 
 		if(!$Opt->UserID)
 		throw new Exception('UserID cannot be empty.');
+
+		if(!$Opt->Mount)
+		throw new Exception('Mount cannot be empty.');
 
 		if(!$Opt->UUID)
 		throw new Exception('UUID cannot be empty.');
@@ -294,13 +306,14 @@ implements Atlantis\Packages\Upsertable {
 	///////////////////////////////////////////////////////////////////////////
 
 	static public function
-	HandlePost(Atlantis\User $User, Atlantis\StorageManager $Storage, ?String $OverUUID=NULL):
+	HandlePostImage(Atlantis\User $User, Atlantis\StorageManager $Storage, ?String $OverUUID=NULL):
 	Nether\Object\Mapped {
 	/*//
 	loop over all the files sent via post and handling all the images that
 	it found. returns an object containing Success and Error arrays.
 	//*/
 
+		$Mount = Nether\Option::Get('Atlantis.File.DefaultMount');
 		$UUID = NULL;
 		$Filepath = NULL;
 		$Error = NULL;
@@ -329,7 +342,13 @@ implements Atlantis\Packages\Upsertable {
 			$UUID = $OverUUID;
 
 			$Mime = mime_content_type($Current['tmp_name']);
-			$Filepath = static::GenerateFilePath($User->UUID,$UUID,'image','lol');
+			$Filepath = static::GenerateFilePath(
+				$Mount,
+				$User->UUID,
+				$UUID,
+				'image',
+				'lol'
+			);
 
 			////////
 
@@ -383,7 +402,8 @@ implements Atlantis\Packages\Upsertable {
 				$Upload = Atlantis\Prototype\UploadImage::Upsert([
 					'UserID'      => $User->ID,
 					'TimeCreated' => $Now->Format('U'),
-					'UUID'        => $UUID,
+					'Mount'       => $Mount,
+ 					'UUID'        => $UUID,
 					'Format'      => strtolower($Stored->Format),
 					'Bytes'       => $Stored->Bytes
 				]);

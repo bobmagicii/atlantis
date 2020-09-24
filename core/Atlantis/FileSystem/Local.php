@@ -37,4 +37,24 @@ class Local {
 		);
 	}
 
+	public function
+	GetURL(String $Path):
+	String {
+
+		return sprintf(
+			'%s/upl/%s',
+			Nether\Option::Get('Atlantis.Website'),
+			$Path
+		);
+	}
+
+	public function
+	GetSignedURL(String $Path, String $Expire=''):
+	String {
+
+		// @todo 2020-09-24 this needs to not be hardcoded fool
+
+		return $this->GetURL($Path);
+	}
+
 }

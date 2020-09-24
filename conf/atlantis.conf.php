@@ -25,7 +25,7 @@ Nether\Option::Set([
 
 	// uuid settings.
 	'Atlantis.UUID.Version'         => 6,
-	'Atlantis.UUID.Node'            => NULL,
+	'Atlantis.UUID.Node'            => TRUE,
 
 	// logging settings.
 	'Atlantis.Log.Application.File'  => sprintf('%s/logs/atlantis.log',ProjectRoot),

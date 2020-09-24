@@ -235,7 +235,7 @@ extends Atlantis\Site\ProtectedAPI {
 
 		////////
 
-		$Uploads = Atlantis\Prototype\UploadImage::HandlePost(
+		$Uploads = Atlantis\Prototype\UploadImage::HandlePostImage(
 			$this->User,
 			$this->Storage,
 			"-blog-icon-{$BlogUser->Blog->ID}"
@@ -283,7 +283,7 @@ extends Atlantis\Site\ProtectedAPI {
 
 		////////
 
-		$Uploads = Atlantis\Prototype\UploadImage::HandlePost(
+		$Uploads = Atlantis\Prototype\UploadImage::HandlePostImage(
 			$this->User,
 			$this->Storage,
 			"-blog-header-{$BlogUser->Blog->ID}"

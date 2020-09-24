@@ -22,6 +22,9 @@ class AwsBucket {
 	protected
 	String $Bucket;
 
+	protected
+	Aws\S3\S3Client $Client;
+
 	////////////////
 	////////////////
 
@@ -40,7 +43,7 @@ class AwsBucket {
 	public function
 	GetAdapter() {
 
-		$Client = new Aws\S3\S3Client([
+		$this->Client = new Aws\S3\S3Client([
 			'region'      => $this->Region,
 			'version'     => 'latest',
 			'credentials' => [
@@ -50,7 +53,7 @@ class AwsBucket {
 		]);
 
 		return new League\Flysystem\AwsS3v3\AwsS3Adapter(
-			$Client, $this->Bucket
+			$this->Client, $this->Bucket
 		);
 	}
 
@@ -72,6 +75,21 @@ class AwsBucket {
 			$this->Region,
 			$Path
 		);
+	}
+
+	public function
+	GetSignedURL(String $Path, String $Expire='+1 Hour'):
+	String {
+
+		$URL = $this->Client->CreatePresignedRequest(
+			$this->Client->GetCommand('GetObject',[
+				'Bucket' => $this->Bucket,
+				'Key'    => $Path
+			]),
+			$Expire
+		)->GetURI();
+
+		return (String)$URL;
 	}
 
 }

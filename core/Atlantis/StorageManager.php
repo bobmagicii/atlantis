@@ -10,6 +10,9 @@ use
 class StorageManager
 extends League\Flysystem\MountManager {
 
+	public static
+	$FileSystem = [];
+
 	public function
 	__Construct(){
 
@@ -19,8 +22,10 @@ extends League\Flysystem\MountManager {
 		$Name = NULL;
 		$Sys = NULL;
 
-		foreach($Systems as $Name => $Sys)
-		$this->MountFilesystem($Name,$Sys->GetFileSystem());
+		foreach($Systems as $Name => $Sys) {
+			static::$FileSystem[$Name] = $Sys->GetFileSystem();
+			$this->MountFilesystem($Name,static::$FileSystem[$Name]);
+		}
 
 		return;
 	}
