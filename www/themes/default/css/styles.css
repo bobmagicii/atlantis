@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-09-23 19:50:31
+@date 2020-09-24 06:47:26
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -68,10 +68,11 @@ h4 {
 }
 
 h2 {
-	border-bottom: 1px solid #999;
+	-border-bottom: 1px solid #999;
 	font-weight: bold;
-	margin-bottom: 12px;
+	margin: 0px;
 	letter-spacing: 0.25em;
+	line-height: 1em;
 	text-transform: uppercase;
 }
 
@@ -288,7 +289,7 @@ body > header a {
 }
 
 .PostListing .Post {
-	margin-bottom: 24px;
+
 }
 
 .PostListing .Post:last-of-type {
@@ -572,7 +573,7 @@ select:focus {
 }
 
 .HideTheLastHr > hr:last-of-type {
-	border: 0px;
+	display: none;
 }
 
 .alert-warning {
@@ -637,14 +638,14 @@ select:focus {
 	color: #eee;
 }
 
-.jumbotron a:link,
-.jumbotron a:visited,
+.jumbotron a:link:not(.btn),
+.jumbotron a:visited:not(.btn),
 .jumbotron .active {
 	color: #eee;
 }
 
-.jumbotron a:link,
-.jumbotron a:visited {
+.jumbotron a:link:not(.btn),
+.jumbotron a:visited:not(.btn) {
 	border-bottom: 1px dotted #eee;
 }
 
@@ -659,13 +660,13 @@ select:focus {
 	color: #444;
 }
 
-.jumbotron-secondary a:link,
-.jumbotron-secondary a:visited,
+.jumbotron-secondary a:link:not(.btn),
+.jumbotron-secondary a:visited:not(.btn),
 .jumbotron-secondary .active {
 	color: #444;
 }
 
 .jumbotron-secondary hr {
-	border-top-color: #999;
+	border-top-color: #bbb;
 }
 

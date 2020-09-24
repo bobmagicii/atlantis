@@ -6,14 +6,14 @@
 	color: #eee;
 }
 
-.jumbotron a:link,
-.jumbotron a:visited,
+.jumbotron a:link:not(.btn),
+.jumbotron a:visited:not(.btn),
 .jumbotron .active {
 	color: #eee;
 }
 
-.jumbotron a:link,
-.jumbotron a:visited {
+.jumbotron a:link:not(.btn),
+.jumbotron a:visited:not(.btn) {
 	border-bottom: 1px dotted #eee;
 }
 
@@ -28,12 +28,12 @@
 	color: #444;
 }
 
-.jumbotron-secondary a:link,
-.jumbotron-secondary a:visited,
+.jumbotron-secondary a:link:not(.btn),
+.jumbotron-secondary a:visited:not(.btn),
 .jumbotron-secondary .active {
 	color: #444;
 }
 
 .jumbotron-secondary hr {
-	border-top-color: #999;
+	border-top-color: #bbb;
 }

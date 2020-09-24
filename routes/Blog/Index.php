@@ -39,13 +39,17 @@ extends Atlantis\Site\PublicWeb {
 		if($BlogUser->HasEditPriv())
 		$Opt['Enabled'] = Post::EnableStateAny;
 
+		$PopularPosts = $Blog->GetPopularPosts(5,1);
+		$PopularPosts->Payload->Remap(function($Val){ return $Val->Post; });
+
 		////////
 
 		$this
 		->Set('Page.Title',$Blog->Title)
 		->Area('blog/index',[
-			'Blog'  => $Blog,
-			'Posts' => $Blog->GetRecentPosts($Limit,$Page,$Opt)
+			'Blog'         => $Blog,
+			'Posts'        => $Blog->GetRecentPosts($Limit,$Page,$Opt),
+			'PopularPosts' => $PopularPosts
 		]);
 
 		return;

@@ -11,48 +11,60 @@
 
 <div class="container">
 	<div class="row">
-		<div class="col-md-8 mb-6">
-			<div class="mb-6">
-				<h2>Your Blogs</h2>
-				<?php foreach($Blogs->Payload as $BlogUser): ?>
-				<div class="row align-items-center tight mb-2">
-					<div class="col-auto">
-						<a href="<?php echo $BlogUser->Blog->URL ?>" class="font-size-large font-weight-bold"><?php echo $BlogUser->Blog->Title ?></a>
-					</div>
-
+		<div class="col-md-8">
+			<div class="jumbotron jumbotron-secondary p-4 mb-4">
+				<div class="row">
 					<div class="col">
+						<h2>Your Blogs</h2>
 					</div>
-
-					<?php if($BlogUser->HasWritePriv()): ?>
 					<div class="col-auto">
-						<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Post.New',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-dark text-uppercase"><i class="fa fa-fw fa-edit"></i></a>
+						<a href="<?php echo Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Blog.Create') ?>" class="btn btn-secondary btn-block text-left"><i class="fa fa-fw mr-1 fa-plus-square"></i> Create</a>
 					</div>
-					<?php else: ?>
-					<div class="col-auto">
-						<span class="btn btn-dark text-uppercase disabled HasTooltip" title="You do not have writer privileges on this blog."><i class="fa fa-fw fa-edit"></i></span>
-					</div>
-					<?php endif; ?>
-
-					<?php if($BlogUser->HasManagePriv()): ?>
-					<div class="col-auto">
-						<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Settings',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-dark text-uppercase"><i class="fa fa-fw fa-wrench"></i></a>
-					</div>
-					<?php else: ?>
-					<div class="col-auto">
-						<span class="btn btn-dark text-uppercase disabled HasTooltip" title="You do not have manage privileges on this blog."><i class="fa fa-fw fa-wrench"></i></span>
-					</div>
-					<?php endif; ?>
-
 				</div>
-				<?php endforeach; ?>
+				<hr class="mt-2 mb-3" />
+				<div class="HideTheLastHr">
+					<?php foreach($Blogs->Payload as $BlogUser): ?>
+					<div class="row align-items-center tight mb-2">
+						<div class="col-auto">
+							<a href="<?php echo $BlogUser->Blog->URL ?>" class="font-size-large font-weight-bold"><?php echo $BlogUser->Blog->Title ?></a>
+						</div>
+
+						<div class="col">
+						</div>
+
+						<?php if($BlogUser->HasWritePriv()): ?>
+						<div class="col-auto">
+							<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Post.New',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-dark text-uppercase"><i class="fa fa-fw fa-edit"></i></a>
+						</div>
+						<?php else: ?>
+						<div class="col-auto">
+							<span class="btn btn-dark text-uppercase disabled HasTooltip" title="You do not have writer privileges on this blog."><i class="fa fa-fw fa-edit"></i></span>
+						</div>
+						<?php endif; ?>
+
+						<?php if($BlogUser->HasManagePriv()): ?>
+						<div class="col-auto">
+							<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Settings',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-dark text-uppercase"><i class="fa fa-fw fa-wrench"></i></a>
+						</div>
+						<?php else: ?>
+						<div class="col-auto">
+							<span class="btn btn-dark text-uppercase disabled HasTooltip" title="You do not have manage privileges on this blog."><i class="fa fa-fw fa-wrench"></i></span>
+						</div>
+						<?php endif; ?>
+
+					</div>
+					<hr />
+					<?php endforeach; ?>
+				</div>
 				<?php if(!$Blogs->Total): ?>
 				<div class="p-4 text-center">
 					You have not created any blogs yet.
 				</div>
 				<?php endif; ?>
 			</div>
-			<div class="mb-6">
+			<div class="jumbotron jumbotron-secondary p-4 mb-4">
 				<h2>Your Storage</h2>
+				<hr class="mt-2 mb-3" />
 				<div class="row">
 					<div class="col">
 						<div class="font-weight-bold">Images</div>
@@ -64,14 +76,14 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4 mb-6">
-			<h2>Blogging</h2>
-			<a href="<?php echo Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Blog.Create') ?>" class="btn btn-secondary btn-block text-left"><i class="fa fa-fw mr-1 fa-plus-square"></i> Create New Blog</a>
-			<hr class="border-0 mt-6 mb-6" />
-			<h2>Account</h2>
-			<a href="<?php echo $Endpoint('Atlantis.Dashboard.Account.Email') ?>" class="btn btn-dark btn-block text-left"><i class="fa fa-fw mr-1 fa-at"></i> Change Email</a>
-			<a href="<?php echo $Endpoint('Atlantis.Dashboard.Account.Password') ?>" class="btn btn-dark btn-block text-left"><i class="fa fa-fw mr-1 fa-key"></i> Change Password</a>
-			<a href="<?php echo $Endpoint('Atlantis.Dashboard.Account.Settings') ?>" class="btn btn-dark btn-block text-left"><i class="fa fa-fw mr-1 fa-user-circle"></i> Account Settings</a>
+		<div class="col-md-4">
+			<div class="jumbotron jumbotron-secondary p-4 mb-4">
+				<h2>Account</h2>
+				<hr class="mt-2 mb-3" />
+				<a href="<?php echo $Endpoint('Atlantis.Dashboard.Account.Email') ?>" class="btn btn-dark btn-block text-left"><i class="fa fa-fw mr-1 fa-at"></i> Change Email</a>
+				<a href="<?php echo $Endpoint('Atlantis.Dashboard.Account.Password') ?>" class="btn btn-dark btn-block text-left"><i class="fa fa-fw mr-1 fa-key"></i> Change Password</a>
+				<a href="<?php echo $Endpoint('Atlantis.Dashboard.Account.Settings') ?>" class="btn btn-dark btn-block text-left"><i class="fa fa-fw mr-1 fa-user-circle"></i> Account Settings</a>
+			</div>
 		</div>
 	</div>
 

@@ -26,5 +26,5 @@
 }
 
 .HideTheLastHr > hr:last-of-type {
-	border: 0px;
+	display: none;
 }

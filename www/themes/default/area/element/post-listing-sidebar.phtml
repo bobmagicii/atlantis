@@ -7,7 +7,7 @@
 
 ?>
 
-<div class="PostListing <?php echo $Element->GetClassesAttrString() ?>">
+<div class="PostListing HideTheLastHr <?php echo $Element->GetClassesAttrString() ?>">
 	<h2 class="font-size-normal">
 		<?php echo $Element->GetTitle() ?>
 		<?php if($Element->HasSubtitle()): ?>
@@ -17,14 +17,24 @@
 	<?php foreach($Element->GetItemStore() as $Post): ?>
 	<div class="Post">
 		<div class="About">
-			<span class="font-size-small"><?php echo $Post->DateCreated->Format('F jS g:ia') ?></span>
+			<span class="font-size-small">
+				<a href="<?php $Printer($Post->GetURL()) ?>"><?php echo $Post->DateCreated->Format('F jS g:ia') ?></a>
+			</span>
 		</div>
-		<h3 class="d-flex font-size-larger align-items-center">
+		<h3 class="d-flex font-size-larger align-items-center mb-0" style="line-height:1em;">
 			<?php if($Post->IsAdult()): ?>
 			<i class="flex-grow-0 fa fas fa-exclamation-square font-size-smallerer text-adult mr-2 HasTooltip" title="This post contains Adult Content"></i>
 			<?php endif; ?>
 			<a class="flex-grow-0" href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->Title) ?></a>
 		</h3>
+		<div class="About">
+			<?php if($Element->GetClasses()->HasValue('NoFromLine')): ?>
+			<span class="font-italic font-size-small">
+				From <a class="Source" href="<?php $Printer($Post->Blog->GetURL()) ?>"><?php echo $Post->Blog->Title ?></a>
+			</span>
+			<?php endif; ?>
+		</div>
 	</div>
+	<hr class="mt-2 mb-2" />
 	<?php endforeach; ?>
 </div>
