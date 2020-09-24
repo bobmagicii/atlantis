@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-09-24 06:47:26
+@date 2020-09-24 07:08:57
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -136,7 +136,7 @@ li:last-of-type {
 
 body > section {
 	background: #efefef;
-	padding: 0px 0px 32px 0px;
+	padding: 0px 0px 0px 0px;
 }
 
 /* the page footer which contains notices and stats. */

@@ -117,7 +117,7 @@ li:last-of-type {
 
 body > section {
 	background: #efefef;
-	padding: 0px 0px 32px 0px;
+	padding: 0px 0px 0px 0px;
 }
 
 /* the page footer which contains notices and stats. */
