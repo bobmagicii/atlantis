@@ -301,8 +301,12 @@ extends Atlantis\Site\ProtectedAPI {
 		]);
 
 		$this->SetPayload([
-			'BlogID'  => $BlogUser->Blog->ID,
-			'ImageID' => $BlogUser->Blog->ImageHeaderID
+			'BlogID'        => $BlogUser->Blog->ID,
+			'ImageID'       => $BlogUser->Blog->ImageHeaderID,
+			'TimeResizing'  => $Uploads->TimeResizing,
+			'TimeUploading' => $Uploads->TimeUploading,
+			'TimeProcess'   => $Uploads->TimeTotal,
+			'TimeTotal'     => microtime(TRUE) - ProjectTime
 		]);
 
 		return;

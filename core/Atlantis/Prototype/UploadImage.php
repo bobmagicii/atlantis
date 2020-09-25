@@ -164,20 +164,25 @@ implements Atlantis\Packages\Upsertable {
 	}
 
 	public function
-	GetURL(String $Size='lg'):
+	GetURL(String $Size='lg', Bool $CacheBust=TRUE):
 	String {
 	/*//
 	@date 2017-03-02
 	get the url to view this blog post.
 	//*/
 
-		return static::GenerateFileURL(
+		$URL = static::GenerateFileURL(
 			$this->Mount,
 			$this->User->UUID,
 			$this->UUID,
 			$Size,
 			$this->Format
 		);
+
+		if($CacheBust)
+		$URL .= sprintf('?t=%d',$this->TimeCreated);
+
+		return $URL;
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -321,6 +326,7 @@ implements Atlantis\Packages\Upsertable {
 		$Upload = NULL;
 		$Current = NULL;
 		$Now = new Atlantis\Util\Date;
+		$Timer = microtime(TRUE);
 
 		////////
 
@@ -374,6 +380,17 @@ implements Atlantis\Packages\Upsertable {
 					$Current['tmp_name'],
 					dirname($Filepath)
 				);
+
+				/*
+				// while each request is succeeding, their cdn is only clearning the cache every
+				// other call and i have not figured out why.
+				if($Storage->GetFilesystemConfig($Mount) instanceof Atlantis\FileSystem\DOSpace)
+				$Storage->GetFilesystemConfig($Mount)
+				->PurgeCDN(sprintf(
+					'%s/*',
+					str_replace("{$Mount}:///",'',dirname($Filepath))
+				));
+				*/
 			}
 
 			catch(Throwable $Error) {
@@ -403,7 +420,7 @@ implements Atlantis\Packages\Upsertable {
 					'UserID'      => $User->ID,
 					'TimeCreated' => $Now->Format('U'),
 					'Mount'       => $Mount,
- 					'UUID'        => $UUID,
+					'UUID'        => $UUID,
 					'Format'      => strtolower($Stored->Format),
 					'Bytes'       => $Stored->Bytes
 				]);
@@ -434,9 +451,12 @@ implements Atlantis\Packages\Upsertable {
 		}
 
 		$Output->UserBytesImages = $User->QueryBytesImages();
+		$Output->TimeUploading = $Stored->TimeUploading;
+		$Output->TimeResizing = $Stored->TimeResizing;
+		$Output->TimeTotal = microtime(TRUE) - $Timer;
 
 		$User->Update([
-			'BytesImages' => $Output->UserBytesImages
+			'BytesImages'   => $Output->UserBytesImages
 		]);
 
 		return $Output;
@@ -453,15 +473,19 @@ implements Atlantis\Packages\Upsertable {
 	the Format of the image and how many Bytes total all the sizes.
 	//*/
 
+		$Timer = microtime(TRUE);
 		$Image = new Imagick($Source);
+		$Image->StripImage();
 		$Name = NULL;
 		$Width = NULL;
 		$Filename = NULL;
 		$Saved = FALSE;
 
 		$Output = new Nether\Object\Mapped([
-			'Format' => $Image->GetImageFormat(),
-			'Bytes'  => 0
+			'Format'        => $Image->GetImageFormat(),
+			'Bytes'         => 0,
+			'TimeUploading' => 0,
+			'TimeResizing'  => (microtime(TRUE) - $Timer)
 		]);
 
 		$Sizes = [
@@ -487,22 +511,22 @@ implements Atlantis\Packages\Upsertable {
 			break;
 		}
 
-		$Image->StripImage();
-
 		foreach($Sizes as $Name => $Width) {
 			$Filename = sprintf('%s/%s.%s',$DestDir,$Name,strtolower($Output->Format));
 
+			$Timer = microtime(TRUE);
 			if(is_int($Width))
 			if($Image->GetImageWidth() > $Width)
 			$Image->ScaleImage($Width,$Width,TRUE);
+			$Output->TimeResizing += microtime(TRUE) - $Timer;
 
+			$Timer = microtime(TRUE);
 			$Saved = $Storage->Put($Filename,$Image->GetImageBlob());
+			$Output->TimeUploading += microtime(TRUE) - $Timer;
 			$Output->Bytes += $Image->GetImageLength();
 
 			if(!$Saved)
 			throw new Exception('error writing to storage');
-
-			$Storage->SetVisibility($Filename,'public');
 		}
 
 		return $Output;

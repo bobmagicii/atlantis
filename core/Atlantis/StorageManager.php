@@ -30,4 +30,15 @@ extends League\Flysystem\MountManager {
 		return;
 	}
 
+	public function
+	GetFilesystemConfig(String $Key) {
+
+		$Systems = Nether\Option::Get('Atlantis.File.Filesystems') ?: [];
+
+		if(array_key_exists($Key,$Systems))
+		return $Systems[$Key];
+
+		return NULL;
+	}
+
 }
