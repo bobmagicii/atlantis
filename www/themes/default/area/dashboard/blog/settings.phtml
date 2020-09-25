@@ -13,8 +13,7 @@
 
 <div id="BlogConfig" class="d-none" data-blog-id="<?php $Printer($Blog->ID) ?>"></div>
 
-<div class="container">
-
+<div class="container pb-4">
 	<ol class="breadcrumb mb-6">
 		<li class="breadcrumb-item"><a href="<?php echo Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home') ?>">Dashboard</a></li>
 		<li class="breadcrumb-item">Blogs</li>
@@ -22,82 +21,11 @@
 		<li class="breadcrumb-item active">Settings</li>
 	</ol>
 
-	<!-- TITLE -->
-	<div id="DashBlogTitle" class="row tight align-items-center mb-6">
-		<div class="col-12 mb-2">
-			<h2 class="font-size-large font-weight-bold">Title</h2>
-			The primary name of your blog.
-		</div>
-		<div class="col mb-2">
-			<input id="InputTitle" type="text" autocomplete="off" class="form-control" placeholder="Enter Blog Title Here..." value="<?php echo $Printer($Blog->Title) ?>" />
-		</div>
-		<div class="col-auto mb-2">
-			<div class="d-flex">
-				<i class="ActionStatus ActionStatusThink fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
-				<i class="ActionStatus ActionStatusGood fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
-				<i class="ActionStatus ActionStatusBad fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
-			</div>
-		</div>
-		<div class="col-auto mb-2">
-			<butt type="button" class="btn btn-block btn-dark ActionCommit">Save</button>
-		</div>
-	</div>
-
-	<!-- TAGLINE -->
-	<div id="DashBlogTagline" class="row tight align-items-center mb-6">
-		<div class="col-12 mb-2">
-			<h2 class="font-size-large font-weight-bold">Tag Line</h2>
-			Some little flavour text usually shown underneath your blog title.
-		</div>
-		<div class="col mb-2">
-			<input id="InputTagline" type="text" autocomplete="off" class="form-control" placeholder="Enter Tag Line Here..." value="<?php echo $Printer($Blog->Tagline) ?>" />
-		</div>
-		<div class="col-auto mb-2">
-			<div class="d-flex">
-				<i class="ActionStatus ActionStatusThink fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
-				<i class="ActionStatus ActionStatusGood fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
-				<i class="ActionStatus ActionStatusBad fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
-			</div>
-		</div>
-		<div class="col-auto mb-2">
-			<button type="button" class="btn btn-block btn-dark ActionCommit">Save</button>
-		</div>
-	</div>
-
-	<!-- ALIAS -->
-	<div id="DashBlogAlias" class="row tight align-items-center mb-6">
-		<div class="col-12 mb-2">
-			<h2 class="font-size-large font-weight-bold">Blog URL</h2>
-			This is the address of your blog. Changing it will break any links you have shared in the past.
-		</div>
-		<div class="col-auto mb-2">
-			<span class="font-family-code"><?php echo $Router->GetDomain() ?></span>
-		</div>
-		<div class="col-auto mb-2">
-			<span class="font-family-code">/</span>
-		</div>
-		<div class="col-auto mb-2">
-			<span class="font-family-code">+</span>
-		</div>
-		<div class="col mb-2">
-			<input id="InputAlias" type="text" autocomplete="off" class="form-control font-family-code" placeholder="Enter URL Here..." value="<?php echo $Printer($Blog->Alias) ?>" />
-		</div>
-		<div class="col-auto mb-2">
-			<div class="d-flex">
-				<i class="ActionStatus ActionStatusThink fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
-				<i class="ActionStatus ActionStatusGood fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
-				<i class="ActionStatus ActionStatusBad fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
-			</div>
-		</div>
-		<div class="col-auto mb-2">
-			<button type="button" class="btn btn-block btn-dark ActionCommit">Save</button>
-		</div>
-	</div>
-
 	<!-- IMAGES -->
 	<div class="row align-items-center mb-6">
 		<div class="col-12 mb-2">
 			<h2 class="font-size-large font-weight-bold">Blog Graphics</h2>
+			<hr class="mb-2 mt-2" />
 			You can set a Profile Icon and a Header Image for your blog.
 		</div>
 		<div class="col-12 mb-2">
@@ -108,7 +36,7 @@
 			->SetIconURL($Blog->ImageIconURL)
 			->SetTitle($Blog->Title ?? '')
 			->SetSubtitle($Blog->Tagline ?? '')
-			->AddClasses('mb-0','rounded');
+			->AddClasses('mb-0','rounded','BlogHeaderDemo');
 			?>
 		</div>
 		<div class="col-12 col-md-6 mb-2 mb-md-0">
@@ -135,9 +63,85 @@
 		</div>
 	</div>
 
+	<!-- TITLE -->
+	<div id="DashBlogTitle" class="row tight align-items-center mb-6">
+		<div class="col-12 mb-2">
+			<h2 class="font-size-large font-weight-bold">Title</h2>
+			<hr class="mb-2 mt-2" />
+			The primary name of your blog.
+		</div>
+		<div class="col mb-2">
+			<input id="InputTitle" type="text" autocomplete="off" class="form-control" placeholder="Enter Blog Title Here..." value="<?php echo $Printer($Blog->Title) ?>" />
+		</div>
+		<div class="col-auto mb-2">
+			<div class="d-flex">
+				<i class="ActionStatus ActionStatusThink fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
+				<i class="ActionStatus ActionStatusGood fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
+				<i class="ActionStatus ActionStatusBad fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
+			</div>
+		</div>
+		<div class="col-auto mb-2">
+			<butt type="button" class="btn btn-block btn-dark ActionCommit">Save</button>
+		</div>
+	</div>
+
+	<!-- TAGLINE -->
+	<div id="DashBlogTagline" class="row tight align-items-center mb-6">
+		<div class="col-12 mb-2">
+			<h2 class="font-size-large font-weight-bold">Tag Line</h2>
+			<hr class="mb-2 mt-2" />
+			Some little flavour text usually shown underneath your blog title.
+		</div>
+		<div class="col mb-2">
+			<input id="InputTagline" type="text" autocomplete="off" class="form-control" placeholder="Enter Tag Line Here..." value="<?php echo $Printer($Blog->Tagline) ?>" />
+		</div>
+		<div class="col-auto mb-2">
+			<div class="d-flex">
+				<i class="ActionStatus ActionStatusThink fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
+				<i class="ActionStatus ActionStatusGood fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
+				<i class="ActionStatus ActionStatusBad fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
+			</div>
+		</div>
+		<div class="col-auto mb-2">
+			<button type="button" class="btn btn-block btn-dark ActionCommit">Save</button>
+		</div>
+	</div>
+
+	<!-- ALIAS -->
+	<div id="DashBlogAlias" class="row tight align-items-center mb-6">
+		<div class="col-12 mb-2">
+			<h2 class="font-size-large font-weight-bold">Blog URL</h2>
+			<hr class="mb-2 mt-2" />
+			This is the address of your blog. Changing it will break any links you have shared in the past.
+		</div>
+		<div class="col-auto mb-2">
+			<span class="font-family-code"><?php echo $Router->GetDomain() ?></span>
+		</div>
+		<div class="col-auto mb-2">
+			<span class="font-family-code">/</span>
+		</div>
+		<div class="col-auto mb-2">
+			<span class="font-family-code">+</span>
+		</div>
+		<div class="col mb-2">
+			<input id="InputAlias" type="text" autocomplete="off" class="form-control font-family-code" placeholder="Enter URL Here..." value="<?php echo $Printer($Blog->Alias) ?>" />
+		</div>
+		<div class="col-auto mb-2">
+			<div class="d-flex">
+				<i class="ActionStatus ActionStatusThink fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
+				<i class="ActionStatus ActionStatusGood fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
+				<i class="ActionStatus ActionStatusBad fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
+			</div>
+		</div>
+		<div class="col-auto mb-2">
+			<button type="button" class="btn btn-block btn-dark ActionCommit">Save</button>
+		</div>
+	</div>
+
 	<!-- ADULT CONTENT -->
-	<div id="DashBlogOptAdult" class="mb-6">
+	<div id="DashBlogOptAdult" class="mb-0">
 		<h2 class="font-size-large font-weight-bold">Adult Content</h2>
+		<hr class="mb-2 mt-2" />
 		<p>
 			Adult content is allowed but in return it is asked you flag the blog as adult so we can filter for those who desire it.
 			When your blog is flagged as adult we may do a few things like place a warning, blur images, or filter, based on the viewer's preferences.
@@ -179,7 +183,6 @@
 </div>
 
 <script type="text/javascript">
-
 jQuery(document)
 .ready(function(){
 	"use strict";
@@ -197,6 +200,7 @@ jQuery(document)
 				'URL': '/api/v1/blog/entity',
 				'Data': { 'ID': BlogID, 'Fields': { 'Title': Input } },
 				'OnSuccess': function(Result){
+					jQuery('.BlogHeaderDemo h2').text(Result.Payload.Title);
 					Handler.SetStatus('good');
 					Atlantis.Toaster({
 						'Title': 'Blog Settings',
@@ -230,6 +234,7 @@ jQuery(document)
 				'URL': '/api/v1/blog/entity',
 				'Data': { 'ID': BlogID, 'Fields': { 'Tagline': Input } },
 				'OnSuccess': function(Result){
+					jQuery('.BlogHeaderDemo p').text(Result.Payload.Tagline);
 					Handler.SetStatus('good');
 					Atlantis.Toaster({
 						'Title': 'Blog Settings',
@@ -263,6 +268,7 @@ jQuery(document)
 				'URL': '/api/v1/blog/entity',
 				'Data': { 'ID': BlogID, 'Fields': { 'Alias': Input } },
 				'OnSuccess': function(Result){
+					jQuery('.BlogHeaderDemo a').attr('href',('/+' + Result.Payload.Alias));
 					Handler.SetStatus('good');
 					Atlantis.Toaster({
 						'Title': 'Blog Settings',
@@ -344,6 +350,19 @@ jQuery(document)
 		'URL': '/api/v1/blog/icon',
 		'Data': {
 			'ID': BlogConfig.attr('data-blog-id')
+		},
+		'OnItemComplete': function(that,Status,Result,File){
+			if(Result.Error !== 0)
+			alert(Result.Message);
+
+			jQuery('.BlogHeaderDemo .ImageIcon')
+			.css('background-image','url(' + Result.Payload.ImageURL + ')')
+
+			return;
+		},
+		'OnQueueComplete': function(that){
+			that.Reset();
+			return;
 		}
 	});
 
@@ -354,6 +373,19 @@ jQuery(document)
 		'URL': '/api/v1/blog/header',
 		'Data': {
 			'ID': BlogConfig.attr('data-blog-id')
+		},
+		'OnItemComplete': function(that,Status,Result,File){
+			if(Result.Error !== 0)
+			alert(Result.Message);
+
+			jQuery('.BlogHeaderDemo')
+			.css('background-image','url(' + Result.Payload.ImageURL + ')')
+
+			return;
+		},
+		'OnQueueComplete': function(that){
+			that.Reset();
+			return;
 		}
 	});
 
@@ -387,5 +419,4 @@ jQuery(document)
 
 	return;
 });
-
 </script>

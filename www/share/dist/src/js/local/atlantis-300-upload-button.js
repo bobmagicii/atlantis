@@ -12,13 +12,13 @@ Atlantis.Upload.Button = function(Opt) {
 		'Method': 'POST',
 		'URL': null,
 		'Data': null,
-		'OnItemComplete': function(Status,Result,File){
+		'OnItemComplete': function(that,Status,Result,File){
 			if(Result.Error !== 0)
 			alert(Result.Message);
 
 			return;
 		},
-		'OnQueueComplete': function(Result){
+		'OnQueueComplete': function(that){
 			location.reload(true);
 			return;
 		}
@@ -38,6 +38,17 @@ Atlantis.Upload.Button = function(Opt) {
 	NUI.Util.MergeProperties(Opt,Config);
 	this.Button = jQuery(Config.SelectorButton);
 	this.Input = jQuery(Config.SelectorInput);
+
+	this.Reset = function(){
+
+		(that.Button.find('.StatusThinking'))
+		.addClass('font-size-zero');
+
+		(that.Button.find('.UploadButtonBar'))
+		.css('width','0%');
+
+		return;
+	};
 
 	OnButtonClick = function(){
 		that.Input.trigger('click');
@@ -98,7 +109,7 @@ Atlantis.Upload.Button = function(Opt) {
 		}
 
 		if(typeof Config.OnQueueComplete === 'function')
-		(Config.OnQueueComplete)();
+		(Config.OnQueueComplete)(that);
 
 		return;
 	};
@@ -136,6 +147,7 @@ Atlantis.Upload.Button = function(Opt) {
 
 				if(typeof Config.OnItemComplete === 'function')
 				(Config.OnItemComplete)(
+					that,
 					Xfer.status,
 					Xfer.response,
 					File

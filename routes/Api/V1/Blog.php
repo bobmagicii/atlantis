@@ -198,7 +198,7 @@ extends Atlantis\Site\ProtectedAPI {
 
 		$this
 		->SetLocation($BlogUser->Blog->URL)
-		->SetPayload($BlogUser->Blog);
+		->SetPayload($Dataset);
 
 		return;
 	}
@@ -251,8 +251,9 @@ extends Atlantis\Site\ProtectedAPI {
 		]);
 
 		$this->SetPayload([
-			'BlogID'  => $BlogUser->Blog->ID,
-			'ImageID' => $BlogUser->Blog->ImageIconID
+			'BlogID'   => $BlogUser->Blog->ID,
+			'ImageID'  => $BlogUser->Blog->ImageIconID,
+			'ImageURL' => $Uploads->Success[0]->GetURL('th')
 		]);
 
 		return;
@@ -303,6 +304,7 @@ extends Atlantis\Site\ProtectedAPI {
 		$this->SetPayload([
 			'BlogID'        => $BlogUser->Blog->ID,
 			'ImageID'       => $BlogUser->Blog->ImageHeaderID,
+			'ImageURL'      => $Uploads->Success[0]->GetURL('lg'),
 			'TimeResizing'  => $Uploads->TimeResizing,
 			'TimeUploading' => $Uploads->TimeUploading,
 			'TimeProcess'   => $Uploads->TimeTotal,
