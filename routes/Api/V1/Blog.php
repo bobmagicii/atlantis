@@ -196,6 +196,12 @@ extends Atlantis\Site\ProtectedAPI {
 		($BlogUser->Blog)
 		->Update($Dataset);
 
+		if(array_key_exists('ImageIconURL',$Dataset) && $Dataset['ImageIconURL'] === NULL)
+		$Dataset['ImageIconURL'] = Nether\Option::Get('Atlantis.Blog.DefaultImageIconURL');
+
+		if(array_key_exists('ImageHeaderURL',$Dataset) && $Dataset['ImageHeaderURL'] === NULL)
+		$Dataset['ImageHeaderURL'] = Nether\Option::Get('Atlantis.Blog.DefaultImageHeaderURL');
+
 		$this
 		->SetLocation($BlogUser->Blog->URL)
 		->SetPayload($Dataset);

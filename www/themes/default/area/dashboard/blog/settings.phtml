@@ -397,7 +397,12 @@ jQuery(document)
 			'Method': 'PATCH',
 			'URL': '/api/v1/blog/entity',
 			'Data': { 'ID': BlogID, 'Fields': { 'RemoveImageIcon': 1 } },
-			'OnSuccess': function(){ location.reload(true); return; }
+			'OnSuccess': function(Result){
+				jQuery('.BlogHeaderDemo .ImageIcon')
+				.css('background-image','url(' + Result.Payload.ImageIconURL + ')')
+
+				return;
+			}
 		});
 
 		return;
@@ -411,7 +416,12 @@ jQuery(document)
 			'Method': 'PATCH',
 			'URL': '/api/v1/blog/entity',
 			'Data': { 'ID': BlogID, 'Fields': { 'RemoveImageHeader': 1 } },
-			'OnSuccess': function(){ location.reload(true); return; }
+			'OnSuccess': function(Result){
+				jQuery('.BlogHeaderDemo')
+				.css('background-image','url(' + Result.Payload.ImageHeaderURL + ')')
+
+				return;
+			}
 		});
 
 		return;
