@@ -174,6 +174,15 @@ extends Atlantis\Prototype {
 	}
 
 	public function
+	GetTags():
+	Atlantis\Struct\SearchResult {
+
+		return Atlantis\Prototype\BlogPostTag::Find([
+			'PostID' => $this->ID
+		]);
+	}
+
+	public function
 	GetStyleClassList():
 	Array {
 	/*//

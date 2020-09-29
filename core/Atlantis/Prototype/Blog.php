@@ -191,56 +191,6 @@ implements JsonSerializable {
 	///////////////////////////////////////////////////////////////////////////
 
 	public function
-	GetRecentPosts(Int $Limit, Int $Page, ?Array $Opt=NULL):
-	Atlantis\Struct\SearchResult {
-	/*//
-	@date 2020-05-23
-	//*/
-
-		// for now pull adult posts when directly asking
-		// this blog for its posts. we are going to start
-		// with a warning banner until the user options
-		// are complete.
-
-		$Opt = new Nether\Object\Mapped($Opt,[
-			'Adult'   => 0,
-			'Enabled' => 1,
-			'Sort'    => 'newest'
-		]);
-
-		return Atlantis\Prototype\BlogPost::Find([
-			'BlogID'  => $this->ID,
-			'Enabled' => $Opt->Enabled,
-			'Adult'   => $Opt->Adult,
-			'Page'    => $Page,
-			'Limit'   => $Limit,
-			'Sort'    => $Opt->Sort
-		]);
-	}
-
-	public function
-	GetPopularPosts(Int $Limit, Int $Page, ?Array $Opt=NULL):
-	Atlantis\Struct\SearchResult {
-	/*//
-	@date 2020-05-26
-	//*/
-
-		$Opt = new Nether\Object\Mapped($Opt,[
-			'Adult'   => 0,
-			'Enabled' => 1
-		]);
-
-		return LogBlogPostTraffic::FindPopularPosts([
-			'BlogID'    => $this->ID,
-			'Enabled'   => $Opt->Enabled,
-			'Adult'     => $Opt->Adult,
-			'Page'      => 1,
-			'Limit'     => 5,
-			'Timeframe' => strtotime('-30 days')
-		]);
-	}
-
-	public function
 	GetURL():
 	?Atlantis\Site\Endpoint {
 	/*//
@@ -254,8 +204,23 @@ implements JsonSerializable {
 	}
 
 	public function
+	GetTagURL(BlogTag $Tag):
+	String {
+
+		return sprintf(
+			'%s/?tags=%s',
+			$this->GetURL(),
+			$Tag->Alias
+		);
+	}
+
+	public function
 	GetImageHeaderURL():
 	String {
+	/*//
+	@date 2020-09-21
+	get the header image for this blog or the global default if none.
+	//*/
 
 		if($this->ImageHeaderURL === NULL)
 		return Nether\Option::Get('Atlantis.Blog.DefaultImageHeaderURL');
@@ -266,6 +231,10 @@ implements JsonSerializable {
 	public function
 	GetImageIconURL():
 	String {
+	/*//
+	@date 2020-09-21
+	get the icon for this blog or the global default if none.
+	//*/
 
 		if($this->ImageIconURL === NULL)
 		return Nether\Option::Get('Atlantis.Blog.DefaultImageIconURL');
@@ -309,6 +278,75 @@ implements JsonSerializable {
 	//*/
 
 		return ($this->OptAdult === static::AdultForced);
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
+	public function
+	GetRecentPosts(Int $Limit=5, Int $Page=1, ?Array $Opt=NULL):
+	Atlantis\Struct\SearchResult {
+	/*//
+	@date 2020-05-23
+	//*/
+
+		// for now pull adult posts when directly asking
+		// this blog for its posts. we are going to start
+		// with a warning banner until the user options
+		// are complete.
+
+		$Opt = new Nether\Object\Mapped($Opt,[
+			'Adult'   => 0,
+			'Enabled' => 1,
+			'Sort'    => 'newest'
+		]);
+
+		return Atlantis\Prototype\BlogPost::Find([
+			'BlogID'  => $this->ID,
+			'Enabled' => $Opt->Enabled,
+			'Adult'   => $Opt->Adult,
+			'Page'    => $Page,
+			'Limit'   => $Limit,
+			'Sort'    => $Opt->Sort
+		]);
+	}
+
+	public function
+	GetPopularPosts(Int $Limit=5, Int $Page=1, ?Array $Opt=NULL):
+	Atlantis\Struct\SearchResult {
+	/*//
+	@date 2020-05-26
+	//*/
+
+		$Opt = new Nether\Object\Mapped($Opt,[
+			'Adult'   => 0,
+			'Enabled' => 1
+		]);
+
+		return LogBlogPostTraffic::FindPopularPosts([
+			'BlogID'    => $this->ID,
+			'Enabled'   => $Opt->Enabled,
+			'Adult'     => $Opt->Adult,
+			'Page'      => $Page,
+			'Limit'     => $Limit,
+			'Timeframe' => strtotime('-30 days')
+		]);
+	}
+
+	public function
+	GetTags(Int $Limit=0, Int $Page=1, ?Array $Opt=NULL):
+	Atlantis\Struct\SearchResult {
+
+		$Opt = new Nether\Object\Mapped($Opt,[
+			'Enabled' => 1
+		]);
+
+		return BlogTag::Find([
+			'BlogID'  => $this->ID,
+			'Enabled' => $Opt->Enabled,
+			'Page'    => $Page,
+			'Limit'   => $Limit
+		]);
 	}
 
 	///////////////////////////////////////////////////////////////////////////

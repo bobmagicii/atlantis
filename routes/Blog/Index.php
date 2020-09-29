@@ -39,8 +39,14 @@ extends Atlantis\Site\PublicWeb {
 		if($BlogUser->HasEditPriv())
 		$Opt['Enabled'] = Post::EnableStateAny;
 
+		// get popular posts.
+
 		$PopularPosts = $Blog->GetPopularPosts(5,1);
 		$PopularPosts->Payload->Remap(function($Val){ return $Val->Post; });
+
+		// get blogs tags.
+
+		$Tags = $Blog->GetTags();
 
 		////////
 
@@ -49,6 +55,7 @@ extends Atlantis\Site\PublicWeb {
 		->Area('blog/index',[
 			'Blog'         => $Blog,
 			'Posts'        => $Blog->GetRecentPosts($Limit,$Page,$Opt),
+			'Tags'         => $Tags,
 			'PopularPosts' => $PopularPosts
 		]);
 

@@ -5,6 +5,7 @@
  * @var Atlantis\Prototype\Blog $Blog
  * @var Atlantis\Prototype\BlogPost $Post
  * @var Atlantis\Prototype\BlogUser $BlogUser
+ * @var Atlantis\Struct\SearchResult $Tags
  * @var Bool $UserCanEdit
  * @var Bool $UserCanDelete
 */
@@ -40,8 +41,8 @@ echo (new Atlantis\Element\PagePromo)
 		<?php endif; ?>
 
 		<div class="col-12 mb-6">
-			<div class="PostListing mb-4">
-				<div class="jumbotron jumbotron-secondary p-4 mb-4">
+			<div class="jumbotron jumbotron-secondary jumbotron-fadedown p-4 mb-4">
+				<div class="PostListing mb-4">
 					<div class="Post">
 						<h3 class="mb-0"><a href="<?php $Printer($Post->GetURL()) ?>"><?php $Printer($Post->Title) ?></a></h3>
 						<div class="About">
@@ -49,14 +50,28 @@ echo (new Atlantis\Element\PagePromo)
 							From <a class="Source" href="<?php $Printer($Post->Blog->URL) ?>"><?php $Printer($Post->Blog->Title) ?></a>
 							By <a class="Authour" href="<?php $Printer($Post->User->URL) ?>"><?php $Printer($Post->User->Alias) ?></a>
 						</div>
-						<?php if($UserCanEdit || $UserCanDelete): ?>
-						<div class="font-size-smaller mt-2">
-							<?php if($UserCanEdit): ?>
-							<a class="btn btn-sm btn-dark pt-0 pb-0 mr-2" href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Post.Edit',['PostID'=>$Post->ID]) ?>">Edit</a>
-							<?php endif; ?>
-							<?php if($UserCanDelete): ?>
-							<a class="btn btn-sm btn-dark pt-0 pb-0 AtlantisActionPostDelete" href="#" data-post-id="<?php echo $Post->ID ?>">Delete</a>
-							<?php endif; ?>
+						<?php if($Tags->Count): ?>
+						<div class="Tags">
+							<div class="row tight align-items-center">
+								<?php foreach($Tags->Payload as $Tag): ?>
+								<div class="col-auto">
+									<a href="<?php $Printer($Blog->GetTagURL($Tag)) ?>" class="btn btn-sm btn-secondary pt-0 pb-0"><?php $Printer($Tag->Title) ?></a>
+								</div>
+								<?php endforeach; ?>
+								<?php if($UserCanEdit): ?>
+								<div class="col-auto">
+									<a href="#" class="btn btn-sm btn-dark pt-0 pb-0 pl-1 pr-1"><i class="fas fa-fw fa-plus"></i></a>
+								</div>
+								<div class="col-auto">
+									<a class="btn btn-sm btn-dark pt-0 pb-0" href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Post.Edit',['PostID'=>$Post->ID]) ?>">Edit</a>
+								</div>
+								<?php endif; ?>
+								<?php if($UserCanDelete): ?>
+								<div class="col-auto">
+									<a class="btn btn-sm btn-dark pt-0 pb-0 AtlantisActionPostDelete" href="#" data-post-id="<?php echo $Post->ID ?>">Delete</a>
+								</div>
+								<?php endif; ?>
+							</div>
 						</div>
 						<?php endif; ?>
 					</div>
@@ -91,7 +106,6 @@ echo (new Atlantis\Element\PagePromo)
 			<?php else: ?>
 			<?php echo $Post->Content, PHP_EOL ?>
 			<?php endif; ?>
-
 			</div>
 		</div>
 

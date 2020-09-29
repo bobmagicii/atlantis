@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-09-24 07:08:57
+@date 2020-09-29 04:19:58
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -62,7 +62,7 @@ h1,
 h2,
 h3,
 h4 {
-	line-height: normal;
+	line-height: 1em;
 	margin: 0px;
 	padding: 0px;
 }
@@ -171,6 +171,10 @@ ul li {
 
 body > footer code {
 	color: #666;
+}
+
+.PostContent img {
+	border: 1px solid #888;
 }
 
 /*//////////////////////////////////////////////////////////////////////////////
@@ -658,6 +662,11 @@ select:focus {
 .jumbotron-secondary {
 	background: #ddd;
 	color: #444;
+}
+
+.jumbotron-secondary.jumbotron-fadedown {
+	background: rgb(233,233,233);
+	background: linear-gradient(180deg, #dddddd 0%, #dddddd00 95%);
 }
 
 .jumbotron-secondary a:link:not(.btn),

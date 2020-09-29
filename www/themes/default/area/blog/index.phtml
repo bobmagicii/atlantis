@@ -4,6 +4,7 @@
  * @var Atlantis\Prototype\Blog $Blog
  * @var Atlantis\Struct\SearchResult $Posts
  * @var Atlantis\Prototype\BlogPost $Post
+ * @var Atlantis\Struct\SearchResult $Tags
  */
 
 echo (new Atlantis\Element\PagePromo)
@@ -43,7 +44,21 @@ echo (new Atlantis\Element\PagePromo)
 			<div class="row">
 				<div class="col-12 col-md-6 col-lg-12 mb-4">
 					<div class="jumbotron jumbotron-secondary p-4 m-0">
-						[blog tags]
+						<h2 class="font-size-normal">
+							Tags
+						</h2>
+						<hr class="mt-2 mb-2">
+						<div class="row tight align-items-center justify-content-center">
+						<?php if($Tags->Count): ?>
+						<?php foreach($Tags->Payload as $Tag): ?>
+							<div class="col-auto">
+								<a href="<?php $Printer($Blog->GetTagURL($Tag)) ?>" class="btn btn-sm btn-secondary pt-0 pb-0"><?php $Printer($Tag->Title) ?></a>
+							</div>
+						<?php endforeach; ?>
+						<?php else: ?>
+							<div class="col text-center">This blog has no tags yet.</div>
+						<?php endif; ?>
+						</div>
 					</div>
 				</div>
 				<div class="col-12 col-md-6 col-lg-12 mb-4">

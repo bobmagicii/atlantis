@@ -44,9 +44,13 @@ extends Atlantis\Site\PublicWeb {
 
 		$Recent = $Post->Blog->GetRecentPosts(5,1);
 		$Popular = $Post->Blog->GetPopularPosts(5,1);
+		$Tags = $Post->GetTags();
 
 		($Popular->Payload)
 		->Remap(function($Val){ return $Val->Post; });
+
+		($Tags->Payload)
+		->Remap(function($Val){ return $Val->Tag; });
 
 		////////
 
@@ -68,6 +72,7 @@ extends Atlantis\Site\PublicWeb {
 		->Area('blog/post',[
 			'Blog'          => $Post->Blog,
 			'Post'          => $Post,
+			'Tags'          => $Tags,
 			'BlogUser'      => $BlogUser,
 			'UserCanEdit'   => $UserCanEdit,
 			'UserCanDelete' => $UserCanDelete,

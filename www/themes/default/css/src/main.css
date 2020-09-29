@@ -43,7 +43,7 @@ h1,
 h2,
 h3,
 h4 {
-	line-height: normal;
+	line-height: 1em;
 	margin: 0px;
 	padding: 0px;
 }
@@ -152,6 +152,10 @@ ul li {
 
 body > footer code {
 	color: #666;
+}
+
+.PostContent img {
+	border: 1px solid #888;
 }
 
 /*//////////////////////////////////////////////////////////////////////////////

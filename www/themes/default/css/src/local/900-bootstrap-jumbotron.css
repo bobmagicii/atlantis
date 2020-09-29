@@ -28,6 +28,11 @@
 	color: #444;
 }
 
+.jumbotron-secondary.jumbotron-fadedown {
+	background: rgb(233,233,233);
+	background: linear-gradient(180deg, #dddddd 0%, #dddddd00 95%);
+}
+
 .jumbotron-secondary a:link:not(.btn),
 .jumbotron-secondary a:visited:not(.btn),
 .jumbotron-secondary .active {
