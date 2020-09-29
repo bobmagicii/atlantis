@@ -276,6 +276,7 @@ namespace.
 		$SQL = $DB->NewVerse();
 		$Result = NULL;
 		$Row = NULL;
+		$OutputFilter = NULL;
 
 		$BasicOpts = [
 			'ID'                   => NULL,
@@ -288,6 +289,7 @@ namespace.
 			'Sort'                 => 'newest',
 			'CustomFilterFunc'     => NULL,
 			'CustomSortFunc'       => NULL,
+			'OutputFilter'          => NULL,
 
 			// short circuit as many things needed to make the query as fast
 			// as possible. mainly only used if you are are just looking
@@ -467,6 +469,18 @@ namespace.
 		$Output->Page = $Opt->Page;
 		$Output->Limit = $Opt->Limit;
 		$Output->Total = $Found;
+
+		if($Opt->OutputFilter !== NULL) {
+			if(is_array($Opt->OutputFilter)) {
+				foreach($Opt->OutputFilter as $OutputFilter)
+				if(is_callable($OutputFilter))
+				($OutputFilter)($Output,$Opt);
+			}
+
+			elseif(is_callable($Opt->OutputFilter)) {
+				($Opt->OutputFilter)($Output,$Opt);
+			}
+		}
 
 		return $Output;
 	}
