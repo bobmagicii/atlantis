@@ -61,6 +61,12 @@
 	'Routes\\Dashboard\\Blog::Settings'
 )
 ->Register(
+	'Atlantis.Dashboard.Blog.Tags',
+	'{@}//dashboard/blog/tags',
+	'/dashboard/blog/tags?blog={{BlogID}}',
+	'Routes\\Dashboard\\Blog::Tags'
+)
+->Register(
 	'Atlantis.Dashboard.Account.Settings',
 	'{@}//dashboard/account/settings',
 	'/dashboard/account/settings',

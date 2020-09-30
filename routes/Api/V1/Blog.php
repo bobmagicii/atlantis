@@ -210,16 +210,112 @@ extends Atlantis\Site\ProtectedAPI {
 	}
 
 	/**
-	 * @input Int ID
+	 * @info Use a specific TagID or BlogID/TagTitle combo
+	 * @input Int TagID
+	 * @input Int BlogID
 	 * @input String TagTitle
+	 * @error 1 tag not found
 	 */
 
 	final public function
-	EntityTagPost():
+	EntityTagget():
 	Void {
 	/*//
-	@error 1 post not found
-	@error 2 invalid user
+	@date 2020-09-30
+	//*/
+
+		($this->Post)
+		->BlogID('Atlantis\\Util\\Filters::TypeInt')
+		->TagID('Atlantis\\Util\\Filters::TypeInt')
+		->TagTitle('Atlantis\\Util\\Filters::TrimmedText');
+
+		$Tag = NULL;
+
+		////////
+
+		if($this->Post->Exists('TagID'))
+		$Tag = Atlantis\Prototype\BlogTag::GetByID($this->Post->TagID);
+		else
+		$Tag = Atlantis\Prototype\BlogTag::GetByBlogTitle(
+			$this->Post->BlogID,
+			$this->Post->TagTitle
+		);
+
+		////////
+
+		if(!$Tag)
+		$this->Quit(1,'tag not found');
+
+		$this->SetPayload($Tag);
+		return;
+	}
+
+	/**
+	 * @input Int TagID
+	 * @input String TagTitle
+	 * @error 1 tag not found
+	 * @error 2 invalid user
+	 */
+
+	final public function
+	EntityTagpatch():
+	Void {
+	/*//
+	@date 2020-09-30
+	//*/
+
+		($this->Post)
+		->TagID('Atlantis\\Util\\Filters::TypeInt')
+		->TagTitle('Atlantis\\Util\\Filters::StrippedText');
+
+		////////
+
+		$Tag = Atlantis\Prototype\BlogTag::GetByID($this->Post->TagID);
+		$Alias = Atlantis\Util\Filters::RouteSafeAlias($this->Post->TagTitle);
+
+		if(!$Tag)
+		$this->Quit(1,'tag not found');
+
+		$BlogUser = Atlantis\Prototype\BlogUser::GetByBlogUser(
+			$Tag->BlogID,
+			$this->User->ID
+		);
+
+		if(!$BlogUser || !$BlogUser->HasManagePriv())
+		$this->Quit(2,'invalid user');
+
+		$Old = Atlantis\Prototype\BlogTag::GetByBlogAlias(
+			$Tag->BlogID,
+			$Alias
+		);
+
+		if($Old && $Old->ID !== $Tag->ID)
+		$this->Quit(3,'tag already exists');
+
+		////////
+
+		$Tag->Update([
+			'Title' => $this->Post->TagTitle,
+			'Alias' => $Alias
+		]);
+
+		$this->SetPayload($Tag);
+		return;
+	}
+
+	/**
+	 * @info Create a new tag in this blog.
+	 * @input Int ID
+	 * @input String TagTitle
+	 * @error 1 blog not found
+	 * @error 2 invalid user
+	 */
+
+	final public function
+	EntityTagpost():
+	Void {
+	/*//
+	@date 2020-09-30
 	//*/
 
 		($this->Post)
@@ -273,18 +369,58 @@ extends Atlantis\Site\ProtectedAPI {
 	}
 
 	/**
+	 * @info Upload an image to be this blog's icon
 	 * @input Int ID
 	 * @input File Image
+	 * @error 1 blog not found
+	 * @error 2 user not blog manager
+	 * @error 3 no image upload
+	 * @error 4 upload too large
 	 */
+
+	/**
+	 * @input Int TagID
+	 * @error 1 tag not found
+	 * @error 2 invalid user
+	 */
+
+	final public function
+	EntityTagdelete():
+	Void {
+	/*//
+	@date 2020-09-30
+	//*/
+
+		($this->Post)
+		->TagID('Atlantis\\Util\\Filters::TypeInt');
+
+		////////
+
+		$Tag = Atlantis\Prototype\BlogTag::GetByID($this->Post->TagID);
+
+		if(!$Tag)
+		$this->Quit(1,'tag not found');
+
+		$BlogUser = Atlantis\Prototype\BlogUser::GetByBlogUser(
+			$Tag->BlogID,
+			$this->User->ID
+		);
+
+		if(!$BlogUser || !$BlogUser->HasManagePriv())
+		$this->Quit(2,'invalid user');
+
+		////////
+
+		$Tag->Drop();
+		return;
+	}
+
 
 	final public function
 	IconPost():
 	Void {
 	/*//
-	@error 1 blog not found
-	@error 2 not a blog manaager
-	@error 3 no images uploaded
-	@error 4 upload too large?
+	@date 2020-09-21
 	//*/
 
 		if(!$this->Post->ID) {
@@ -329,18 +465,27 @@ extends Atlantis\Site\ProtectedAPI {
 	}
 
 	/**
+	 * @info Upload an image to be this blog's header graphic
 	 * @input Int ID
 	 * @input File Image
+	 * @error 1 blog not found
+	 * @error 2 user not blog manager
+	 * @error 3 no image upload
+	 * @error 4 upload too large
 	 */
 
 	final public function
 	HeaderPost():
 	Void {
 	/*//
-	@error 1 blog not found
-	@error 2 not a blog manaager
-	@error 3 no images uploaded
+	@date 2020-09-21
 	//*/
+
+		if(!$this->Post->ID) {
+			// this is usually actually caused by file uploads being too large
+			// so php did not even parse the request.
+			$this->Quit(4,'upload may have been too large');
+		}
 
 		$Uploads = NULL;
 		$BlogUser = Atlantis\Prototype\BlogUser::GetByBlogUser($this->Post->ID,$this->User->ID);

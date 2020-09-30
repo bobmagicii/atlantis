@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-09-25 22:40:59
+@date 2020-09-30 06:46:39
 @files [
     "src\/js\/libs\/000-jquery-3.1.1.min.js",
     "src\/js\/libs\/100-bootstrap.bundle.min.js",
@@ -18,6 +18,7 @@
     "src\/js\/local\/atlantis-200-request.js",
     "src\/js\/local\/atlantis-200-toaster.js",
     "src\/js\/local\/atlantis-200-upload.js",
+    "src\/js\/local\/atlantis-300-blogtag.js",
     "src\/js\/local\/atlantis-300-upload-button.js"
 ]
 //*/
@@ -11547,6 +11548,209 @@ Atlantis.Toaster = function(Opt){
 Atlantis.Upload = {
 	FileTypeAny: 0,
 	FileTypeImage: 1
+};
+
+///////////////////////////////////////////////////////////////////////////
+// src/js/local/atlantis-300-blogtag.js ///////////////////////////////////
+
+'use strict';
+Atlantis.BlogTag = { };
+
+////////////////////////////////////////////////////////////////////////////////
+// Blog Tag Edit Title Dialog //////////////////////////////////////////////////
+
+Atlantis.BlogTag
+.DialogRename = function(TagID,Opt) {
+	let that = this;
+
+	let Overlay;
+	let Dialog;
+	let InputText;
+
+	let Prepare;
+	let Construct;
+	let Commit;
+	let Cancel;
+
+	let Config = {
+		'OnSuccess': function(Diag,Result) {
+			location.reload(true); return;
+		}
+	};
+
+	NUI.Util.MergeProperties(Opt,Config);
+
+	////////
+
+	Prepare = function(){
+		Atlantis.Request({
+			'Method': 'TAGGET',
+			'URL': '/api/v1/blog/entity',
+			'Data': { 'TagID': TagID },
+			'OnSuccess': function(Result){
+				Construct(Result);
+				return;
+			}
+		});
+
+		return;
+	};
+
+	Construct = function(Result){
+		Overlay = new NUI.Overlay({
+			'Content': (Dialog = new NUI.Dialog({
+				'Title': 'Rename Tag',
+				'Content': (
+					jQuery('<div />')
+					.addClass('row')
+					.append(
+						jQuery('<div />')
+						.addClass('col-12')
+						.append(
+							InputText = jQuery('<input />')
+							.attr('type','text')
+							.addClass('form-control')
+							.val(Result.Payload.Title)
+						)
+					)
+				),
+				'Buttons': [
+					new NUI.Button({ 'Label':'Save', 'Class':'NUI-Dialog-Accept btn btn-primary' }),
+					new NUI.Button({ 'Label':'Cancel', 'Class':'NUI-Dialog-Cancel btn btn-dark' })
+				],
+				'OnAccept': function(Result){ Commit(); return; },
+				'OnCancel': function(Result){ Cancel(); return; }
+			}))
+		});
+
+		return;
+	};
+
+	Commit = function(){
+
+		let TagTitle = InputText.val();
+
+		Atlantis.Request({
+			'Method': 'TAGPATCH',
+			'URL': '/api/v1/blog/entity',
+			'Data': { 'TagID':TagID, 'TagTitle':TagTitle },
+			'OnSuccess': function(Result){
+				if(typeof Config.OnSuccess === 'function')
+				(Config.OnSuccess)(that,Result);
+
+				return;
+			}
+		});
+
+		return;
+	};
+
+	Cancel = function(){
+		Overlay.Destroy();
+		return;
+	};
+
+	////////
+
+	this.Close = Cancel;
+
+	Prepare();
+	return this;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+// Blog Tag Delete Confirmation Dialog /////////////////////////////////////////
+
+Atlantis.BlogTag
+.DialogDelete = function(TagID,Opt) {
+	let that = this;
+
+	let Overlay;
+	let Dialog;
+	let InputText;
+
+	let Prepare;
+	let Construct;
+	let Commit;
+	let Cancel;
+
+	let Config = {
+		'OnSuccess': function(Diag,Result) {
+			location.reload(true); return;
+		}
+	};
+
+	NUI.Util.MergeProperties(Opt,Config);
+
+	////////
+
+	Prepare = function(){
+		Atlantis.Request({
+			'Method': 'TAGGET',
+			'URL': '/api/v1/blog/entity',
+			'Data': { 'TagID': TagID },
+			'OnSuccess': function(Result){
+				Construct(Result);
+				return;
+			}
+		});
+
+		return;
+	};
+
+	Construct = function(Result){
+		Overlay = new NUI.Overlay({
+			'Content': (Dialog = new NUI.Dialog({
+				'Title': 'Delete Tag',
+				'Content': (
+					jQuery('<div />')
+					.addClass('row')
+					.append(
+						jQuery('<div />')
+						.addClass('col-12')
+						.html('Really delete <b>' + Result.Payload.Title + '</b>? This cannot be undone.')
+					)
+				),
+				'Buttons': [
+					new NUI.Button({ 'Label':'Delete', 'Class':'NUI-Dialog-Accept btn btn-danger' }),
+					new NUI.Button({ 'Label':'Cancel', 'Class':'NUI-Dialog-Cancel btn btn-dark' })
+				],
+				'OnAccept': function(Result){ Commit(); return; },
+				'OnCancel': function(Result){ Cancel(); return; }
+			}))
+		});
+
+		return;
+	};
+
+	Commit = function(){
+
+		Atlantis.Request({
+			'Method': 'TAGDELETE',
+			'URL': '/api/v1/blog/entity',
+			'Data': { 'TagID':TagID },
+			'OnSuccess': function(Result){
+				if(typeof Config.OnSuccess === 'function')
+				(Config.OnSuccess)(that,Result);
+
+				return;
+			}
+		});
+
+		return;
+	};
+
+	Cancel = function(){
+		Overlay.Destroy();
+		return;
+	};
+
+	////////
+
+	this.Close = Cancel;
+
+	Prepare();
+	return this;
 };
 
 ///////////////////////////////////////////////////////////////////////////

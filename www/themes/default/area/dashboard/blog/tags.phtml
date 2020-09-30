@@ -1,0 +1,102 @@
+<?php
+
+/**
+ * @var Atlantis\User $User
+ * @var Atlantis\Prototype\Blog $Blog
+ * @var Atlantis\Struct\SearchResult $Tags
+ */
+
+?>
+
+<?php $Surface->Area('dashboard/promo') ?>
+
+<div id="BlogConfig" class="d-none" data-blog-id="<?php $Printer($Blog->ID) ?>"></div>
+
+<div class="container pb-4">
+	<ol class="breadcrumb mb-6">
+		<li class="breadcrumb-item"><a href="<?php echo Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home') ?>">Dashboard</a></li>
+		<li class="breadcrumb-item">Blogs</li>
+		<li class="breadcrumb-item"><?php $Printer($Blog->Title) ?></li>
+		<li class="breadcrumb-item active">Tags</li>
+	</ol>
+
+	<!-- Tag Management -->
+	<div class="row align-items-center mb-6">
+		<div class="col-12 mb-4">
+			<h2 class="font-size-large font-weight-bold">Tags</h2>
+			<hr class="mb-2 mt-2" />
+			Here you can manage the tags associated with your blog.
+		</div>
+		<div class="col-12 mb-2">
+			<div class="row">
+				<?php if(!$Tags->Count): ?>
+				<div class="col-12">
+					<div class="jumbotron jumbotron-secondary p-4 text-center font-italic">
+						This blog has no tags yet.
+					</div>
+				</div>
+				<?php endif; ?>
+				<?php foreach($Tags->Payload as $Tag): ?>
+				<div class="<?php $Printer("TagBox{$Tag->ID}") ?> col-12 col-sm-6 col-md-4">
+					<div class="jumbotron jumbotron-secondary text-center p-3">
+						<div class="<?php $Printer("TagTitle{$Tag->ID}") ?> font-size-large font-weight-bold mb-2"><?php $Printer($Tag->Title) ?></div>
+						<div>
+							<button class="btn btn-sm btn-dark CmdTagRename" data-tag-id="<?php $Printer($Tag->ID) ?>"><i class="fas fa-fw fa-pen"></i></button>
+							<button class="btn btn-sm btn-danger CmdTagDelete" data-tag-id="<?php $Printer($Tag->ID) ?>"><i class="fas fa-fw fa-trash"></i></button>
+						</div>
+					</div>
+				</div>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+jQuery(document)
+.ready(function(){
+	"use strict";
+
+	let BlogConfig = jQuery('#BlogConfig');
+	let BlogID = BlogConfig.attr('data-blog-id');
+
+	jQuery('.CmdTagRename')
+	.on('click',function(){
+		let TagID = jQuery(this).attr('data-tag-id');
+
+		new Atlantis.BlogTag.DialogRename(TagID,{
+			'OnSuccess': function(that,Result){
+
+				jQuery('.TagTitle' + TagID)
+				.text(Result.Payload.Title);
+
+				that.Close();
+				return;
+			}
+		});
+
+		return;
+	});
+
+	jQuery('.CmdTagDelete')
+	.on('click',function(){
+		let TagID = jQuery(this).attr('data-tag-id');
+
+		new Atlantis.BlogTag.DialogDelete(TagID,{
+			'OnSuccess': function(that,Result){
+
+				jQuery('.TagBox' + TagID)
+				.remove();
+
+				that.Close();
+				return;
+			}
+		});
+
+		return;
+	});
+
+	return;
+});
+</script>

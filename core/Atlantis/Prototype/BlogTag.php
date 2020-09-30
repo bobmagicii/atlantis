@@ -8,11 +8,14 @@ use
 \Ramsey   as Ramsey;
 
 use
-\Exception as Exception;
+\Exception as Exception,
+\JsonSerializable as JsonSerializable;
 
 class BlogTag
 extends Atlantis\Prototype
-implements Atlantis\Packages\Upsertable {
+implements
+	Atlantis\Packages\Upsertable,
+	JsonSerializable {
 
 	protected static
 	$Table = 'BlogTags';
@@ -71,6 +74,23 @@ implements Atlantis\Packages\Upsertable {
 		$this->DateCreated = new Atlantis\Util\Date("@{$Raw['TimeCreated']}");
 		return $this;
 	}
+
+	public function
+	JsonSerialize():
+	Array {
+	/*//
+	@date 2020-06-01
+	@implements JsonSerializable
+	//*/
+
+		return [
+			'ID'     => $this->ID,
+			'BlogID' => $this->BlogID,
+			'Title'  => $this->Title,
+			'Alias'  => $this->Alias
+		];
+	}
+
 
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////

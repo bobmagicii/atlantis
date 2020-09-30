@@ -338,15 +338,14 @@ implements JsonSerializable {
 	//*/
 
 		$Opt = new Nether\Object\Mapped($Opt,[
-			'Enabled' => 1
-		]);
-
-		return BlogTag::Find([
 			'BlogID'  => $this->ID,
-			'Enabled' => $Opt->Enabled,
+			'Enabled' => 1,
+			'Sort'    => 'title-az',
 			'Page'    => $Page,
 			'Limit'   => $Limit
 		]);
+
+		return BlogTag::Find($Opt);
 	}
 
 	///////////////////////////////////////////////////////////////////////////

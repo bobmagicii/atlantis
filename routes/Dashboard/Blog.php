@@ -141,4 +141,35 @@ extends Atlantis\Site\ProtectedWeb {
 		return TRUE;
 	}
 
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
+	public function
+	Tags():
+	Void {
+
+		$BlogUser = Atlantis\Prototype\BlogUser::GetByBlogUser(
+			$this->Get->Blog,
+			$this->User->ID
+		);
+
+		if(!$BlogUser)
+		$this->Goto(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home'));
+
+		if(!$BlogUser->HasManagePriv())
+		$this->Goto(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home'));
+
+		$Tags = $BlogUser->Blog->GetTags();
+
+		$this
+		->Set('Page.Title','Blog Settings')
+		->Area('dashboard/blog/tags',[
+			'BlogUser' => $BlogUser,
+			'Blog'     => $BlogUser->Blog,
+			'Tags'     => $Tags
+		]);
+
+		return;
+	}
+
 }
