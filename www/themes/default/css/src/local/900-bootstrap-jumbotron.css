@@ -30,7 +30,7 @@
 
 .jumbotron-secondary.jumbotron-fadedown {
 	background: rgb(233,233,233);
-	background: linear-gradient(180deg, #dddddd 0%, #dddddd00 95%);
+	background: linear-gradient(180deg, #ddddddff 0%, #dddddd00 95%);
 }
 
 .jumbotron-secondary a:link:not(.btn),
@@ -42,3 +42,21 @@
 .jumbotron-secondary hr {
 	border-top-color: #bbb;
 }
+
+/* provide a more muted jumbotron for the theme */
+
+.jumbotron-tertiary {
+	background: #e9e9e9;
+	color: #444;
+}
+
+.jumbotron-tertiary a:link:not(.btn),
+.jumbotron-tertiary a:visited:not(.btn),
+.jumbotron-tertiary .active {
+	color: #444;
+}
+
+.jumbotron-tertiary hr {
+	border-top-color: #ccc;
+}
+

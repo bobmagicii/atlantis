@@ -1,4 +1,10 @@
+.PostContent {
+	letter-spacing: 0.02em;
+	font-weight: 400;
+}
+
 .PostContent img {
+	border: 1px solid #888;
 	border-radius: 3px;
 	max-width: 100%;
 }
