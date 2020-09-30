@@ -36,6 +36,7 @@ implements Atlantis\Packages\Upsertable {
 	// extension fields
 
 	public Atlantis\Prototype\BlogTag $Tag;
+	public Atlantis\Prototype\BlogPost $Post;
 
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
@@ -51,6 +52,23 @@ implements Atlantis\Packages\Upsertable {
 		$this->Tag = new Atlantis\Prototype\BlogTag(
 			Atlantis\Util::StripPrefixedQueryFields($Raw,'T_')
 		);
+
+		if(array_key_exists('P_ID',$Raw))
+		$this->Post = new Atlantis\Prototype\BlogPost(
+			Atlantis\Util::StripPrefixedQueryFields($Raw,'P_')
+		);
+
+		return;
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
+	public function
+	UpdateUsage():
+	Void {
+
+		$this->Tag->UpdateUsage();
 
 		return;
 	}
@@ -113,7 +131,11 @@ implements Atlantis\Packages\Upsertable {
 	//*/
 
 		$SQL
-		->Join('BlogTags Tag ON Tag.ID=Main.TagID');
+		->Join('BlogTags Tag ON Tag.ID=Main.TagID')
+		->Join('BlogPosts Post ON Post.ID=Main.PostID');
+
+		Atlantis\Prototype\BlogTag::ExtendQueryJoins($SQL,'Tag','T_');
+		Atlantis\Prototype\BlogPost::ExtendQueryJoins($SQL,'Post','P_');
 
 		return;
 	}
@@ -126,6 +148,10 @@ implements Atlantis\Packages\Upsertable {
 	//*/
 
 		Atlantis\Prototype\BlogTag::ExtendMainFields($SQL,'Tag','T_');
+		Atlantis\Prototype\BlogTag::ExtendQueryFields($SQL,'Tag','T_');
+
+		Atlantis\Prototype\BlogPost::ExtendMainFields($SQL,'Post','P_');
+		Atlantis\Prototype\BlogPost::ExtendQueryFields($SQL,'Post','P_');
 
 		return;
 	}
@@ -138,6 +164,7 @@ implements Atlantis\Packages\Upsertable {
 	//*/
 
 		return [
+			'BlogID'  => NULL,
 			'PostID'  => NULL,
 			'TagID'   => NULL,
 			'Enabled' => NULL
@@ -156,6 +183,12 @@ implements Atlantis\Packages\Upsertable {
 
 		if($Opt->TagID !== NULL)
 		$SQL->Where('Main.TagID=:TagID');
+
+		if($Opt->BlogID !== NULL)
+		$SQL->Where('Post.BlogID=:BlogID');
+
+		if($Opt->Enabled !== NULL)
+		$SQL->Where('Main.Enabled=:Enabled');
 
 		return;
 	}

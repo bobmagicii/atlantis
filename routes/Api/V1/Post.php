@@ -320,7 +320,7 @@ extends Atlantis\Site\ProtectedAPI {
 	 */
 
 	final public function
-	EntityTagDelete():
+	EntityTagdelete():
 	Void {
 	/*//
 	@error 1 post not found
@@ -345,6 +345,7 @@ extends Atlantis\Site\ProtectedAPI {
 			$Tag->ID
 		);
 
+		$Tag->UpdateUsage();
 		return;
 	}
 
@@ -354,7 +355,7 @@ extends Atlantis\Site\ProtectedAPI {
 	 */
 
 	final public function
-	EntityTagPost():
+	EntityTagpost():
 	Void {
 	/*//
 	@error 1 post not found
@@ -398,6 +399,8 @@ extends Atlantis\Site\ProtectedAPI {
 				'PostID' => $Post->ID,
 				'TagID'  => $Tag->ID
 			]);
+
+			$Tag->UpdateUsage();
 		}
 
 		$this->SetPayload(array_map(

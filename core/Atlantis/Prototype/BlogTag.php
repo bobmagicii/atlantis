@@ -29,6 +29,7 @@ implements
 		'BlogID'      => 'BlogID:int',
 		'Enabled'     => 'Enabled:int',
 		'TimeCreated' => 'TimeCreated:int',
+		'CountUse'    => 'CountUse:int',
 		'UUID'        => 'UUID',
 		'Title'       => 'Title',
 		'Alias'       => 'Alias'
@@ -40,6 +41,7 @@ implements
 	public Int $BlogID;
 	public Int $Enabled;
 	public Int $TimeCreated;
+	public Int $CountUse;
 	public String $UUID;
 	public String $Title;
 	public String $Alias;
@@ -91,6 +93,34 @@ implements
 		];
 	}
 
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
+	public function
+	UpdateUsage():
+	Int {
+	/*//
+	@date 2020-09-30
+	//*/
+
+		$Row = (
+			(Nether\Database::Get()->NewVerse())
+			->Select('BlogPostTags')
+			->Fields('COUNT(*) AS TotalFound')
+			->Where('TagID=:TagID')
+			->Query([
+				':TagID' => $this->ID
+			])
+			->Next()
+		);
+
+		if($Row)
+		$this->Update([
+			'CountUse' => $Row->TotalFound
+		]);
+
+		return 0;
+	}
 
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
@@ -175,9 +205,10 @@ implements
 	//*/
 
 		return [
-			'BlogID' => NULL,
-			'Alias'  => NULL,
-			'Title'  => NULL
+			'BlogID'   => NULL,
+			'Alias'    => NULL,
+			'Title'    => NULL,
+			'OnlyUsed' => TRUE
 		];
 	}
 
@@ -197,6 +228,9 @@ implements
 			else
 			$SQL->Where('Main.Alias=:Alias');
 		}
+
+		if($Opt->OnlyUsed)
+		$SQL->Where('Main.CountUse>0');
 
 		return;
 	}

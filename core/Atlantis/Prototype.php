@@ -300,7 +300,7 @@ namespace.
 			'Pagination'           => TRUE,
 
 			// if true the result object will get dumped out.
-			'DebugResult'          => FALSE,
+			'Debug'                => FALSE,
 
 			// toggle table extensions.
 			'ExtendJoinTables'     => TRUE,
@@ -447,8 +447,8 @@ namespace.
 
 		$Result = $SQL->Query($Opt);
 
-		if($Opt->DebugResult)
-		Atlantis\Util::VarDump($Result);
+		if($Opt->Debug)
+		$Output->Result = $Result;
 
 		if(!$Result->IsOK())
 		throw new Atlantis\Error\DatabaseQueryError($Result);

@@ -39,7 +39,8 @@
 				<?php foreach($Tags->Payload as $Tag): ?>
 				<div class="<?php $Printer("TagBox{$Tag->ID}") ?> col-12 col-sm-6 col-md-4">
 					<div class="jumbotron jumbotron-secondary text-center p-3">
-						<div class="<?php $Printer("TagTitle{$Tag->ID}") ?> font-size-large font-weight-bold mb-2"><?php $Printer($Tag->Title) ?></div>
+						<div class="<?php $Printer("TagTitle{$Tag->ID}") ?> font-size-large font-weight-bold mb-0"><?php $Printer($Tag->Title) ?></div>
+						<div class="font-size-small text-muted mb-2">Use Count: <?php $Printer($Tag->CountUse) ?></div>
 						<div>
 							<button class="btn btn-sm btn-dark CmdTagRename" data-tag-id="<?php $Printer($Tag->ID) ?>"><i class="fas fa-fw fa-pen"></i></button>
 							<button class="btn btn-sm btn-danger CmdTagDelete" data-tag-id="<?php $Printer($Tag->ID) ?>"><i class="fas fa-fw fa-trash"></i></button>
