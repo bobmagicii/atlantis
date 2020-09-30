@@ -154,6 +154,11 @@ body > footer code {
 	color: #666;
 }
 
+.PostContent {
+	letter-spacing: 0.02em;
+	font-weight: 400;
+}
+
 .PostContent img {
 	border: 1px solid #888;
 }

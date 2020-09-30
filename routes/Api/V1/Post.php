@@ -302,4 +302,105 @@ extends Atlantis\Site\ProtectedAPI {
 		return;
 	}
 
+	/**
+	 * @input Int ID
+	 * @input Int TagID
+	 */
+
+	final public function
+	EntityTagDelete():
+	Void {
+	/*//
+	@error 1 post not found
+	@error 2 invalid user
+	@error 3 tag not found
+	//*/
+
+		$Post = Atlantis\Prototype\BlogPost::GetByID($this->Post->ID);
+		if(!$Post) $this->Quit(1,'post not found');
+
+		$BlogUser = $Post->GetBlogUser($this->User);
+		if(!$Post->IsUserOwner($this->User) && (!$BlogUser || !$BlogUser->HasEditPriv()))
+		$this->Quit(2,'no editor permissions to blog');
+
+		////////
+
+		$Tag = Atlantis\Prototype\BlogTag::GetByID($this->Post->TagID);
+		if(!$Tag) $this->Quit(3,'tag not found');
+
+		Atlantis\Prototype\BlogPostTag::DeleteByPostTag(
+			$Post->ID,
+			$Tag->ID
+		);
+
+		return;
+	}
+
+	/**
+	 * @input Int ID
+	 * @input String TagTitle
+	 */
+
+	final public function
+	EntityTagPost():
+	Void {
+	/*//
+	@error 1 post not found
+	@error 2 invalid user
+	//*/
+
+		($this->Post)
+		->ID('Atlantis\\Util\\Filters::TypeInt')
+		->TagTitle('Atlantis\\Util\\Filters::TrimmedText');
+
+		$Post = Atlantis\Prototype\BlogPost::GetByID($this->Post->ID);
+		if(!$Post) $this->Quit(1,'post not found');
+
+		$BlogUser = $Post->GetBlogUser($this->User);
+		if(!$Post->IsUserOwner($this->User) && (!$BlogUser || !$BlogUser->HasEditPriv()))
+		$this->Quit(2,'no editor permissions to blog');
+
+		////////
+
+		$TagTitle = NULL;
+		$PostTags = [];
+
+		foreach(explode(',',$this->Post->TagTitle) as $TagTitle) {
+			$TagTitle = Atlantis\Util\Filters::StrippedText($TagTitle);
+
+			// find ane existing tag like the one we asked for.
+			$Tag = Atlantis\Prototype\BlogTag::GetByBlogTitle(
+				$Post->Blog->ID,
+				$TagTitle
+			);
+
+			// create a new tag if we didn't have one yet.
+			if(!$Tag)
+			$Tag = Atlantis\Prototype\BlogTag::Upsert([
+				'BlogID' => $Post->Blog->ID,
+				'Title'  => $TagTitle
+			]);
+
+			// push the tag in.
+			$PostTags[] = Atlantis\Prototype\BlogPostTag::Upsert([
+				'PostID' => $Post->ID,
+				'TagID'  => $Tag->ID
+			]);
+		}
+
+		$this->SetPayload(array_map(
+			function(Atlantis\Prototype\BlogPostTag $Val) {
+				return [
+					'PostTagID' => $Val->ID,
+					'PostID'    => $Val->PostID,
+					'TagID'     => $Val->TagID,
+					'TagTitle'  => $Val->Tag->Title
+				];
+			},
+			$PostTags
+		));
+
+		return;
+	}
+
 }

@@ -594,7 +594,10 @@ namespace.
 		$SQL = $DB->NewVerse();
 		$Output = NULL;
 
-		if(is_object($Upt))
+		if(!$Upt)
+		$Upt = [];
+
+		elseif(is_object($Upt))
 		$Upt = (Array)$Upt;
 
 		$SQL

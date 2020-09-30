@@ -21,9 +21,11 @@ extends Atlantis\Site\PublicWeb {
 		$BlogUser = NULL;
 		$Page = 1;
 		$Limit = 10;
+		$QueryTags = NULL;
 		$Opt = [
 			'Adult'   => NULL,
-			'Enabled' => Post::EnableStatePublic
+			'Enabled' => Post::EnableStatePublic,
+			'Tags'    => NULL
 		];
 
 		// bail if no blog.
@@ -39,6 +41,17 @@ extends Atlantis\Site\PublicWeb {
 		if($BlogUser->HasEditPriv())
 		$Opt['Enabled'] = Post::EnableStateAny;
 
+		// filter by tags if needed.
+
+		if($this->Get->Tags) {
+			$QueryTags = $this->GetTagList();
+
+			$Opt['Tags'] = array_map(
+				function($Tag){ return $Tag->ID; },
+				$QueryTags
+			);
+		}
+
 		// get popular posts.
 
 		$PopularPosts = $Blog->GetPopularPosts(5,1);
@@ -53,13 +66,45 @@ extends Atlantis\Site\PublicWeb {
 		$this
 		->Set('Page.Title',$Blog->Title)
 		->Area('blog/index',[
-			'Blog'         => $Blog,
-			'Posts'        => $Blog->GetRecentPosts($Limit,$Page,$Opt),
-			'Tags'         => $Tags,
-			'PopularPosts' => $PopularPosts
+			'Blog'          => $Blog,
+			'Posts'         => $Blog->GetRecentPosts($Limit,$Page,$Opt),
+			'Tags'          => $Tags,
+			'PopularPosts'  => $PopularPosts,
+			'QueryTags'     => $QueryTags
 		]);
 
 		return;
+	}
+
+	protected function
+	GetTagList():
+	Array {
+	/*//
+	@date 2020-09-29
+	//*/
+
+		$Input = explode('/',$this->Get->Tags);
+		$Output = [];
+		$Key = NULL;
+		$Val = NULL;
+		$Tag = NULL;
+
+		// get the slash delimited list of tag aliases and build a clean
+		// list of them.
+
+		foreach($Input as $Key => $Val)
+		$Input[$Key] = Atlantis\Util\Filters::RouteSafeAlias(trim($Val));
+
+		// find those tags and build a list of their id.
+
+		$Result = Atlantis\Prototype\BlogTag::Find([
+			'Alias' => $Input
+		]);
+
+		foreach($Result->Payload as $Tag)
+		$Output[] = $Tag;
+
+		return $Output;
 	}
 
 }

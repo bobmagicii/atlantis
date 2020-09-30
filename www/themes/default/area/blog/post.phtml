@@ -42,7 +42,7 @@ echo (new Atlantis\Element\PagePromo)
 
 		<div class="col-12 mb-6">
 			<div class="jumbotron jumbotron-secondary jumbotron-fadedown p-4 mb-4">
-				<div class="PostListing mb-4">
+				<div class="PostListing">
 					<div class="Post">
 						<h3 class="mb-0"><a href="<?php $Printer($Post->GetURL()) ?>"><?php $Printer($Post->Title) ?></a></h3>
 						<div class="About">
@@ -50,12 +50,12 @@ echo (new Atlantis\Element\PagePromo)
 							From <a class="Source" href="<?php $Printer($Post->Blog->URL) ?>"><?php $Printer($Post->Blog->Title) ?></a>
 							By <a class="Authour" href="<?php $Printer($Post->User->URL) ?>"><?php $Printer($Post->User->Alias) ?></a>
 						</div>
-						<?php if($Tags->Count): ?>
+						<?php if($Tags->Count || $UserCanEdit || $UserCanDelete): ?>
 						<div class="Tags">
 							<div class="row tight align-items-center">
-								<?php foreach($Tags->Payload as $Tag): ?>
+								<?php foreach($Tags->Payload as $PostTag): ?>
 								<div class="col-auto">
-									<a href="<?php $Printer($Blog->GetTagURL($Tag)) ?>" class="btn btn-sm btn-secondary pt-0 pb-0"><?php $Printer($Tag->Title) ?></a>
+									<a href="<?php $Printer($Blog->GetTagURL($PostTag->Tag)) ?>" class="btn btn-sm btn-secondary pt-0 pb-0"><?php $Printer($PostTag->Tag->Title) ?></a>
 								</div>
 								<?php endforeach; ?>
 								<?php if($UserCanEdit): ?>

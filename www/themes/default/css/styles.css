@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-09-29 04:19:58
+@date 2020-09-29 05:51:18
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -171,6 +171,11 @@ ul li {
 
 body > footer code {
 	color: #666;
+}
+
+.PostContent {
+	letter-spacing: 0.02em;
+	font-weight: 400;
 }
 
 .PostContent img {

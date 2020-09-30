@@ -174,12 +174,14 @@ extends Atlantis\Prototype {
 	}
 
 	public function
-	GetTags():
+	GetTags($Opt=NULL):
 	Atlantis\Struct\SearchResult {
 
-		return Atlantis\Prototype\BlogPostTag::Find([
+		$Opt = new Nether\Object\Mapped($Opt,[
 			'PostID' => $this->ID
 		]);
+
+		return Atlantis\Prototype\BlogPostTag::Find($Opt);
 	}
 
 	public function
@@ -413,7 +415,8 @@ extends Atlantis\Prototype {
 			'Adult'     => 0,
 			'Alias'     => NULL,
 			'BlogID'    => NULL,
-			'BlogAlias' => NULL
+			'BlogAlias' => NULL,
+			'Tags'      => NULL
 		];
 	}
 
@@ -440,6 +443,17 @@ extends Atlantis\Prototype {
 
 		if($Opt->BlogAlias !== NULL)
 		$SQL->Where('BL.Alias LIKE :BlogAlias');
+
+		if(is_array($Opt->Tags) && count($Opt->Tags)) {
+			$Opt->CountTags = count($Opt->Tags);
+
+			$SQL
+			->Fields('COUNT(*) PostTagNumAnd')
+			->Join('BlogPostTags BPT ON BPT.PostID=Main.ID')
+			->Where('BPT.TagID IN(:Tags)')
+			->Group('Main.ID')
+			->Having('PostTagNumAnd=:CountTags');
+		}
 
 		return;
 	}

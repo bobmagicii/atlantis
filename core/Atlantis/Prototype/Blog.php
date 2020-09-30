@@ -298,17 +298,14 @@ implements JsonSerializable {
 		$Opt = new Nether\Object\Mapped($Opt,[
 			'Adult'   => 0,
 			'Enabled' => 1,
-			'Sort'    => 'newest'
+			'Sort'    => 'newest',
+
+			'BlogID' => $this->ID,
+			'Page'   => $Page,
+			'Limit'  => $Limit
 		]);
 
-		return Atlantis\Prototype\BlogPost::Find([
-			'BlogID'  => $this->ID,
-			'Enabled' => $Opt->Enabled,
-			'Adult'   => $Opt->Adult,
-			'Page'    => $Page,
-			'Limit'   => $Limit,
-			'Sort'    => $Opt->Sort
-		]);
+		return Atlantis\Prototype\BlogPost::Find($Opt);
 	}
 
 	public function
@@ -336,6 +333,9 @@ implements JsonSerializable {
 	public function
 	GetTags(Int $Limit=0, Int $Page=1, ?Array $Opt=NULL):
 	Atlantis\Struct\SearchResult {
+	/*//
+	@date 2020-09-29
+	//*/
 
 		$Opt = new Nether\Object\Mapped($Opt,[
 			'Enabled' => 1

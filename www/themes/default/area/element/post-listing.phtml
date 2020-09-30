@@ -11,7 +11,12 @@ $Posts = $Element->GetItemStore();
 ?>
 
 <div class="PostListing HideTheLastHr <?php echo $Element->GetClassesAttrString() ?>">
-	<h2><?php echo $Element->GetTitle() ?></h2>
+	<h2>
+		<?php echo $Element->GetTitle() ?>
+		<?php if($Element->HasSubtitle()): ?>
+		<div class="letter-space-barely font-weight-normal font-size-smaller opacity-75 mb-2"><?php echo $Element->GetSubtitle() ?></div>
+		<?php endif; ?>
+	</h2>
 	<hr class="mt-2 mb-3" />
 	<?php foreach($Posts as $Post): ?>
 	<div class="Post <?php echo $Post->GetStyleClassAttr() ?>">

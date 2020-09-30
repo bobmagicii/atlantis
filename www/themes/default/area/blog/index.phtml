@@ -7,7 +7,25 @@
  * @var Atlantis\Struct\SearchResult $Tags
  */
 
-echo (new Atlantis\Element\PagePromo)
+$PostListTitle = 'Latest Posts';
+$PostListSubtitle = '';
+
+if(is_array($QueryTags) && count($QueryTags)) {
+	$PostListTitle = 'Posts Tagged With:';
+	$PostListSubtitle = array_reduce(
+		$QueryTags,
+		function($Buffer,$Val) {
+			return sprintf(
+				'%s<span class="btn btn-sm btn-secondary pt-0 pb-0 mr-2">%s</span>',
+				$Buffer,
+				$Val->Title
+			);
+		},
+		''
+	);
+}
+
+ echo (new Atlantis\Element\PagePromo)
 ->SetURL($Blog->URL)
 ->SetImageURL($Blog->ImageHeaderURL)
 ->SetIconURL($Blog->ImageIconURL)
@@ -34,7 +52,8 @@ echo (new Atlantis\Element\PagePromo)
 			<?php
 			echo (new Atlantis\Element\PostListing)
 			->AddClasses('NoBlogIcon')
-			->SetTitle('Recent Posts')
+			->SetTitle($PostListTitle)
+			->SetSubtitle($PostListSubtitle)
 			->SetItemStore($Posts->Payload);
 			?>
 			</div>

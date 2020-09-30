@@ -79,7 +79,8 @@ extends Atlantis\Site\ProtectedWeb {
 		->Set('Page.Title','Edit Post')
 		->Area('dashboard/blog/post-edit',[
 			'Blog' => $Post->Blog,
-			'Post' => $Post
+			'Post' => $Post,
+			'Tags' => $Post->GetTags()
 		]);
 
 		return;

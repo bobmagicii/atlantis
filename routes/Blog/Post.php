@@ -49,9 +49,6 @@ extends Atlantis\Site\PublicWeb {
 		($Popular->Payload)
 		->Remap(function($Val){ return $Val->Post; });
 
-		($Tags->Payload)
-		->Remap(function($Val){ return $Val->Tag; });
-
 		////////
 
 		Atlantis\Prototype\LogBlogPostTraffic::Upsert([

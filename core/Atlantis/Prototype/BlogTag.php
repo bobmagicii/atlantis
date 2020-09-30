@@ -11,7 +11,8 @@ use
 \Exception as Exception;
 
 class BlogTag
-extends Atlantis\Prototype {
+extends Atlantis\Prototype
+implements Atlantis\Packages\Upsertable {
 
 	protected static
 	$Table = 'BlogTags';
@@ -67,7 +68,7 @@ extends Atlantis\Prototype {
 	prepare the date objects.
 	//*/
 
-		$this->DateCreated = new Atlantis\Util\Date("@{$this->TimeCreated}");
+		$this->DateCreated = new Atlantis\Util\Date("@{$Raw['TimeCreated']}");
 		return $this;
 	}
 
@@ -86,6 +87,41 @@ extends Atlantis\Prototype {
 		]);
 
 		return $Result;
+	}
+
+	static public function
+	GetByBlogTitle(Int $BlogID, String $Title):
+	?self {
+
+		return static::GetByBlogAlias(
+			$BlogID,
+			Atlantis\Util\Filters::RouteSafeAlias($Title)
+		);
+	}
+
+	static public function
+	GetByBlogAlias(Int $BlogID, String $Alias):
+	?self {
+
+		$SQL = (Nether\Database::Get()->NewVerse())
+		->Select(sprintf('%s Main',static::$Table))
+		->Fields('Main.*')
+		->Where('BlogID=:BlogID')
+		->Where('Alias=:Alias')
+		->Limit(1);
+
+		static::ExtendQueryJoins($SQL);
+		static::ExtendQueryFields($SQL);
+
+		$Row = $SQL->Query([
+			':BlogID' => $BlogID,
+			':Alias'  => $Alias
+		])->Next();
+
+		if(!$Row)
+		return NULL;
+
+		return new static($Row);
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -135,8 +171,12 @@ extends Atlantis\Prototype {
 		if($Opt->BlogID !== NULL)
 		$SQL->Where('Main.BlogID=:BlogID');
 
-		if($Opt->Alias !== NULL)
-		$SQL->Where('Main.Alias=:Alias');
+		if($Opt->Alias !== NULL) {
+			if(is_array($Opt->Alias))
+			$SQL->Where('Main.Alias IN(:Alias)');
+			else
+			$SQL->Where('Main.Alias=:Alias');
+		}
 
 		return;
 	}
@@ -170,13 +210,27 @@ extends Atlantis\Prototype {
 	@date 2020-09-29
 	//*/
 
+		return static::Upsert($Opt);
+	}
+
+	static public function
+	Upsert($Opt=NULL,$Upt=NULL):
+	self {
+	/*//
+	@date 2020-09-29
+	//*/
+
 		$Opt = new Nether\Object\Mapped($Opt,[
 			'BlogID'      => 0,
 			'Enabled'     => 1,
 			'TimeCreated' => time(),
 			'UUID'        => Atlantis\Util::UUID(),
-			'Title'       => NULL
+			'Title'       => NULL,
+			'Alias'       => NULL
 		]);
+
+		$Upt = new Nether\Object\Mapped($Upt,[
+		],['DefaultKeysOnly'=>TRUE]);
 
 		if(!$Opt->BlogID)
 		throw new Exception('Must have a BlogID');
@@ -184,7 +238,13 @@ extends Atlantis\Prototype {
 		if(!$Opt->Title)
 		throw new Exception('Must have a Title');
 
-		return parent::Insert($Opt);
+		if(!$Opt->Alias && $Opt->Title)
+		$Opt->Alias = Atlantis\Util\Filters::RouteSafeAlias($Opt->Title);
+
+		if(!$Opt->Alias)
+		throw new Exception('Must have a Alias');
+
+		return parent::Upsert($Opt,$Upt);
 	}
 
 }

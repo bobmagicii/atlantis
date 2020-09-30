@@ -11,7 +11,8 @@ use
 \Exception as Exception;
 
 class BlogPostTag
-extends Atlantis\Prototype {
+extends Atlantis\Prototype
+implements Atlantis\Packages\Upsertable {
 
 	protected static
 	$Table = 'BlogPostTags';
@@ -22,7 +23,7 @@ extends Atlantis\Prototype {
 	protected static
 	$PropertyMap = [
 		'ID'     => 'ID:int',
-		'BlogID' => 'BlogID:int',
+		'PostID' => 'PostID:int',
 		'TagID'  => 'TagID:int'
 	];
 
@@ -83,6 +84,22 @@ extends Atlantis\Prototype {
 		]);
 
 		return $Result;
+	}
+
+	static public function
+	DeleteByPostTag(Int $PostID, Int $TagID):
+	Void {
+
+		(Nether\Database::Get()->NewVerse())
+		->Delete(static::$Table)
+		->Where('PostID=:PostID')
+		->Where('TagID=:TagID')
+		->Query([
+			':PostID' => $PostID,
+			':TagID'  => $TagID
+		]);
+
+		return;
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -184,6 +201,45 @@ extends Atlantis\Prototype {
 		throw new Exception('Must have a TagID');
 
 		return parent::Insert($Opt);
+	}
+
+	static public function
+	Upsert($Opt=NULL,$Upt=NULL):
+	self {
+	/*//
+	@date 2020-09-29
+	//*/
+
+		$Opt = new Nether\Object\Mapped($Opt,[
+			'PostID' => 0,
+			'TagID'  => 0
+		]);
+
+		$Upt = new Nether\Object\Mapped($Upt,[
+			'PostID' => $Opt->PostID,
+			'TagID'  => $Opt->TagID
+		]);
+
+		if(!$Opt->PostID)
+		throw new Exception('Must have a PostID');
+
+		if(!$Opt->TagID)
+		throw new Exception('Must have a TagID');
+
+		return parent::Upsert($Opt,$Upt);
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
+	static public function
+	StripPayloadToTag(Atlantis\Struct\SearchResult $Result):
+	Void {
+
+		($Result->Payload)
+		->Remap(function(self $Val){ return $Val->Tag; });
+
+		return;
 	}
 
 }

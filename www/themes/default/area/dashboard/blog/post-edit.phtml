@@ -3,6 +3,7 @@
 /**
  * @var Atlantis\Prototype\BlogPost $Post
  * @var Atlantis\Prototype\Blog $Blog
+ * @var Atlantis\Struct\SearchResult $Tags
  */
 
 $OptAdultClass = '';
@@ -21,8 +22,9 @@ $OptDraftClass = 'active ';
 
 <?php $Surface->Area('dashboard/promo') ?>
 
+<div id="PostData" class="d-none" data-blog-id="<?php $Printer($Post->Blog->ID) ?>" data-post-id="<?php $Printer($Post->ID) ?>"></div>
 
-<div class="container">
+<div class="container pb-4">
 	<ol class="breadcrumb mb-4">
 		<li class="breadcrumb-item"><a href="<?php echo $Endpoint('Atlantis.Dashboard.Home') ?>">Dashboard</a></li>
 		<li class="breadcrumb-item">Blog</li>
@@ -51,8 +53,31 @@ $OptDraftClass = 'active ';
 		<div id="EditorContent" class="d-none"><?php echo $Post->Content ?></div>
 	</div>
 
+
+	<div class="mb-4">
+		<h2 class="font-size-large font-weight-bold">Post Tags</h2>
+		<hr class="mb-2 mt-1" />
+		<div id="ElementTagList" class="row tight align-items-center">
+			<?php foreach($Tags->Payload as $PostTag): ?>
+			<div class="col-auto">
+				<button class="btn btn-secondary btn-sm pt-0 pb-0 pl-2 pr-2 CmdTagRemove" data-tag-id="<?php echo $PostTag->Tag->ID ?>">
+					<i class="fas fa-fw fa-times"></i>
+					<?php $Printer($PostTag->Tag->Title) ?>
+				</button>
+			</div>
+			<?php endforeach; ?>
+			<div class="col-auto">
+				<button class="btn btn-dark btn-sm pt-0 pb-0 pl-2 pr-2 CmdTagAdd">
+					<i class="fas fa-fw fa-plus"></i>
+				</button>
+			</div>
+		</div>
+	</div>
+
+
 	<div class="mb-4">
 		<h2 class="font-size-large font-weight-bold">Post Settings</h2>
+		<hr class="mb-2 mt-1" />
 		<div class="row tight align-items-center">
 			<div class="col-12 col-md-auto">
 				<button id="ElementOptDraft" class="btn btn-dark btn-block btn-toggle <?php $Printer(trim($OptDraftClass)) ?>">
@@ -82,6 +107,10 @@ $OptDraftClass = 'active ';
 jQuery(document)
 .ready(function(){
 
+	let PostData = jQuery('#PostData');
+	let BlogID = PostData.attr('data-blog-id');
+	let PostID = PostData.attr('data-post-id');
+
 	let URL = new URI;
 	let Query = URL.query(true);
 	let InputPostID = jQuery('#InputPostID');
@@ -90,14 +119,16 @@ jQuery(document)
 	let ElementOptAdult = jQuery('#ElementOptAdult');
 	let ElementOptDraft = jQuery('#ElementOptDraft');
 	let ElementSubmit = jQuery('#CmdSubmit');
+	let ElementTagList = jQuery('#ElementTagList')
 
-	////////
+	////////////////////////////////////////////////////////////////
+	// code block management ///////////////////////////////////////
 
 	let InsertCodeBlockDef = {
 		name: 'Insert Code Block',
 		iconURL: './build/images/icons/269-info.png',
 		exec: function(me) {
-			me.selection.insertHTML('<code class="CodeViewer" data-lang="null" spellcheck="false"></code>');
+			me.selection.insertHTML('<code class="CodeViewer" data-lang="null" spellcheck="false"></code>&nbsp;');
 			return;
 		}
 	};
@@ -162,15 +193,128 @@ jQuery(document)
 		return;
 	};
 
-	////////
+	ElementContain
+	.on('dblclick','.CodeViewer',function(){
+		OnCodeConfig(jQuery(this));
+		return;
+	});
+
+	////////////////////////////////////////////////////////////////
+	// tag management //////////////////////////////////////////////
+
+	let OnTagRemove = function(Tag){
+
+		let TagID = Tag.attr('data-tag-id');
+
+		(Tag.parent())
+		.remove();
+
+		Atlantis.Request({
+			'Method': 'TAGDELETE',
+			'URL': '/api/v1/post/entity',
+			'Data': { 'ID':PostID, 'TagID':TagID },
+			'OnSuccess': function(){ return; }
+		});
+
+		return;
+	};
+
+	let OnTagAdd = function() {
+
+		let Overlay;
+		let Dialog;
+		let InputText;
+
+		Overlay = new NUI.Overlay({
+			'Content': (Dialog = new NUI.Dialog({
+				'Title': 'Add Tags',
+				'Content': (
+					jQuery('<div />')
+					.addClass('row')
+					.append(
+						jQuery('<div />')
+						.addClass('col-12 mb-2')
+						.append(
+							InputText = jQuery('<input />')
+							.attr('type','text')
+							.addClass('form-control')
+						)
+					)
+				),
+				'Buttons': [
+					new NUI.Button({'Label':'Add','Class':'NUI-Dialog-Accept btn btn-primary'}),
+					new NUI.Button({'Label':'Cancel','Class':'NUI-Dialog-Cancel btn btn-dark'}),
+				],
+				'OnAccept': function(){
+
+					Atlantis.Request({
+						'Method': 'TAGPOST',
+						'URL': '/api/v1/post/entity',
+						'Data': { 'ID':PostID, 'TagTitle':InputText.val() },
+						'OnSuccess': function(Result) {
+							Overlay.Destroy();
+
+							jQuery(Result.Payload)
+							.each(function(){
+
+								ElementTagList
+								.find('button[data-tag-id=' + this.TagID + ']')
+								.parent()
+								.remove();
+
+								ElementTagList
+								.find('.CmdTagAdd')
+								.parent()
+								.before(
+									jQuery('<div />')
+									.addClass('col-auto')
+									.append(
+										jQuery('<button />')
+										.addClass('btn btn-secondary btn-sm pt-0 pb-0 pl-2 pr-2 CmdTagRemove')
+										.attr('data-tag-id',this.TagID)
+										.html('<i class="fas fa-fw fa-times"></i> ' + this.TagTitle)
+									)
+								);
+
+								return;
+							});
+
+							return;
+						}
+					});
+
+					return;
+				},
+				'OnCancel': function(){
+					Overlay.Destroy();
+					return;
+				}
+			}))
+		});
+
+		return;
+	};
+
+	ElementTagList
+	.on('click','.CmdTagAdd',function(){
+		OnTagAdd();
+		return;
+	});
+
+	ElementTagList
+	.on('click','.CmdTagRemove',function(){
+		OnTagRemove(jQuery(this));
+		return;
+	});
+
+	////////////////////////////////////////////////////////////////
+	// launch editor ///////////////////////////////////////////////
 
 	let Editor = new Jodit('#Editor',{
 		'autofocus': false,
 		'defaultActionOnPaste': 'insert_as_text',
 		'enableDragAndDropFileToEditor': true,
-		'extraButtons':[
-			InsertCodeBlockDef
-		],
+		'extraButtons':[ InsertCodeBlockDef ],
 		'uploader': {
 			'method': 'POST',
 			'url': '/api/v1/image/entity',
@@ -220,8 +364,6 @@ jQuery(document)
 
 	Editor.value = jQuery('#EditorContent').html();
 
-	////////
-
 	ElementSubmit
 	.on('click',function(){
 
@@ -255,61 +397,6 @@ jQuery(document)
 
 		return;
 	});
-
-	ElementContain
-	.on('mouseenter','.CodeViewer',function(){
-		let that = jQuery(this);
-		let Lang = that.attr('data-lang') || 'text';
-		let ElementLang;
-
-		that
-		.find('.CodeConfig')
-		.remove();
-
-		that
-		.css({ 'position':'relative', 'overflow':'visible' })
-		.append(
-			jQuery('<div />')
-			.addClass('CodeConfig p-2')
-			.css({ 'position':'absolute', 'top':'0px', 'right':'0px' })
-			.append(
-				ElementLang = jQuery('<button />')
-				.addClass('btn btn-sm btn-dark')
-				.html('<i class="fa fa-code"></i>')
-				.on('click',function(){ OnCodeConfig(that); })
-			)
-		);
-
-		return;
-	});
-
-	ElementContain
-	.on('mouseleave','.CodeViewer',function(){
-
-		// remove the little option panel.
-
-		jQuery(this)
-		.find('.CodeConfig')
-		.remove();
-
-		// if you are directly typing code into the editor they insert line breaks
-		// so when we leave, we convert them to real breaks.
-
-		jQuery('.CodeViewer')
-		.each(function(){
-			let Text = jQuery(this)
-			.html()
-			.replace(/<br ?\/?>/i,"\n");
-
-			jQuery(this).html(Text);
-			return;
-		});
-
-		return;
-	});
-
-	////////
-
 
 	return;
 });
