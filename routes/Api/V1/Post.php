@@ -75,10 +75,9 @@ extends Atlantis\Site\ProtectedAPI {
 		$Content = $this->Post->Content;
 		$Enabled = $this->Post->OptDraft ? 0 : 1;
 		$OptAdult = NULL;
+		$Tags = [];
+		$TagID = NULL;
 		$Alias = NULL;
-		$AliasTest = NULL;
-		$AliasIter = NULL;
-		$Existing = NULL;
 		$Post = NULL;
 
 		////////
@@ -121,6 +120,10 @@ extends Atlantis\Site\ProtectedAPI {
 			$Title
 		);
 
+		if(is_array($this->Post->Tags))
+		foreach($this->Post->Tags as $TagID)
+		$Tags[] = (Int)$TagID;
+
 		$Post = Atlantis\Prototype\BlogPost::Insert([
 			'BlogID'   => $BlogUser->BlogID,
 			'UserID'   => $BlogUser->UserID,
@@ -133,6 +136,15 @@ extends Atlantis\Site\ProtectedAPI {
 
 		if(!$Post)
 		$this->Quit(3,'other error creating the post');
+
+		////////
+
+		if(count($Tags))
+		foreach($Tags as $TagID)
+		Atlantis\Prototype\BlogPostTag::Upsert([
+			'PostID' => $Post->ID,
+			'TagID'  => $TagID
+		]);
 
 		////////
 

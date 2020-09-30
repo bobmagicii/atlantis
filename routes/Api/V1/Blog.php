@@ -211,6 +211,69 @@ extends Atlantis\Site\ProtectedAPI {
 
 	/**
 	 * @input Int ID
+	 * @input String TagTitle
+	 */
+
+	final public function
+	EntityTagPost():
+	Void {
+	/*//
+	@error 1 post not found
+	@error 2 invalid user
+	//*/
+
+		($this->Post)
+		->ID('Atlantis\\Util\\Filters::TypeInt')
+		->TagTitle('Atlantis\\Util\\Filters::TrimmedText');
+
+		$BlogUser = Atlantis\Prototype\BlogUser::GetByBlogUser($this->Post->ID,$this->User->ID);
+
+		if(!$BlogUser)
+		$this->Quit(1,'blog not found');
+
+		if(!$BlogUser->HasManagePriv())
+		$this->Quit(2,'not a blog manager');
+
+		////////
+
+		$TagTitle = NULL;
+		$BlogTags = [];
+
+		foreach(explode(',',$this->Post->TagTitle) as $TagTitle) {
+			$TagTitle = Atlantis\Util\Filters::StrippedText($TagTitle);
+
+			// find ane existing tag like the one we asked for.
+			$Tag = Atlantis\Prototype\BlogTag::GetByBlogTitle(
+				$BlogUser->Blog->ID,
+				$TagTitle
+			);
+
+			// create a new tag if we didn't have one yet.
+			if(!$Tag)
+			$Tag = Atlantis\Prototype\BlogTag::Upsert([
+				'BlogID' => $BlogUser->Blog->ID,
+				'Title'  => $TagTitle
+			]);
+
+			$BlogTags[] = $Tag;
+		}
+
+		$this->SetPayload(array_map(
+			function(Atlantis\Prototype\BlogTag $Val) {
+				return [
+					'BlogID'    => $Val->BlogID,
+					'TagID'     => $Val->ID,
+					'TagTitle'  => $Val->Title
+				];
+			},
+			$BlogTags
+		));
+
+		return;
+	}
+
+	/**
+	 * @input Int ID
 	 * @input File Image
 	 */
 

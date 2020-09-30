@@ -49,7 +49,21 @@
 	</div>
 
 	<div class="mb-4">
+		<h2 class="font-size-large font-weight-bold">Post Tags</h2>
+		<hr class="mb-2 mt-1" />
+		<div id="ElementTagList" class="row tight align-items-center">
+			<div class="col-auto">
+				<button class="btn btn-dark btn-sm pt-0 pb-0 pl-2 pr-2 CmdTagAdd">
+					<i class="fas fa-fw fa-plus"></i>
+				</button>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="mb-4">
 		<h2 class="font-size-large font-weight-bold">Post Settings</h2>
+		<hr class="mb-2 mt-1" />
 		<div class="row tight align-items-center">
 			<div class="col-12 col-md-auto">
 				<button id="ElementOptDraft" class="btn btn-dark btn-block btn-toggle">
@@ -88,6 +102,153 @@ jQuery(document)
 	let ElementOptDraft = jQuery('#ElementOptDraft');
 	let ElementOptAdult = jQuery('#ElementOptAdult');
 	let ElementSubmit = jQuery('#CmdSubmit');
+	let ElementTagList = jQuery('#ElementTagList');
+
+	////////////////////////////////////////////////////////////////
+	// blog selector ///////////////////////////////////////////////
+
+	jQuery('.BlogSelectItem')
+	.on('click',function(){
+		let BlogID = jQuery(this).attr('data-blog-id');
+		let BlogTitle = jQuery(this).attr('data-blog-title');
+		let BlogIcon = jQuery(this).attr('data-blog-icon');
+		let BlogAdult = parseInt(jQuery(this).attr('data-blog-optadult'));
+
+		InputBlogID.val(BlogID);
+		ElementBlogIcon.css('background-image','url(' + BlogIcon + ')');
+		ElementBlogTitle.text(BlogTitle);
+
+		if(BlogAdult === 0)
+		ElementOptAdult.removeClass('active disabled');
+		else if(BlogAdult === 1)
+		ElementOptAdult.addClass('active').removeClass('disabled');
+		else
+		ElementOptAdult.addClass('active disabled');
+
+		return;
+	});
+
+	if(URL.hasQuery('blog'))
+	jQuery('#BlogSelectItem-' + Query.blog)
+	.trigger('click');
+
+	////////////////////////////////////////////////////////////////
+	// tag management //////////////////////////////////////////////
+
+	let OnTagRemove = function(Tag){
+
+		let TagID = Tag.attr('data-tag-id');
+
+		(Tag.parent())
+		.remove();
+
+		return;
+	};
+
+	let OnTagAdd = function() {
+
+		let Overlay;
+		let Dialog;
+		let InputText;
+
+		Overlay = new NUI.Overlay({
+			'Content': (Dialog = new NUI.Dialog({
+				'Title': 'Add Tags',
+				'Content': (
+					jQuery('<div />')
+					.addClass('row')
+					.append(
+						jQuery('<div />')
+						.addClass('col-12 mb-2')
+						.append(
+							InputText = jQuery('<input />')
+							.attr('type','text')
+							.addClass('form-control')
+						)
+					)
+				),
+				'Buttons': [
+					new NUI.Button({'Label':'Add','Class':'NUI-Dialog-Accept btn btn-primary'}),
+					new NUI.Button({'Label':'Cancel','Class':'NUI-Dialog-Cancel btn btn-dark'}),
+				],
+				'OnAccept': function(){
+
+					Atlantis.Request({
+						'Method': 'TAGPOST',
+						'URL': '/api/v1/blog/entity',
+						'Data': { 'ID':InputBlogID.val(), 'TagTitle':InputText.val() },
+						'OnSuccess': function(Result) {
+							Overlay.Destroy();
+
+							jQuery(Result.Payload)
+							.each(function(){
+
+								ElementTagList
+								.find('button[data-tag-id=' + this.TagID + ']')
+								.parent()
+								.remove();
+
+								ElementTagList
+								.find('.CmdTagAdd')
+								.parent()
+								.before(
+									jQuery('<div />')
+									.addClass('col-auto')
+									.append(
+										jQuery('<button />')
+										.addClass('btn btn-secondary btn-sm pt-0 pb-0 pl-2 pr-2 CmdTagRemove')
+										.attr('data-tag-id',this.TagID)
+										.html('<i class="fas fa-fw fa-times"></i> ' + this.TagTitle)
+									)
+								);
+
+								return;
+							});
+
+							return;
+						}
+					});
+
+					return;
+				},
+				'OnCancel': function(){
+					Overlay.Destroy();
+					return;
+				}
+			}))
+		});
+
+		return;
+	};
+
+	let GetTagList = function() {
+
+		Output = new Array;
+
+		ElementTagList
+		.find('.CmdTagRemove')
+		.each(function(){
+			Output.push(jQuery(this).attr('data-tag-id'));
+			return;
+		});
+
+		return Output;
+	}
+
+	ElementTagList
+	.on('click','.CmdTagAdd',function(){
+		OnTagAdd();
+		return;
+	});
+
+	ElementTagList
+	.on('click','.CmdTagRemove',function(){
+		OnTagRemove(jQuery(this));
+		return;
+	});
+
+	////////////////////////////////////////////////////////////////
+	// launch editor ///////////////////////////////////////////////
 
 	let Editor = new Jodit('#Editor',{
 		'autofocus': false,
@@ -142,29 +303,6 @@ jQuery(document)
 
 	Editor.value = '';
 
-	////////
-
-	jQuery('.BlogSelectItem')
-	.on('click',function(){
-		let BlogID = jQuery(this).attr('data-blog-id');
-		let BlogTitle = jQuery(this).attr('data-blog-title');
-		let BlogIcon = jQuery(this).attr('data-blog-icon');
-		let BlogAdult = parseInt(jQuery(this).attr('data-blog-optadult'));
-
-		InputBlogID.val(BlogID);
-		ElementBlogIcon.css('background-image','url(' + BlogIcon + ')');
-		ElementBlogTitle.text(BlogTitle);
-
-		if(BlogAdult === 0)
-		ElementOptAdult.removeClass('active disabled');
-		else if(BlogAdult === 1)
-		ElementOptAdult.addClass('active').removeClass('disabled');
-		else
-		ElementOptAdult.addClass('active disabled');
-
-		return;
-	});
-
 	ElementSubmit
 	.on('click',function(){
 
@@ -173,6 +311,7 @@ jQuery(document)
 		let OptDraft = ElementOptDraft.hasClass('active') ? 1 : 0;
 		let OptAdult = ElementOptAdult.hasClass('active') ? 1 : 0;
 		let Content = Editor.value;
+		let Tags = GetTagList();
 
 		Atlantis.Request({
 			'Method': 'POST',
@@ -182,7 +321,8 @@ jQuery(document)
 				'Title': Title,
 				'Content': Content,
 				'OptDraft': OptDraft,
-				'OptAdult': OptAdult
+				'OptAdult': OptAdult,
+				'Tags': Tags
 			},
 			'OnSuccess': function(Result){
 				location.href = Result.Location;
@@ -192,12 +332,6 @@ jQuery(document)
 
 		return;
 	});
-
-	////////
-
-	if(URL.hasQuery('blog'))
-	jQuery('#BlogSelectItem-' + Query.blog)
-	.trigger('click');
 
 	return;
 });
