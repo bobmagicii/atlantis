@@ -53,7 +53,6 @@ $OptDraftClass = 'active ';
 		<div id="EditorContent" class="d-none"><?php echo $Post->Content ?></div>
 	</div>
 
-
 	<div class="mb-4">
 		<h2 class="font-size-large font-weight-bold">Post Tags</h2>
 		<hr class="mb-2 mt-1" />
@@ -125,10 +124,11 @@ jQuery(document)
 	// code block management ///////////////////////////////////////
 
 	let InsertCodeBlockDef = {
-		name: 'Insert Code Block',
-		iconURL: './build/images/icons/269-info.png',
-		exec: function(me) {
-			me.selection.insertHTML('<code class="CodeViewer" data-lang="null" spellcheck="false"></code>&nbsp;');
+		'name': 'Insert Code Block',
+		'iconURL': './build/images/icons/269-info.png',
+		'exec': function(Ed) {
+			(Ed.selection)
+			.insertHTML('<code class="CodeViewer" data-lang="null" spellcheck="false"></code>&nbsp;');
 			return;
 		}
 	};
