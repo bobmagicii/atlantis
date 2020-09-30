@@ -156,7 +156,7 @@ extends PublicWeb {
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
 
-	final public function
+	public function
 	HelpGet():
 	Void {
 	/*//
@@ -171,6 +171,8 @@ extends PublicWeb {
 
 		$Match = NULL;
 		$Inputs = NULL;
+		$Errors = NULL;
+		$Info = NULL;
 		$Method = NULL;
 		$Key = NULL;
 		$Val = NULL;
@@ -197,11 +199,25 @@ extends PublicWeb {
 			$Output[$Match[1]][$Verb] = NULL;
 
 			if($Doc) {
-				$Vars = [];
+				$Vars = [
+					'Info'       => NULL,
+					'Args'       => [],
+					'Errors' => []
+				];
+
 				preg_match_all('/\@input ([^\h]+) ([^\h]+)$/ms',$Doc,$Inputs);
+				preg_match_all('/\@info (.+?)$/ms',$Doc,$Info);
+				preg_match_all('/\@error ([\d]+) (.+?)$/ms',$Doc,$Errors);
+
+				if(array_key_exists(0,$Info[1]))
+				$Vars['Info'] = $Info[1][0];
 
 				foreach($Inputs[0] as $Key => $Val)
-				$Vars[$Inputs[2][$Key]] = $Inputs[1][$Key];
+				$Vars['Args'][$Inputs[2][$Key]] = $Inputs[1][$Key];
+
+				foreach($Errors[0] as $Key => $Val)
+				$Vars['Errors'][$Errors[1][$Key]] = $Errors[2][$Key];
+
 
 				$Output[$Match[1]][$Verb] = count($Vars) ? $Vars : NULL;
 			}
