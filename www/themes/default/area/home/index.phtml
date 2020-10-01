@@ -2,6 +2,7 @@
 
 /**
  * @var Atlantis\Datastore $PopularPosts
+ * @var Atlantis\Datastore $PopularBlogs
  * @var Atlantis\Datastore $Posts
  * @var Atlantis\Blog\Post $Post
  */
@@ -31,17 +32,29 @@ echo (new Atlantis\Element\PagePromo)
 
 			<div class="row">
 				<div class="col-12 col-md-6 col-lg-12 mb-4">
-					<div class="jumbotron jumbotron-secondary p-4 m-0">
+					<div class="jumbotron jumbotron-secondary p-4 mb-4">
 						[Recent User List]
 					</div>
-				</div>
-				<div class="col-12 col-md-6 col-lg-12 mb-4">
 					<div class="jumbotron jumbotron-secondary p-4 m-0">
 					<?php
 					echo (new Atlantis\Element\PostListingSidebar)
 					->SetTitle('Popular Posts')
 					->SetItemStore($PopularPosts->Payload);
 					?>
+					</div>
+				</div>
+				<div class="col-12 col-md-6 col-lg-12 mb-4">
+					<div class="jumbotron jumbotron-secondary p-4 mb-0 HideTheLastHr">
+						<h2 class="font-size-normal">Popular Blogs</h2>
+						<hr class="mt-1 mb-2" />
+						<?php foreach($PopularBlogs->Payload as $Pop): ?>
+						<div class="rounded mt-2" style="position:relative;background-size:cover;background-position:center center;background-image: url(<?php $Printer($Pop->Blog->GetImageHeaderURL('th')) ?>);">
+							<div class="rounded" style="position:absolute;top:0px;left:0px;width:100%;height:100%;background:#0008"></div>
+							<div class="pl-2 pr-2 pt-4 pb-4 text-center font-size-large font-weight-bold" style="position:relative;">
+								<a class="text-white" href="<?php $Printer($Pop->Blog->GetURL()) ?>"><?php $Printer($Pop->Blog->Title) ?></a>
+							</div>
+						</div>
+						<?php endforeach ?>
 					</div>
 				</div>
 			</div>

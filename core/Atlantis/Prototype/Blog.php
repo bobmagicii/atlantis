@@ -215,31 +215,31 @@ implements JsonSerializable {
 	}
 
 	public function
-	GetImageHeaderURL():
+	GetImageHeaderURL($Size='lg'):
 	String {
 	/*//
 	@date 2020-09-21
 	get the header image for this blog or the global default if none.
 	//*/
 
-		if($this->ImageHeaderURL === NULL)
+		if(!isset($this->ImageHeader))
 		return Nether\Option::Get('Atlantis.Blog.DefaultImageHeaderURL');
 
-		return $this->ImageHeaderURL;
+		return $this->ImageHeader->GetURL($Size);
 	}
 
 	public function
-	GetImageIconURL():
+	GetImageIconURL($Size='th'):
 	String {
 	/*//
 	@date 2020-09-21
 	get the icon for this blog or the global default if none.
 	//*/
 
-		if($this->ImageIconURL === NULL)
+		if(!isset($this->ImageIcon))
 		return Nether\Option::Get('Atlantis.Blog.DefaultImageIconURL');
 
-		return $this->ImageIconURL;
+		return $this->ImageIcon->GetURL($Size);
 	}
 
 	public function

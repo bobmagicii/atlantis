@@ -15,10 +15,28 @@ extends Atlantis\Site\PublicWeb {
 
 		$this->Area('home/index',[
 			'Posts'        => $this->GetRecentPosts(),
+			'PopularBlogs' => $this->GetPopularBlogs(),
 			'PopularPosts' => $this->GetPopularPosts()
 		]);
 
 		return;
+	}
+
+	protected function
+	GetPopularBlogs():
+	Atlantis\Struct\SearchResult {
+
+		$Output = Atlantis\Prototype\LogBlogPostTraffic::FindPopularBlogs([
+			'Adult'     => $this->ShouldAdultAllow(),
+			'Limit'     => 10,
+			'Page'      => 1,
+			'Timeframe' => strtotime('-30 days')
+		]);
+
+		//($Output->Payload)
+		//->Remap(function($Val){ return $Val->Blog; });
+
+		return $Output;
 	}
 
 	protected function

@@ -45,6 +45,97 @@ implements Atlantis\Packages\Upsertable {
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
 
+
+	static public function
+	FindPopularBlogs($Opt=NULL):
+	Atlantis\Struct\SearchResult {
+
+		$Opt = new Nether\Object\Mapped($Opt,[
+			'Page'      => 1,
+			'Limit'     => 5,
+			'Offset'    => NULL,
+			'Timeframe' => NULL,
+			'Enabled'   => 1,
+			'Adult'     => 0
+		]);
+
+		$Opt->Offset = ($Opt->Page - 1) * $Opt->Limit;
+
+		if($Opt->Adult === FALSE)
+		$Opt->Adult = 0;
+
+		$Output = new Atlantis\Struct\SearchResult;
+		$SQL = Nether\Database::Get()->NewVerse();
+		$Result = NULL;
+		$Row = NULL;
+
+		////////
+
+		$SQL
+		->Select('LogBlogPostTraffic Log')
+		->Join('Blogs B ON B.ID=Log.BlogID')
+		->Fields('COUNT(*) AS Views')
+		->Group('Log.BlogID')
+		->Sort('Views',$SQL::SortDesc)
+		->Limit($Opt->Limit)
+		->Offset($Opt->Offset);
+
+		Atlantis\Prototype\Blog::ExtendQueryJoins($SQL,'B','B_');
+		Atlantis\Prototype\Blog::ExtendMainFields($SQL,'B','B_');
+		Atlantis\Prototype\Blog::ExtendQueryFields($SQL,'B','B_');
+
+		// create a poor mans rotating popularity check.
+		// its a little silly because if no posts are hit
+		// in the timeframe we will have no results rather
+		// than moving the window.
+
+		if($Opt->Timeframe !== NULL)
+		$SQL->Where('Log.Time >= :Timeframe');
+
+		// adult content filter
+
+		if(is_numeric($Opt->Adult))
+		$SQL->Where('B.OptAdult=:Adult');
+
+		if($Opt->Enabled !== NULL)
+		$SQL->Where('B.Enabled=:Enabled');
+
+		////////
+
+		//Atlantis\Util::VarDump((String)$SQL);
+
+		$Result = $SQL->Query($Opt);
+
+		if(!$Result->IsOK())
+		throw new Atlantis\Error\DatabaseQueryError($Result);
+
+		////////
+
+		while($Row = $Result->Next()) {
+
+			// if we had an empty dataset.
+			if((Int)$Row->Views === 0)
+			continue;
+
+			$Output->Payload->Push(new Atlantis\Struct\PopularBlog(
+				new Atlantis\Prototype\Blog(
+					Atlantis\Util::StripPrefixedQueryFields(
+						(Array)$Row,
+						'B_'
+					)
+				),
+				$Row->Views
+			));
+		}
+
+		$Output->Total = $Output->Payload->Count();
+		$Output->Count = $Output->Payload->Count();
+		$Output->Page = $Opt->Page;
+		$Output->Limit = $Opt->Limit;
+
+		return $Output;
+	}
+
 	static public function
 	FindPopularPosts($Opt=NULL):
 	Atlantis\Struct\SearchResult {
