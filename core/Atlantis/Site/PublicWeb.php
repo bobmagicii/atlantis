@@ -64,6 +64,10 @@ class PublicWeb {
 			'User'       => ($this->User)?($this->User->ID):(0)
 		]);
 
+		if($this->User)
+		if(ProjectTime - $this->User->TimeSeen > 60)
+		$this->User->Update([ 'TimeSeen' => ProjectTime ]);
+
 		$this->OnReady();
 		return;
 	}
