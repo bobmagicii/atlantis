@@ -33,7 +33,15 @@ echo (new Atlantis\Element\PagePromo)
 			<div class="row">
 				<div class="col-12 col-md-6 col-lg-12 mb-4">
 					<div class="jumbotron jumbotron-secondary p-4 mb-4">
-						[Recent User List]
+						<h2 class="font-size-normal">Recent Users</h2>
+						<hr class="mt-1 mb-2" />
+						<div class="row tight">
+						<?php foreach($RecentUsers->Payload as $Who): ?>
+							<div class="col-2">
+								<a href="<?php echo $Who->GetURL() ?>"><img class="rounded btn-dark" src="<?php echo $Who->GetImageIconURL() ?>" /></a>
+							</div>
+						<?php endforeach ?>
+						</div>
 					</div>
 					<div class="jumbotron jumbotron-secondary p-4 m-0">
 					<?php

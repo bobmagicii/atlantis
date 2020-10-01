@@ -14,21 +14,21 @@ extends AbstractMigration {
 		$this->Execute(
 			<<< LOL
 			ALTER TABLE `Blogs`
-			ADD COLUMN `OptAdult` TINYINT NULL DEFAULT 0 AFTER `ImageIconURL`;
+			ADD COLUMN `OptAdult` TINYINT NOT NULL DEFAULT 0 AFTER `ImageIconURL`;
 			LOL
 		);
 
 		$this->Execute(
 			<<< LOL
 			ALTER TABLE `BlogPosts`
-			ADD COLUMN `OptAdult` TINYINT NULL DEFAULT 0 AFTER `Alias`;
+			ADD COLUMN `OptAdult` TINYINT NOT NULL DEFAULT 0 AFTER `Alias`;
 			LOL
 		);
 
 		$this->Execute(
 			<<< LOL
 			ALTER TABLE `Users`
-			ADD COLUMN `OptAdult` TINYINT NULL DEFAULT 0 COMMENT 'Atlantis - Allow users to specify if they would like to allow adult content in their feeds' AFTER `PSand`;
+			ADD COLUMN `OptAdult` TINYINT NOT NULL DEFAULT 0 COMMENT 'Atlantis - Allow users to specify if they would like to allow adult content in their feeds' AFTER `PSand`;
 			LOL
 		);
 

@@ -15,7 +15,8 @@ extends Atlantis\Site\PublicWeb {
 		$this->Area('home/index',[
 			'Posts'        => $this->GetRecentPosts(),
 			'PopularBlogs' => $this->GetPopularBlogs(),
-			'PopularPosts' => $this->GetPopularPosts()
+			'PopularPosts' => $this->GetPopularPosts(),
+			'RecentUsers'  => $this->GetRecentUsers()
 		]);
 
 		return;
@@ -61,6 +62,21 @@ extends Atlantis\Site\PublicWeb {
 			'Sort'  => 'newest',
 			'Limit' => 10,
 			'Page'  => 1
+		]);
+
+		return $Output;
+	}
+
+	protected function
+	GetRecentUsers():
+	Atlantis\Struct\SearchResult {
+	/*//
+	@date 2020-10-01
+	//*/
+
+		$Output = Atlantis\Prototype\User::Find([
+			'OptAllowSeen' => 1,
+			'Sort'         => 'seen-za'
 		]);
 
 		return $Output;

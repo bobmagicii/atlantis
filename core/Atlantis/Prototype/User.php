@@ -153,12 +153,21 @@ implements JsonSerializable {
 	?Atlantis\Site\Endpoint {
 	/*//
 	@date 2017-03-02
-	get the url to view this blog post.
 	//*/
 
 		return Atlantis\Site\Endpoint::Get('Atlantis.User.Home',[
 			'UserAlias' => $this->Alias
 		]);
+	}
+
+	public function
+	GetImageIconURL():
+	String {
+	/*//
+	@date 2020-10-01
+	//*/
+
+		return Nether\Option::Get('Atlantis.Blog.DefaultImageIconURL');
 	}
 
 	public function
@@ -281,6 +290,15 @@ implements JsonSerializable {
 	/*//
 	@date 2018-06-08
 	//*/
+
+		switch($Opt->Sort) {
+			case 'seen-az':
+				$SQL->Sort('Main.TimeSeen',$SQL::SortAsc);
+			break;
+			case 'seen-za':
+				$SQL->Sort('Main.TimeSeen',$SQL::SortDesc);
+			break;
+		}
 
 		return;
 	}
