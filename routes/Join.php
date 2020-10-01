@@ -64,7 +64,7 @@ extends Atlantis\Site\PublicWeb {
 			]);
 		}
 
-		catch(Nether\Auth\Error $Doh) {
+		catch(Atlantis\Error $Doh) {
 			$this->Errors->Push(new InlineError([
 				'Message' => $Doh->GetMessage()
 			]));

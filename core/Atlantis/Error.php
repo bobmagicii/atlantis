@@ -1,6 +1,6 @@
 <?php
 
-namespace Nether\Auth;
+namespace Atlantis;
 
 use \Exception as Exception;
 

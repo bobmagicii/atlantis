@@ -16,6 +16,14 @@ Nether\Option::Set([
 	'nether-web-root' => sprintf('%s/www',ProjectRoot),
 	'nether-web-path' => '/',
 
+	'Atlantis.User.Cookie.Name' => 'atlantis-user',
+	'Atlantis.User.Cookie.Path'   => '/',
+	'Atlantis.User.Cookie.Domain' => (
+		(array_key_exists('HTTP_HOST',$_SERVER))?
+		($_SERVER['HTTP_HOST']):
+		(NULL)
+	),
+
 	// blog settings.
 	'Atlantis.Blog.DefaultImageHeaderURL' => '/themes/default/gfx/bg01.jpg',
 	'Atlantis.Blog.DefaultImageIconURL'   => '/themes/default/gfx/icon-default-light.png',
