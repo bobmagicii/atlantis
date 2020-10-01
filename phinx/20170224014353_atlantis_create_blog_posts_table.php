@@ -46,7 +46,7 @@ extends AbstractMigration {
 
 		Atlantis\Prototype\BlogPost::Insert([
 			'BlogID'      => $Blog->ID,
-			'UserID'      => $User->GetID(),
+			'UserID'      => $User->ID,
 			'Title'       => 'Orion\'s Sword Rig Veda',
 			'TimeCreated' => time() - rand(4000,6000),
 			'Content'     => (
@@ -58,7 +58,7 @@ extends AbstractMigration {
 
 		Atlantis\Prototype\BlogPost::Insert([
 			'BlogID'      => $Blog->ID,
-			'UserID'      => $User->GetID(),
+			'UserID'      => $User->ID,
 			'Title'       => 'A Still More Glorious Dawn Awaits',
 			'TimeCreated' => time() - rand(2000,4000),
 			'Content'     => (
@@ -70,7 +70,7 @@ extends AbstractMigration {
 
 		Atlantis\Prototype\BlogPost::Insert([
 			'BlogID'      => $Blog->ID,
-			'UserID'      => $User->GetID(),
+			'UserID'      => $User->ID,
 			'Title'       => 'Distant Epochs Extraplanetary',
 			'TimeCreated' => time() - rand(0,2000),
 			'Content'     => (

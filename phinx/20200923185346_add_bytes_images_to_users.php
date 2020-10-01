@@ -13,7 +13,7 @@ extends AbstractMigration {
 
 		$this->Execute("
 		ALTER TABLE `Users`
-		ADD COLUMN `_BytesImages` BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Atlantis - Total Bytes of Images this user has' AFTER `_OptAdult`;
+		ADD COLUMN `BytesImages` BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Atlantis - Total Bytes of Images this user has' AFTER `_OptAdult`;
 		");
 
 		return;

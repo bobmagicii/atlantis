@@ -4,7 +4,8 @@ namespace Atlantis\Packages;
 
 interface StringableObject {
 
-    public function
-    __toString(): String; 
+	public function
+	__ToString():
+	String;
 
 }

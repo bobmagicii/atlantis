@@ -12,7 +12,6 @@ extends Atlantis\Site\PublicWeb {
 	Index():
 	Void {
 
-
 		$this->Area('home/index',[
 			'Posts'        => $this->GetRecentPosts(),
 			'PopularBlogs' => $this->GetPopularBlogs(),
@@ -33,9 +32,6 @@ extends Atlantis\Site\PublicWeb {
 			'Timeframe' => strtotime('-30 days')
 		]);
 
-		//($Output->Payload)
-		//->Remap(function($Val){ return $Val->Blog; });
-
 		return $Output;
 	}
 
@@ -49,9 +45,6 @@ extends Atlantis\Site\PublicWeb {
 			'Page'      => 1,
 			'Timeframe' => strtotime('-30 days')
 		]);
-
-		($Output->Payload)
-		->Remap(function($Val){ return $Val->Post; });
 
 		return $Output;
 	}

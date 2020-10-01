@@ -31,8 +31,8 @@ implements JsonSerializable {
 		'Email'        => 'Email',
 		'PHash'        => 'PHash',
 		'PSand'        => 'PSand',
-		'_OptAdult'    => 'OptAdult:int',
-		'_BytesImages' => 'BytesImages:int'
+		'OptAdult'     => 'OptAdult:int',
+		'BytesImages'  => 'BytesImages:int'
 	];
 
 	// data properties
@@ -537,6 +537,8 @@ implements JsonSerializable {
 			'Email'       => NULL,
 			'PHash'       => NULL,
 			'PSand'       => NULL,
+			'OptAdult'    => 0,
+			'BytesImages' => 0,
 			// fields used to generate data.
 			'Password1'   => NULL,
 			'Password2'   => NULL

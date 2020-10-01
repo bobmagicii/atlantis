@@ -39,7 +39,7 @@ echo (new Atlantis\Element\PagePromo)
 					<?php
 					echo (new Atlantis\Element\PostListingSidebar)
 					->SetTitle('Popular Posts')
-					->SetItemStore($PopularPosts->Payload);
+					->SetItemStore($PopularPosts->Payload->Map(function($Pop){ return $Pop->Post; }));
 					?>
 					</div>
 				</div>

@@ -28,7 +28,7 @@ extends AbstractMigration {
 		$this->Execute(
 			<<< LOL
 			ALTER TABLE `Users`
-			ADD COLUMN `_OptAdult` TINYINT NULL DEFAULT 0 COMMENT 'Atlantis - Allow users to specify if they would like to allow adult content in their feeds' AFTER `PSand`;
+			ADD COLUMN `OptAdult` TINYINT NULL DEFAULT 0 COMMENT 'Atlantis - Allow users to specify if they would like to allow adult content in their feeds' AFTER `PSand`;
 			LOL
 		);
 
@@ -58,7 +58,7 @@ extends AbstractMigration {
 		$this->Execute(
 			<<< LOL
 			ALTER TABLE `Users`
-			DROP COLUMN `_OptAdult`;
+			DROP COLUMN `OptAdult`;
 			LOL
 		);
 

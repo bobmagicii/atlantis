@@ -2,8 +2,8 @@
 
 namespace Atlantis\Struct;
 
-use
-\Atlantis as Atlantis;
+use Atlantis;
+use Nether;
 
 class PopularBlog {
 
