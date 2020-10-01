@@ -4,30 +4,76 @@ namespace Atlantis;
 
 use
 \Atlantis as Atlantis,
-\Nether   as Nether;
+\Nether   as Nether,
+\Ramsey   as Ramsey;
 
 use
 \Exception as Exception,
 \JsonSerializable as JsonSerializable;
 
+Nether\Option::Define([
+	'nether-user-table-name'    => 'Users',
+	'nether-user-cookie-name'   => 'nether-user',
+	'nether-user-cookie-path'   => '/',
+	'nether-user-cookie-domain' => (
+		(array_key_exists('HTTP_HOST',$_SERVER))?
+		($_SERVER['HTTP_HOST']):
+		(NULL)
+	)
+]);
+
 class User
-extends Nether\Auth\User
+extends Atlantis\Prototype
 implements JsonSerializable {
 
-	public
-	Int $OptAdult;
+	static protected
+	$Table = 'Users';
 
-	public
-	?String $URL;
+	static protected
+	$PropertyMap = [
+		'ID'           => 'ID:int',
+		'TimeCreated'  => 'TimeCreated:int',
+		'TimeSeen'     => 'TimeSeen:int',
+		'TimeBanned'   => 'TimeBanned:int',
+		'Enabled'      => 'Enabled:int',
+		'Admin'        => 'Admin:int',
+		'UUID'         => 'UUID',
+		'Alias'        => 'Alias',
+		'Email'        => 'Email',
+		'PHash'        => 'PHash',
+		'PSand'        => 'PSand',
+		'_OptAdult'    => 'OptAdult:int',
+		'_BytesImages' => 'BytesImages:int'
+	];
 
-	public
-	Atlantis\Util\Date $DateCreated;
+	// data properties
 
-	public
-	Atlantis\Util\Date $DateSeen;
+	public Int $ID;
+	public String $UUID;
+	public Int $TimeCreated;
+	public Int $TimeSeen;
+	public Int $TimeBanned;
+	public Int $Enabled;
+	public Int $Admin;
+	public String $Alias;
+	public String $Email;
+	public String $PHash;
+	public String $PSand;
+	public Int $OptAdult;
+	public Int $BytesImages;
 
-	public
-	Atlantis\Util\Date $DateBanned;
+	// extended properties
+
+	public ?String $URL;
+	public Atlantis\Util\Date $DateCreated;
+	public Atlantis\Util\Date $DateSeen;
+	public Atlantis\Util\Date $DateBanned;
+
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
+	const
+	AdminTypeGlobal = 0b00000001;
 
 	const
 	AdultDisable = 0, // do not list, safespace direct access.
@@ -36,11 +82,6 @@ implements JsonSerializable {
 
 	public function
 	__Construct($Input, Bool $MakeSafer=FALSE) {
-
-		// i do not like this method of adding fields.
-
-		static::$PropertyMap['_OptAdult'] = 'OptAdult:int';
-		static::$PropertyMap['_BytesImages'] = 'BytesImages:int';
 
 		// provide a way to still use user objects but omit various
 		// personal data that is not needed outside of auth or
@@ -54,19 +95,18 @@ implements JsonSerializable {
 		}
 
 		parent::__Construct($Input);
-
-		$this->DateCreated = new Atlantis\Util\Date("@{$this->TimeCreated}");
-		$this->DateSeen = new Atlantis\Util\Date("@{$this->TimeSeen}");
-		$this->DateBanned = new Atlantis\Util\Date("@{$this->TimeBanned}");
-
 		return;
 	}
 
 	public function
-	__Ready():
+	__Ready($Raw):
 	Void {
 
 		$this->URL = $this->GetURL();
+
+		$this->DateCreated = new Atlantis\Util\Date("@{$Raw['TimeCreated']}");
+		$this->DateSeen = new Atlantis\Util\Date("@{$Raw['TimeSeen']}");
+		$this->DateBanned = new Atlantis\Util\Date("@{$Raw['TimeBanned']}");
 
 		return;
 	}
@@ -91,6 +131,19 @@ implements JsonSerializable {
 
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
+
+	public function
+	IsAdmin(Int $Flags=1):
+	Bool {
+	/*//
+	@date 2020-06-02
+	//*/
+
+		if(($this->Admin & $Flags) === $Flags)
+		return TRUE;
+
+		return FALSE;
+	}
 
 	public function
 	GetBlogs():
@@ -152,12 +205,12 @@ implements JsonSerializable {
 		return $this->OptAdult !== static::AdultDisable;
 	}
 
-	////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////
-
 	public function
 	QueryBytesImages():
 	Int {
+	/*//
+	@date 2020-09-21
+	//*/
 
 		$Result = (
 			(Nether\Database::Get()->NewVerse())
@@ -181,6 +234,9 @@ implements JsonSerializable {
 	static public function
 	ExtendMainFields($SQL, String $TableAlias, String $FieldPrefix):
 	Void {
+	/*//
+	@date 2020-05-23
+	//*/
 
 		$SQL->Fields(Atlantis\Util::BuildPrefixedQueryFields(
 			static::GetPropertyMap(),
@@ -195,8 +251,6 @@ implements JsonSerializable {
 	Void {
 	/*//
 	@date 2020-05-23
-	extension classes should override this method for use to join
-	additional tables that may be needed for filters and sorts.
 	//*/
 
 		return;
@@ -207,10 +261,6 @@ implements JsonSerializable {
 	Void {
 	/*//
 	@date 2020-05-23
-	extension classes should override this method for use to include
-	additional fields into selects from joined tables. it is provided
-	as an optimisation for performing searches without bloating the
-	result dataset with data you might use use in a specific case.
 	//*/
 
 		return;
@@ -246,160 +296,423 @@ implements JsonSerializable {
 		return;
 	}
 
+	////////////////////////////////////////////////////////////////
+	// User Session API ////////////////////////////////////////////
 
-	static public function
-	Find($Opt=NULL):
-	Atlantis\Struct\SearchResult {
+	public function
+	GetSessionHash():
+	String {
 	/*//
-	@date 2018-06-08
+	@date 2017-02-10
+	get the current session hash allowing for shifting sands.
 	//*/
 
-		$DB = Nether\Database::Get();
-		$SQL = $DB->NewVerse();
-		$Result = NULL;
-		$Row = NULL;
-		$Dataset = NULL;
-		$Output = new Atlantis\Struct\SearchResult;
+		if(!isset($this->PSand))
+		throw new Exception('cannot generate hash from safety instance');
 
-		$BasicOpts = [
-			'Pagination'           => TRUE,
-			'ID'                   => NULL,
-			'Page'                 => 1,
-			'Limit'                => 20,
-			'Sort'                 => 'newest',
-			'Quick'                => FALSE,
-			'AfterID'              => FALSE,
-			'BeforeID'             => FALSE,
-			'CustomFilterFunc'     => NULL,
-			'CustomSortFunc'       => NULL,
-			'ExtendJoinTables'     => TRUE,
-			'ExtendSelectFields'   => TRUE,
-			'DebugResult'          => FALSE
-		];
-
-		////////
-
-		// prepare options.
-
-		$Opt = new Nether\Object\Mapped($Opt,array_merge(
-			$BasicOpts,
-			static::FindExtendOptions($Opt)
-		));
-
-		// quick searches.
-		// disable pagination and set the limit.
-
-		if($Opt->Quick !== FALSE) {
-			$Opt->Pagination = FALSE;
-
-			if(is_int($Opt->Quick))
-			$Opt->Limit = 1;
-		}
-
-		// calculate pagination.
-
-		$Opt->Offset = ($Opt->Page - 1) * $Opt->Limit;
-
-		////////
-
-		// prepare filters.
-
-		$SQL->Select(sprintf('%s Main','Users'));
-
-		// prepare pagination.
-
-		if($Opt->Pagination)
-		$SQL->Fields('SQL_CALC_FOUND_ROWS Main.*');
-		else
-		$SQL->Fields('Main.*');
-
-		if($Opt->Limit) {
-			$SQL->Offset($Opt->Offset);
-			$SQL->Limit($Opt->Limit);
-		}
-
-		// filter by object id.
-
-		if($Opt->ID !== NULL) {
-			if(is_array($Opt->ID)) {
-				if(count($Opt->ID))
-				$SQL->Where('Main.ID IN(:ID)');
-				else
-				$SQL->Where('Main.ID = -42');
-			}
-			elseif(is_numeric($Opt->ID)) {
-				$SQL->Where(sprintf(
-					'Main.%s=:ID',
-					'ID'
-				));
-			}
-		}
-
-		if($Opt->ExtendJoinTables || $Opt->ExtendSelectFields)
-		static::ExtendQueryJoins($SQL);
-
-		if($Opt->ExtendSelectFields)
-		static::ExtendQueryFields($SQL);
-
-		static::FindApplyFilters($Opt,$SQL);
-
-		if(is_callable($Opt->CustomFilterFunc))
-		($Opt->CustomFilterFunc)($Opt,$SQL);
-
-		////////
-
-		// prepare sorts.
-
-		switch($Opt->Sort) {
-			case 'newest':
-				$SQL->Sort(sprintf('Main.%s','ID'),$SQL::SortDesc);
-			break;
-			case 'oldest':
-				$SQL->Sort(sprintf('Main.%s','ID'),$SQL::SortAsc);
-			break;
-			case 'newest-real':
-				$SQL->Sort(sprintf('Main.%s','TimeCreated'),$SQL::SortDesc);
-			break;
-			case 'oldest-real':
-				$SQL->Sort(sprintf('Main.%s','TimeCreated'),$SQL::SortAsc);
-			break;
-			case 'random':
-				$SQL->Sort('RAND()');
-			break;
-			default:
-				static::FindApplySorts($Opt,$SQL);
-			break;
-		}
-
-		if(is_callable($Opt->CustomSortFunc))
-		($Opt->CustomSortFunc)($Opt,$SQL);
-
-		////////
-
-		$Result = $SQL->Query($Opt);
-
-		if($Opt->DebugResult)
-		Atlantis\Util::VarDump($Result);
-
-		if(!$Result->IsOK())
-		throw new Atlantis\Error\DatabaseQueryError($Result);
-
-		$Found = (Int)$DB->Query('SELECT FOUND_ROWS() AS Found')
-		->Next()
-		->Found;
-
-		////////
-
-		while($Row = $Result->Next())
-		$Output->Payload->Push(new static($Row));
-
-		$Output->Count = count($Output->Payload);
-		$Output->Page = $Opt->Page;
-		$Output->Limit = $Opt->Limit;
-		$Output->Total = $Found;
-
-		return $Output;
+		return hash('sha512',"{$this->PHash}:{$this->PSand}");
 	}
 
+	public function
+	IsValidPassword(String $Password):
+	Bool {
+	/*//
+	@date 2017-02-11
+	does the specified password match the one belonging to this user?
+	//*/
+
+		return (hash('sha512',$Password) === $this->PHash);
+	}
+
+	static public function
+	FetchSession():
+	?self {
+	/*//
+	@date 2017-02-09
+	fetch the currently active session
+	//*/
+
+		return static::GetSession(TRUE) ?? static::GetSession(FALSE);
+	}
+
+	static public function
+	GetSession(Bool $Overshadowed=FALSE):
+	?self {
+	/*//
+	@date 2017-02-09
+	return the user that is currently logged in to the specified session. it
+	will pull either the normal session or the overshadow.
+	//*/
+
+		$Data = NULL;
+		$User = NULL;
+		$CName = Nether\Option::Get('nether-user-cookie-name');
+
+		////////
+
+		if($Overshadowed)
+		$CName .= '-os';
+
+		////////
+
+		// did we even have data
+		if(!array_key_exists($CName,$_COOKIE))
+		return NULL;
+
+		// did the data fit our expected format
+		if(!preg_match(
+			'/^([a-z0-9]+):([a-z0-9]+)$/',
+			$_COOKIE[$CName],
+			$Data
+		))
+		return NULL;
+
+		// expand the user id.
+		$Data[1] = (Int)base_convert($Data[1],36,10);
+
+		// see if the user exists.
+		if(!($User = static::GetByID($Data[1])))
+		return NULL;
+
+		// see that the user validates.
+		if($User->GetSessionHash() !== $Data[2])
+		return NULL;
+
+		// so we're good.
+		return $User;
+	}
+
+	static public function
+	DestroySession():
+	Void {
+	/*//
+	@date 2017-02-11
+	kill the login session.
+	//*/
+
+		$CName = Nether\Option::Get('nether-user-cookie-name');
+		$CPath = Nether\Option::Get('nether-user-cookie-path');
+		$CDomain = Nether\Option::Get('nether-user-cookie-domain');
+
+		setcookie($CName,'',(-1),$CPath,$CDomain);
+		return;
+	}
+
+	static public function
+	LaunchSession(self $User, Bool $Overshadow=FALSE):
+	Void {
+	/*//
+	@date 2017-02-09
+	set a user to be logged in.
+	//*/
+
+		$CName = Nether\Option::Get('nether-user-cookie-name');
+		$CPath = Nether\Option::Get('nether-user-cookie-path');
+		$CDomain = Nether\Option::Get('nether-user-cookie-domain');
+
+		if($Overshadow)
+		$CName .= '-os';
+
+		setcookie(
+			$CName,
+			sprintf(
+				'%s:%s',
+				base_convert($User->GetID(),10,36),
+				$User->GetSessionHash()
+			),
+			(time() + (86400*7)),
+			$CPath,
+			$CDomain
+		);
+
+		return;
+	}
+
+	////////////////////////////////////////////////////////////////
+	// User Retrieval API //////////////////////////////////////////
+
+	static public function
+	Get($Val):
+	?self {
+	/*//
+	@date 2017-02-08
+	return the specified user automatically determining the proper method to
+	use to look them up based on what you gave us.
+	//*/
+
+		// if given an integer look it up by id.
+		if(is_int($Val))
+		return static::GetByID($Val);
+
+		// if it looks like an email look it up by email.
+		if(strpos($Val,'@') !== FALSE)
+		return static::GetByEmail($Val);
+
+		// fall back to looking up by username.
+		return static::GetByAlias($Val);
+	}
+
+	static public function
+	GetByID(Int $ID):
+	?self {
+	/*//
+	@date 2017-02-10
+	return the specified user looking up by user id.
+	//*/
+
+
+		$Table = Nether\Option::Get('nether-user-table-name');
+		$SQL = Nether\Database::Get()->NewVerse();
+
+		$SQL
+		->Select(sprintf('%s Main',$Table))
+		->Fields('*')
+		->Where('Main.ID=:ID')
+		->Limit(1);
+
+		static::ExtendQueryJoins($SQL);
+		static::ExtendQueryFields($SQL);
+
+		$Result = $SQL->Query([
+			':ID' => $ID
+		]);
+
+		// boom boom pow
+		if(!$Result->IsOK())
+		throw new Exception('User::GetByID critical phail');
+
+		// user not found
+		if(!$Result->GetCount())
+		return NULL;
+
+		// get user.
+		return (new static($Result->Next()));
+	}
+
+	static public function
+	GetByAlias(String $Alias):
+	?self {
+	/*//
+	@date 2017-02-10
+	return the specified user looking up by username/alias.
+	//*/
+
+		$Table = Nether\Option::Get('nether-user-table-name');
+		$SQL = Nether\Database::Get()->NewVerse();
+
+		$SQL
+		->Select(sprintf('%s Main',$Table))
+		->Fields('*')
+		->Where('Main.Alias LIKE :Alias')
+		->Limit(1);
+
+		static::ExtendQueryJoins($SQL);
+		static::ExtendQueryFields($SQL);
+
+		$Result = $SQL->Query([
+			':Alias' => $Alias
+		]);
+
+		// boom boom pow
+		if(!$Result->IsOK())
+		throw new Exception('User::GetByAlias critical phail');
+
+		// user not found
+		if(!$Result->GetCount())
+		return NULL;
+
+		// get user.
+		return (new static($Result->Next()));
+	}
+
+	static public function
+	GetByEmail(String $Email):
+	?self {
+	/*//
+	@date 2017-02-10
+	return the specified user looking up by email address.
+	//*/
+
+		$Table = Nether\Option::Get('nether-user-table-name');
+		$SQL = Nether\Database::Get()->NewVerse();
+
+		$SQL
+		->Select(sprintf('%s Main',$Table))
+		->Fields('*')
+		->Where('Main.Email LIKE :Email')
+		->Limit(1);
+
+		static::ExtendQueryJoins($SQL);
+		static::ExtendQueryFields($SQL);
+
+		$Result = $SQL->Query([
+			':Email' => $Email
+		]);
+
+		// boom boom pow
+		if(!$Result->IsOK())
+		throw new Exception('User::GetByEmail critical phail');
+
+		// user not found
+		if(!$Result->GetCount())
+		return NULL;
+
+		// get user.
+		return (new static($Result->Next()));
+	}
+
+	////////////////////////////////////////////////////////////////
+	// User Creation API ///////////////////////////////////////////
+
+	static public function
+	Insert($Opt):
+	Atlantis\Prototype {
+	/*//
+	@todo
+	create a new user. throws exceptions when user requirements are not met,
+	so we can dump data directly to this method and let it make sure things
+	like the email looks legit, passwords match, etc, and catch various
+	exceptions when they fail.
+	//*/
+
+		$Result = NULL;
+		$UserID = 0;
+
+		////////
+
+		$Opt = new Nether\Object\Mapped($Opt,[
+			// fields used by the query.
+			'TimeCreated' => time(),
+			'TimeSeen'    => 0,
+			'TimeBanned'  => 0,
+			'Enabled'     => 1,
+			'UUID'        => Ramsey\Uuid\Uuid::UUID4()->ToString(),
+			'Alias'       => NULL,
+			'Email'       => NULL,
+			'PHash'       => NULL,
+			'PSand'       => NULL,
+			// fields used to generate data.
+			'Password1'   => NULL,
+			'Password2'   => NULL
+		]);
+
+		static::Insert_ValidateAlias($Opt);
+		static::Insert_ValidateEmail($Opt);
+		static::Insert_ValidatePassword($Opt);
+
+		////////
+
+		$Result = Nether\Database::Get()
+		->NewVerse()
+		->Insert(Nether\Option::Get('nether-user-table-name'))
+		->Fields([
+			'TimeCreated' => ':TimeCreated',
+			'TimeSeen'    => ':TimeSeen',
+			'TimeBanned'  => ':TimeBanned',
+			'Enabled'     => ':Enabled',
+			'UUID'        => ':UUID',
+			'Alias'       => ':Alias',
+			'Email'       => ':Email',
+			'PHash'       => ':PHash',
+			'PSand'       => ':PSand'
+		])
+		->Query($Opt);
+
+		if(!$Result->IsOK())
+		throw new Exception('User::Insert critical phail');
+
+		////////
+
+		if(!($UserID = (Int)$Result->GetInsertID()))
+		throw new Exception('User::Insert interesting phail');
+
+		////////
+
+		return static::GetByID($UserID);
+	}
+
+	static protected function
+	Insert_ValidateAlias($Opt):
+	Void {
+	/*//
+	@date 2017-02-08
+	handle validation of the user alias. if the validation fails it throws
+	an exception. if it succeeds nothing special happens.
+	//*/
+
+		// make sure it has a minimum length.
+		if(strlen($Opt->Alias) < 3)
+		throw new Error\AliasInvalid;
+
+		// make sure it does not already exist.
+		if(static::GetByAlias($Opt->Alias) !== NULL)
+		throw new Error\AliasNotUnique;
+
+		return;
+	}
+
+	static protected function
+	Insert_ValidateEmail($Opt):
+	Void {
+	/*//
+	@date 2017-02-08
+	handle validation of the user email. if the validation fails it throws an
+	exception. if it succeeds nothing special happens.
+	//*/
+
+		// make sure it looks like an email.
+		if(!filter_var($Opt->Email,FILTER_VALIDATE_EMAIL))
+		throw new Error\EmailInvalid;
+
+		// make sure it does not already exist.
+		if(static::GetByEmail($Opt->Email) !== NULL)
+		throw new Error\EmailNotUnique;
+
+		return;
+	}
+
+	static protected function
+	Insert_ValidatePassword($Opt):
+	Void {
+	/*//
+	@date 2017-02-08
+	handle validation cases about the user password. if the validation fails
+	it throws an exception. if the validation succeeds then the PHash and
+	PSand fields will be filled in on the Input object.
+	//*/
+
+		// if they didn't even supply password.
+		if(!$Opt->Password1 || !$Opt->Password2)
+		throw new Error\PasswordConfirmFail;
+
+		// if they failed at typing it twice.
+		if($Opt->Password1 !== $Opt->Password2)
+		throw new Error\PasswordConfirmFail;
+
+		// require passwords be a certain length.
+		if(strlen($Opt->Password1) < 8)
+		throw new Error\PasswordInvalid;
+
+		////////
+
+		// hash the password for storage. we will be unable to retrieve it.
+		// if it is forgotten it will have to be reset.
+
+		$Opt->PHash = hash('sha512',$Opt->Password1);
+
+		// generate a random hash for shifting sands. does not really need
+		// to be cryptographically secure or promised unique. the main
+		// use is to provide the ability to invalidate any dangling sessions
+		// at a users request.
+
+		$Opt->PSand = hash('sha512',sprintf(
+			'%s%s%s',
+			random_int(PHP_INT_MIN, PHP_INT_MAX),
+			random_int(PHP_INT_MIN, PHP_INT_MAX),
+			random_int(PHP_INT_MIN, PHP_INT_MAX)
+		));
+
+		return;
+	}
 
 }
