@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class AddOptAllowSeenToUser
+class AtlantisAddOptAllowSeenToUser
 extends AbstractMigration {
 
 	public function

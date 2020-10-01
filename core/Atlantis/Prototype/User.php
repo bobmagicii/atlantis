@@ -20,19 +20,21 @@ implements JsonSerializable {
 
 	static protected
 	$PropertyMap = [
-		'ID'           => 'ID:int',
-		'TimeCreated'  => 'TimeCreated:int',
-		'TimeSeen'     => 'TimeSeen:int',
-		'TimeBanned'   => 'TimeBanned:int',
-		'Enabled'      => 'Enabled:int',
-		'Admin'        => 'Admin:int',
-		'UUID'         => 'UUID',
-		'Alias'        => 'Alias',
-		'Email'        => 'Email',
-		'PHash'        => 'PHash',
-		'PSand'        => 'PSand',
-		'OptAdult'     => 'OptAdult:int',
-		'BytesImages'  => 'BytesImages:int'
+		'ID'            => 'ID:int',
+		'TimeCreated'   => 'TimeCreated:int',
+		'TimeSeen'      => 'TimeSeen:int',
+		'TimeBanned'    => 'TimeBanned:int',
+		'Enabled'       => 'Enabled:int',
+		'Admin'         => 'Admin:int',
+		'UUID'          => 'UUID',
+		'Alias'         => 'Alias',
+		'Email'         => 'Email',
+		'PHash'         => 'PHash',
+		'PSand'         => 'PSand',
+		'ImageHeaderID' => 'ImageHeaderID:int',
+		'ImageIconID'   => 'ImageIconID:int',
+		'OptAdult'      => 'OptAdult:int',
+		'BytesImages'   => 'BytesImages:int'
 	];
 
 	// data properties
@@ -57,6 +59,8 @@ implements JsonSerializable {
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateSeen;
 	public Atlantis\Util\Date $DateBanned;
+	public Atlantis\Prototype\UploadImage $ImageIcon;
+	public Atlantis\Prototype\UploadImage $ImageHeader;
 
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
@@ -96,6 +100,18 @@ implements JsonSerializable {
 		$this->DateCreated = new Atlantis\Util\Date("@{$Raw['TimeCreated']}");
 		$this->DateSeen = new Atlantis\Util\Date("@{$Raw['TimeSeen']}");
 		$this->DateBanned = new Atlantis\Util\Date("@{$Raw['TimeBanned']}");
+
+		if(array_key_exists('UII_ID',$Raw) && $Raw['UII_ID']) {
+			$this->ImageIcon = new Atlantis\Prototype\UploadImage(
+				Atlantis\Util::StripPrefixedQueryFields($Raw,'UII_')
+			);
+		}
+
+		if(array_key_exists('UIH_ID',$Raw) && $Raw['UIH_ID']) {
+			$this->ImageHeader = new Atlantis\Prototype\UploadImage(
+				Atlantis\Util::StripPrefixedQueryFields($Raw,'UIH_')
+			);
+		}
 
 		return;
 	}
@@ -161,13 +177,29 @@ implements JsonSerializable {
 	}
 
 	public function
-	GetImageIconURL():
+	GetImageHeaderURL(String $Size='lg'):
 	String {
 	/*//
 	@date 2020-10-01
 	//*/
 
+		if(!isset($this->ImageHeader))
+		return Nether\Option::Get('Atlantis.Blog.DefaultImageHeaderURL');
+
+		return $this->ImageHeader->GetURL($Size);
+	}
+
+	public function
+	GetImageIconURL(String $Size='th'):
+	String {
+	/*//
+	@date 2020-10-01
+	//*/
+
+		if(!isset($this->ImageIcon))
 		return Nether\Option::Get('Atlantis.Blog.DefaultImageIconURL');
+
+		return $this->ImageIcon->GetURL($Size);
 	}
 
 	public function
@@ -251,6 +283,13 @@ implements JsonSerializable {
 	@date 2020-05-23
 	//*/
 
+		$SQL
+		->Join("UploadImages {$FieldPrefix}UII ON {$TableAlias}.ImageIconID={$FieldPrefix}UII.ID")
+		->Join("UploadImages {$FieldPrefix}UIH ON {$TableAlias}.ImageHeaderID={$FieldPrefix}UIH.ID");
+
+		Atlantis\Prototype\UploadImage::ExtendQueryJoins($SQL,"{$FieldPrefix}UII","{$FieldPrefix}UII_");
+		Atlantis\Prototype\UploadImage::ExtendQueryJoins($SQL,"{$FieldPrefix}UIH","{$FieldPrefix}UIH_");
+
 		return;
 	}
 
@@ -260,6 +299,11 @@ implements JsonSerializable {
 	/*//
 	@date 2020-05-23
 	//*/
+
+		Atlantis\Prototype\UploadImage::ExtendMainFields($SQL,"{$FieldPrefix}UII","{$FieldPrefix}UII_");
+		Atlantis\Prototype\UploadImage::ExtendMainFields($SQL,"{$FieldPrefix}UIH","{$FieldPrefix}UIH_");
+		Atlantis\Prototype\UploadImage::ExtendQueryFields($SQL,"{$FieldPrefix}UII","{$FieldPrefix}UII_");
+		Atlantis\Prototype\UploadImage::ExtendQueryFields($SQL,"{$FieldPrefix}UIH","{$FieldPrefix}UIH_");
 
 		return;
 	}

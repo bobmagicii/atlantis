@@ -8,7 +8,9 @@
 
 <?php $Surface->Area('dashboard/promo') ?>
 
-<div class="container">
+<div id="UserData" class="d-none" data-user-id="<?php echo $User->ID ?>"></div>
+
+<div class="container pb-4">
 
 	<ol class="breadcrumb mb-6">
 		<li class="breadcrumb-item"><a href="<?php echo Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home') ?>">Dashboard</a></li>
@@ -16,9 +18,51 @@
 		<li class="breadcrumb-item active">Settings</li>
 	</ol>
 
+	<!-- IMAGES -->
+	<div class="row align-items-center mb-6">
+		<div class="col-12 mb-2">
+			<h2 class="font-size-large font-weight-bold">Profile Graphics</h2>
+			<hr class="mb-2 mt-2" />
+			You can set a Profile Icon and a Header Image for your user profile.
+		</div>
+		<div class="col-12 mb-2">
+			<?php
+			echo (new Atlantis\Element\PagePromo)
+			->SetURL($User->GetURL())
+			->SetImageURL($User->GetImageHeaderURL())
+			->SetIconURL($User->GetImageIconURL())
+			->SetTitle($User->Alias ?? '')
+			->AddClasses('mb-0','rounded','BlogHeaderDemo');
+			?>
+		</div>
+		<div class="col-12 col-md-6 mb-2 mb-md-0">
+			<div class="row tight">
+				<div class="col">
+					<button id="CmdImageIcon" class="btn btn-dark btn-lg btn-block"><i class="fas fa-fw fa-image"></i> Upload Icon</button>
+					<input type="file" class="d-none" id="InputImageIcon" />
+				</div>
+				<div class="col-auto">
+					<button id="CmdRemoveImageIcon" class="btn btn-danger btn-lg"><i class="fas fa-fw fa-times"></i></button>
+				</div>
+			</div>
+		</div>
+		<div class="col-12 col-md-6 mb-2 mb-md-0">
+			<div class="row tight">
+				<div class="col">
+					<button id="CmdImageHeader" class="btn btn-dark btn-lg btn-block"><i class="fas fa-fw fa-image"></i> Upload Header</button>
+					<input type="file" class="d-none" id="InputImageHeader" />
+				</div>
+				<div class="col-auto">
+					<button id="CmdRemoveImageHeader" class="btn btn-danger btn-lg"><i class="fas fa-fw fa-times"></i></button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<!-- ADULT CONTENT -->
 	<div class="mb-6">
 		<h2 class="font-size-large font-weight-bold">Adult Content</h2>
+		<hr class="mb-2 mt-2" />
 		<p>In the event people post Adult Content on this site, what would you like to do about it? Keep in mind this requires people be honest with flagging their content. You can always report content that needs to be flagged, and if someone is without honour we can force it.</p>
 		<div class="row tight align-items-center">
 			<div class="col-auto font-weight-bold">
@@ -49,6 +93,95 @@
 jQuery(document)
 .ready(function(){
 	"use strict";
+
+	let UserData = jQuery('#UserData');
+	let UserID = UserData.attr('data-user-id');
+
+	let UploadIcon = new Atlantis.Upload.Button({
+		'SelectorButton': '#CmdImageIcon',
+		'SelectorInput': '#InputImageIcon',
+		'FileType': Atlantis.Upload.FileTypeImage,
+		'URL': '/api/v1/user/icon',
+		'Data': {
+			'ID': UserID
+		},
+		'OnItemComplete': function(that,Status,Result,File){
+			if(Result.Error !== 0)
+			alert(Result.Message);
+
+			jQuery('.BlogHeaderDemo .ImageIcon')
+			.css('background-image','url(' + Result.Payload.ImageURL + ')')
+
+			return;
+		},
+		'OnQueueComplete': function(that){
+			that.Reset();
+			return;
+		}
+	});
+
+	let UploadHeader = new Atlantis.Upload.Button({
+		'SelectorButton': '#CmdImageHeader',
+		'SelectorInput': '#InputImageHeader',
+		'FileType': Atlantis.Upload.FileTypeImage,
+		'URL': '/api/v1/user/header',
+		'Data': {
+			'ID': UserID
+		},
+		'OnItemComplete': function(that,Status,Result,File){
+			if(Result.Error !== 0)
+			alert(Result.Message);
+
+			jQuery('.BlogHeaderDemo')
+			.css('background-image','url(' + Result.Payload.ImageURL + ')')
+
+			return;
+		},
+		'OnQueueComplete': function(that){
+			that.Reset();
+			return;
+		}
+	});
+
+	jQuery('#CmdRemoveImageIcon')
+	.on('click',function(){
+
+		if(confirm('Reset the icon image to default?'))
+		Atlantis.Request({
+			'Method': 'PATCH',
+			'URL': '/api/v1/user/entity',
+			'Data': { 'ID': UserID, 'Fields': { 'RemoveImageIcon': 1 } },
+			'OnSuccess': function(Result){
+				jQuery('.BlogHeaderDemo .ImageIcon')
+				.css('background-image','url(' + Result.Payload.ImageIconURL + ')')
+
+				return;
+			}
+		});
+
+		return;
+	});
+
+	jQuery('#CmdRemoveImageHeader')
+	.on('click',function(){
+
+		if(confirm('Reset the header image to default?'))
+		Atlantis.Request({
+			'Method': 'PATCH',
+			'URL': '/api/v1/user/entity',
+			'Data': { 'ID': UserID, 'Fields': { 'RemoveImageHeader': 1 } },
+			'OnSuccess': function(Result){
+				jQuery('.BlogHeaderDemo')
+				.css('background-image','url(' + Result.Payload.ImageHeaderURL + ')')
+
+				return;
+			}
+		});
+
+		return;
+	});
+
+	////////
 
 	let LocalSetStatusFunc = function(Mode) {
 		(this.Status.All)
