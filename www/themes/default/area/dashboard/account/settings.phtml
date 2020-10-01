@@ -60,7 +60,7 @@
 	</div>
 
 	<!-- ADULT CONTENT -->
-	<div class="mb-6">
+	<div id="UserOptAdult" class="mb-6">
 		<h2 class="font-size-large font-weight-bold">Adult Content</h2>
 		<hr class="mb-2 mt-2" />
 		<p>In the event people post Adult Content on this site, what would you like to do about it? Keep in mind this requires people be honest with flagging their content. You can always report content that needs to be flagged, and if someone is without honour we can force it.</p>
@@ -70,13 +70,13 @@
 			</div>
 			<div class="col-auto">
 				<div class="d-flex">
-					<i id="ThinkOptAdult" class="StatusOptAdult fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
-					<i id="GoodOptAdult" class="StatusOptAdult fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
-					<i id="BadOptAdult" class="StatusOptAdult fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
+					<i class="ActionStatus ActionStatusThink fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
+					<i class="ActionStatus ActionStatusGood fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
+					<i class="ActionStatus ActionStatusBad fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
 				</div>
 			</div>
 			<div class="col">
-				<select id="InputOptAdult" class="form-control" autocomplete="off">
+				<select id="InputOptAdult" class="ActionCommit form-control" autocomplete="off">
 					<option value="0" <?php echo ($User->OptAdult===0)?('selected'):('') ?>>Do not show me any adult content ever.</option>
 					<option value="1" <?php echo ($User->OptAdult===1)?('selected'):('') ?>>Allow in listings but with warnings.</option>
 					<option value="2" <?php echo ($User->OptAdult===2)?('selected'):('') ?>>Give it to me, I can take it.</option>
@@ -96,6 +96,41 @@ jQuery(document)
 
 	let UserData = jQuery('#UserData');
 	let UserID = UserData.attr('data-user-id');
+
+	let OptAdult = new Atlantis.Action.StatusHandler({
+		'Element': '#UserOptAdult',
+		'OnCommit': function(Handler){
+			let Input = jQuery.trim(jQuery('#InputOptAdult').val());
+
+			Atlantis.Request({
+					'Method': 'PATCH',
+					'URL': '/api/v1/user/entity',
+					'Data': { 'Fields': { 'OptAdult': Input } },
+					'OnSuccess': function(Result){
+						Handler
+						.SetStatus('good')
+						.Notify({
+							'Title': 'Account Settings',
+							'Content': 'Your account Adult Content setting has been updated.',
+							'ContentClass': 'alert-success'
+						});
+						return;
+					},
+					'OnError': function(Result) {
+						Handler
+						.SetStatus('bad')
+						.Notify({
+							'Title': 'Account Settings',
+							'Content': 'Error: ' + Result.Message,
+							'ContentClass': 'alert-danger'
+						});
+						return;
+					}
+				});
+
+			return;
+		}
+	});
 
 	let UploadIcon = new Atlantis.Upload.Button({
 		'SelectorButton': '#CmdImageIcon',
@@ -179,81 +214,6 @@ jQuery(document)
 		});
 
 		return;
-	});
-
-	////////
-
-	let LocalSetStatusFunc = function(Mode) {
-		(this.Status.All)
-		.addClass('font-size-zero');
-
-		switch(Mode) {
-			case 'think':
-				(this.Status.Think)
-				.removeClass('font-size-zero');
-			break;
-			case 'good':
-				(this.Status.Good)
-				.removeClass('font-size-zero');
-			break;
-			case 'bad':
-				(this.Status.Bad)
-				.removeClass('font-size-zero');
-			break;
-		}
-
-		return;
-	};
-
-	let OptAdult = new (function(){
-		let that = this;
-
-		this.Input = jQuery('#InputOptAdult');
-		this.UserID = this.Input.attr('data-user-id');
-		this.Status = {
-			All: jQuery('.StatusOptAdult'),
-			Think: jQuery('#ThinkOptAdult'),
-			Good: jQuery('#GoodOptAdult'),
-			Bad: jQuery('#BadOptAdult')
-		};
-
-		this.SetStatus = LocalSetStatusFunc;
-
-		(this.Input)
-		.on('change',function(){
-			let Input = parseInt(that.Input.val());
-			that.SetStatus('think');
-
-			setTimeout(function(){
-				Atlantis.Request({
-					'Method': 'PATCH',
-					'URL': '/api/v1/user/entity',
-					'Data': { 'Fields': { 'OptAdult': Input } },
-					'OnSuccess': function(Result){
-						that.SetStatus('good');
-						Atlantis.Toaster({
-							'Title': 'Account Settings',
-							'Content': 'Your adult content filter has been updated.',
-							'ContentClass': 'alert-success'
-						});
-						return;
-					},
-					'OnError': function(Result) {
-						that.SetStatus('bad');
-						Atlantis.Toaster({
-							'Title': 'Blog Settings',
-							'Content': 'Error: ' + Result.Message,
-							'ContentClass': 'alert-danger'
-						});
-						return;
-					}
-				});
-			},300);
-
-			return;
-		});
-
-		return this;
 	});
 
 	return;

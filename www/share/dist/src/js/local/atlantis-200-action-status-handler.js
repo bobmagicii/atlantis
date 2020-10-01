@@ -78,7 +78,7 @@ Atlantis.Action.StatusHandler = function(Opt){
 
 	if(this.Commit.is('a, btn, input[type=button], input[type=submit]'))
 	Config.CommitAction = 'click';
-	else if(this.Commit.is('input[type=checkbox], input[type=radio]'))
+	else if(this.Commit.is('input[type=checkbox], input[type=radio], select'))
 	Config.CommitAction = 'change';
 
 	////////

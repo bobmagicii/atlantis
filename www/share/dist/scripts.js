@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-09-30 06:46:39
+@date 2020-10-01 21:43:54
 @files [
     "src\/js\/libs\/000-jquery-3.1.1.min.js",
     "src\/js\/libs\/100-bootstrap.bundle.min.js",
@@ -11324,7 +11324,7 @@ Atlantis.Action.StatusHandler = function(Opt){
 
 	if(this.Commit.is('a, btn, input[type=button], input[type=submit]'))
 	Config.CommitAction = 'click';
-	else if(this.Commit.is('input[type=checkbox], input[type=radio]'))
+	else if(this.Commit.is('input[type=checkbox], input[type=radio], select'))
 	Config.CommitAction = 'change';
 
 	////////
