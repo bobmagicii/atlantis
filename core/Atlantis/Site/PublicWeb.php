@@ -26,7 +26,7 @@ class PublicWeb {
 	Nether\Object\Datastore $Errors;
 
 	public
-	?Atlantis\User $User;
+	?Atlantis\Prototype\User $User;
 
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
@@ -39,7 +39,7 @@ class PublicWeb {
 		$this->Get = new Nether\Input\Filter($_GET);
 		$this->Router = Nether\Stash::Get('Router');
 		$this->Surface = new Nether\Surface;
-		$this->User = Atlantis\User::FetchSession();
+		$this->User = Atlantis\Prototype\User::FetchSession();
 		$this->Errors = new Nether\Object\Datastore;
 		$this->Storage = new Atlantis\StorageManager;
 

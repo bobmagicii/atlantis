@@ -28,7 +28,7 @@ extends Atlantis\Site\PublicWeb {
 	Destroy():
 	Void {
 
-		Atlantis\User::DestroySession();
+		Atlantis\Prototype\User::DestroySession();
 		$this->Goto('/');
 		return;
 	}
@@ -37,7 +37,7 @@ extends Atlantis\Site\PublicWeb {
 	HandleLogin():
 	Void {
 
-		$User = Atlantis\User::Get($this->Post->Account);
+		$User = Atlantis\Prototype\User::Get($this->Post->Account);
 		$Goto = $this->Get->Goto ?? '/';
 
 		if(!$User) {
@@ -61,7 +61,7 @@ extends Atlantis\Site\PublicWeb {
 			'Alias' => $User->Alias
 		]);
 
-		Atlantis\User::LaunchSession($User);
+		Atlantis\Prototype\User::LaunchSession($User);
 		$this->Goto($Goto);
 		return;
 	}

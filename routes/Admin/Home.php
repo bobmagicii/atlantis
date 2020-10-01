@@ -52,7 +52,7 @@ extends Atlantis\Site\PrivateWeb {
 	GetRecentUsers():
 	Atlantis\Struct\SearchResult {
 
-		return Atlantis\User::Find([
+		return Atlantis\Prototype\User::Find([
 			'Limit' => 10,
 			'Page'  => 1,
 			'Sort'  => 'newest'

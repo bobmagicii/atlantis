@@ -56,7 +56,7 @@ extends Atlantis\Site\PublicWeb {
 		// all the checking we need atm.
 
 		try {
-			$User = Atlantis\User::Insert([
+			$User = Atlantis\Prototype\User::Insert([
 				'Alias'     => $this->Post->Alias,
 				'Email'     => $this->Post->Email,
 				'Password1' => $this->Post->Password1,
@@ -78,7 +78,7 @@ extends Atlantis\Site\PublicWeb {
 			'Alias' => $User->Alias
 		]);
 
-		Atlantis\User::LaunchSession($User);
+		Atlantis\Prototype\User::LaunchSession($User);
 		$this->Goto('/');
 		return;
 	}

@@ -58,7 +58,7 @@ implements JsonSerializable {
 	// extension fields.
 
 	public ?String $URL;
-	public ?Atlantis\User $User;
+	public ?Atlantis\Prototype\User $User;
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
 
@@ -103,7 +103,7 @@ implements JsonSerializable {
 		$this->User = NULL;
 
 		if(array_key_exists('BU_ID',$Raw))
-		$this->User = new Atlantis\User(
+		$this->User = new Atlantis\Prototype\User(
 			Atlantis\Util::StripPrefixedQueryFields(
 				$Raw, 'BU_'
 			),
@@ -243,7 +243,7 @@ implements JsonSerializable {
 	}
 
 	public function
-	GetBlogUser(?Atlantis\User $User):
+	GetBlogUser(?Atlantis\Prototype\User $User):
 	?Atlantis\Prototype\BlogUser {
 	/*//
 	@date 2020-09-04
@@ -423,7 +423,7 @@ implements JsonSerializable {
 	@date 2018-06-08
 	//*/
 
-		Atlantis\User::ExtendMainFields($SQL,"{$FieldPrefix}BU","{$FieldPrefix}BU_");
+		Atlantis\Prototype\User::ExtendMainFields($SQL,"{$FieldPrefix}BU","{$FieldPrefix}BU_");
 		Atlantis\Prototype\UploadImage::ExtendMainFields($SQL,"{$FieldPrefix}BII","{$FieldPrefix}II_");
 		Atlantis\Prototype\UploadImage::ExtendMainFields($SQL,"{$FieldPrefix}BIH","{$FieldPrefix}IH_");
 		Atlantis\Prototype\UploadImage::ExtendQueryFields($SQL,"{$FieldPrefix}BII","{$FieldPrefix}II_");

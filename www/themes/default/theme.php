@@ -3,7 +3,7 @@
 class Theme {
 
 	static public function
-	RenderHeaderNavItems(?Atlantis\User $User):
+	RenderHeaderNavItems(?Atlantis\Prototype\User $User):
 	Void {
 	/*//
 	renders the main app navigation which changes depending on if the user is

@@ -64,7 +64,7 @@ implements Nether\Avenue\Interfaces\RouteAcceptance {
 			Atlantis\Site\PublicWeb $Route,
 			Nether\Avenue\Router $Router,
 			Nether\Surface $Surface,
-			?Atlantis\User $User
+			?Atlantis\Prototype\User $User
 		){
 			require($File);
 			return;

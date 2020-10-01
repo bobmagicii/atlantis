@@ -18,7 +18,7 @@ extends Atlantis\Site\PublicWeb {
 
 		$Profile = NULL;
 
-		if(!($Profile = Atlantis\User::GetByAlias($Alias)))
+		if(!($Profile = Atlantis\Prototype\User::GetByAlias($Alias)))
 		$this->Area('error/not-found')->Quit(404);
 
 		$Promo = (new Atlantis\Element\PagePromo)

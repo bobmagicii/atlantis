@@ -40,7 +40,7 @@ extends AbstractMigration {
 		// migrations will be built based on the releaseable state.
 		// so do not lol toooo hard.
 
-		Atlantis\User::Insert([
+		Atlantis\Prototype\User::Insert([
 			'Alias'     => 'root',
 			'Email'     => 'root@atlantis.local',
 			'Password1' => 'password',

@@ -47,7 +47,7 @@ implements Atlantis\Packages\Upsertable {
 
 	// extension fields.
 
-	public ?Atlantis\User $User;
+	public ?Atlantis\Prototype\User $User;
 	public ?String $URL;
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
@@ -82,7 +82,7 @@ implements Atlantis\Packages\Upsertable {
 		$this->User = NULL;
 
 		if(array_key_exists('PU_ID',$Raw))
-		$this->User = new Atlantis\User(
+		$this->User = new Atlantis\Prototype\User(
 			Atlantis\Util::StripPrefixedQueryFields(
 				$Raw, 'PU_'
 			),
@@ -210,7 +210,7 @@ implements Atlantis\Packages\Upsertable {
 
 		$SQL
 		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
-			Atlantis\User::GetPropertyMap(),
+			Atlantis\Prototype\User::GetPropertyMap(),
 			"{$FieldPrefix}PU", "{$FieldPrefix}PU_"
 		));
 
@@ -311,7 +311,7 @@ implements Atlantis\Packages\Upsertable {
 	///////////////////////////////////////////////////////////////////////////
 
 	static public function
-	HandlePostImage(Atlantis\User $User, Atlantis\StorageManager $Storage, ?String $OverUUID=NULL):
+	HandlePostImage(Atlantis\Prototype\User $User, Atlantis\StorageManager $Storage, ?String $OverUUID=NULL):
 	Nether\Object\Mapped {
 	/*//
 	loop over all the files sent via post and handling all the images that

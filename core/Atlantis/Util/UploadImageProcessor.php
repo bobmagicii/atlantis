@@ -11,7 +11,7 @@ use Imagick as Imagick;
 class UploadImageProcessor {
 
 	static public function
-	HandlePost(Atlantis\User $User):
+	HandlePost(Atlantis\Prototype\User $User):
 	Nether\Object\Mapped {
 	/*//
 	returns an object containing Success and Fail uploads.

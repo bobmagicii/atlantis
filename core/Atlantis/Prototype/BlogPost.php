@@ -51,7 +51,7 @@ extends Atlantis\Prototype {
 	// extension fields.
 
 	public ?Atlantis\Prototype\Blog $Blog;
-	public ?Atlantis\User $User;
+	public ?Atlantis\Prototype\User $User;
 	public ?String $URL;
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
@@ -117,7 +117,7 @@ extends Atlantis\Prototype {
 		$this->User = NULL;
 
 		if(array_key_exists('PU_ID',$Raw))
-		$this->User = new Atlantis\User(
+		$this->User = new Atlantis\Prototype\User(
 			Atlantis\Util::StripPrefixedQueryFields(
 				$Raw, 'PU_'
 			),
@@ -157,7 +157,7 @@ extends Atlantis\Prototype {
 	}
 
 	public function
-	GetBlogUser(?Atlantis\User $User):
+	GetBlogUser(?Atlantis\Prototype\User $User):
 	?Atlantis\Prototype\BlogUser {
 	/*//
 	@date 2020-07-04
@@ -282,7 +282,7 @@ extends Atlantis\Prototype {
 	}
 
 	public function
-	IsUserOwner(?Atlantis\User $User):
+	IsUserOwner(?Atlantis\Prototype\User $User):
 	Bool {
 	/*//
 	@date 2020-07-04
@@ -397,7 +397,7 @@ extends Atlantis\Prototype {
 	@date 2018-06-08
 	//*/
 
-		Atlantis\User::ExtendMainFields($SQL,"{$FieldPrefix}PU","{$FieldPrefix}PU_");
+		Atlantis\Prototype\User::ExtendMainFields($SQL,"{$FieldPrefix}PU","{$FieldPrefix}PU_");
 		Atlantis\Prototype\Blog::ExtendMainFields($SQL,"{$FieldPrefix}BL","{$FieldPrefix}B_");
 		Atlantis\Prototype\Blog::ExtendQueryFields($SQL,"{$FieldPrefix}BL","{$FieldPrefix}B_");
 

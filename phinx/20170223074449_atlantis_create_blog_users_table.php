@@ -37,7 +37,7 @@ extends AbstractMigration {
 
 		//var_dump(Nether\Database::Get()->GetDriver()->ErrorInfo());
 
-		$User = Atlantis\User::GetByID(1);
+		$User = Atlantis\Prototype\User::GetByID(1);
 
 		$Blog = Atlantis\Prototype\Blog::Insert([
 			'UserID'  => $User->ID,

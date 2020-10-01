@@ -103,7 +103,7 @@ extends Atlantis\Prototype {
 		$this->User = NULL;
 
 		if(array_key_exists('U_ID',$Raw))
-		$this->User = new Atlantis\User(
+		$this->User = new Atlantis\Prototype\User(
 			Atlantis\Util::StripPrefixedQueryFields(
 				$Raw, 'U_'
 			),
@@ -207,7 +207,7 @@ extends Atlantis\Prototype {
 		->Join("Users {$FieldPrefix}US ON {$TableAlias}.UserID={$FieldPrefix}US.ID");
 
 		Atlantis\Prototype\Blog::ExtendQueryJoins($SQL,"{$FieldPrefix}BL","{$FieldPrefix}B_");
-		Atlantis\User::ExtendQueryJoins($SQL,"{$FieldPrefix}US","{$FieldPrefix}US_");
+		Atlantis\Prototype\User::ExtendQueryJoins($SQL,"{$FieldPrefix}US","{$FieldPrefix}US_");
 
 		return;
 	}
@@ -219,7 +219,7 @@ extends Atlantis\Prototype {
 	@date 2018-06-08
 	//*/
 
-		Atlantis\User::ExtendMainFields($SQL,"{$FieldPrefix}US","{$FieldPrefix}U_");
+		Atlantis\Prototype\User::ExtendMainFields($SQL,"{$FieldPrefix}US","{$FieldPrefix}U_");
 		Atlantis\Prototype\Blog::ExtendMainFields($SQL,"{$FieldPrefix}BL","{$FieldPrefix}B_");
 		Atlantis\Prototype\Blog::ExtendQueryFields($SQL,"{$FieldPrefix}BL","{$FieldPrefix}B_");
 
