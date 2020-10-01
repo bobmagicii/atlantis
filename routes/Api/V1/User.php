@@ -35,6 +35,14 @@ extends Atlantis\Site\ProtectedAPI {
 		if($Fields->Exists('OptAllowSeen'))
 		$Dataset['OptAllowSeen'] = $Fields->OptAllowSeen;
 
+		if($Fields->Exists('RemoveImageHeader') && (Int)$Fields->RemoveImageHeader) {
+			$Dataset['ImageHeaderID'] = NULL;
+		}
+
+		if($Fields->Exists('RemoveImageIcon') && (Int)$Fields->RemoveImageIcon) {
+			$Dataset['ImageIconID'] = NULL;
+		}
+
 		////////
 
 		if(!count($Dataset))
@@ -42,6 +50,12 @@ extends Atlantis\Site\ProtectedAPI {
 
 		($this->User)
 		->Update($Dataset);
+
+		if(array_key_exists('ImageIconID',$Dataset) && $Dataset['ImageIconID'] === NULL)
+		$Dataset['ImageIconURL'] = Nether\Option::Get('Atlantis.Blog.DefaultImageIconURL');
+
+		if(array_key_exists('ImageHeaderID',$Dataset) && $Dataset['ImageHeaderID'] === NULL)
+		$Dataset['ImageHeaderURL'] = Nether\Option::Get('Atlantis.Blog.DefaultImageHeaderURL');
 
 		$this
 		->SetLocation($this->User->URL)
