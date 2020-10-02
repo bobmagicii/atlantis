@@ -520,7 +520,7 @@ implements JsonSerializable {
 
 		$SQL
 		->Select(sprintf('%s Main',static::$Table))
-		->Fields('*')
+		->Fields('Main.*')
 		->Where('Main.Alias LIKE :Alias')
 		->Limit(1);
 
@@ -555,7 +555,7 @@ implements JsonSerializable {
 
 		$SQL
 		->Select(sprintf('%s Main',static::$Table))
-		->Fields('*')
+		->Fields('Main.*')
 		->Where('Main.Email LIKE :Email')
 		->Limit(1);
 
