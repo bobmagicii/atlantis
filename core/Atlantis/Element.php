@@ -61,6 +61,14 @@ class Element {
 		return $this->Surface->GetArea($this->Area);
 	}
 
+	public function
+	SetArea(String $Area):
+	self {
+
+		$this->Area = $Area;
+		return $this;
+	}
+
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
 

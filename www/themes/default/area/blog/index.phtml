@@ -25,7 +25,8 @@ if(is_array($QueryTags) && count($QueryTags)) {
 	);
 }
 
- echo (new Atlantis\Element\PagePromo)
+echo (new Atlantis\Element\PagePromo)
+->SetArea('element/page-promo-artsy')
 ->SetURL($Blog->URL)
 ->SetImageURL($Blog->ImageHeaderURL)
 ->SetIconURL($Blog->ImageIconURL)
@@ -37,7 +38,7 @@ if(is_array($QueryTags) && count($QueryTags)) {
 
 <div class="container">
 
-	<div class="row">
+<div class="row">
 		<?php if($Blog->IsAdult()): ?>
 		<div class="col-12 col-lg-8 mb-4">
 			<div class="alert alert-adult">

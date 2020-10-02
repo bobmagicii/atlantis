@@ -1,0 +1,47 @@
+<?php
+
+/**
+ * @var Atlantis\Element\PagePromo $Element
+ */
+
+$Title = '';
+$Subtitle = '';
+$Image = NULL;
+$Icon = NULL;
+
+////////
+
+if($Element->HasURL())
+$Title = sprintf('<h2><a href="%s">%s</a></h2>',$Element->GetURL(),$Element->GetTitle());
+
+elseif($Element->HasTitle())
+$Title = sprintf('<h2>%s</h2>',$Element->GetTitle());
+
+if($Element->HasSubtitle())
+$Subtitle = sprintf('<p>%s</p>',$Element->GetSubtitle());
+
+if($Element->HasImageURL())
+$Image = sprintf('background-image:url(%s);',$Element->GetImageURL());
+
+if($Element->HasIconURL())
+$Icon = $Element->GetIconURL();
+
+?>
+
+<div class="Promo <?php echo $Element->GetClassesAttrString() ?>">
+	<div class="PromoWash" style="<?php echo $Image ?>"></div>
+		<div class="PromoContain container">
+			<div class=" p-4" style="box-shadow:0px 0px 24px #000; background-size:cover;background-position:center center;<?php echo $Image ?>">
+				<div class="row align-items-center">
+				<?php if($Icon): ?>
+				<div class="col-auto col-3 col-md-2">
+					<div class="ImageIcon WallpaperedBox Square rounded" style="background-image:url(<?php echo $Icon ?>);"><a href="<?php echo $Element->GetURL() ?>"></a></div>
+				</div>
+				<?php endif; ?>
+				<div class="col">
+					<?php echo $Title, $Subtitle, PHP_EOL ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

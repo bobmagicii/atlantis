@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-09-30 17:00:50
+@date 2020-10-02 02:55:37
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -337,6 +337,8 @@ given an image to display to art shit up.
 */
 
 .Promo {
+	position: relative;
+
 	background-color: #111;
 	background-image: url(../gfx/bg01.jpg);
 	background-position: center center;
@@ -344,6 +346,8 @@ given an image to display to art shit up.
 	background-size: cover;
 	color: #eee;
 	margin-bottom: 32px;
+
+	overflow: hidden;
 }
 
 .Promo a:link,
@@ -376,6 +380,35 @@ given an image to display to art shit up.
 
 .Promo .ImageIcon {
 	box-shadow: 0px 0px 4px #00000066;
+}
+
+.Promo .ImageIcon {
+	box-shadow: 0px 0px 4px #00000066;
+}
+
+.PromoWash,
+.PromoContain {
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	color: #eee;
+}
+
+.PromoContain {
+	background-image: none;
+	position: relative;
+}
+
+.PromoWash {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+
+	background-image: url(../gfx/bg01.jpg);
+	transform: scale(1.1));
+	filter: blur(10px) brightness(0.8);
+	height: 100%;
+	width: 100%;
 }
 
 .WallpaperedBox {
