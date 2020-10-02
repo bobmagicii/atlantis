@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-10-02 02:55:37
+@date 2020-10-02 03:54:28
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -283,6 +283,11 @@ body > header a {
 	border: 1px solid #888;
 	border-radius: 3px;
 	max-width: 100%;
+}
+
+.PostContent a:link,
+.PostContent a:visited {
+	border-bottom: 1px dashed #666 !important;
 }
 
 .PostListing h3 {

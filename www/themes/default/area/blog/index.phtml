@@ -2,6 +2,7 @@
 
 /**
  * @var Atlantis\Prototype\Blog $Blog
+ * @var Atlantis\Prototype\BlogUser $BlogUser
  * @var Atlantis\Struct\SearchResult $Posts
  * @var Atlantis\Prototype\BlogPost $Post
  * @var Atlantis\Struct\SearchResult $Tags
@@ -63,6 +64,16 @@ echo (new Atlantis\Element\PagePromo)
 
 			<div class="row">
 				<div class="col-12 col-md-6 col-lg-12 mb-4">
+
+					<?php if($BlogUser):?>
+					<div class="mb-4">
+						<?php if($BlogUser->HasWritePriv()): ?>
+						<a class="btn btn-dark btn-block mb-2" href="<?php $Printer($Endpoint('Atlantis.Dashboard.Blog.Post.New',['BlogID'=>$Blog->ID])) ?>"><i class="fas fa-fw fa-pen"></i> Write</a>
+						<?php endif; ?>
+					</div>
+					<?php endif; ?>
+
+					<!-- TAGS -->
 					<div class="jumbotron jumbotron-secondary p-4 m-0">
 						<h2 class="font-size-normal">
 							Tags
@@ -80,14 +91,18 @@ echo (new Atlantis\Element\PagePromo)
 						<?php endif; ?>
 						</div>
 					</div>
+
 				</div>
 				<div class="col-12 col-md-6 col-lg-12 mb-4">
+
+					<!-- POPULAR POSTS -->
 					<div class="jumbotron jumbotron-secondary p-4 m-0">
 					<?php
 					echo (new Atlantis\Element\PostListingSidebar)
 					->SetTitle('Popular Posts')
 					->SetItemStore($PopularPosts->Payload);
 					?>
+
 					</div>
 				</div>
 			</div>

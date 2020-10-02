@@ -67,6 +67,7 @@ extends Atlantis\Site\PublicWeb {
 		->Set('Page.Title',$Blog->Title)
 		->Area('blog/index',[
 			'Blog'          => $Blog,
+			'BlogUser'      => $BlogUser,
 			'Posts'         => $Blog->GetRecentPosts($Limit,$Page,$Opt),
 			'Tags'          => $Tags,
 			'PopularPosts'  => $PopularPosts,

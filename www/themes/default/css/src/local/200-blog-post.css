@@ -8,3 +8,8 @@
 	border-radius: 3px;
 	max-width: 100%;
 }
+
+.PostContent a:link,
+.PostContent a:visited {
+	border-bottom: 1px dashed #666 !important;
+}

@@ -62,8 +62,7 @@ class Element {
 	}
 
 	public function
-	SetArea(String $Area):
-	self {
+	SetArea(String $Area) {
 
 		$this->Area = $Area;
 		return $this;
