@@ -31,15 +31,16 @@ $Icon = $Element->GetIconURL();
 <div class="Promo <?php echo $Element->GetClassesAttrString() ?>">
 	<div class="PromoWash" style="<?php echo $Image ?>"></div>
 		<div class="PromoContain container">
-			<div class=" p-4" style="box-shadow:0px 0px 24px #000; background-size:cover;background-position:center center;<?php echo $Image ?>">
+			<div class="p-4" style="box-shadow:0px 0px 24px #000; background-size:cover;background-position:center center;<?php echo $Image ?>">
 				<div class="row align-items-center">
-				<?php if($Icon): ?>
-				<div class="col-auto col-3 col-md-2">
-					<div class="ImageIcon WallpaperedBox Square rounded" style="background-image:url(<?php echo $Icon ?>);"><a href="<?php echo $Element->GetURL() ?>"></a></div>
-				</div>
-				<?php endif; ?>
-				<div class="col">
-					<?php echo $Title, $Subtitle, PHP_EOL ?>
+					<?php if($Icon): ?>
+					<div class="d-none d-sm-block col-12 col-sm-3 col-md-2 mb-4 mb-sm-0">
+						<div class="ImageIcon WallpaperedBox Square rounded" style="background-image:url(<?php echo $Icon ?>);"><a href="<?php echo $Element->GetURL() ?>"></a></div>
+					</div>
+					<?php endif; ?>
+					<div class="col">
+						<?php echo $Title, $Subtitle, PHP_EOL ?>
+					</div>
 				</div>
 			</div>
 		</div>

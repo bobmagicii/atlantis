@@ -263,6 +263,13 @@ extends Atlantis\Site\ProtectedAPI {
 
 		$Post->Update($Dataset);
 
+		if(array_key_exists('Enabled',$Dataset) && array_key_exists('TimeCreated',$Dataset)) {
+			$Tags = $Post->GetTags();
+
+			foreach($Tags->Payload as $Tag)
+			$Tag->UpdateUsage();
+		}
+
 		$this
 		->SetLocation($Post->GetURL())
 		->SetPayload($Post);

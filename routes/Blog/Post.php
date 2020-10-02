@@ -66,6 +66,8 @@ extends Atlantis\Site\PublicWeb {
 			$Post->Title,
 			$Post->Blog->Title
 		))
+		->Set('Social.Image',$Post->Blog->GetImageIconURL('sm'))
+		->Set('Social.Authour',$Post->User->Alias)
 		->Area('blog/post',[
 			'Blog'          => $Post->Blog,
 			'Post'          => $Post,

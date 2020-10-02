@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-10-02 03:54:28
+@date 2020-10-02 16:27:50
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -720,6 +720,17 @@ select:focus {
 	border-top-color: #bbb;
 }
 
+.jumbotron-secondary a:link:not(.btn),
+.jumbotron-secondary a:visited:not(.btn),
+.jumbotron-secondary .active {
+	color: #555;
+}
+
+.jumbotron-secondary a:link:not(.btn),
+.jumbotron-secondary a:visited:not(.btn) {
+	border-bottom: 1px dotted #555;
+}
+
 /* provide a more muted jumbotron for the theme */
 
 .jumbotron-tertiary {
@@ -735,5 +746,16 @@ select:focus {
 
 .jumbotron-tertiary hr {
 	border-top-color: #ccc;
+}
+
+.jumbotron-tertiary a:link:not(.btn),
+.jumbotron-tertiary a:visited:not(.btn),
+.jumbotron-tertiary .active {
+	color: #555;
+}
+
+.jumbotron-tertiary a:link:not(.btn),
+.jumbotron-tertiary a:visited:not(.btn) {
+	border-bottom: 1px dotted #555;
 }
 

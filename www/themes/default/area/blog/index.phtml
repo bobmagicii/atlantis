@@ -40,8 +40,9 @@ echo (new Atlantis\Element\PagePromo)
 <div class="container">
 
 <div class="row">
+
 		<?php if($Blog->IsAdult()): ?>
-		<div class="col-12 col-lg-8 mb-4">
+		<div class="col-12 mb-4">
 			<div class="alert alert-adult">
 				<i class="fa fas fa-exclamation-square mr-2"></i>
 				This blog contains Adult Content.
@@ -68,7 +69,10 @@ echo (new Atlantis\Element\PagePromo)
 					<?php if($BlogUser):?>
 					<div class="mb-4">
 						<?php if($BlogUser->HasWritePriv()): ?>
-						<a class="btn btn-dark btn-block mb-2" href="<?php $Printer($Endpoint('Atlantis.Dashboard.Blog.Post.New',['BlogID'=>$Blog->ID])) ?>"><i class="fas fa-fw fa-pen"></i> Write</a>
+						<a class="btn btn-dark btn-block text-left mb-2" href="<?php $Printer($Endpoint('Atlantis.Dashboard.Blog.Post.New',['BlogID'=>$Blog->ID])) ?>"><i class="fas fa-fw fa-pen mr-1"></i> Write</a>
+						<?php endif; ?>
+						<?php if($BlogUser->HasManagePriv()): ?>
+						<a class="btn btn-dark btn-block text-left mb-2" href="<?php $Printer($Endpoint('Atlantis.Dashboard.Blog.Settings',['BlogID'=>$Blog->ID])) ?>"><i class="fas fa-fw fa-wrench mr-1"></i> Settings</a>
 						<?php endif; ?>
 					</div>
 					<?php endif; ?>

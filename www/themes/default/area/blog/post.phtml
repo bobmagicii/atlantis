@@ -11,6 +11,7 @@
 */
 
 echo (new Atlantis\Element\PagePromo)
+->SetArea('element/page-promo-artsy')
 ->SetURL($Blog->URL)
 ->SetImageURL($Blog->ImageHeaderURL)
 ->SetIconURL($Blog->ImageIconURL)
@@ -105,7 +106,7 @@ echo (new Atlantis\Element\PagePromo)
 					<?php endif; ?>
 				</div>
 				<?php else: ?>
-				<?php echo $Post->Content, PHP_EOL ?>
+				<?php echo new Atlantis\Util\Texture($Post->Content), PHP_EOL ?>
 				<?php endif; ?>
 				</div>
 			</div>
