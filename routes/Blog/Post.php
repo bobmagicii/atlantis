@@ -52,7 +52,7 @@ extends Atlantis\Site\PublicWeb {
 
 		////////
 
-		if($Post->Enabled && !$Post->IsUserOwner($this->User)) {
+		if($Post->Enabled) {
 			$Hit = Atlantis\Prototype\LogBlogPostTraffic::GetByHithashSince(
 				$this->Router->GetHitHash(),
 				strtotime('-20 minutes')
