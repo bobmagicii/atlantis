@@ -73,6 +73,12 @@
 	'Routes\\Dashboard\\Account::Settings'
 )
 ->Register(
+	'Atlantis.Dashboard.Account.Password',
+	'{@}//dashboard/account/password',
+	'/dashboard/account/password',
+	'Routes\\Dashboard\\Account::Password'
+)
+->Register(
 	'Atlantis.Admin.Home',
 	'{@}//ops',
 	'/ops',

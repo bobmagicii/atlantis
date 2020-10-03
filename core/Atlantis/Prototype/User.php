@@ -372,10 +372,31 @@ implements JsonSerializable {
 	does the specified password match the one belonging to this user?
 	//*/
 
+		$Valid = FALSE;
+		$Algo = Nether\Option::Get('Atlantis.User.Password.Algo');
+
+		////////
+
 		if(!isset($this->PHash))
 		throw new Exception('cannot validate hash from saftey instance');
 
-		return (hash('sha512',$Password) === $this->PHash);
+		// using the php password api
+
+		if(strpos($this->PHash,'$') === 0)
+		$Valid = password_verify($Password,$this->PHash);
+
+		// falling back to the old old old.
+
+		else
+		$Valid = (hash('sha512',$Password) === $this->PHash);
+
+		// if the password needs rehashed because we changed the server
+		// settings then lets do it now since we have it in our grasp.
+
+		if($Valid && password_needs_rehash($this->PHash,$Algo))
+		$this->Update([ 'PHash' => password_hash($Password,$Algo) ]);
+
+		return $Valid;
 	}
 
 	static public function
@@ -428,7 +449,7 @@ implements JsonSerializable {
 		if(!($User = static::GetByID($Data[1])))
 		return NULL;
 
-		/** @var Atlantis\User $User */
+		/** @var Atlantis\Prototype\User $User */
 
 		// see that the user validates.
 		if($User->GetSessionHash() !== $Data[2])
@@ -613,7 +634,7 @@ implements JsonSerializable {
 		return parent::Insert($Opt);
 	}
 
-	static protected function
+	static public function
 	Insert_ValidateAlias($Opt):
 	Void {
 	/*//
@@ -633,7 +654,7 @@ implements JsonSerializable {
 		return;
 	}
 
-	static protected function
+	static public function
 	Insert_ValidateEmail($Opt):
 	Void {
 	/*//
@@ -653,7 +674,7 @@ implements JsonSerializable {
 		return;
 	}
 
-	static protected function
+	static public function
 	Insert_ValidatePassword($Opt):
 	Void {
 	/*//
@@ -663,6 +684,10 @@ implements JsonSerializable {
 	PSand fields will be filled in on the Input object.
 	//*/
 
+		// require passwords be a certain length.
+		if(strlen($Opt->Password1) < 8)
+		throw new Atlantis\Error\UserPasswordInvalid;
+
 		// if they didn't even supply password.
 		if(!$Opt->Password1 || !$Opt->Password2)
 		throw new Atlantis\Error\UserPasswordConfirmFail;
@@ -671,16 +696,15 @@ implements JsonSerializable {
 		if($Opt->Password1 !== $Opt->Password2)
 		throw new Atlantis\Error\UserPasswordConfirmFail;
 
-		// require passwords be a certain length.
-		if(strlen($Opt->Password1) < 8)
-		throw new Atlantis\Error\UserPasswordInvalid;
-
 		////////
 
 		// hash the password for storage. we will be unable to retrieve it.
 		// if it is forgotten it will have to be reset.
 
-		$Opt->PHash = hash('sha512',$Opt->Password1);
+		$Opt->PHash = password_hash(
+			$Opt->Password1,
+			Nether\Option::Get('Atlantis.User.Password.Algo')
+		);
 
 		// generate a random hash for shifting sands. does not really need
 		// to be cryptographically secure or promised unique. the main

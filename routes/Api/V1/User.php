@@ -3,8 +3,11 @@
 namespace Routes\Api\V1;
 
 use
-\Atlantis as Atlantis,
-\Nether as Nether;
+Atlantis,
+Nether;
+
+use
+Throwable;
 
 class User
 extends Atlantis\Site\ProtectedAPI {
@@ -29,6 +32,7 @@ extends Atlantis\Site\ProtectedAPI {
 
 		////////
 
+
 		if($Fields->Exists('OptAdult'))
 		$Dataset['OptAdult'] = $Fields->OptAdult;
 
@@ -43,6 +47,22 @@ extends Atlantis\Site\ProtectedAPI {
 			$Dataset['ImageIconID'] = NULL;
 		}
 
+		if($Fields->Exists('Password0') && $Fields->Exists('Password1') && $Fields->Exists('Password2')) {
+
+			if(!$this->User->IsValidPassword($Fields->Password0))
+			$this->Quit(101,'Invalid Old Password');
+
+			try {
+				Atlantis\Prototype\User::Insert_ValidatePassword($Fields);
+				$Dataset['PHash'] = $Fields->PHash;
+				$Dataset['PSand'] = $Fields->PSand;
+			}
+
+			catch(Throwable $Error) {
+				$this->Quit(100,$Error->GetMessage());
+			}
+		}
+
 		////////
 
 		if(!count($Dataset))
@@ -51,11 +71,20 @@ extends Atlantis\Site\ProtectedAPI {
 		($this->User)
 		->Update($Dataset);
 
+		////////
+
 		if(array_key_exists('ImageIconID',$Dataset) && $Dataset['ImageIconID'] === NULL)
 		$Dataset['ImageIconURL'] = Nether\Option::Get('Atlantis.Blog.DefaultImageIconURL');
 
 		if(array_key_exists('ImageHeaderID',$Dataset) && $Dataset['ImageHeaderID'] === NULL)
 		$Dataset['ImageHeaderURL'] = Nether\Option::Get('Atlantis.Blog.DefaultImageHeaderURL');
+
+		if(array_key_exists('PHash',$Dataset)) {
+			Atlantis\Prototype\User::LaunchSession($this->User);
+			unset($Dataset['PHash'],$Dataset['PSand']);
+		}
+
+		////////
 
 		$this
 		->SetLocation($this->User->URL)

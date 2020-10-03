@@ -16,9 +16,10 @@ Nether\Option::Set([
 	'nether-web-root' => sprintf('%s/www',ProjectRoot),
 	'nether-web-path' => '/',
 
-	'Atlantis.User.Cookie.Name' => 'atlantis-user',
-	'Atlantis.User.Cookie.Path'   => '/',
-	'Atlantis.User.Cookie.Domain' => (
+	'Atlantis.User.Password.Algo'  => PASSWORD_ARGON2ID,
+	'Atlantis.User.Cookie.Name'    => 'atlantis-user',
+	'Atlantis.User.Cookie.Path'    => '/',
+	'Atlantis.User.Cookie.Domain'  => (
 		(array_key_exists('HTTP_HOST',$_SERVER))?
 		($_SERVER['HTTP_HOST']):
 		(NULL)

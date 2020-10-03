@@ -11,9 +11,6 @@ extends Atlantis\Site\ProtectedWeb {
 	Settings():
 	Void {
 
-		if($this->HandleUpdateSettings())
-		$this->Goto(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home'));
-
 		$this
 		->Set('Page.Title','Account Settings')
 		->Area('dashboard/account/settings');
@@ -21,19 +18,15 @@ extends Atlantis\Site\ProtectedWeb {
 		return;
 	}
 
-	protected function
-	HandleUpdateSettings():
-	Bool {
+	public function
+	Password():
+	Void {
 
-		if($this->Post->Action !== 'update')
-		return FALSE;
+		$this
+		->Set('Page.Title','Change Password')
+		->Area('dashboard/account/password');
 
-		($this->User)
-		->Update([
-			'OptAdult' => (Int)$this->Post->OptAdult
-		]);
-
-		return TRUE;
+		return;
 	}
 
 

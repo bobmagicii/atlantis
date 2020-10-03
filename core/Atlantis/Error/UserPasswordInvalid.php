@@ -10,7 +10,7 @@ extends Atlantis\Error {
 
 	public function
 	__Construct() {
-		parent::__construct('Password is in use.');
+		parent::__construct('Password does not meet minimum requirements.');
 		return;
 	}
 

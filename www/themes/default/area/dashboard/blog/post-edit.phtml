@@ -125,10 +125,20 @@ jQuery(document)
 
 	let InsertCodeBlockDef = {
 		'name': 'Insert Code Block',
-		'iconURL': './build/images/icons/269-info.png',
+		'iconURL': '/themes/default/gfx/icon-tiny.png',
 		'exec': function(Ed) {
 			(Ed.selection)
 			.insertHTML('<code class="CodeViewer" data-lang="null" spellcheck="false"></code>&nbsp;');
+			return;
+		}
+	};
+
+
+	let InsertTT = {
+		'name': 'Insert TT',
+		'iconURL': '/themes/default/gfx/icon-tiny.png',
+		'exec': function(Ed) {
+			(Ed.selection).wrapInTag('tt');
 			return;
 		}
 	};
@@ -314,7 +324,7 @@ jQuery(document)
 		'autofocus': false,
 		'defaultActionOnPaste': 'insert_as_text',
 		'enableDragAndDropFileToEditor': true,
-		'extraButtons':[ InsertCodeBlockDef ],
+		'extraButtons':[ InsertCodeBlockDef, InsertTT ],
 		'uploader': {
 			'method': 'POST',
 			'url': '/api/v1/image/entity',
