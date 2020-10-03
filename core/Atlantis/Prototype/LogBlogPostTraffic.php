@@ -232,6 +232,39 @@ implements Atlantis\Packages\Upsertable {
 		return $Output;
 	}
 
+	static public function
+	GetByHithashSince(String $HitHash, Int $Since=0):
+	?self {
+
+		$DB = Nether\Database::Get();
+		$SQL = $DB->NewVerse();
+		$Result = NULL;
+		$Row = NULL;
+
+		////////
+
+		$Result = $SQL
+		->Select(sprintf('%s Main',static::$Table))
+		->Fields(['*'])
+		->Where('Main.HitHash=:HitHash')
+		->Where('Main.Time>:Since')
+		->Query([
+			':HitHash' => $HitHash,
+			':Since'   => $Since
+		]);
+
+		////////
+
+		$Row = $Result->Next();
+
+		if(!$Row)
+		return NULL;
+
+		////////
+
+		return new static($Row);
+	}
+
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
 

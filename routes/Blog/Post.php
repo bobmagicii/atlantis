@@ -45,19 +45,29 @@ extends Atlantis\Site\PublicWeb {
 		$Recent = $Post->Blog->GetRecentPosts(5,1);
 		$Popular = $Post->Blog->GetPopularPosts(5,1);
 		$Tags = $Post->GetTags();
+		$Hit = NULL;
 
 		($Popular->Payload)
 		->Remap(function($Val){ return $Val->Post; });
 
 		////////
 
-		if($Post->Enabled && !$Post->IsUserOwner($this->User))
-		Atlantis\Prototype\LogBlogPostTraffic::Upsert([
-			'BlogID' => $Post->Blog->ID,
-			'PostID' => $Post->ID,
-			'UserID' => ($this->User)?($this->User->ID):NULL,
-			'HitHash'=> $this->GetHitHash()
-		]);
+		if($Post->Enabled && !$Post->IsUserOwner($this->User)) {
+			$Hit = Atlantis\Prototype\LogBlogPostTraffic::GetByHithashSince(
+				$this->Router->GetHitHash(),
+				strtotime('-20 minutes')
+			);
+
+			if(!$Hit)
+			$Post->BumpCountViews();
+
+			Atlantis\Prototype\LogBlogPostTraffic::Upsert([
+				'BlogID' => $Post->Blog->ID,
+				'PostID' => $Post->ID,
+				'UserID' => ($this->User)?($this->User->ID):NULL,
+				'HitHash'=> $this->GetHitHash()
+			]);
+		}
 
 		////////
 

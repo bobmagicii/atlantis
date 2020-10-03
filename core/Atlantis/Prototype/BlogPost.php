@@ -27,6 +27,7 @@ extends Atlantis\Prototype {
 		'TimeCreated' => 'TimeCreated:int',
 		'TimeUpdated' => 'TimeUpdated:int',
 		'Enabled'     => 'Enabled:int',
+		'CountViews'  => 'CountViews:int',
 		'UUID'        => 'UUID',
 		'OptAdult'    => 'OptAdult:int',
 		'Title'       => 'Title',
@@ -42,6 +43,7 @@ extends Atlantis\Prototype {
 	public Int $TimeCreated;
 	public Int $TimeUpdated;
 	public Int $Enabled;
+	public Int $CountViews;
 	public String $UUID;
 	public String $Title;
 	public String $Alias;
@@ -216,6 +218,17 @@ extends Atlantis\Prototype {
 	//*/
 
 		return join(' ',$this->GetStyleClassList());
+	}
+
+	public function
+	BumpCountViews(Int $Inc=1):
+	self {
+
+		$this->Update([
+			'CountViews' => ($this->CountViews + 1)
+		]);
+
+		return $this;
 	}
 
 	///////////////////////////////////////////////////////////////////////////
