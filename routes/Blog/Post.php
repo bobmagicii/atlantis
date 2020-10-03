@@ -51,6 +51,7 @@ extends Atlantis\Site\PublicWeb {
 
 		////////
 
+		if($Post->Enabled && !$Post->IsUserOwner($this->User))
 		Atlantis\Prototype\LogBlogPostTraffic::Upsert([
 			'BlogID' => $Post->Blog->ID,
 			'PostID' => $Post->ID,
