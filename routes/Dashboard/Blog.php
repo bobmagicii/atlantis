@@ -159,7 +159,9 @@ extends Atlantis\Site\ProtectedWeb {
 		if(!$BlogUser->HasManagePriv())
 		$this->Goto(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home'));
 
-		$Tags = $BlogUser->Blog->GetTags();
+		$Tags = $BlogUser->Blog->GetTags(0,1,[
+			'OnlyUsed' => FALSE
+		]);
 
 		$this
 		->Set('Page.Title','Blog Settings')
