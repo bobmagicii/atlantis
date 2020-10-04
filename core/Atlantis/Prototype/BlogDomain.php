@@ -21,8 +21,8 @@ extends Atlantis\Prototype {
 	];
 
 	const
-	TypeRedirect = 1,
-	TypeMask     = 2;
+	TypeRedirect   = 1,
+	TypeMasquerade = 2;
 
 	public
 	Int $ID;

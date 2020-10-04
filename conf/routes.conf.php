@@ -155,10 +155,16 @@
 	'Routes\\Page::Index'
 )
 ->Register(
-	'Atlantis.Blog.CustomDomain',
-	'{@}//{@}',
-	'//{{Domain}}/error/not-found',
-	'Routes\\Blog\\CustomDomain::Index'
+	'Atlantis.Blog.PostCustomDomain',
+	'{@}//(@)',
+	'//{{Domain}}/{{PostAlias}}',
+	'Routes\\Blog\\PostCD::Index'
+)
+->Register(
+	'Atlantis.Blog.IndexCustomDomain',
+	'{@}//index',
+	'//{{Domain}}/',
+	'Routes\\Blog\\IndexCD::Index'
 )
 ->Register(
 	'Atlantis.Handler.NotFound',
