@@ -8,80 +8,80 @@
 ($Router)
 ->Register(
 	'Atlantis.Home',
-	'{@}//index',
-	'/',
+	'{&}//index',
+	'//{{Domain}}/',
 	'Routes\\Home::Index'
 )
 ->Register(
 	'Atlantis.Login',
-	'{@}//login',
-	'/login',
+	'{&}//login',
+	'//{{Domain}}/login',
 	'Routes\\Login::Index'
 )
 ->Register(
 	'Atlantis.Logout',
-	'{@}//logout',
-	'/logout',
+	'{&}//logout',
+	'//{{Domain}}/logout',
 	'Routes\\Login::Destroy'
 )
 ->Register(
 	'Atlantis.Join',
-	'{@}//join',
-	'/join',
+	'{&}//join',
+	'//{{Domain}}/join',
 	'Routes\\Join::Index'
 )
 ->Register(
 	'Atlantis.Dashboard.Home',
-	'{@}//dashboard',
-	'/dashboard',
+	'{&}//dashboard',
+	'//{{Domain}}/dashboard',
 	'Routes\\Dashboard\\Home::Index'
 )
 ->Register(
 	'Atlantis.Dashboard.Blog.Create',
-	'{@}//dashboard/blog/create',
-	'/dashboard/blog/create',
+	'{&}//dashboard/blog/create',
+	'//{{Domain}}/dashboard/blog/create',
 	'Routes\\Dashboard\\Blog::Create'
 )
 ->Register(
 	'Atlantis.Dashboard.Blog.Post.New',
-	'{@}//dashboard/blog/post',
-	'/dashboard/blog/post?blog={{BlogID}}',
+	'{&}//dashboard/blog/post',
+	'//{{Domain}}/dashboard/blog/post?blog={{BlogID}}',
 	'Routes\\Dashboard\\Blog::Post'
 )
 ->Register(
 	'Atlantis.Dashboard.Blog.Post.Edit',
-	'{@}//dashboard/blog/post-edit',
-	'/dashboard/blog/post-edit?post={{PostID}}',
+	'{&}//dashboard/blog/post-edit',
+	'//{{Domain}}/dashboard/blog/post-edit?post={{PostID}}',
 	'Routes\\Dashboard\\Blog::PostEdit'
 )
 ->Register(
 	'Atlantis.Dashboard.Blog.Settings',
-	'{@}//dashboard/blog/settings',
-	'/dashboard/blog/settings?blog={{BlogID}}',
+	'{&}//dashboard/blog/settings',
+	'//{{Domain}}/dashboard/blog/settings?blog={{BlogID}}',
 	'Routes\\Dashboard\\Blog::Settings'
 )
 ->Register(
 	'Atlantis.Dashboard.Blog.Tags',
-	'{@}//dashboard/blog/tags',
-	'/dashboard/blog/tags?blog={{BlogID}}',
+	'{&}//dashboard/blog/tags',
+	'//{{Domain}}/dashboard/blog/tags?blog={{BlogID}}',
 	'Routes\\Dashboard\\Blog::Tags'
 )
 ->Register(
 	'Atlantis.Dashboard.Account.Settings',
-	'{@}//dashboard/account/settings',
-	'/dashboard/account/settings',
+	'{&}//dashboard/account/settings',
+	'//{{Domain}}/dashboard/account/settings',
 	'Routes\\Dashboard\\Account::Settings'
 )
 ->Register(
 	'Atlantis.Dashboard.Account.Password',
-	'{@}//dashboard/account/password',
-	'/dashboard/account/password',
+	'{&}//dashboard/account/password',
+	'//{{Domain}}/dashboard/account/password',
 	'Routes\\Dashboard\\Account::Password'
 )
 ->Register(
 	'Atlantis.Admin.Home',
-	'{@}//ops',
-	'/ops',
+	'{&}//ops',
+	'//{{Domain}}/ops',
 	'Routes\\Admin\\Home::Index'
 );
 
@@ -91,32 +91,32 @@
 ($Router)
 ->Register(
 	'Atlantis.API.Blog',
-	'{@}//api/v1/blog/($)',
-	'/api/v1/blog/{{Command}}',
+	'{&}//api/v1/blog/($)',
+	'//{{Domain}}/api/v1/blog/{{Command}}',
 	'Routes\\Api\\V1\\Blog::Index'
 )
 ->Register(
 	'Atlantis.API.Post',
-	'{@}//api/v1/post/($)',
-	'/api/v1/post/{{Command}}',
+	'{&}//api/v1/post/($)',
+	'//{{Domain}}/api/v1/post/{{Command}}',
 	'Routes\\Api\\V1\\Post::Index'
 )
 ->Register(
 	'Atlantis.API.Image',
-	'{@}//api/v1/image/($)',
-	'/api/v1/image/{{Command}}',
+	'{&}//api/v1/image/($)',
+	'//{{Domain}}/api/v1/image/{{Command}}',
 	'Routes\\Api\\V1\\Image::Index'
 )
 ->Register(
 	'Atlantis.API.User',
-	'{@}//api/v1/user/($)',
-	'/api/v1/user/{{Command}}',
+	'{&}//api/v1/user/($)',
+	'//{{Domain}}/api/v1/user/{{Command}}',
 	'Routes\\Api\\V1\\User::Index'
 )
 ->Register(
 	'Atlantis.API.Test',
-	'{@}//api/v1/test/($)',
-	'/api/v1/test/{{Command}}',
+	'{&}//api/v1/test/($)',
+	'//{{Domain}}/api/v1/test/{{Command}}',
 	'Routes\\Api\\V1\\Test::Index'
 );
 
@@ -126,37 +126,43 @@
 ($Router)
 ->Register(
 	'Atlantis.Blog.Post',
-	'{@}//\x2b($)/($)',
-	'/+{{BlogAlias}}/{{PostAlias}}',
+	'{&}//\x2b($)/($)',
+	'//{{Domain}}/+{{BlogAlias}}/{{PostAlias}}',
 	'Routes\\Blog\\Post::Index'
 )
 ->Register(
 	'Atlantis.Blog.Home',
-	'{@}//\x2b($)',
-	'/+{{BlogAlias}}',
+	'{&}//\x2b($)',
+	'//{{Domain}}/+{{BlogAlias}}',
 	'Routes\\Blog\\Index::Index'
 )
 ->Register(
 	'Atlantis.User.Home',
-	'{@}//\x7e($)',
-	'/~{{UserAlias}}',
+	'{&}//\x7e($)',
+	'//{{Domain}}/~{{UserAlias}}',
 	'Routes\\User\\Index::Index'
 )
 ->Register(
 	'Atlantis.Handler.UploadImage',
-	'{@}//media/usr/img/([a-f0-9]+/[a-f0-9]+/[a-f0-9]+/[a-f0-9]+/[a-f0-9]+)/(.+?)\.(.+?)$',
-	'/media/usr/img/{{Path}}/{{Name}}.{{Ext}}',
+	'{&}//media/usr/img/([a-f0-9]+/[a-f0-9]+/[a-f0-9]+/[a-f0-9]+/[a-f0-9]+)/(.+?)\.(.+?)$',
+	'//{{Domain}}/media/usr/img/{{Path}}/{{Name}}.{{Ext}}',
 	'Routes\\Media::Image'
 )
 ->Register(
 	'Atlantis.Handler.PageCMS',
-	'{@}//(@)',
-	'/{{PageURI}}',
+	'{&}//(@)',
+	'//{{Domain}}/{{PageURI}}',
 	'Routes\\Page::Index'
+)
+->Register(
+	'Atlantis.Blog.CustomDomain',
+	'{@}//{@}',
+	'//{{Domain}}/error/not-found',
+	'Routes\\Blog\\CustomDomain::Index'
 )
 ->Register(
 	'Atlantis.Handler.NotFound',
 	'{@}//{@}',
-	'/error/not-found',
+	'//{{Domain}}/error/not-found',
 	'Routes\\Home::NotFound'
 );

@@ -37,6 +37,9 @@ $GetStylesheetURL = function(String $URI):String {
 	<meta name="twitter:creator" content="<?php $Surface->Show('Social.Authour') ?>" />
 	<meta name="twitter:image" content="<?php $Surface->Show('Social.Image') ?>" />
 	<meta name="twitter:domain" content="<?php $Printer($Router->GetDomain()) ?>" />
+	<meta property="og:site_name" content="<?php $Printer(Nether\Option::Get('app-name')) ?>">
+	<meta property="og:title" content="<?php $Surface->Show('Page.Title') ?>">
+	<meta property="og:image" content="<?php $Surface->Show('Social.Image') ?>">
 
 
 </head>

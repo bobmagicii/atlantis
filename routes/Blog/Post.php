@@ -54,7 +54,7 @@ extends Atlantis\Site\PublicWeb {
 
 		if($Post->Enabled) {
 			$Hit = Atlantis\Prototype\LogBlogPostTraffic::GetByHithashSince(
-				$this->Router->GetHitHash(),
+				$this->GetHitHash(),
 				strtotime('-20 minutes')
 			);
 

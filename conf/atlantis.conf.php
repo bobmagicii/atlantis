@@ -26,6 +26,7 @@ Nether\Option::Set([
 	),
 
 	// blog settings.
+	'Atlantis.Blog.AllowUserDomains'      => TRUE,
 	'Atlantis.Blog.DefaultImageHeaderURL' => '/themes/default/gfx/bg01.jpg',
 	'Atlantis.Blog.DefaultImageIconURL'   => '/themes/default/gfx/icon-default-light.png',
 

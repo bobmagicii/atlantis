@@ -6,6 +6,7 @@
 Nether\Option::Set([
 
 	'Atlantis.Website' => 'https://ur-domain-name',
+	'Atlantis.Domain'  => 'ur-primary-domain',
 
 	////////////////////////////////////////////////////////////////
 	// Filesystem Settings /////////////////////////////////////////

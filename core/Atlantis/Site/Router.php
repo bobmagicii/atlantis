@@ -11,6 +11,13 @@ extends Nether\Avenue\Router {
 	__Construct($Opt=NULL) {
 		parent::__Construct($Opt);
 
+		$Shortcuts = Nether\Option::Get('nether-avenue-condition-shortcuts');
+		$Shortcuts['{&}'] = sprintf(
+			'(?:(?:.+?\.)?%s)',
+			str_replace('.','\.',Nether\Option::Get('Atlantis.Domain'))
+		);
+		Nether\Option::Set('nether-avenue-condition-shortcuts',$Shortcuts);
+
 		(static function($Router){
 			require(sprintf(
 				'%s/conf/routes.conf.php',

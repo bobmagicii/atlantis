@@ -82,10 +82,13 @@ class Endpoint {
 		$Tokens = NULL;
 
 		$this->Format = $Format;
-		$this->Data = $Data;
+		$this->Data = $Data ?? [];
 
 		preg_match_all('/{{([a-zA-Z0-9]+)}}/',$Format,$Match);
 		$this->Tokens = $Match[1];
+
+		if(!array_key_exists('Domain',$this->Data))
+		$this->Data['Domain'] = Nether\Option::Get('Atlantis.Domain');
 
 		return;
 	}
