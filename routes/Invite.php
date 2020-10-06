@@ -15,18 +15,7 @@ extends Atlantis\Site\PublicWeb {
 	Index():
 	Void {
 
-		if($this->Post->Action)
-		$this->HandleJoin();
-
 		$this->Surface->Area('join/invite');
-		return;
-	}
-
-	protected function
-	HandleJoin():
-	Void {
-
-
 		return;
 	}
 
