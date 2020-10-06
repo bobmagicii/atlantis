@@ -16,6 +16,7 @@ Nether\Option::Set([
 	'nether-web-root' => sprintf('%s/www',ProjectRoot),
 	'nether-web-path' => '/',
 
+	'Atlantis.User.Join.Mode'      => Atlantis\Prototype\User::JoinModeInvite,
 	'Atlantis.User.Password.Algo'  => PASSWORD_ARGON2ID,
 	'Atlantis.User.Cookie.Name'    => 'atlantis-user',
 	'Atlantis.User.Cookie.Path'    => '/',
@@ -26,7 +27,7 @@ Nether\Option::Set([
 	),
 
 	// blog settings.
-	'Atlantis.Blog.AllowUserDomains'      => TRUE,
+	'Atlantis.Blog.AllowCustomDomains'    => TRUE,
 	'Atlantis.Blog.DefaultImageHeaderURL' => '/themes/default/gfx/bg01.jpg',
 	'Atlantis.Blog.DefaultImageIconURL'   => '/themes/default/gfx/icon-default-light.png',
 

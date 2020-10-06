@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class AddBytesImagesToUsers
+class AtlantisAddBytesImagesToUsers
 extends AbstractMigration {
 
 	public function

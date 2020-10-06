@@ -1,9 +1,12 @@
 <?php
 
 namespace Atlantis\Site;
-use \Atlantis as Atlantis;
-use \Nether   as Nether;
-use \Monolog  as Monolog;
+
+use
+Atlantis,
+Nether,
+Monolog,
+ReCaptcha;
 
 class PublicWeb {
 
@@ -146,6 +149,23 @@ class PublicWeb {
 		));
 
 		return;
+	}
+
+	protected function
+	DidValidateHuman():
+	Bool {
+	/*//
+	@date 2020-10-05
+	//*/
+
+		$Human = new ReCaptcha\ReCaptcha(Nether\Option::Get('Google.ReCaptcha.Secret'));
+		$CVal = $this->Post->{'g-recaptcha-response'};
+		$IP = $_SERVER['REMOTE_ADDR'];
+
+		if($Human->Verify($CVal,$IP)->IsSuccess())
+		return TRUE;
+
+		return FALSE;
 	}
 
 	public function

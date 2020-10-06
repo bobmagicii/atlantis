@@ -1,0 +1,75 @@
+<?php
+
+$Printer = new Nether\Input\Filter($_POST);
+$Printer->SetDefaultFunction('Atlantis\\Util\\Filters::SafeForHTML');
+
+?>
+
+<style type="text/css">
+.g-recaptcha > div { margin: 0px auto; width: 100%; }
+</style>
+
+<div class="container pt-4 pb-4">
+
+	<div class="row justify-content-center">
+		<div class="col-12 col-md-6 col-lg-5">
+			<h3 class="mb-0">Request Invite</h3>
+			<hr class="mt-2 mb-2" />
+			<div class="mb-4">
+				<p>This project is a work in progress, but if you would like to get in and join to help test just submit an invite request here and when I feel it is decent enough I'll let you know. There is currently no timeframe of when invites will be sent.</p>
+			</div>
+			<form id="InviteForm" method="post">
+				<div class="form-group mb-2">
+					<input type="text" name="Email" class="form-control" placeholder="Email..." value="" />
+				</div>
+				<div class="form-group mb-2">
+					<div class="g-recaptcha" data-sitekey="<?php echo Nether\Option::Get('Google.ReCaptcha.Key') ?>"></div>
+				</div>
+				<div class="form-group mb-2">
+					<input type="hidden" name="Action" value="lulz" />
+					<input type="submit" class="btn btn-block btn-dark" value="Request Invite" />
+				</div>
+			</form>
+			<div id="Thanks" style="display:none;">
+				<div class="alert alert-success">
+					Your invite request has been submitted, thanks for your interest!
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+jQuery(document)
+.ready(function(){
+
+	let OnSubmit = function(Dataset){
+
+		Atlantis.Request({
+			'Method': 'POST',
+			'URL': '/api/v1/invite/entity',
+			'Data': Dataset,
+			'OnSuccess': function(){
+
+				jQuery('#InviteForm')
+				.hide();
+
+				jQuery('#Thanks')
+				.fadeIn();
+
+				return;
+			}
+		});
+
+		return;
+	};
+
+	jQuery('#InviteForm')
+	.on('submit',function(){
+		OnSubmit(jQuery(this).serialize());
+		return false;
+	})
+
+	return;
+});
+</script>

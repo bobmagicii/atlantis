@@ -31,6 +31,12 @@
 	'Routes\\Join::Index'
 )
 ->Register(
+	'Atlantis.Invite',
+	'{&}//invite',
+	'//{{Domain}}/invite',
+	'Routes\\Invite::Index'
+)
+->Register(
 	'Atlantis.Dashboard.Home',
 	'{&}//dashboard',
 	'//{{Domain}}/dashboard',
@@ -112,6 +118,12 @@
 	'{&}//api/v1/user/($)',
 	'//{{Domain}}/api/v1/user/{{Command}}',
 	'Routes\\Api\\V1\\User::Index'
+)
+->Register(
+	'Atlantis.API.Invite',
+	'{&}//api/v1/invite/($)',
+	'//{{Domain}}/api/v1/invite/{{Command}}',
+	'Routes\\Api\\V1\\Invite::Index'
 )
 ->Register(
 	'Atlantis.API.Test',

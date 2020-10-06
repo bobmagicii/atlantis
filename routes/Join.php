@@ -15,10 +15,8 @@ extends Atlantis\Site\PublicWeb {
 	Index():
 	Void {
 
-		$this->Errors->Push(new Atlantis\Site\Error\Inline([
-			'Class'   => 'Info',
-			'Message' => 'Registration is currently invite only as I am still greenfielding this project.'
-		]));
+		if(Nether\Option::Get('Atlantis.User.Join.Mode') == Atlantis\Prototype\User::JoinModeInvite)
+		$this->Goto('/invite');
 
 		if($this->Post->Action)
 		$this->HandleJoin();

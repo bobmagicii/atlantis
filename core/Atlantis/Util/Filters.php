@@ -206,6 +206,21 @@ methods here are safe for direct use or use as callback filtering.
 		return htmlentities($Val);
 	}
 
+	static public function
+	Email($Val):
+	?String {
+	/*//
+	@date 2020-10-05
+	//*/
+
+		$Valid = filter_var(
+			trim($Val),
+			FILTER_VALIDATE_EMAIL,
+			['flags'=>FILTER_FLAG_EMAIL_UNICODE]
+		);
+
+		return $Valid ?: NULL;
+	}
 
 	////////////////////////////////
 	////////////////////////////////

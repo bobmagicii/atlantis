@@ -73,6 +73,11 @@ implements JsonSerializable {
 	AdultWarn    = 1, // list, apply visual warnings, blur images
 	AdultAllow   = 2; // yolo
 
+	const
+	JoinModeDisabled = 0,
+	JoinModeNormal   = 1,
+	JoinModeInvite   = 2;
+
 	public function
 	__Construct($Input, Bool $MakeSafer=FALSE) {
 
