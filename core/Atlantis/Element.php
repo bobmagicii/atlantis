@@ -9,6 +9,9 @@ class Element {
 	protected
 	$Area = NULL;
 
+	protected
+	$Surface = NULL;
+
 	use
 	Atlantis\Properties\ClassListStore;
 

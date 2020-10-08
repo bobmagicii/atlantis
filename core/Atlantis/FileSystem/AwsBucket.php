@@ -23,6 +23,9 @@ class AwsBucket {
 	String $Bucket;
 
 	protected
+	String $ACL;
+
+	protected
 	Aws\S3\S3Client $Client;
 
 	////////////////
