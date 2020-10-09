@@ -16,12 +16,14 @@ body > header a:link,
 body > header a:visited {
 	color: #000 !important;
 	border: 0px !important;
+	text-decoration: none !important;
 }
 
 body > header a:active,
 body > header a:hover {
 	color: #888 !important;
 	border: 0px !important;
+	text-decoration: none !important;
 }
 
 body > header > .container {

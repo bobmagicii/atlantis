@@ -44,8 +44,17 @@
 		<input id="InputTitle" type="text" class="form-control form-control-lg" placeholder="Post Title..." />
 	</div>
 
-	<div id="EditorContainer" class="EditorContainer mb-4">
-		<textarea id="Editor"></textarea>
+	<div class="jumbotron jumbotron-tertiary p-4 mb-4">
+		<div id="EditorJS">
+			<div class="Throbber">
+				<div class="row justify-content-center">
+					<div class="col-auto">
+						<i class="fas fa-fw fa-asterisk fa-spin"></i> Loading Editor...
+					</div>
+				</div>
+			</div>
+			<div class="Editor"></div>
+		</div>
 	</div>
 
 	<div class="mb-4">
@@ -104,86 +113,6 @@ jQuery(document)
 	let ElementOptAdult = jQuery('#ElementOptAdult');
 	let ElementSubmit = jQuery('#CmdSubmit');
 	let ElementTagList = jQuery('#ElementTagList');
-
-
-	////////////////////////////////////////////////////////////////
-	// code block management ///////////////////////////////////////
-
-	let InsertCodeBlockDef = {
-		'name': 'Insert Code Block',
-		'iconURL': './build/images/icons/269-info.png',
-		'exec': function(Ed) {
-			(Ed.selection)
-			.insertHTML('<code class="CodeViewer" data-lang="null" spellcheck="false"></code>&nbsp;');
-			return;
-		}
-	};
-
-	let OnCodeConfig = function(ElementCode){
-
-		let Overlay;
-		let Dialog;
-		let ElementLang = jQuery('<select />').addClass('form-control');
-		let CurrentLang = ElementCode.attr('data-lang');
-		let ListLang = CodeMirror.modeInfo.slice(0);
-
-		ListLang.sort(function(A,B){
-			let AName = A.name.toLowerCase();
-			let BName = B.name.toLowerCase();
-
-			return (
-				(AName === BName)?
-				(0):((AName < BName)?(-1):(1))
-			);
-		});
-
-		jQuery.each(ListLang,function(Key,Val){
-			ElementLang
-			.append(
-				jQuery('<option />')
-				.attr('value',Val.mode)
-				.text(Val.name)
-			);
-			return;
-		});
-
-		ElementLang
-		.val(CurrentLang)
-		.on('change',function(){
-			ElementCode.attr(
-				'data-lang',
-				jQuery(this).val()
-			);
-			return;
-		});
-
-		Overlay = new NUI.Overlay({
-			'Content': (Dialog = new NUI.Dialog({
-				'Title': 'Code Block Config',
-				'Content': (
-					jQuery('<div />')
-					.addClass('row')
-					.append(
-						jQuery('<div />')
-						.addClass('col-12 mb-2')
-						.append(ElementLang)
-					)
-				),
-				'OnCancel': function(){
-					Overlay.Destroy();
-					return;
-				}
-			}))
-		});
-
-		return;
-	};
-
-	ElementContain
-	.on('dblclick','.CodeViewer',function(){
-		OnCodeConfig(jQuery(this));
-		return;
-	});
 
 	////////////////////////////////////////////////////////////////
 	// blog selector ///////////////////////////////////////////////
@@ -331,88 +260,40 @@ jQuery(document)
 	////////////////////////////////////////////////////////////////
 	// launch editor ///////////////////////////////////////////////
 
-	let Editor = new Jodit('#Editor',{
-		'autofocus': false,
-		'defaultActionOnPaste': 'insert_as_text',
-		'enableDragAndDropFileToEditor': true,
-		'extraButtons':[ InsertCodeBlockDef ],
-		'uploader': {
-			'method': 'POST',
-			'url': '/api/v1/image/entity',
-			'format': 'json',
-			'filesVariableName': function(Iter) { return 'File' + Iter; },
-			'prepareData': function(Data) { return Data; },
-			'getMessage': function (Result) { return Result.Message; },
-			'error': function (e) {
-				this.jodit.events.fire('errorMessage', e.message, 'error', 4000);
-				return;
-			},
-			'isSuccess': function(Result) { return Result.Error === 0; },
-			'process': function(Result) {
-				let Output = [];
-
-				jQuery(Result.Payload.Success)
-				.each(function(){
-					console.log('Process: ' + this.URL);
-					Output.push(this.URL);
-					return;
-				});
-
-				return {
-					files: Output
-				};
-			},
-			'defaultHandlerSuccess': function (Data) {
-				let that = this;
-
-				jQuery.each(Data.files,function(Key,Val){
-					that.selection.insertImage(Val);
-					return;
-				});
-
-				return;
-			},
-			'defaultHandlerError': function (Result) {
-				console.log("Error Handler");
-
-				(this.jodit.events)
-				.fire('errorMessage',Result.Message);
-
-				return;
-			}
-		}
+	let Editor = new Atlantis.Editor.EditorJS({
+		'Selector': '#EditorJS'
 	});
-
-	Editor.value = '';
 
 	ElementSubmit
 	.on('click',function(){
 
-		let BlogID = parseInt(InputBlogID.val());
-		let Title = jQuery.trim(InputTitle.val());
-		let OptDraft = ElementOptDraft.hasClass('active') ? 1 : 0;
-		let OptAdult = ElementOptAdult.hasClass('active') ? 1 : 0;
-		let Content = Editor.value;
-		let Tags = GetTagList();
+		(async function(){
+			let BlogID = parseInt(InputBlogID.val());
+			let Title = jQuery.trim(InputTitle.val());
+			let OptAdult = ElementOptAdult.hasClass('active') ? 1 : 0;
+			let OptDraft = ElementOptDraft.hasClass('active') ? 1 : 0;
+			let Content = await Editor.GetContent();
 
-		Atlantis.Request({
-			'Method': 'POST',
-			'URL': '<?php echo $Endpoint('Atlantis.API.Post',['Command'=>'entity']) ?>',
-			'Data': {
-				'BlogID': BlogID,
-				'Title': Title,
-				'Content': Content,
-				'OptDraft': OptDraft,
-				'OptAdult': OptAdult,
-				'Tags': Tags
-			},
-			'OnSuccess': function(Result){
-				location.href = Result.Location;
-				return;
-			}
-		});
+			Atlantis.Request({
+				'Method': 'POST',
+				'URL': '/api/v1/post/entity',
+				'Data': {
+					'BlogID': BlogID,
+					'Title': Title,
+					'ContentJSON': JSON.stringify(Content),
+					'OptAdult': OptAdult,
+					'OptDraft': OptDraft
+				},
+				'OnSuccess': function(Result){
+					location.href = Result.Location;
+					return;
+				}
+			});
 
-		return;
+			return;
+		})();
+
+		return false;
 	});
 
 	return;

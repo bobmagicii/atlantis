@@ -32,7 +32,8 @@ extends Atlantis\Prototype {
 		'OptAdult'    => 'OptAdult:int',
 		'Title'       => 'Title',
 		'Alias'       => 'Alias',
-		'Content'     => 'Content'
+		'Content'     => 'Content',
+		'ContentJSON' => 'ContentJSON'
 	];
 
 	// database fields.
@@ -47,7 +48,8 @@ extends Atlantis\Prototype {
 	public String $UUID;
 	public String $Title;
 	public String $Alias;
-	public String $Content;
+	public ?String $Content;
+	public ?String $ContentJSON;
 	public Int $OptAdult;
 
 	// extension fields.
@@ -310,6 +312,26 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
+	public function
+	RenderFromJSON():
+	String {
+
+		$Output = '';
+		$Block = NULL;
+
+		$Content = Atlantis\Struct\EditorJS\Content::FromString($this->ContentJSON);
+		//Atlantis\Util::VarDump($Content);
+
+		foreach($Content->Blocks as $Block) {
+			$Output .= (String)$Block;
+		}
+
+		return $Output;
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
 	static public function
 	GetByID(Int $ID):
 	?self {
@@ -501,7 +523,7 @@ extends Atlantis\Prototype {
 		if(!$Opt->Title)
 		throw new Exception('Title cannot be empty.');
 
-		if(!$Opt->Content)
+		if(!$Opt->Content && !$Opt->ContentJSON)
 		throw new Exception('Content cannot be empty it a blog ffs');
 
 		if(!$Opt->Alias)

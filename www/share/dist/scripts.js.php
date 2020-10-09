@@ -18,6 +18,11 @@ ob_start();
 $Project->Build();
 ob_get_clean();
 
+if($Project->Updated) {
+//	$Min = new MatthiasMullie\Minify\JS($Project->OutputFile);
+//	$Min->Minify($Project->OutputMinFile);
+}
+
 $Cache = new Atlantis\Util\FileCacheHandler([
 	'File'        => $Project->OutputFile,
 	'ContentType' => $Project->ContentType

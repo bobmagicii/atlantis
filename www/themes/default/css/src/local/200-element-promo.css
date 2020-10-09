@@ -28,6 +28,7 @@ given an image to display to art shit up.
 .Promo a:visited {
 	color: #eee;
 	border: 0px;
+	text-decoration: none;
 }
 
 .Promo a:active,

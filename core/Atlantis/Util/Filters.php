@@ -2,6 +2,8 @@
 
 namespace Atlantis\Util;
 
+use Atlantis;
+
 // https://twitter.com/bobmagicii/status/825141051996389377
 
 class Filters {
@@ -220,6 +222,25 @@ methods here are safe for direct use or use as callback filtering.
 		);
 
 		return $Valid ?: NULL;
+	}
+
+	static public function
+	ObjectAsJSON($Val):
+	?String {
+
+		$Output = json_decode($Val);
+
+		if(!is_object($Output))
+		return NULL;
+
+		return json_encode($Output);
+	}
+
+	static public function
+	ValidatorForEditorJS($Val):
+	?Object {
+
+		return new Atlantis\Struct\EditorJS\Validator($Val);
 	}
 
 	////////////////////////////////

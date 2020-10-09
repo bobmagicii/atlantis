@@ -1,9 +1,8 @@
 .PostListing h3 {
-	margin-bottom: 4px;
+	margin-bottom: 8px;
 }
 
 .PostListing h3 a {
-	border-bottom: 2px dotted #444;
 	font-size: 0.8em;
 	font-weight: bold;
 }
@@ -23,7 +22,6 @@
 .PostListing .Date,
 .PostListing .Source,
 .PostListing .Authour {
-	border-bottom: 1px dotted #444;
 	font-weight: bold;
 	text-transform: initial;
 }

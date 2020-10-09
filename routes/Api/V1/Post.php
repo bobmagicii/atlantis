@@ -66,13 +66,13 @@ extends Atlantis\Site\ProtectedAPI {
 		($this->Post)
 		->BlogID('Atlantis\Util\Filters::TypeInt')
 		->Title('Atlantis\Util\Filters::EncodedText')
-		->Content('Atlantis\Util\Filters::TrimmedText')
+		->ContentJSON('Atlantis\Util\Filters::ValidatorForEditorJS')
 		->OptAdult('Atlantis\Util\Filters::NumberValidRange',[0,1,0])
 		->OptDraft('Atlantis\Util\Filters::TypeBool');
 
 		$BlogUser = NULL;
 		$Title = $this->Post->Title;
-		$Content = $this->Post->Content;
+		$ContentJSON = (String)$this->Post->ContentJSON ?: NULL;
 		$Enabled = $this->Post->OptDraft ? 0 : 1;
 		$OptAdult = NULL;
 		$Tags = [];
@@ -85,7 +85,7 @@ extends Atlantis\Site\ProtectedAPI {
 		if(!$Title)
 		$this->Quit(4,'post needs a title');
 
-		if(!$Content)
+		if(!$ContentJSON)
 		$this->Quit(5,'post needs content');
 
 		////////
@@ -125,13 +125,13 @@ extends Atlantis\Site\ProtectedAPI {
 		$Tags[] = (Int)$TagID;
 
 		$Post = Atlantis\Prototype\BlogPost::Insert([
-			'BlogID'   => $BlogUser->BlogID,
-			'UserID'   => $BlogUser->UserID,
-			'Enabled'  => $Enabled,
-			'Title'    => $Title,
-			'Alias'    => $Alias,
-			'OptAdult' => $OptAdult,
-			'Content'  => $Content
+			'BlogID'      => $BlogUser->BlogID,
+			'UserID'      => $BlogUser->UserID,
+			'Enabled'     => $Enabled,
+			'Title'       => $Title,
+			'Alias'       => $Alias,
+			'OptAdult'    => $OptAdult,
+			'ContentJSON' => $ContentJSON
 		]);
 
 		if(!$Post)
@@ -177,7 +177,7 @@ extends Atlantis\Site\ProtectedAPI {
 		($this->Post)
 		->ID('Atlantis\Util\Filters::TypeInt')
 		->Title('Atlantis\Util\Filters::EncodedText')
-		->Content('Atlantis\Util\Filters::TrimmedText')
+		->ContentJSON('Atlantis\Util\Filters::ValidatorForEditorJS')
 		->OptAdult('Atlantis\Util\Filters::NumberValidRange',[0,1,0])
 		->OptDraft('Atlantis\Util\Filters::TypeBool')
 		->AliasRegen('Atlantis\Util\Filters::NumberValidRange',[0,1,0]);
@@ -249,11 +249,12 @@ extends Atlantis\Site\ProtectedAPI {
 
 		// update content if we had some.
 
-		if($this->Post->Exists('Content')) {
-			if(!$this->Post->Content)
+		if($this->Post->Exists('ContentJSON')) {
+			if(!$this->Post->ContentJSON)
 			$this->Quit(4,'should a blog post not have content');
 
-			$Dataset['Content'] = $this->Post->Content;
+			$Dataset['ContentJSON'] = (String)$this->Post->ContentJSON ?: NULL;
+			$Dataset['Content'] = NULL;
 		}
 
 		////////

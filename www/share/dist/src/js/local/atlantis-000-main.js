@@ -79,6 +79,7 @@ jQuery(document)
 	// addon/mode/loadmode.js was copied into share/dist/src/libs
 	// mode/meta.js was copied into share/dist/src/libs
 	// mode subfolders were copied to share/dist/src/codemirror-modes
+
 	CodeMirror.modeURL = "/share/dist/src/codemirror-modes/%N/%N.js";
 
 	jQuery('.CopyElementToClipboard')

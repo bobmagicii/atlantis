@@ -48,9 +48,17 @@ $OptDraftClass = 'active ';
 		<input id="InputTitle" type="text" class="form-control form-control-lg" placeholder="Post Title..." value="<?php $Printer($Post->Title) ?>" />
 	</div>
 
-	<div id="EditorContainer" class="EditorContainer mb-4">
-		<div id="Editor"></div>
-		<div id="EditorContent" class="d-none"><?php echo $Post->Content ?></div>
+	<div class="jumbotron jumbotron-tertiary p-4 mb-4">
+		<div id="EditorJS">
+			<div class="Throbber">
+				<div class="row justify-content-center">
+					<div class="col-auto">
+						<i class="fas fa-fw fa-asterisk fa-spin"></i> Loading Editor...
+					</div>
+				</div>
+			</div>
+			<div class="Editor"></div>
+		</div>
 	</div>
 
 	<div class="mb-4">
@@ -320,92 +328,42 @@ jQuery(document)
 	////////////////////////////////////////////////////////////////
 	// launch editor ///////////////////////////////////////////////
 
-	let Editor = new Jodit('#Editor',{
-		'autofocus': false,
-		'defaultActionOnPaste': 'insert_as_text',
-		'enableDragAndDropFileToEditor': true,
-		'extraButtons':[ InsertCodeBlockDef, InsertTT ],
-		'uploader': {
-			'method': 'POST',
-			'url': '/api/v1/image/entity',
-			'format': 'json',
-			'filesVariableName': function(Iter) { return 'File' + Iter; },
-			'prepareData': function(Data) { return Data; },
-			'getMessage': function (Result) { return Result.Message; },
-			'error': function (e) {
-				this.jodit.events.fire('errorMessage', e.message, 'error', 4000);
-				return;
-			},
-			'isSuccess': function(Result) { return Result.Error === 0; },
-			'process': function(Result) {
-				let Output = [];
 
-				jQuery(Result.Payload.Success)
-				.each(function(){
-					console.log('Process: ' + this.URL);
-					Output.push(this.URL);
-					return;
-				});
-
-				return {
-					files: Output
-				};
-			},
-			'defaultHandlerSuccess': function (Data) {
-				let that = this;
-
-				jQuery.each(Data.files,function(Key,Val){
-					that.selection.insertImage(Val);
-					return;
-				});
-
-				return;
-			},
-			'defaultHandlerError': function (Result) {
-				console.log("Error Handler");
-
-				(this.jodit.events)
-				.fire('errorMessage',Result.Message);
-
-				return;
-			}
-		}
+	let Editor = new Atlantis.Editor.EditorJS({
+		'Selector': '#EditorJS',
+		'Data': <?php echo $Post->ContentJSON ?>
 	});
-
-	Editor.value = jQuery('#EditorContent').html();
 
 	ElementSubmit
 	.on('click',function(){
 
-		let PostID = parseInt(InputPostID.val());
-		let Title = jQuery.trim(InputTitle.val());
-		let OptAdult = ElementOptAdult.hasClass('active') ? 1 : 0;
-		let OptDraft = ElementOptDraft.hasClass('active') ? 1 : 0;
-		let Content = null;
+		(async function(){
+			let PostID = parseInt(InputPostID.val());
+			let Title = jQuery.trim(InputTitle.val());
+			let OptAdult = ElementOptAdult.hasClass('active') ? 1 : 0;
+			let OptDraft = ElementOptDraft.hasClass('active') ? 1 : 0;
+			let Content = await Editor.GetContent();
 
-		jQuery('.jodit_wysiwyg')
-		.find('.CodeConfig')
-		.remove();
+			Atlantis.Request({
+				'Method': 'PATCH',
+				'URL': '<?php echo $Endpoint('Atlantis.API.Post',['Command'=>'entity']) ?>',
+				'Data': {
+					'ID': PostID,
+					'Title': Title,
+					'ContentJSON': JSON.stringify(Content),
+					'OptDraft': OptDraft,
+					'OptAdult': OptAdult
+				},
+				'OnSuccess': function(Result){
+					location.href = Result.Location;
+					return;
+				}
+			});
 
-		Content = Editor.value;
+			return;
+		})();
 
-		Atlantis.Request({
-			'Method': 'PATCH',
-			'URL': '<?php echo $Endpoint('Atlantis.API.Post',['Command'=>'entity']) ?>',
-			'Data': {
-				'ID': PostID,
-				'Title': Title,
-				'Content': Content,
-				'OptDraft': OptDraft,
-				'OptAdult': OptAdult
-			},
-			'OnSuccess': function(Result){
-				location.href = Result.Location;
-				return;
-			}
-		});
-
-		return;
+		return false;
 	});
 
 	return;

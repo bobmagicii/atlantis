@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-10-02 23:29:54
+@date 2020-10-09 05:21:01
 @files [
     "src\/css\/libs\/000-font-awesome.min.css",
     "src\/css\/libs\/100-bootstrap.min.css",
@@ -9,6 +9,7 @@
     "src\/css\/libs\/500-jodit.es2018.min.css",
     "src\/css\/libs\/codemirror.css",
     "src\/css\/local\/atlantis-codemirror.css",
+    "src\/css\/local\/atlantis-editorjs.css",
     "src\/css\/local\/atlantis-nui.css"
 ]
 //*/
@@ -553,8 +554,36 @@ span.CodeMirror-selectedtext { background: none; }
 	margin-bottom: 10px;
 }
 
+.ce-block__content,
+.ce-toolbar__content {
+	max-width: initial;
+}
+
+.ce-toolbar__plus,
+.ce-toolbar__settings-btn {
+	background: #0002;
+	border-radius: 5px;
+	height: 24px;
+	width: 24px;
+}
+
+.codex-editor__redactor {
+	padding-bottom: 0px !important;
+}
+
+#EditorJS .Editor {
+	height: 0px;
+	overflow: hidden;
+}
+
+#EditorJS .Editor.Ready {
+	height: initial;
+	overflow: initial;
+}
+
 .NUI-Dialog header button {
 	padding-top: 0px;
 	padding-bottom: 0px;
+
 }
 

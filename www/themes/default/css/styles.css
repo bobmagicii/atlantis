@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-10-02 16:27:50
+@date 2020-10-08 05:34:08
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -22,11 +22,18 @@
 }
 
 .font-family-regular {
+	font-family: 'Poppins', sans-serif;
+	font-variant-ligatures: no-common-ligatures;
+}
+
+.font-family-heading {
 	font-family: 'Roboto Condensed', sans-serif;
+	font-variant-ligatures: no-common-ligatures;
 }
 
 .font-family-code {
 	font-family: 'Share Tech Mono', monospace;
+	font-variant-ligatures: common-ligatures;
 }
 
 html,
@@ -39,9 +46,8 @@ body {
 
 a:link:not(.btn),
 a:visited:not(.btn) {
-	border-bottom: 2px dotted #444;
 	color: #444;
-	text-decoration: none;
+	text-decoration: underline;
 }
 
 a:active:not(.btn),
@@ -195,12 +201,14 @@ body > header a:link,
 body > header a:visited {
 	color: #000 !important;
 	border: 0px !important;
+	text-decoration: none !important;
 }
 
 body > header a:active,
 body > header a:hover {
 	color: #888 !important;
 	border: 0px !important;
+	text-decoration: none !important;
 }
 
 body > header > .container {
@@ -287,15 +295,14 @@ body > header a {
 
 .PostContent a:link,
 .PostContent a:visited {
-	border-bottom: 1px dashed #666 !important;
+
 }
 
 .PostListing h3 {
-	margin-bottom: 4px;
+	margin-bottom: 8px;
 }
 
 .PostListing h3 a {
-	border-bottom: 2px dotted #444;
 	font-size: 0.8em;
 	font-weight: bold;
 }
@@ -315,7 +322,6 @@ body > header a {
 .PostListing .Date,
 .PostListing .Source,
 .PostListing .Authour {
-	border-bottom: 1px dotted #444;
 	font-weight: bold;
 	text-transform: initial;
 }
@@ -359,6 +365,7 @@ given an image to display to art shit up.
 .Promo a:visited {
 	color: #eee;
 	border: 0px;
+	text-decoration: none;
 }
 
 .Promo a:active,
@@ -608,7 +615,6 @@ select:focus {
 }
 
 .BlogSelectItem {
-	border-bottom: 1px solid #666;
 	cursor: pointer;
 	padding: 0.5em;
 }
@@ -667,7 +673,7 @@ select:focus {
 
 .breadcrumb a:link,
 .breadcrumb a:visited {
-	border-bottom: 1px dotted #eee;
+
 }
 
 .dropdown-menu {
@@ -691,7 +697,7 @@ select:focus {
 
 .jumbotron a:link:not(.btn),
 .jumbotron a:visited:not(.btn) {
-	border-bottom: 1px dotted #eee;
+
 }
 
 .jumbotron hr {
@@ -728,7 +734,7 @@ select:focus {
 
 .jumbotron-secondary a:link:not(.btn),
 .jumbotron-secondary a:visited:not(.btn) {
-	border-bottom: 1px dotted #555;
+
 }
 
 /* provide a more muted jumbotron for the theme */
@@ -756,6 +762,6 @@ select:focus {
 
 .jumbotron-tertiary a:link:not(.btn),
 .jumbotron-tertiary a:visited:not(.btn) {
-	border-bottom: 1px dotted #555;
+
 }
 

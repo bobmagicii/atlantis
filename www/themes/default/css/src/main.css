@@ -3,11 +3,18 @@
 }
 
 .font-family-regular {
+	font-family: 'Poppins', sans-serif;
+	font-variant-ligatures: no-common-ligatures;
+}
+
+.font-family-heading {
 	font-family: 'Roboto Condensed', sans-serif;
+	font-variant-ligatures: no-common-ligatures;
 }
 
 .font-family-code {
 	font-family: 'Share Tech Mono', monospace;
+	font-variant-ligatures: common-ligatures;
 }
 
 html,
@@ -20,9 +27,8 @@ body {
 
 a:link:not(.btn),
 a:visited:not(.btn) {
-	border-bottom: 2px dotted #444;
 	color: #444;
-	text-decoration: none;
+	text-decoration: underline;
 }
 
 a:active:not(.btn),
