@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-10-08 05:34:08
+@date 2020-10-09 19:00:30
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -680,6 +680,11 @@ select:focus {
 	background: rgb(0,0,0);
 	background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(68,68,68,1) 100%);
 	color: #eee;
+}
+
+.dropdown-item {
+	color: #eee;
+	cursor: pointer;
 }
 
 /* make the default jumbotron very bold for the theme */

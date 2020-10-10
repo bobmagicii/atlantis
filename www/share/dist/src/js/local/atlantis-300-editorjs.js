@@ -1,9 +1,9 @@
 'use strict';
 
 if(typeof Atlantis.Editor === 'undefined')
-Atlantis.Editor = {};
+Atlantis.EditorJS = { Editor: null, Plugins: { } };
 
-Atlantis.Editor.EditorJS = function(Opt) {
+Atlantis.EditorJS.Editor = function(Opt) {
 	let that = this;
 
 	this.Container = null;
@@ -51,9 +51,9 @@ Atlantis.Editor.EditorJS = function(Opt) {
 			'placeholder': 'Hello World...',
 			'data': Config.Data,
 			'tools': {
-				header: EJSHeader,
-				blockquote: EJSQuote,
-				codemirror: AtlantisCodeMirrorForEditorJS
+				'header': EJSHeader,
+				'blockquote': EJSQuote,
+				'codemirror': Atlantis.EditorJS.Plugins.CodeMirror
 			}
 		});
 

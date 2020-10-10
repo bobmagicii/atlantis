@@ -19,7 +19,7 @@ $Project->Build();
 ob_get_clean();
 
 if($Project->Updated) {
-	$Min = new MatthiasMullie\Minify\JS($Project->OutputFile);
+	$Min = new MatthiasMullie\Minify\CSS($Project->OutputFile);
 	$Min->Minify($Project->OutputMinFile);
 }
 

@@ -3,6 +3,13 @@
 	max-width: initial;
 }
 
+.ce-block {
+	background: #6661;
+	border-radius: 4px;
+	margin-bottom: 24px;
+	padding: 10px;
+}
+
 .ce-toolbar__plus,
 .ce-toolbar__settings-btn {
 	background: #0002;
@@ -12,7 +19,7 @@
 }
 
 .codex-editor__redactor {
-	padding-bottom: 0px !important;
+	padding-bottom: 24px !important;
 }
 
 #EditorJS .Editor {
