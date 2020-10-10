@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-10-10 00:20:13
+@date 2020-10-10 19:51:43
 @files [
     "src\/js\/libs\/000-jquery-3.1.1.min.js",
     "src\/js\/libs\/100-bootstrap.bundle.min.js",
@@ -11196,9 +11196,12 @@ jQuery(document)
 
 		let Editor = null;
 		let Container = null;
-		let Lang = Element.attr('data-lang') ?? 'txt';
-		let LangData = CodeMirror.findModeByExtension(Lang);
-		let Theme = Element.attr('data-theme');
+		let LangData = CodeMirror.findModeByMIME(
+			Element.attr('data-mime')?
+			Element.attr('data-mime'):
+			'text/plain'
+		);
+		let Theme = 'default';
 
 		Element.after(
 			Container = jQuery('<div />').addClass('CodeViewer')
@@ -11214,6 +11217,9 @@ jQuery(document)
 			'indentUnit': 4,
 			'tabSize': 4
 		});
+
+		//alert(Element.attr('data-mime'));
+		//alert(JSON.stringify(LangData));
 
 		if(LangData && LangData.mode)
 		CodeMirror.autoLoadMode(Editor,LangData.mode);
@@ -11800,7 +11806,7 @@ Atlantis.EditorJS.Editor = function(Opt) {
 			'tools': {
 				'header': EJSHeader,
 				'blockquote': EJSQuote,
-				'codemirror': Atlantis.EditorJS.Plugins.CodeMirror
+				'code-mirror': Atlantis.EditorJS.Plugins.CodeMirror
 			}
 		});
 
@@ -12198,8 +12204,6 @@ Atlantis.EditorJS.Plugins.CodeMirror = class {
 
 	save(Content) {
 
-		//alert(this.CodeMirror.getValue());
-
 		return {
 			Mime: this.Mime,
 			Text: this.CodeMirror.getValue()
@@ -12208,7 +12212,7 @@ Atlantis.EditorJS.Plugins.CodeMirror = class {
 
 	static get sanitize () {
 		return {
-			Mime: {},
+			Mime: false,
 			Text: true
 		}
 	}

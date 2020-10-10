@@ -120,9 +120,12 @@ jQuery(document)
 
 		let Editor = null;
 		let Container = null;
-		let Lang = Element.attr('data-lang') ?? 'txt';
-		let LangData = CodeMirror.findModeByExtension(Lang);
-		let Theme = Element.attr('data-theme');
+		let LangData = CodeMirror.findModeByMIME(
+			Element.attr('data-mime')?
+			Element.attr('data-mime'):
+			'text/plain'
+		);
+		let Theme = 'default';
 
 		Element.after(
 			Container = jQuery('<div />').addClass('CodeViewer')
@@ -138,6 +141,9 @@ jQuery(document)
 			'indentUnit': 4,
 			'tabSize': 4
 		});
+
+		//alert(Element.attr('data-mime'));
+		//alert(JSON.stringify(LangData));
 
 		if(LangData && LangData.mode)
 		CodeMirror.autoLoadMode(Editor,LangData.mode);

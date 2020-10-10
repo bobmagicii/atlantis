@@ -31,7 +31,7 @@ implements Atlantis\Packages\StringableObject {
 	__ToString():
 	String {
 
-		return "[EditorJS\Block type={$this->Type}]";
+		return "<div class=\"mb-4\">[EditorJS\Block type={$this->Type}]</div>";
 	}
 
 }
