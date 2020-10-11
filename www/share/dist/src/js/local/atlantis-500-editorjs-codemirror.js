@@ -86,7 +86,7 @@ a piece of content using codemirror as the code syntax magic thing.
 
 		this.UI = (
 			jQuery('<div />')
-			.addClass('row tight')
+			.addClass('row tight PostCode')
 		);
 
 		return;

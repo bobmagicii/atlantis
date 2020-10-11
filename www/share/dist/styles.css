@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-10-11 06:00:43
+@date 2020-10-11 20:12:13
 @files [
     "src\/codemirror-themes\/3024-day.css",
     "src\/codemirror-themes\/3024-night.css",
@@ -3903,6 +3903,11 @@ span.CodeMirror-selectedtext { background: none; }
 
 .codex-editor__redactor {
 	padding-bottom: 24px !important;
+}
+
+.codex-editor--narrow .ce-block--focused {
+	margin-right: inherit;
+	padding-right: inherit;
 }
 
 #EditorJS .Editor {

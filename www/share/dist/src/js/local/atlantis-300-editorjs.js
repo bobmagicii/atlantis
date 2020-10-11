@@ -53,7 +53,8 @@ Atlantis.EditorJS.Editor = function(Opt) {
 			'tools': {
 				'header': EJSHeader,
 				'blockquote': EJSQuote,
-				'code-mirror': Atlantis.EditorJS.Plugins.CodeMirror
+				'code-mirror': Atlantis.EditorJS.Plugins.CodeMirror,
+				'image': Atlantis.EditorJS.Plugins.Image
 			}
 		});
 

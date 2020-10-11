@@ -36,7 +36,15 @@ Atlantis.Upload.Button = function(Opt) {
 	////////////////////////////////////////////////////////////////
 
 	NUI.Util.MergeProperties(Opt,Config);
+
+	if(typeof Config.SelectorButton === 'object')
+	this.Button = Config.SelectorButton;
+	else
 	this.Button = jQuery(Config.SelectorButton);
+
+	if(typeof Config.SelectorInput === 'object')
+	this.Input = Config.SelectorInput;
+	else
 	this.Input = jQuery(Config.SelectorInput);
 
 	this.Reset = function(){
@@ -51,6 +59,7 @@ Atlantis.Upload.Button = function(Opt) {
 	};
 
 	OnButtonClick = function(){
+		console.log('UploadButton Click');
 		that.Input.trigger('click');
 		return false;
 	};
@@ -173,7 +182,7 @@ Atlantis.Upload.Button = function(Opt) {
 	(this.Button)
 	.css('position','relative')
 	.append(
-		jQuery('<i />')
+		jQuery('<span />')
 		.addClass('Status StatusThinking fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero ml-2')
 	)
 	.append(

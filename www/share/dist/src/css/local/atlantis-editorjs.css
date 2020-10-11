@@ -22,6 +22,11 @@
 	padding-bottom: 24px !important;
 }
 
+.codex-editor--narrow .ce-block--focused {
+	margin-right: inherit;
+	padding-right: inherit;
+}
+
 #EditorJS .Editor {
 	height: 0px;
 	overflow: hidden;
