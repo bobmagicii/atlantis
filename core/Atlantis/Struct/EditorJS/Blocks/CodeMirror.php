@@ -12,7 +12,8 @@ extends Atlantis\Struct\EditorJS\Block {
 		parent::OnReady($Raw);
 
 		($this->Data)
-		->Mine('Atlantis\\Util\\FIlters::StrippedText')
+		->Title('Atlantis\\Util\\FIlters::StrippedText')
+		->Mime('Atlantis\\Util\\FIlters::StrippedText')
 		->Text('Atlantis\\Util\\Filters::TrimmedText');
 
 		return;
@@ -22,7 +23,14 @@ extends Atlantis\Struct\EditorJS\Block {
 	__ToString():
 	String {
 
-		return "<div class=\"CodeViewer\" data-mime=\"{$this->Data->Mime}\">" . htmlentities($this->Data->Text) . "</div>\n";
+		return sprintf(
+			'<pre class="%s" data-mime="%s" data-title="%s" data-theme="%s">%s</pre>',
+			'CodeViewer',
+			$this->Data->Mime,
+			$this->Data->Title,
+			$this->Data->Theme,
+			htmlentities($this->Data->Text)
+		);
 	}
 
 }

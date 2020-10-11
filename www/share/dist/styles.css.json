@@ -4,7 +4,8 @@
     "ContentType": "text\/css",
     "Directories": [
         "css/libs",
-        "css/local"
+        "css/local",
+        "codemirror-themes"
     ],
     "DistDir": ".",
     "Extensions": [

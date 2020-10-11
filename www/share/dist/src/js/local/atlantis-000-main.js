@@ -114,23 +114,25 @@ jQuery(document)
 	.each(function(){
 
 		let Element = jQuery(this);
-
-		if(Element.parents('.EditorContainer').length > 0)
-		return;
-
+		let Mime = Element.attr('data-mime') ?? 'text/plain';
+		let Title = Element.attr('data-title') ?? '';
+		let Theme = Element.attr('data-theme') ?? 'default';
+		let LangData = CodeMirror.findModeByMIME(Mime);
 		let Editor = null;
 		let Container = null;
-		let LangData = CodeMirror.findModeByMIME(
-			Element.attr('data-mime')?
-			Element.attr('data-mime'):
-			'text/plain'
-		);
-		let Theme = 'default';
 
-		Element.after(
-			Container = jQuery('<div />').addClass('CodeViewer')
+		Container = jQuery.zc(
+			'div.CodeViewer.WithLabel>'+
+			'div.Label>'+
+			'(div.row.tight>('+
+				'(div.col-auto>i.fas.fa-fw.fa-code.mr-2)+'+
+				'(div.col{!Title!})+'+
+				'(div.col-auto{!Lang!})'+
+			'))',
+			{ 'Title': Title, 'Lang': LangData.name }
 		);
 
+		Element.after(Container);
 		Element.hide();
 
 		Editor = CodeMirror(Container.get(0),{
@@ -141,9 +143,6 @@ jQuery(document)
 			'indentUnit': 4,
 			'tabSize': 4
 		});
-
-		//alert(Element.attr('data-mime'));
-		//alert(JSON.stringify(LangData));
 
 		if(LangData && LangData.mode)
 		CodeMirror.autoLoadMode(Editor,LangData.mode);

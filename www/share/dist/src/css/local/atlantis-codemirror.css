@@ -1,6 +1,28 @@
 
-.CodeMirror {
-	border-radius: 4px;
+
+.CodeViewer {
+	position: relative;
+	margin-bottom: 32px;
+}
+
+.CodeViewer .Label {
+	background: #444;
+	color: #eee;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	font-size: 0.9em;
+	font-weight: bold;
+	padding: 1px 6px;
+}
+
+.CodeViewer .CodeMirror {
+	border-radius: 5px;
 	height: initial;
-	margin-bottom: 10px;
+	margin-bottom: 24px;
+	font-family: 'Share Tech Mono', 'monospace' !important;
+}
+
+.CodeViewer.WithLabel .CodeMirror {
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
 }

@@ -187,6 +187,7 @@ extends Atlantis\Site\ProtectedAPI {
 		$BlogUser = NULL;
 		$Post = NULL;
 		$Dataset = [];
+		$AliasRegen = FALSE;
 
 		////////
 
@@ -209,6 +210,7 @@ extends Atlantis\Site\ProtectedAPI {
 			$this->Quit(3,'post must have a title');
 
 			$Dataset['Title'] = $this->Post->Title;
+			$AliasRegen = TRUE;
 		}
 
 		// update draft status.
@@ -236,8 +238,8 @@ extends Atlantis\Site\ProtectedAPI {
 		// generate a new alias if asked.
 		// only update it though if it ends up changing.
 
-		if($this->Post->Exists('AliasRegen')) {
-			if($this->Post->AliasRegen && array_key_exists('Title',$Dataset))
+		if($this->Post->Exists('AliasRegen') || $AliasRegen) {
+			if(($this->Post->AliasRegen || $AliasRegen) && array_key_exists('Title',$Dataset))
 			$Dataset['Alias'] = Atlantis\Prototype\BlogPost::GenerateUniqueAlias(
 				$Post->Blog,
 				$Dataset['Title']
