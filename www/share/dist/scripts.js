@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-10-11 06:06:18
+@date 2020-10-11 18:03:28
 @files [
     "src\/js\/libs\/000-jquery-3.1.1.min.js",
     "src\/js\/libs\/100-bootstrap.bundle.min.js",
@@ -11,6 +11,7 @@
     "src\/js\/libs\/500-editor.js",
     "src\/js\/libs\/600-codemirror.loadmode.js",
     "src\/js\/libs\/600-codemirror.mode.meta.js",
+    "src\/js\/libs\/600-codemirror.multiplex.js",
     "src\/js\/libs\/600-editorjs-header.js",
     "src\/js\/libs\/600-editorjs-quote.js",
     "src\/js\/local\/atlantis-000-main.js",
@@ -11567,6 +11568,141 @@ NUI.Overlay.prototype.valueOf = NUI.Traits.GetFromStruct;
 });
 
 ///////////////////////////////////////////////////////////////////////////
+// src/js/libs/600-codemirror.multiplex.js ////////////////////////////////
+
+// CodeMirror, copyright (c) by Marijn Haverbeke and others
+// Distributed under an MIT license: https://codemirror.net/LICENSE
+
+(function(mod) {
+  if (typeof exports == "object" && typeof module == "object") // CommonJS
+    mod(require("../../lib/codemirror"));
+  else if (typeof define == "function" && define.amd) // AMD
+    define(["../../lib/codemirror"], mod);
+  else // Plain browser env
+    mod(CodeMirror);
+})(function(CodeMirror) {
+"use strict";
+
+CodeMirror.multiplexingMode = function(outer /*, others */) {
+  // Others should be {open, close, mode [, delimStyle] [, innerStyle]} objects
+  var others = Array.prototype.slice.call(arguments, 1);
+
+  function indexOf(string, pattern, from, returnEnd) {
+    if (typeof pattern == "string") {
+      var found = string.indexOf(pattern, from);
+      return returnEnd && found > -1 ? found + pattern.length : found;
+    }
+    var m = pattern.exec(from ? string.slice(from) : string);
+    return m ? m.index + from + (returnEnd ? m[0].length : 0) : -1;
+  }
+
+  return {
+    startState: function() {
+      return {
+        outer: CodeMirror.startState(outer),
+        innerActive: null,
+        inner: null
+      };
+    },
+
+    copyState: function(state) {
+      return {
+        outer: CodeMirror.copyState(outer, state.outer),
+        innerActive: state.innerActive,
+        inner: state.innerActive && CodeMirror.copyState(state.innerActive.mode, state.inner)
+      };
+    },
+
+    token: function(stream, state) {
+      if (!state.innerActive) {
+        var cutOff = Infinity, oldContent = stream.string;
+        for (var i = 0; i < others.length; ++i) {
+          var other = others[i];
+          var found = indexOf(oldContent, other.open, stream.pos);
+          if (found == stream.pos) {
+            if (!other.parseDelimiters) stream.match(other.open);
+            state.innerActive = other;
+
+            // Get the outer indent, making sure to handle CodeMirror.Pass
+            var outerIndent = 0;
+            if (outer.indent) {
+              var possibleOuterIndent = outer.indent(state.outer, "", "");
+              if (possibleOuterIndent !== CodeMirror.Pass) outerIndent = possibleOuterIndent;
+            }
+
+            state.inner = CodeMirror.startState(other.mode, outerIndent);
+            return other.delimStyle && (other.delimStyle + " " + other.delimStyle + "-open");
+          } else if (found != -1 && found < cutOff) {
+            cutOff = found;
+          }
+        }
+        if (cutOff != Infinity) stream.string = oldContent.slice(0, cutOff);
+        var outerToken = outer.token(stream, state.outer);
+        if (cutOff != Infinity) stream.string = oldContent;
+        return outerToken;
+      } else {
+        var curInner = state.innerActive, oldContent = stream.string;
+        if (!curInner.close && stream.sol()) {
+          state.innerActive = state.inner = null;
+          return this.token(stream, state);
+        }
+        var found = curInner.close ? indexOf(oldContent, curInner.close, stream.pos, curInner.parseDelimiters) : -1;
+        if (found == stream.pos && !curInner.parseDelimiters) {
+          stream.match(curInner.close);
+          state.innerActive = state.inner = null;
+          return curInner.delimStyle && (curInner.delimStyle + " " + curInner.delimStyle + "-close");
+        }
+        if (found > -1) stream.string = oldContent.slice(0, found);
+        var innerToken = curInner.mode.token(stream, state.inner);
+        if (found > -1) stream.string = oldContent;
+
+        if (found == stream.pos && curInner.parseDelimiters)
+          state.innerActive = state.inner = null;
+
+        if (curInner.innerStyle) {
+          if (innerToken) innerToken = innerToken + " " + curInner.innerStyle;
+          else innerToken = curInner.innerStyle;
+        }
+
+        return innerToken;
+      }
+    },
+
+    indent: function(state, textAfter, line) {
+      var mode = state.innerActive ? state.innerActive.mode : outer;
+      if (!mode.indent) return CodeMirror.Pass;
+      return mode.indent(state.innerActive ? state.inner : state.outer, textAfter, line);
+    },
+
+    blankLine: function(state) {
+      var mode = state.innerActive ? state.innerActive.mode : outer;
+      if (mode.blankLine) {
+        mode.blankLine(state.innerActive ? state.inner : state.outer);
+      }
+      if (!state.innerActive) {
+        for (var i = 0; i < others.length; ++i) {
+          var other = others[i];
+          if (other.open === "\n") {
+            state.innerActive = other;
+            state.inner = CodeMirror.startState(other.mode, mode.indent ? mode.indent(state.outer, "", "") : 0);
+          }
+        }
+      } else if (state.innerActive.close === "\n") {
+        state.innerActive = state.inner = null;
+      }
+    },
+
+    electricChars: outer.electricChars,
+
+    innerMode: function(state) {
+      return state.inner ? {state: state.inner, mode: state.innerActive.mode} : {state: state.outer, mode: outer};
+    }
+  };
+};
+
+});
+
+///////////////////////////////////////////////////////////////////////////
 // src/js/libs/600-editorjs-header.js /////////////////////////////////////
 
 !function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.Header=t():e.EJSHeader=t()}(window,function(){return function(e){var t={};function n(r){if(t[r])return t[r].exports;var i=t[r]={i:r,l:!1,exports:{}};return e[r].call(i.exports,i,i.exports,n),i.l=!0,i.exports}return n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var i in e)n.d(r,i,function(t){return e[t]}.bind(null,i));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="/",n(n.s=0)}([function(e,t,n){function r(e){return(r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function i(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}n(1).toString();
@@ -12544,27 +12680,47 @@ Atlantis.Upload.Button = function(Opt) {
 'use strict';
 
 Atlantis.EditorJS.Plugins.CodeMirror = class {
+/*//
+@date 2020-10-11
+provides a custom block plugin for editor.js for writing blocks of code into
+a piece of content using codemirror as the code syntax magic thing.
+//*/
 
 	constructor(Data,API,Config) {
 		this.Data = Data.data;
 
+		// the main structure all the widgets are packed into.
+
 		this.UI = null;
-		this.DropdownLang = null;
+
+		// code language selector
+
+		this.DropdownLangs = null;
+		this.ButtonLangs = null;
+		this.MenuLangs = null;
+
+		// syntax theme selecto
+
 		this.DropdownTheme = null;
-		this.Button = null;
 		this.ButtonThemes = null;
-		this.Menu = null;
 		this.MenuThemes = null;
-		this.Editor = null;
-		this.CodeMirror = null;
-		this.Loader = null;
+
+		// a title field for the block of code
+
 		this.Title = null;
 
-		this.Langs = CodeMirror.modeInfo.slice(0);
-		this.Theme = this.Data.Theme ?? 'default';
-		this.Mime = this.Data.Mime ?? 'text/x-php';
-		this.Text = this.Data.Text ?? this.Data.Text;
+		// the code editor itself
 
+		this.Editor = null;
+		this.CodeMirror = null;
+
+		// a hack iframe stuck in to trigger hack onload post-dom insrt.
+
+		this.Loader = null;
+
+		// prepare a list of programming languages defined by codemirror.
+
+		this.Langs = CodeMirror.modeInfo.slice(0);
 		this.Langs.sort(function(A,B){
 			let AName = A.name.toLowerCase();
 			let BName = B.name.toLowerCase();
@@ -12575,11 +12731,37 @@ Atlantis.EditorJS.Plugins.CodeMirror = class {
 			);
 		});
 
+		// prepare a list of themes provided by codemirror.
+
+		this.Themes = [
+			'ayu-dark', 'bespin', 'material-darker', 'cobalt', 'base16-light',
+			'base16-dark', 'solarized', 'isotope', 'mdn-like', 'yeti',
+			'ayu-mirage', 'eclipse', 'duotone-light', 'vibrant-ink', 'seti',
+			'erlang-dark', 'tomorrow-night-eighties', '3024-day',
+			'pastel-on-dark', 'ssms', 'idea', 'zenburn', 'duotone-dark',
+			'xq-dark', 'blackboard', 'ambiance-mobile', 'the-matrix',
+			'dracula', 'railscasts', 'darcula', 'material-ocean',
+			'oceanic-next', 'gruvbox-dark', 'monokai', 'midnight', 'icecoder',
+			'ttcn', 'neo', 'abcdef', 'ambiance', 'colorforth', '3024-night',
+			'liquibyte', 'nord', 'material-palenight', 'mbo', 'material',
+			'elegant', 'xq-light', 'neat', 'shadowfox', 'night', 'lesser-dark',
+			'tomorrow-night-bright', 'paraiso-light', 'paraiso-dark',
+			'rubyblue', 'hopscotch', 'twilight', 'panda-syntax', 'lucario',
+			'moxer', 'yonce',
+		];
+
+		this.Themes.sort();
+		this.Themes.unshift('synthwave84');
+		this.Themes.unshift('default');
+
 		return;
 	}
 
 	BuildUI() {
-		let that = this;
+	/*//
+	@date 2020-10-11
+	construct the ui elements for the main structure.
+	//*/
 
 		this.UI = (
 			jQuery('<div />')
@@ -12590,6 +12772,10 @@ Atlantis.EditorJS.Plugins.CodeMirror = class {
 	}
 
 	BuildTitle() {
+	/*//
+	@date 2020-10-11
+	construct the ui elements for the title field.
+	//*/
 
 		this.Title = (
 			jQuery('<input />')
@@ -12602,21 +12788,27 @@ Atlantis.EditorJS.Plugins.CodeMirror = class {
 		return;
 	}
 
-	BuildDropdownLang() {
+	BuildDropdownLangs() {
+	/*//
+	@date 2020-10-11
+	construct the ui elements for the language switcher.
+	//*/
+
 		let that = this;
 
-		this.DropdownLang = (
+		this.DropdownLangs = (
 			jQuery('<div />')
 			.addClass('dropdown')
 			.append(
-				this.Button = jQuery('<button />')
+				this.ButtonLangs = jQuery('<button />')
 				.addClass('btn btn-dark btn-block dropdown-toggle')
 				.attr('type','button')
 				.attr('data-toggle','dropdown')
+				.attr('data-mime',(this.Data.Mime ?? 'text/x-php'))
 				.text('Select Language')
 			)
 			.append(
-				this.Menu = jQuery('<div />')
+				this.MenuLangs = jQuery('<div />')
 				.addClass('dropdown-menu')
 				.css({
 					'max-height': '32vh',
@@ -12628,18 +12820,22 @@ Atlantis.EditorJS.Plugins.CodeMirror = class {
 		jQuery.each(this.Langs,function(Key,Val){
 			let Mime = Val.mime;
 
-			if(typeof Val.mime === 'undefined')
+			if(typeof Val.mime === 'undefined' || !Val.mime)
 			Mime = Val.mimes[0];
 
-			that.Menu.append(
+			that.MenuLangs
+			.append(
 				jQuery('<div />')
 				.addClass('dropdown-item')
 				.attr('data-mime',Mime)
 				.text(Val.name)
 				.on('click',function(){
-					that.Mime = jQuery(this).attr('data-mime');
+					(that.ButtonLangs)
+					.attr('data-mime',jQuery(this).attr('data-mime'))
+					.text(jQuery(this).text())
+					.trigger('click');
+
 					that.UpdateEditor();
-					that.Button.trigger('click');
 					return false;
 				})
 			);
@@ -12647,82 +12843,17 @@ Atlantis.EditorJS.Plugins.CodeMirror = class {
 			return;
 		});
 
-		this.Button.dropdown();
+		this.ButtonLangs.dropdown();
 		return;
 	}
 
-	BuildDropdownTheme() {
+	BuildDropdownThemes() {
+	/*//
+	@date 2020-10-11
+	construct the ui elements for the theme switcher.
+	//*/
+
 		let that = this;
-
-		let Themes = [
-			'ayu-dark',
-			'bespin',
-			'material-darker',
-			'cobalt',
-			'base16-light',
-			'base16-dark',
-			'solarized',
-			'isotope',
-			'mdn-like',
-			'yeti',
-			'ayu-mirage',
-			'eclipse',
-			'duotone-light',
-			'vibrant-ink',
-			'seti',
-			'erlang-dark',
-			'tomorrow-night-eighties',
-			'3024-day',
-			'pastel-on-dark',
-			'ssms',
-			'idea',
-			'zenburn',
-			'duotone-dark',
-			'xq-dark',
-			'blackboard',
-			'ambiance-mobile',
-			'the-matrix',
-			'dracula',
-			'railscasts',
-			'darcula',
-			'material-ocean',
-			'oceanic-next',
-			'gruvbox-dark',
-			'monokai',
-			'midnight',
-			'icecoder',
-			'ttcn',
-			'neo',
-			'abcdef',
-			'ambiance',
-			'colorforth',
-			'3024-night',
-			'liquibyte',
-			'nord',
-			'material-palenight',
-			'mbo',
-			'material',
-			'elegant',
-			'xq-light',
-			'neat',
-			'shadowfox',
-			'night',
-			'lesser-dark',
-			'tomorrow-night-bright',
-			'paraiso-light',
-			'paraiso-dark',
-			'rubyblue',
-			'hopscotch',
-			'twilight',
-			'panda-syntax',
-			'lucario',
-			'moxer',
-			'yonce',
-		];
-
-		Themes.sort();
-		Themes.unshift('synthwave84');
-		Themes.unshift('default');
 
 		this.DropdownTheme = (
 			jQuery('<div />')
@@ -12732,6 +12863,7 @@ Atlantis.EditorJS.Plugins.CodeMirror = class {
 				.addClass('btn btn-dark btn-block dropdown-toggle')
 				.attr('type','button')
 				.attr('data-toggle','dropdown')
+				.attr('data-theme',(this.Data.Theme ?? 'default'))
 				.text('Theme')
 			)
 			.append(
@@ -12744,16 +12876,19 @@ Atlantis.EditorJS.Plugins.CodeMirror = class {
 			)
 		);
 
-		jQuery.each(Themes,function(Key,Val){
+		jQuery.each(this.Themes,function(Key,Val){
 			that.MenuThemes.append(
 				jQuery('<div />')
 				.addClass('dropdown-item')
 				.attr('data-theme',this)
 				.text(this)
 				.on('click',function(){
-					that.Theme = jQuery(this).attr('data-theme');
+					(that.ButtonThemes)
+					.attr('data-theme',jQuery(this).attr('data-theme'))
+					.text(jQuery(this).text())
+					.trigger('click');
+
 					that.UpdateEditor();
-					that.ButtonThemes.trigger('click');
 					return false;
 				})
 			);
@@ -12766,18 +12901,27 @@ Atlantis.EditorJS.Plugins.CodeMirror = class {
 	}
 
 	BuildEditor() {
+	/*//
+	@date 2020-10-11
+	construct the widgets to hold the code editor.
+	//*/
+
 		let that = this;
 
 		this.Editor = (
 			jQuery('<div />')
 			.addClass('CodeViewer')
 			.on('keydown',function(Ev){
-				// prevent editor.js from seeing us doing the things
-				// we do in this thing.
+				// prevent editor.js from catching keystrokes while we are
+				// trying to make proegrimmer codez.
 				Ev.stopPropagation();
 				return;
 			})
 			.append(
+				// editor.js's "rendered" function still gets called too fast
+				// and codemirror has some issues if it isn't already in the
+				// dom. this is a hack to trigger an onload event to boot the
+				// editor up after installing it into the dom.
 				this.Loader = jQuery('<iframe />')
 				.addClass('d-none')
 				.on('load',function(){ that.InitializeEditor(); return; })
@@ -12788,58 +12932,64 @@ Atlantis.EditorJS.Plugins.CodeMirror = class {
 	}
 
 	InitializeEditor() {
+	/*//
+	@date 2020-10-11
+	boot codemirror and set the initial ui state after installing into the dom.
+	//*/
+
+		let Mime = this.ButtonLangs.attr('data-mime');
+		let Theme = this.ButtonThemes.attr('data-theme');
 
 		this.CodeMirror = CodeMirror(this.Editor[0],{
-			'value': this.Text,
+			'value': (this.Data.Text ?? ''),
+			'theme': (this.Data.Theme ?? 'default'),
 			'lineNumbers': true,
 			'indentWithTabs': true,
 			'readOnly': false,
 			'indentUnit': 4,
-			'tabSize': 4,
-			'theme': 'default'
+			'tabSize': 4
 		});
 
-		this.UpdateEditor();
-
-		return;
-	}
-
-	UpdateEditor() {
-
-		let Mode = CodeMirror.findModeByMIME(this.Mime);
-
-		(this.CodeMirror)
-		.setOption('mode',Mode.mime);
-
-		(this.CodeMirror)
-		.setOption('theme',this.Theme);
-
-		CodeMirror.autoLoadMode(
-			this.CodeMirror,
-			Mode.mode
-		);
-
-		console.log(Mode);
-
-		this.Button.text(
-			this.Menu.find('.dropdown-item[data-mime="' + this.Mime + '"]:first')
+		this.ButtonLangs.text(
+			this.MenuLangs.find(`.dropdown-item[data-mime="${Mime}"]:first`)
 			.text()
 		);
 
 		this.ButtonThemes.text(
-			this.MenuThemes.find('.dropdown-item[data-theme="' + this.Theme + '"]:first')
+			this.MenuThemes.find(`.dropdown-item[data-theme="${Theme}"]:first`)
 			.text()
 		);
+
+		this.UpdateEditor();
+		return;
+	}
+
+	UpdateEditor() {
+	/*//
+	@date 2020-10-11
+	kick codemirror to update on a settings change.
+	//*/
+
+		let Mime = this.ButtonLangs.attr('data-mime');
+		let Theme = this.ButtonThemes.attr('data-theme');
+		let Mode = CodeMirror.findModeByMIME(Mime);
+
+		CodeMirror.autoLoadMode(this.CodeMirror,Mode.mode);
+		this.CodeMirror.setOption('mode',Mime);
+		this.CodeMirror.setOption('theme',Theme);
 
 		return;
 	}
 
 	render() {
-		let that = this;
+	/*//
+	@date 2020-10-11
+	assemble the final ui from all all the components.
+	//*/
 
 		this.BuildUI();
-		this.BuildDropdownLang();
-		this.BuildDropdownTheme();
+		this.BuildDropdownLangs();
+		this.BuildDropdownThemes();
 		this.BuildTitle();
 		this.BuildEditor();
 
@@ -12847,7 +12997,7 @@ Atlantis.EditorJS.Plugins.CodeMirror = class {
 		.append(
 			jQuery('<div />')
 			.addClass('col-12 col-md-auto mb-2')
-			.append(this.DropdownLang)
+			.append(this.DropdownLangs)
 		)
 		.append(
 			jQuery('<div />')
@@ -12869,11 +13019,15 @@ Atlantis.EditorJS.Plugins.CodeMirror = class {
 	}
 
 	save(Content) {
+	/*//
+	@date 2020-10-11
+	fetch the data from the ui on save.
+	//*/
 
 		return {
 			'Title': jQuery.trim(this.Title.val()),
-			'Mime': this.Mime,
-			'Theme': this.Theme,
+			'Mime': this.ButtonLangs.attr('data-mime'),
+			'Theme': this.ButtonThemes.attr('data-theme'),
 			'Text': this.CodeMirror.getValue()
 		};
 	}
