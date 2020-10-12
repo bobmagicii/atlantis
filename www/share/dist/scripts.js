@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-10-12 06:29:23
+@date 2020-10-12 16:59:23
 @files [
     "src\/js\/libs\/000-jquery-3.1.1.min.js",
     "src\/js\/libs\/100-bootstrap.bundle.min.js",
@@ -13481,6 +13481,12 @@ tag to do it not tt.
 		return true;
 	}
 
+	static get sanitize() {
+		return {
+			'samp': { }
+		}
+	}
+
 	constructor({api}) {
 		this.API = api;
 
@@ -13549,7 +13555,7 @@ tag to do it not tt.
 		return;
 	}
 
-	Unwrap2(Range) {
+	UnwrapOG(Range) {
 	/*//
 	@date 2020-10-12
 	this version of the thing does a complete removal of the tag

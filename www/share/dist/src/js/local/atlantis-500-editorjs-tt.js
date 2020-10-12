@@ -11,6 +11,12 @@ tag to do it not tt.
 		return true;
 	}
 
+	static get sanitize() {
+		return {
+			'samp': { }
+		}
+	}
+
 	constructor({api}) {
 		this.API = api;
 
