@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-10-12 05:23:57
+@date 2020-10-12 16:38:32
 @files [
     "src\/codemirror-themes\/3024-day.css",
     "src\/codemirror-themes\/3024-night.css",
@@ -3892,10 +3892,15 @@ span.CodeMirror-selectedtext { background: none; }
 }
 
 .ce-block {
-	background: #8882;
+	background: #e0e0e0;
+	border: 1px solid #e0e0e0;
 	border-radius: 4px;
 	margin-bottom: 24px;
 	padding: 10px;
+}
+
+.ce-block--focused {
+	border-color: #444;
 }
 
 .ce-toolbar__plus,
