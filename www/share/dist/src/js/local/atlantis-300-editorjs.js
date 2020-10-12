@@ -54,7 +54,8 @@ Atlantis.EditorJS.Editor = function(Opt) {
 				'header': EJSHeader,
 				'blockquote': EJSQuote,
 				'code-mirror': Atlantis.EditorJS.Plugins.CodeMirror,
-				'image': Atlantis.EditorJS.Plugins.Image
+				'image': Atlantis.EditorJS.Plugins.Image,
+				'hr': Atlantis.EditorJS.Plugins.HR
 			}
 		});
 

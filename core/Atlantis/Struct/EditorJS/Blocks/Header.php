@@ -3,7 +3,7 @@
 namespace Atlantis\Struct\EditorJS\Blocks;
 use Atlantis;
 
-class Image
+class Header
 extends Atlantis\Struct\EditorJS\Block {
 
 	protected function
@@ -12,7 +12,7 @@ extends Atlantis\Struct\EditorJS\Block {
 		parent::OnReady($Raw);
 
 		($this->Data)
-		->URL('Atlantis\\Util\\Filters::StrippedText');
+		->Text('Atlantis\\Util\\Filters::StrippedText');
 
 		return;
 	}
@@ -21,10 +21,7 @@ extends Atlantis\Struct\EditorJS\Block {
 	__ToString():
 	String {
 
-		return sprintf(
-			'<div class="PostImage text-center mb-4"><img src="%s" alt="" title="" /></div>',
-			$this->Data->URL
-		);
+		return "<h2 class=\"PostHeading mb-4\">{$this->Data->Text}</h2>\n";
 	}
 
 }

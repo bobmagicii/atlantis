@@ -331,7 +331,7 @@ jQuery(document)
 
 	let Editor = new Atlantis.EditorJS.Editor({
 		'Selector': '#EditorJS',
-		'Data': <?php echo $Post->ContentJSON ?>
+		'Data': <?php echo $Post->ContentJSON ?? 'null' ?>
 	});
 
 	ElementSubmit
