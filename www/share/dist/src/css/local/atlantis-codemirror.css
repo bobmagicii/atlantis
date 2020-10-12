@@ -26,3 +26,8 @@
 	border-top-left-radius: 0px;
 	border-top-right-radius: 0px;
 }
+
+.ce-block .CodeViewer,
+.ce-block .CodeMirror {
+	margin-bottom: 0px;
+}

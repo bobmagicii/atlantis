@@ -4,7 +4,7 @@
 }
 
 .ce-block {
-	background: #6661;
+	background: #8882;
 	border-radius: 4px;
 	margin-bottom: 24px;
 	padding: 10px;
@@ -25,6 +25,11 @@
 .codex-editor--narrow .ce-block--focused {
 	margin-right: inherit;
 	padding-right: inherit;
+}
+
+.ce-header {
+	margin-bottom: 0px;
+	padding: 0px;
 }
 
 #EditorJS .Editor {
