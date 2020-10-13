@@ -49,16 +49,16 @@ $OptDraftClass = 'active ';
 	</div>
 
 	<!-- <div class="jumbotron jumbotron-tertiary p-4 mb-4"> -->
-		<div id="EditorJS">
-			<div class="Throbber">
-				<div class="row justify-content-center">
-					<div class="col-auto">
-						<i class="fas fa-fw fa-asterisk fa-spin"></i> Loading Editor...
-					</div>
+	<div id="EditorJS">
+		<div class="Throbber">
+			<div class="row justify-content-center">
+				<div class="col-auto">
+					<i class="fas fa-fw fa-asterisk fa-spin"></i> Loading Editor...
 				</div>
 			</div>
-			<div class="Editor"></div>
 		</div>
+		<div class="Editor"></div>
+	</div>
 	<!-- </div> -->
 
 	<div class="mb-4">
@@ -118,104 +118,12 @@ jQuery(document)
 	let BlogID = PostData.attr('data-blog-id');
 	let PostID = PostData.attr('data-post-id');
 
-	let URL = new URI;
-	let Query = URL.query(true);
 	let InputPostID = jQuery('#InputPostID');
 	let InputTitle = jQuery('#InputTitle');
-	let ElementContain = jQuery('#EditorContainer');
 	let ElementOptAdult = jQuery('#ElementOptAdult');
 	let ElementOptDraft = jQuery('#ElementOptDraft');
-	let ElementSubmit = jQuery('#CmdSubmit');
 	let ElementTagList = jQuery('#ElementTagList');
-
-	////////////////////////////////////////////////////////////////
-	// code block management ///////////////////////////////////////
-
-	let InsertCodeBlockDef = {
-		'name': 'Insert Code Block',
-		'iconURL': '/themes/default/gfx/icon-tiny.png',
-		'exec': function(Ed) {
-			(Ed.selection)
-			.insertHTML('<code class="CodeViewer" data-lang="null" spellcheck="false"></code>&nbsp;');
-			return;
-		}
-	};
-
-
-	let InsertTT = {
-		'name': 'Insert TT',
-		'iconURL': '/themes/default/gfx/icon-tiny.png',
-		'exec': function(Ed) {
-			(Ed.selection).wrapInTag('tt');
-			return;
-		}
-	};
-
-	let OnCodeConfig = function(ElementCode){
-
-		let Overlay;
-		let Dialog;
-		let ElementLang = jQuery('<select />').addClass('form-control');
-		let CurrentLang = ElementCode.attr('data-lang');
-		let ListLang = CodeMirror.modeInfo.slice(0);
-
-		ListLang.sort(function(A,B){
-			let AName = A.name.toLowerCase();
-			let BName = B.name.toLowerCase();
-
-			return (
-				(AName === BName)?
-				(0):((AName < BName)?(-1):(1))
-			);
-		});
-
-		jQuery.each(ListLang,function(Key,Val){
-			ElementLang
-			.append(
-				jQuery('<option />')
-				.attr('value',Val.mode)
-				.text(Val.name)
-			);
-			return;
-		});
-
-		ElementLang
-		.val(CurrentLang)
-		.on('change',function(){
-			ElementCode.attr(
-				'data-lang',
-				jQuery(this).val()
-			);
-			return;
-		});
-
-		Overlay = new NUI.Overlay({
-			'Content': (Dialog = new NUI.Dialog({
-				'Title': 'Code Block Config',
-				'Content': (
-					jQuery('<div />')
-					.addClass('row')
-					.append(
-						jQuery('<div />')
-						.addClass('col-12 mb-2')
-						.append(ElementLang)
-					)
-				),
-				'OnCancel': function(){
-					Overlay.Destroy();
-					return;
-				}
-			}))
-		});
-
-		return;
-	};
-
-	ElementContain
-	.on('dblclick','.CodeViewer',function(){
-		OnCodeConfig(jQuery(this));
-		return;
-	});
+	let ElementSubmit = jQuery('#CmdSubmit');
 
 	////////////////////////////////////////////////////////////////
 	// tag management //////////////////////////////////////////////
@@ -327,7 +235,6 @@ jQuery(document)
 
 	////////////////////////////////////////////////////////////////
 	// launch editor ///////////////////////////////////////////////
-
 
 	let Editor = new Atlantis.EditorJS.Editor({
 		'Selector': '#EditorJS',
