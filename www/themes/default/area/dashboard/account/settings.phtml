@@ -83,9 +83,29 @@
 				</select>
 			</div>
 		</div>
-
 	</div>
 
+	<!-- EMAIL -->
+	<div id="DashAccountEmail" class="row tight align-items-center mb-6">
+		<div class="col-12 mb-2">
+			<h2 class="font-size-large font-weight-bold">Email Address</h2>
+			<hr class="mb-2 mt-2" />
+			The address you use to log in and have notifications sent to.
+		</div>
+		<div class="col mb-2">
+			<input id="InputEmail" type="text" autocomplete="off" class="form-control" placeholder="Email Address..." value="<?php echo $Printer($User->Email) ?>" />
+		</div>
+		<div class="col-auto mb-2">
+			<div class="d-flex">
+				<i class="ActionStatus ActionStatusThink fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
+				<i class="ActionStatus ActionStatusGood fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
+				<i class="ActionStatus ActionStatusBad fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
+			</div>
+		</div>
+		<div class="col-auto mb-2">
+			<butt type="button" class="btn btn-block btn-dark ActionCommit">Save</button>
+		</div>
+	</div>
 
 </div>
 
@@ -127,6 +147,39 @@ jQuery(document)
 						return;
 					}
 				});
+
+			return;
+		}
+	});
+
+	let Title = new Atlantis.Action.StatusHandler({
+		'Element': '#DashAccountEmail',
+		'OnCommit': function(Handler){
+			let Input = jQuery.trim(jQuery('#InputEmail').val());
+
+			Atlantis.Request({
+				'Method': 'PATCH',
+				'URL': '/api/v1/user/entity',
+				'Data': { 'Fields': { 'Email': Input } },
+				'OnSuccess': function(Result){
+					Handler.SetStatus('good');
+					Atlantis.Toaster({
+						'Title': 'Account Settings',
+						'Content': 'Your e-mail address has been updated.',
+						'ContentClass': 'alert-success'
+					});
+					return;
+				},
+				'OnError': function(Result) {
+					Handler.SetStatus('bad');
+					Atlantis.Toaster({
+						'Title': 'Account Settings',
+						'Content': 'Error: ' + Result.Message,
+						'ContentClass': 'alert-danger'
+					});
+					return;
+				}
+			});
 
 			return;
 		}
