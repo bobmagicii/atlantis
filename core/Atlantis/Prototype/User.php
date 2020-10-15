@@ -34,6 +34,7 @@ implements JsonSerializable {
 		'ImageHeaderID' => 'ImageHeaderID:int',
 		'ImageIconID'   => 'ImageIconID:int',
 		'OptAdult'      => 'OptAdult:int',
+		'OptAllowSeen'  => 'OptAllowSeen:int',
 		'BytesImages'   => 'BytesImages:int'
 	];
 
@@ -320,7 +321,9 @@ implements JsonSerializable {
 	@date 2018-06-08
 	//*/
 
-		return [];
+		return [
+			'OptAllowSeen' => NULL
+		];
 	}
 
 	static protected function
@@ -329,6 +332,9 @@ implements JsonSerializable {
 	/*//
 	@date 2018-06-08
 	//*/
+
+		if($Opt->OptAllowSeen !== NULL)
+		$SQL->Where('Main.OptAllowSeen=:OptAllowSeen');
 
 		return;
 	}

@@ -85,6 +85,31 @@
 		</div>
 	</div>
 
+	<!-- PRIVACY: OPTALLOWSEEN -->
+	<div id="AccountOptAllowSeen" class="mb-6">
+		<h2 class="font-size-large font-weight-bold">Privacy: Online Status</h2>
+		<hr class="mb-2 mt-2" />
+		<p>There are a few places where people who have recently visited may be listed as Recent Visitors to promote the concept of being an actual social network.</p>
+		<div class="row tight align-items-center">
+			<div class="col-auto font-weight-bold">
+				Filter:
+			</div>
+			<div class="col-auto">
+				<div class="d-flex">
+					<i class="ActionStatus ActionStatusThink fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
+					<i class="ActionStatus ActionStatusGood fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
+					<i class="ActionStatus ActionStatusBad fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
+				</div>
+			</div>
+			<div class="col">
+				<select id="InputOptAllowSeen" class="ActionCommit form-control" autocomplete="off">
+					<option value="0" <?php echo ($User->OptAllowSeen===0)?('selected'):('') ?>>Do not include me in the Recent Visitors.</option>
+					<option value="1" <?php echo ($User->OptAllowSeen===1)?('selected'):('') ?>>Include me in the list of Recent Visitors.</option>
+				</select>
+			</div>
+		</div>
+	</div>
+
 	<!-- EMAIL -->
 	<div id="DashAccountEmail" class="row tight align-items-center mb-6">
 		<div class="col-12 mb-2">
@@ -116,6 +141,41 @@ jQuery(document)
 
 	let UserData = jQuery('#UserData');
 	let UserID = UserData.attr('data-user-id');
+
+	let OptAllowSeen = new Atlantis.Action.StatusHandler({
+		'Element': '#AccountOptAllowSeen',
+		'OnCommit': function(Handler){
+			let Input = jQuery.trim(jQuery('#InputOptAllowSeen').val());
+
+			Atlantis.Request({
+					'Method': 'PATCH',
+					'URL': '/api/v1/user/entity',
+					'Data': { 'Fields': { 'OptAllowSeen': Input } },
+					'OnSuccess': function(Result){
+						Handler
+						.SetStatus('good')
+						.Notify({
+							'Title': 'Account Settings',
+							'Content': 'Your account online status privacy has been updated.',
+							'ContentClass': 'alert-success'
+						});
+						return;
+					},
+					'OnError': function(Result) {
+						Handler
+						.SetStatus('bad')
+						.Notify({
+							'Title': 'Account Settings',
+							'Content': 'Error: ' + Result.Message,
+							'ContentClass': 'alert-danger'
+						});
+						return;
+					}
+				});
+
+			return;
+		}
+	});
 
 	let OptAdult = new Atlantis.Action.StatusHandler({
 		'Element': '#UserOptAdult',
