@@ -69,24 +69,21 @@
 		</div>
 	</div>
 
-
 	<div class="mb-4">
 		<h2 class="font-size-large font-weight-bold">Post Settings</h2>
 		<hr class="mb-2 mt-1" />
 		<div class="row tight align-items-center">
-			<div class="col-12 col-md-auto">
-				<button id="ElementOptDraft" class="btn btn-dark btn-block btn-toggle">
-					<i class="btn-toggle-off far fa-square mr-2"></i>
-					<i class="btn-toggle-on far fa-check-square mr-2"></i>
+			<div class="col-12 col-md-auto mb-2 mb-md-0">
+				<label class="AtlantisCheckboxButton" data-btn-class="btn-dark btn-block">
+					<input id="InputOptDraft" type="checkbox" />
 					Draft
-				</button>
+				</label>
 			</div>
-			<div class="col-12 col-md-auto">
-				<button id="ElementOptAdult" class="btn btn-adult btn-block btn-toggle">
-					<i class="btn-toggle-off far fa-square mr-2"></i>
-					<i class="btn-toggle-on far fa-check-square mr-2"></i>
+			<div class="col-12 col-md-auto mb-2 mb-md-0">
+				<label class="AtlantisCheckboxButton" data-btn-class="btn-adult btn-block">
+					<input id="InputOptAdult" type="checkbox" />
 					Adult
-				</button>
+				</label>
 			</div>
 		</div>
 	</div>
@@ -106,11 +103,11 @@ jQuery(document)
 	let Query = URL.query(true);
 	let InputBlogID = jQuery('#InputBlogID');
 	let InputTitle = jQuery('#InputTitle');
+	let InputOptDraft = jQuery('#InputOptDraft');
+	let InputOptAdult = jQuery('#InputOptAdult');
 	let ElementContain = jQuery('#EditorContainer');
 	let ElementBlogIcon = jQuery('#SelectedBlogIcon');
 	let ElementBlogTitle = jQuery('#SelectedBlogTitle');
-	let ElementOptDraft = jQuery('#ElementOptDraft');
-	let ElementOptAdult = jQuery('#ElementOptAdult');
 	let ElementSubmit = jQuery('#CmdSubmit');
 	let ElementTagList = jQuery('#ElementTagList');
 
@@ -129,11 +126,11 @@ jQuery(document)
 		ElementBlogTitle.text(BlogTitle);
 
 		if(BlogAdult === 0)
-		ElementOptAdult.removeClass('active disabled');
+		InputOptAdult.prop('checked',false);
 		else if(BlogAdult === 1)
-		ElementOptAdult.addClass('active').removeClass('disabled');
-		else
-		ElementOptAdult.addClass('active disabled');
+		InputOptAdult.prop('checked',true);
+
+		InputOptAdult.trigger('change');
 
 		return;
 	});
@@ -270,8 +267,8 @@ jQuery(document)
 		(async function(){
 			let BlogID = parseInt(InputBlogID.val());
 			let Title = jQuery.trim(InputTitle.val());
-			let OptAdult = ElementOptAdult.hasClass('active') ? 1 : 0;
-			let OptDraft = ElementOptDraft.hasClass('active') ? 1 : 0;
+			let OptAdult = InputOptAdult.is(':checked') ? 1 : 0;
+			let OptDraft = InputOptDraft.is(':checked') ? 1 : 0;
 			let Content = await Editor.GetContent();
 
 			Atlantis.Request({

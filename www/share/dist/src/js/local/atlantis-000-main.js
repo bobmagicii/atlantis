@@ -98,17 +98,8 @@ jQuery(document)
 		return;
 	});
 
-	jQuery('.btn-toggle')
-	.on('click',function(){
-		// not using the bootstrap data-toggle=button because it fights with
-		// your on-ready things and also just kinda seemed to suck.
-
-		if(jQuery(this).hasClass('disabled'))
-		return;
-
-		jQuery(this).toggleClass('active');
-		return;
-	});
+	jQuery('.AtlantisCheckboxButton')
+	.each(function(){ new Atlantis.Element.CheckboxButton(this); return; });
 
 	jQuery('.CodeViewer')
 	.each(function(){

@@ -289,7 +289,7 @@ namespace.
 			'Sort'                 => 'newest',
 			'CustomFilterFunc'     => NULL,
 			'CustomSortFunc'       => NULL,
-			'OutputFilter'          => NULL,
+			'OutputFilter'         => NULL,
 
 			// short circuit as many things needed to make the query as fast
 			// as possible. mainly only used if you are are just looking

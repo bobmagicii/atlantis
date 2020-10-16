@@ -18,6 +18,7 @@ a piece of content using codemirror as the code syntax magic thing.
 		this.ButtonUpload = null;
 		this.InputUpload = null;
 		this.Loader = null;
+		this.Gallery = false;
 
 		return;
 	}
