@@ -58,6 +58,8 @@ class PublicWeb {
 			'User'      => $this->User,
 			'Encoder'   => function($Val){ return Atlantis\Util\Filters::SafeForHTML($Val); },
 			'Printer'   => function($Val){ echo Atlantis\Util\Filters::SafeForHTML($Val); return; },
+			'Checked'   => function($Val){ if($Val) echo 'checked="checked"'; return; },
+			'Selected'  => function($Val){ if($Val) echo 'selected="selected"'; return; },
 			'Endpoint'  => function(String $Key, ?Array $Val=NULL) { return Atlantis\Site\Endpoint::Get($Key,$Val); }
 		]);
 
