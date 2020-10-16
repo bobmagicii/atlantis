@@ -59,22 +59,13 @@ implements Nether\Avenue\Interfaces\RouteAcceptance {
 	@date 2020-05-27
 	//*/
 
-		(function(
-			String $File,
-			Atlantis\Site\PublicWeb $Route,
-			Nether\Avenue\Router $Router,
-			Nether\Surface $Surface,
-			?Atlantis\Prototype\User $User
-		){
-			require($File);
-			return;
-		})(
-			static::$Filename,
-			$this,
-			$this->Router,
-			$this->Surface,
-			$this->User
-		);
+		// load a surface template that literally just loads the page.
+		// this will give our pages then access to all the features of
+		// the public route that we bound to the surface renderer.
+
+		$this->Area('page/loader',[
+			'Filename' => static::$Filename
+		]);
 
 		return;
 	}
