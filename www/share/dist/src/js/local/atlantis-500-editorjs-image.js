@@ -17,8 +17,9 @@ a piece of content using codemirror as the code syntax magic thing.
 		this.Image = null;
 		this.ButtonUpload = null;
 		this.InputUpload = null;
+		this.LabelGallery = null;
+		this.InputGallery = null;
 		this.Loader = null;
-		this.Gallery = false;
 
 		return;
 	}
@@ -60,6 +61,33 @@ a piece of content using codemirror as the code syntax magic thing.
 				return;
 			})
 		);
+
+		return;
+	}
+
+	BuildInputGallery() {
+	/*//
+	@date 2020-10-17
+	construct the ui elements for the gallery checkbox
+	//*/
+
+		this.LabelGallery = (
+			jQuery('<label />')
+			.attr('data-btn-class','btn-secondary btn-sm')
+			.append(
+				this.InputGallery =
+				jQuery('<input />')
+				.attr('type','checkbox')
+			)
+			.append(
+				jQuery('<span />')
+				.text('Gallery')
+			)
+		);
+
+		if(this.Data.Gallery)
+		(this.InputGallery)
+		.attr('checked','checked');
 
 		return;
 	}
@@ -136,6 +164,7 @@ a piece of content using codemirror as the code syntax magic thing.
 			}
 		});
 
+		new Atlantis.Element.CheckboxButton(this.LabelGallery);
 		return;
 	}
 
@@ -149,6 +178,7 @@ a piece of content using codemirror as the code syntax magic thing.
 
 		this.BuildUI();
 		this.BuildInputURL();
+		this.BuildInputGallery();
 		this.BuildButtonUpload();
 		this.BuildImage();
 
@@ -162,6 +192,11 @@ a piece of content using codemirror as the code syntax magic thing.
 			jQuery('<div />')
 			.addClass('col mb-4')
 			.append(this.InputURL)
+		)
+		.append(
+			jQuery('<div />')
+			.addClass('col-auto mb-4')
+			.append(this.LabelGallery)
 		)
 		.append(
 			jQuery('<div />')
@@ -191,13 +226,15 @@ a piece of content using codemirror as the code syntax magic thing.
 	//*/
 
 		return {
-			'URL': jQuery.trim(this.InputURL.val())
+			'URL': jQuery.trim(this.InputURL.val()),
+			'Gallery': this.InputGallery.is(':checked')
 		};
 	}
 
 	static get sanitize () {
 		return {
-			'URL': false
+			'URL': false,
+			'Gallery': false
 		}
 	}
 

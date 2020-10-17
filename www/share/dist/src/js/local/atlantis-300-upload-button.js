@@ -50,7 +50,8 @@ Atlantis.Upload.Button = function(Opt) {
 	this.Reset = function(){
 
 		(that.Button.find('.StatusThinking'))
-		.addClass('font-size-zero');
+		.addClass('font-size-zero')
+		.removeClass('ml-2');
 
 		(that.Button.find('.UploadButtonBar'))
 		.css('width','0%');
@@ -130,7 +131,8 @@ Atlantis.Upload.Button = function(Opt) {
 		let Prop = null;
 
 		(that.Button.find('.StatusThinking'))
-		.removeClass('font-size-zero');
+		.removeClass('font-size-zero')
+		.addClass('ml-2');
 
 		(Xfer.upload)
 		.addEventListener(
@@ -183,7 +185,7 @@ Atlantis.Upload.Button = function(Opt) {
 	.css('position','relative')
 	.append(
 		jQuery('<span />')
-		.addClass('Status StatusThinking fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero ml-2')
+		.addClass('Status StatusThinking fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero')
 	)
 	.append(
 		jQuery('<div />')

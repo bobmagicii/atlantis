@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-10-16 21:30:37
+@date 2020-10-17 01:59:22
 @files [
     "src\/js\/libs\/000-jquery-3.1.1.min.js",
     "src\/js\/libs\/100-bootstrap.bundle.min.js",
@@ -12526,7 +12526,8 @@ Atlantis.Upload.Button = function(Opt) {
 	this.Reset = function(){
 
 		(that.Button.find('.StatusThinking'))
-		.addClass('font-size-zero');
+		.addClass('font-size-zero')
+		.removeClass('ml-2');
 
 		(that.Button.find('.UploadButtonBar'))
 		.css('width','0%');
@@ -12606,7 +12607,8 @@ Atlantis.Upload.Button = function(Opt) {
 		let Prop = null;
 
 		(that.Button.find('.StatusThinking'))
-		.removeClass('font-size-zero');
+		.removeClass('font-size-zero')
+		.addClass('ml-2');
 
 		(Xfer.upload)
 		.addEventListener(
@@ -12659,7 +12661,7 @@ Atlantis.Upload.Button = function(Opt) {
 	.css('position','relative')
 	.append(
 		jQuery('<span />')
-		.addClass('Status StatusThinking fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero ml-2')
+		.addClass('Status StatusThinking fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero')
 	)
 	.append(
 		jQuery('<div />')
@@ -13265,8 +13267,9 @@ a piece of content using codemirror as the code syntax magic thing.
 		this.Image = null;
 		this.ButtonUpload = null;
 		this.InputUpload = null;
+		this.LabelGallery = null;
+		this.InputGallery = null;
 		this.Loader = null;
-		this.Gallery = false;
 
 		return;
 	}
@@ -13308,6 +13311,33 @@ a piece of content using codemirror as the code syntax magic thing.
 				return;
 			})
 		);
+
+		return;
+	}
+
+	BuildInputGallery() {
+	/*//
+	@date 2020-10-17
+	construct the ui elements for the gallery checkbox
+	//*/
+
+		this.LabelGallery = (
+			jQuery('<label />')
+			.attr('data-btn-class','btn-secondary btn-sm')
+			.append(
+				this.InputGallery =
+				jQuery('<input />')
+				.attr('type','checkbox')
+			)
+			.append(
+				jQuery('<span />')
+				.text('Gallery')
+			)
+		);
+
+		if(this.Data.Gallery)
+		(this.InputGallery)
+		.attr('checked','checked');
 
 		return;
 	}
@@ -13384,6 +13414,7 @@ a piece of content using codemirror as the code syntax magic thing.
 			}
 		});
 
+		new Atlantis.Element.CheckboxButton(this.LabelGallery);
 		return;
 	}
 
@@ -13397,6 +13428,7 @@ a piece of content using codemirror as the code syntax magic thing.
 
 		this.BuildUI();
 		this.BuildInputURL();
+		this.BuildInputGallery();
 		this.BuildButtonUpload();
 		this.BuildImage();
 
@@ -13410,6 +13442,11 @@ a piece of content using codemirror as the code syntax magic thing.
 			jQuery('<div />')
 			.addClass('col mb-4')
 			.append(this.InputURL)
+		)
+		.append(
+			jQuery('<div />')
+			.addClass('col-auto mb-4')
+			.append(this.LabelGallery)
 		)
 		.append(
 			jQuery('<div />')
@@ -13439,13 +13476,15 @@ a piece of content using codemirror as the code syntax magic thing.
 	//*/
 
 		return {
-			'URL': jQuery.trim(this.InputURL.val())
+			'URL': jQuery.trim(this.InputURL.val()),
+			'Gallery': this.InputGallery.is(':checked')
 		};
 	}
 
 	static get sanitize () {
 		return {
-			'URL': false
+			'URL': false,
+			'Gallery': false
 		}
 	}
 
@@ -13637,7 +13676,7 @@ Atlantis.Element.CheckboxButton = class {
 		////////
 
 		this.Input = this.Element.find('input[type=checkbox]');
-		this.IconBase = this.Element.attr('data-btn-icon-base') ?? 'far fa-fw';
+		this.IconBase = this.Element.attr('data-btn-icon-base') ?? 'far fa-fw mr-2';
 		this.IconOff = this.Element.attr('data-btn-icon-off') ?? 'fa-square';
 		this.IconOn = this.Element.attr('data-btn-icon-on') ?? 'fa-check-square';
 		this.BtnClass = this.Element.attr('data-btn-class') ?? 'btn-dark';
@@ -13668,13 +13707,13 @@ Atlantis.Element.CheckboxButton = class {
 			.addClass('btn btn-toggle')
 			.addClass(this.BtnClass)
 			.append(
-				jQuery('<i />')
+				jQuery('<span />')
 				.addClass('btn-toggle-off')
 				.addClass(this.IconBase)
 				.addClass(this.IconOff)
 			)
 			.append(
-				jQuery('<i />')
+				jQuery('<span />')
 				.addClass('btn-toggle-on')
 				.addClass(this.IconBase)
 				.addClass(this.IconOn)

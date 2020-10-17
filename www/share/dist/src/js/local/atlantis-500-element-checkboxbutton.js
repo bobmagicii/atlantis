@@ -58,7 +58,7 @@ Atlantis.Element.CheckboxButton = class {
 		////////
 
 		this.Input = this.Element.find('input[type=checkbox]');
-		this.IconBase = this.Element.attr('data-btn-icon-base') ?? 'far fa-fw';
+		this.IconBase = this.Element.attr('data-btn-icon-base') ?? 'far fa-fw mr-2';
 		this.IconOff = this.Element.attr('data-btn-icon-off') ?? 'fa-square';
 		this.IconOn = this.Element.attr('data-btn-icon-on') ?? 'fa-check-square';
 		this.BtnClass = this.Element.attr('data-btn-class') ?? 'btn-dark';
@@ -89,13 +89,13 @@ Atlantis.Element.CheckboxButton = class {
 			.addClass('btn btn-toggle')
 			.addClass(this.BtnClass)
 			.append(
-				jQuery('<i />')
+				jQuery('<span />')
 				.addClass('btn-toggle-off')
 				.addClass(this.IconBase)
 				.addClass(this.IconOff)
 			)
 			.append(
-				jQuery('<i />')
+				jQuery('<span />')
 				.addClass('btn-toggle-on')
 				.addClass(this.IconBase)
 				.addClass(this.IconOn)
