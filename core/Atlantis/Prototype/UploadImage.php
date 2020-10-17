@@ -3,19 +3,22 @@
 namespace Atlantis\Prototype;
 
 use
-\Atlantis as Atlantis,
-\Nether   as Nether,
-\Ramsey   as Ramsey;
+Atlantis,
+Nether,
+Ramsey;
 
 use
-Imagick     as Imagick,
-Exception   as Exception,
-Throwable   as Throwable,
-SplFileInfo as SplFileInfo;
+Imagick,
+Exception,
+Throwable,
+SplFileInfo,
+JsonSerializable;
 
 class UploadImage
 extends Atlantis\Prototype
-implements Atlantis\Packages\Upsertable {
+implements
+	Atlantis\Packages\Upsertable,
+	JsonSerializable {
 
 	protected static
 	$Table = 'UploadImages';
@@ -51,6 +54,31 @@ implements Atlantis\Packages\Upsertable {
 	public ?String $URL;
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
+
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
+	public function
+	JsonSerialize():
+	Array {
+	/*//
+	@date 2020-06-01
+	@implements JsonSerializable
+	//*/
+
+		return [
+			'ID'   => $this->ID,
+			'UUID' => $this->UUID,
+			'URL'  => $this->URL,
+			'Sources' => [
+				'Main'      => $this->GetURL('image'),
+				'Large'     => $this->GetURL('lg'),
+				'Medium'    => $this->GetURL('md'),
+				'Small'     => $this->GetURL('sm'),
+				'Thumbnail' => $this->GetURL('th')
+			]
+		];
+	}
 
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
@@ -240,6 +268,17 @@ implements Atlantis\Packages\Upsertable {
 
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
+
+	static public function
+	GetByID(Int $ID):
+	self {
+	/*//
+	@date 2020-10-17
+	@todo set parent to return static and delete this shit
+	//*/
+
+		return parent::GetByID($ID);
+	}
 
 	static public function
 	Insert($Opt):

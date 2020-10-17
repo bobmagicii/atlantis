@@ -19,6 +19,7 @@ a piece of content using codemirror as the code syntax magic thing.
 		this.InputUpload = null;
 		this.LabelGallery = null;
 		this.InputGallery = null;
+		this.InputImageID = null;
 		this.Loader = null;
 
 		return;
@@ -85,9 +86,14 @@ a piece of content using codemirror as the code syntax magic thing.
 			)
 		);
 
+		this.InputImageID = (
+			jQuery('<input />')
+			.attr('type','hidden')
+			.val(this.Data.ImageID ?? 0)
+		);
+
 		if(this.Data.Gallery)
-		(this.InputGallery)
-		.attr('checked','checked');
+		this.InputGallery.attr('checked','checked');
 
 		return;
 	}
@@ -153,8 +159,10 @@ a piece of content using codemirror as the code syntax magic thing.
 				}
 
 				that.InputURL
-				.val(Result.Payload.Success[0].URL)
+				.val(Result.Payload.Success[0].Sources.Large)
 				.trigger('change');
+
+				that.InputImageID.val(Result.Payload.Success[0].ID);
 
 				return;
 			},
@@ -202,6 +210,7 @@ a piece of content using codemirror as the code syntax magic thing.
 			jQuery('<div />')
 			.addClass('col-auto mb-4')
 			.append(this.ButtonUpload)
+			.append(this.InputImageID)
 		)
 		.append(
 			jQuery('<div />')
@@ -227,14 +236,16 @@ a piece of content using codemirror as the code syntax magic thing.
 
 		return {
 			'URL': jQuery.trim(this.InputURL.val()),
-			'Gallery': this.InputGallery.is(':checked')
+			'Gallery': this.InputGallery.is(':checked'),
+			'ImageID': this.InputImageID.val()
 		};
 	}
 
 	static get sanitize () {
 		return {
 			'URL': false,
-			'Gallery': false
+			'Gallery': false,
+			'ImageID': false
 		}
 	}
 
