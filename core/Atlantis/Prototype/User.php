@@ -264,6 +264,20 @@ implements JsonSerializable {
 		return (Int)$Result->Next()->TotalBytes;
 	}
 
+	public function
+	UpdateBytesImages():
+	self {
+	/*//
+	@date 2020-10-18
+	//*/
+
+		$this->Update([
+			'BytesImages' => $this->QueryBytesImages()
+		]);
+
+		return $this;
+	}
+
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
 

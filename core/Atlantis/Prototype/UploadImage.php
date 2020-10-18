@@ -132,6 +132,41 @@ implements
 		return $this;
 	}
 
+	public function
+	Drop():
+	Void {
+
+		$Storage = new Atlantis\StorageManager;
+		$Path = dirname($this->GetFilePath());
+		$Result = FALSE;
+		$Log = Nether\Stash::Get('Atlantis.Log.Application');
+
+		try {
+			$Result = $Storage->DeleteDir($Path);
+
+			if($Result)
+			parent::Drop();
+
+			elseif($Log)
+			$Log->AddRecord(
+				Atlantis\Logger::ERROR,
+				'error when attempting to delete image from storage',
+				[ 'ImageID' => $this->ID, 'Message' => 'Storage::DeleteDir returned false' ]
+			);
+		}
+
+		catch(Throwable $Error) {
+			if($Log)
+			$Log->AddRecord(
+				Atlantis\Logger::ERROR,
+				'exception when attempting to delete image from storage',
+				[ 'ImageID' => $this->ID, 'Error' => $Error->GetCode(), 'Message' => $Error->GetMessage() ]
+			);
+		}
+
+		return;
+	}
+
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
@@ -271,7 +306,7 @@ implements
 
 	static public function
 	GetByID(Int $ID):
-	self {
+	?self {
 	/*//
 	@date 2020-10-17
 	@todo set parent to return static and delete this shit

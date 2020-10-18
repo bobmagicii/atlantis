@@ -89,6 +89,22 @@ extends Atlantis\Site\ProtectedAPI {
 	EntityDelete():
 	Void {
 
+		$Images = $this->Post->ID;
+
+		if(!is_array($Images))
+		$Images = [$Images];
+
+		foreach($Images as $ImageID) {
+			$ImageID = (Int)$ImageID;
+			if(!$ImageID) continue;
+
+			$Image = Atlantis\Prototype\UploadImage::GetByID($ImageID);
+			if(!$Image->IsUserOwner($this->User)) continue;
+
+			$Image->Drop();
+		}
+
+		$this->User->UpdateBytesImages();
 		return;
 	}
 
@@ -109,7 +125,17 @@ extends Atlantis\Site\ProtectedAPI {
 			'Limit'  => 0
 		]);
 
-		$this->SetPayload($Result);
+		$this->SetPayload([
+			'Page'              => $Result->Page,
+			'PageCount'         => $Result->GetPageCount(),
+			'Limit'             => $Result->Limit,
+			'Count'             => $Result->Count,
+			'Total'             => $Result->Total,
+			'UserBytes'         => $this->User->BytesImages,
+			'UserBytesReadable' => Atlantis\Util::BytesReadable($this->User->BytesImages),
+			'Payload'           => $Result->Payload->GetData()
+		]);
+
 		return;
 	}
 

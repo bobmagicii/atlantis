@@ -61,12 +61,15 @@ class AtlantisImageManager {
 
 		////////
 
+		this.Page = Num;
 		this.ResetPage();
 
 		try { Result = await this.FetchPage(Num); }
 		catch(Error) { alert('Error Fetching Data'); return; }
 
 		this.ResetPage(this.GeneratePage(Result));
+		this.UpdateSelectedInfo();
+
 		return;
 	}
 
@@ -130,8 +133,13 @@ class AtlantisImageManager {
 		////////
 
 		Row = (
-			jQuery('<div />')
-			.addClass('row')
+			jQuery('<div class="Header" />')
+			.addClass('row align-items-center')
+			.append(
+				jQuery('<div />')
+				.addClass('col-auto mb-4')
+				.text(`Page ${Result.Payload.Page} of ${Result.Payload.PageCount}`)
+			)
 			.append(
 				jQuery('<div />')
 				.addClass('col-auto mb-4')
@@ -139,12 +147,29 @@ class AtlantisImageManager {
 			)
 			.append(
 				jQuery('<div />')
+				.addClass('col-auto mb-4')
+				.text(`${Result.Payload.UserBytesReadable}`)
+			)
+			.append(
+				jQuery('<div />')
 				.addClass('col')
 			)
 			.append(
 				jQuery('<div />')
-				.addClass('col-auto mb-4')
-				.text(`Page ${Result.Payload.Page} of ${Result.Payload.PageCount}`)
+				.addClass('col-auto mb-4 SelectedInfo')
+			)
+			.append(
+				jQuery('<div />')
+				.addClass('col-auto mb-4 SelectedActions')
+				.append(
+					jQuery('<button />')
+					.addClass('btn btn-danger btn-sm')
+					.append('<i class="fas fa-fw fa-trash"></i>')
+					.on('click',function(){
+						that.OnDeleteItems();
+						return;
+					})
+				)
 			)
 			.append(
 				jQuery('<div />')
@@ -184,14 +209,31 @@ class AtlantisImageManager {
 	}
 
 	IsSelected(ImageID) {
+	/*//
+	@date 2020-10-18
+	//*/
 
 		return this.Selected.indexOf(ImageID) > -1;
+	}
+
+	UpdateSelectedInfo() {
+	/*//
+	@date 2020-10-18
+	//*/
+
+		this.Container.find('.SelectedInfo')
+		.text(`${this.Selected.length} Selected`)
+
+		return;
 	}
 
 	////////////////////////////////
 	////////////////////////////////
 
 	OnClickItem(Item) {
+	/*//
+	@date 2020-10-18
+	//*/
 
 		let ImageID = Item.attr('data-image-id');
 
@@ -205,15 +247,22 @@ class AtlantisImageManager {
 	}
 
 	OnSelectItem(ImageID,Item) {
+	/*//
+	@date 2020-10-18
+	//*/
 
 		this.Selected.push(ImageID);
 		Item.addClass('Selected');
+		this.UpdateSelectedInfo();
 
 		console.log(this.Selected);
 		return;
 	}
 
 	OnDeselectItem(ImageID,Item) {
+	/*//
+	@date 2020-10-18
+	//*/
 
 		this.Selected = Atlantis.FilterArrayStrip(
 			this.Selected,
@@ -221,6 +270,34 @@ class AtlantisImageManager {
 		);
 
 		Item.removeClass('Selected');
+		this.UpdateSelectedInfo();
+
+		return;
+	}
+
+	OnDeleteItems() {
+	/*//
+	@date 2020-10-18
+	//*/
+
+		let that = this;
+
+		if(this.Selected.length === 0)
+		return;
+
+		if(confirm(`Really delete ${this.Selected.length} items? This cannot be undone.`)) {
+			that.ResetPage();
+			Atlantis.Request({
+				'Method': 'DELETE',
+				'URL': '/api/v1/image/entity',
+				'Data': { 'ID': this.Selected },
+				'OnSuccess': function() {
+					that.Selected.length = 0;
+					that.LoadPage(that.Page);
+					return;
+				}
+			});
+		}
 
 		return;
 	}
