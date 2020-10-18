@@ -101,6 +101,16 @@ jQuery(document)
 	jQuery('.AtlantisCheckboxButton')
 	.each(function(){ new Atlantis.Element.CheckboxButton(this); return; });
 
+	jQuery('.PostContent')
+	.each(function(){
+		new Atlantis.Element.ImageGallery({
+			'Container': this,
+			'ItemSelector': '.PostImageGallery'
+		});
+		return;
+	});
+
+
 	jQuery('.CodeViewer')
 	.each(function(){
 
