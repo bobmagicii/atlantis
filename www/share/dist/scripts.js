@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-10-18 05:39:41
+@date 2020-10-18 07:18:59
 @files [
     "src\/js\/libs\/000-jquery-3.1.1.min.js",
     "src\/js\/libs\/100-bootstrap.bundle.min.js",
@@ -11800,6 +11800,20 @@ an attribute called data-copy-value that contains the content that you want copi
 	.call(this,Value);
 
 	return false;
+};
+
+Atlantis.FilterArrayUnique = function(Input) {
+
+	return Input.filter(function(Val,Key,Input){
+		return Input.indexOf(Val) === Key;
+	});
+};
+
+Atlantis.FilterArrayStrip = function(Input,ToRemove) {
+
+	return Input.filter(function(Val,Key,Input){
+		return Val !== ToRemove;
+	});
 };
 
 jQuery(document)

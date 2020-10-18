@@ -71,6 +71,20 @@ an attribute called data-copy-value that contains the content that you want copi
 	return false;
 };
 
+Atlantis.FilterArrayUnique = function(Input) {
+
+	return Input.filter(function(Val,Key,Input){
+		return Input.indexOf(Val) === Key;
+	});
+};
+
+Atlantis.FilterArrayStrip = function(Input,ToRemove) {
+
+	return Input.filter(function(Val,Key,Input){
+		return Val !== ToRemove;
+	});
+};
+
 jQuery(document)
 .ready(function(){
 

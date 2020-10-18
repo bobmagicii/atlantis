@@ -92,4 +92,25 @@ extends Atlantis\Site\ProtectedAPI {
 		return;
 	}
 
+	/**
+	 *
+	 */
+
+	final public function
+	EntityList():
+	Void {
+
+		($this->Post)
+		->Page('Atlantis\\Util\\Filters::PageNumber');
+
+		$Result = Atlantis\Prototype\UploadImage::Find([
+			'UserID' => $this->User->ID,
+			'Page'   => $this->Post->Page,
+			'Limit'  => 0
+		]);
+
+		$this->SetPayload($Result);
+		return;
+	}
+
 }

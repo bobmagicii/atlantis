@@ -1,0 +1,239 @@
+
+<?php $Surface->Area('dashboard/promo') ?>
+
+<style type="text/css">
+.Gallery .Selected a:link,
+.Gallery .Selected a:visited {
+	background: #ccca;
+}
+</style>
+
+<div class="container pt-4 pb-4">
+
+	<ol class="breadcrumb mb-4">
+		<li class="breadcrumb-item"><a href="<?php echo Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home') ?>">Dashboard</a></li>
+		<li class="breadcrumb-item">Account</li>
+		<li class="breadcrumb-item active">Images</li>
+	</ol>
+
+	<div id="Gallery" class="jumbotron-secondary p-4 Gallery">
+		<div class="text-center p-4">
+			<i class="fas fa-fw fa-asterisk fa-spin"></i> Loading...
+		</div>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+
+class AtlantisImageManager {
+
+	constructor(Opt) {
+	/*//
+	@date 2020-10-18
+	//*/
+
+		this.Container = null;
+		this.Page = 1;
+		this.Selected = new Array;
+
+		NUI.Util.MergeProperties(Opt,this);
+
+		if(typeof this.Container === 'string')
+		this.Container = jQuery(this.Container);
+
+		if(this.Conatiner instanceof HTMLElement)
+		this.Container = jQuery(this.Container);
+
+		if(!(this.Container instanceof jQuery))
+		throw "invalid Container object";
+
+		this.LoadPage(this.Page);
+		return;
+	}
+
+	async LoadPage(Num) {
+	/*//
+	@date 2020-10-18
+	//*/
+
+		let Result = null;
+
+		////////
+
+		this.ResetPage();
+
+		try { Result = await this.FetchPage(Num); }
+		catch(Error) { alert('Error Fetching Data'); return; }
+
+		this.ResetPage(this.GeneratePage(Result));
+		return;
+	}
+
+	FetchPage(Num) {
+	/*//
+	@date 2020-10-18
+	//*/
+
+		return new Promise(function(Next,Halt){
+			Atlantis.Request({
+				'Method': 'LIST',
+				'URL': '/api/v1/image/entity',
+				'Data': { 'Page': Num },
+				'OnSuccess': function(Result){
+					Next(Result);
+					return;
+				},
+				'OnError': function(Result){
+					Halt(Result);
+					return;
+				}
+			});
+		});
+	}
+
+	ResetPage(Contents) {
+	/*//
+	@date 2020-10-18
+	//*/
+
+		if(Contents === null || typeof Contents === 'undefined')
+		Contents = (
+			jQuery('<div />')
+			.addClass('text-center p-4')
+			.append(
+				jQuery('<i />')
+				.addClass('fas fa-fw fa-asterisk fa-spin')
+			)
+			.append(
+				jQuery('<span />')
+				.addClass('ml-1')
+				.text('Loading...')
+			)
+		);
+
+		this.Container
+		.empty()
+		.append(Contents);
+
+		return;
+	}
+
+	GeneratePage(Result) {
+	/*//
+	@date 2020-10-18
+	//*/
+
+		let that = this;
+		let Row = null;
+
+		////////
+
+		Row = (
+			jQuery('<div />')
+			.addClass('row')
+			.append(
+				jQuery('<div />')
+				.addClass('col-auto mb-4')
+				.text(`${Result.Payload.Total} Images`)
+			)
+			.append(
+				jQuery('<div />')
+				.addClass('col')
+			)
+			.append(
+				jQuery('<div />')
+				.addClass('col-auto mb-4')
+				.text(`Page ${Result.Payload.Page} of ${Result.Payload.PageCount}`)
+			)
+			.append(
+				jQuery('<div />')
+				.addClass('col-12')
+			)
+		);
+
+		jQuery(Result.Payload.Payload)
+		.each(function(){
+
+			Row.append(
+				jQuery('<div />')
+				.addClass('col-4 col-sm-3 col-md-2 mb-4 GalleryItem')
+				.addClass(that.IsSelected(this.ID)?'Selected':'')
+				.attr('data-image-id',this.ID)
+				.append(
+					jQuery('<div />')
+					.addClass('WallpaperedBox Square rounded')
+					.css({
+						'background-image': `url(${this.Sources.Thumbnail})`
+					})
+					.append(
+						jQuery('<a />')
+						.attr('href','#')
+						.on('click',function(){
+							that.OnClickItem(jQuery(this).parent().parent());
+							return false;
+						})
+					)
+				)
+			);
+
+			return;
+		});
+
+		return Row;
+	}
+
+	IsSelected(ImageID) {
+
+		return this.Selected.indexOf(ImageID) > -1;
+	}
+
+	////////////////////////////////
+	////////////////////////////////
+
+	OnClickItem(Item) {
+
+		let ImageID = Item.attr('data-image-id');
+
+		if(this.IsSelected(ImageID))
+		this.OnDeselectItem(ImageID,Item);
+
+		else
+		this.OnSelectItem(ImageID,Item);
+
+		return;
+	}
+
+	OnSelectItem(ImageID,Item) {
+
+		this.Selected.push(ImageID);
+		Item.addClass('Selected');
+
+		console.log(this.Selected);
+		return;
+	}
+
+	OnDeselectItem(ImageID,Item) {
+
+		this.Selected = Atlantis.FilterArrayStrip(
+			this.Selected,
+			ImageID
+		);
+
+		Item.removeClass('Selected');
+
+		return;
+	}
+
+}
+
+jQuery(document)
+.ready(function(){
+
+	let Manager = new AtlantisImageManager({
+		'Container': '#Gallery'
+	});
+
+	return;
+});
+</script>

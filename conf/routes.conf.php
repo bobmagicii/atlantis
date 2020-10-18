@@ -85,6 +85,12 @@
 	'Routes\\Dashboard\\Account::Password'
 )
 ->Register(
+	'Atlantis.Dashboard.Account.Images',
+	'{&}//dashboard/account/images',
+	'//{{Domain}}/dashboard/account/images',
+	'Routes\\Dashboard\\Account::Images'
+)
+->Register(
 	'Atlantis.Admin.Home',
 	'{&}//ops',
 	'//{{Domain}}/ops',

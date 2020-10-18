@@ -29,5 +29,15 @@ extends Atlantis\Site\ProtectedWeb {
 		return;
 	}
 
+	public function
+	Images():
+	Void {
+
+		$this
+		->Set('Page.Title','Manage Images')
+		->Area('dashboard/account/images');
+
+		return;
+	}
 
 }
