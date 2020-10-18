@@ -3,10 +3,14 @@
 namespace Atlantis\Struct;
 
 use
-\Atlantis as Atlantis,
-\Nether as Nether;
+Atlantis,
+Nether;
 
-class SearchResult {
+use
+JsonSerializable;
+
+class SearchResult
+implements JsonSerializable {
 
 	public
 	String $Title = '';
@@ -33,6 +37,20 @@ class SearchResult {
 		$this->Payload = new Atlantis\Datastore($Input);
 
 		return;
+	}
+
+	public function
+	JsonSerialize():
+	Array {
+		return [
+			'Title'     => $this->Title,
+			'Page'      => $this->Page,
+			'PageCount' => $this->GetPageCount(),
+			'Count'     => $this->Count,
+			'Total'     => $this->Total,
+			'Limit'     => $this->Limit,
+			'Payload'   => $this->Payload->GetData()
+		];
 	}
 
 	public function
