@@ -30,7 +30,7 @@ implements Nether\Avenue\Interfaces\RouteAcceptance {
 	}
 
 	public function
-	Index(String $BlogAlias=NULL, String $PostAlias=NULL):
+	Index(String $BlogAlias=NULL, String $PostAlias1=NULL, ?String $PostAlias2=NULL):
 	Void {
 	/*//
 	@date 2020-10-04

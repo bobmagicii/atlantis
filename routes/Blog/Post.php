@@ -7,16 +7,29 @@ class Post
 extends Atlantis\Site\PublicWeb {
 
 	public function
-	Index(String $BlogAlias, String $PostAlias):
+	Index(String $BlogAlias=NULL, String $PostAlias1=NULL, ?String $PostAlias2=NULL):
 	Void {
 	/*//
 	@date 2020-05-24
 	//*/
 
-		$Post = Atlantis\Prototype\BlogPost::GetByAlias(
-			$BlogAlias,
-			$PostAlias
-		);
+		if($PostAlias2 === NULL && !ctype_digit($PostAlias1)) {
+			// /$BlogAlias/$PostAlias
+			$Post = Atlantis\Prototype\BlogPost::GetByAlias(
+				$BlogAlias,
+				$PostAlias1
+			);
+		}
+
+		else {
+			// /$BlogAlias/$PostID/$PostAlias
+			// /$BlogAlias/$PostID
+			$Post = Atlantis\Prototype\BlogPost::GetByID($PostAlias1);
+
+			// but nuke it so you cant look at someone elses post.
+			if($Post && $Post->Blog->Alias !== $BlogAlias)
+			$Post = NULL;
+		}
 
 		if(!$Post)
 		$this->Area('error/not-found')->Quit(404);

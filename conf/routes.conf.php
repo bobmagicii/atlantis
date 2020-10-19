@@ -144,8 +144,8 @@
 ($Router)
 ->Register(
 	'Atlantis.Blog.Post',
-	'{&}//\x2b($)/($)',
-	'//{{Domain}}/+{{BlogAlias}}/{{PostAlias}}',
+	'{&}//\x2b($)/($)(?:/($))?',
+	'//{{Domain}}/+{{BlogAlias}}/{{PostID}}/{{PostAlias}}',
 	'Routes\\Blog\\Post::Index'
 )
 ->Register(

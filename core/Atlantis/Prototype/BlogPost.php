@@ -156,7 +156,8 @@ extends Atlantis\Prototype {
 
 		return Atlantis\Site\Endpoint::Get('Atlantis.Blog.Post',[
 			'BlogAlias' => $this->Blog->Alias,
-			'PostAlias' => $this->Alias
+			'PostAlias' => $this->Alias,
+			'PostID'    => $this->ID
 		]);
 	}
 
