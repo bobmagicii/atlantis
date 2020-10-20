@@ -1,11 +1,18 @@
 <?php
 
 namespace Routes;
-use \Routes   as Routes;
-use \Atlantis as Atlantis;
-use \Nether   as Nether;
 
-use \Atlantis\Site\Error\Inline as Error;
+use
+Routes,
+Atlantis,
+Nether,
+League;
+
+use
+Atlantis\Site\Error\Inline as Error;
+
+use
+Throwable;
 
 class Login
 extends Atlantis\Site\PublicWeb {
@@ -25,6 +32,101 @@ extends Atlantis\Site\PublicWeb {
 	}
 
 	public function
+	Github():
+	Void {
+
+		$Client = new League\OAuth2\Client\Provider\Github([
+			'clientId'     => Nether\Option::Get('Atlantis.Auth.Github.ClientID'),
+			'clientSecret' => Nether\Option::Get('Atlantis.Auth.Github.ClientSecret')
+		]);
+
+		$Account = NULL;
+		$Alias = NULL;
+		$Emails = NULL;
+
+		$User = NULL;
+		$Email = NULL;
+		$UUID = Atlantis\Util::UUID(4);
+
+		////////
+
+		if(!$this->Get->Code)
+		$this->Goto($Client->GetAuthorizationUrl([
+			'state' => 'OPTIONAL_CUSTOM_CONFIGURED_STATE',
+			'scope' => [ 'user:email' ]
+		]));
+
+		////////
+
+		$Token = $Client->GetAccessToken('authorization_code',[
+			'code' => $this->Get->Code
+		]);
+
+		try {
+			$Account = $Client->GetResourceOwner($Token);
+			$Alias = Atlantis\Util\Filters::TrimmedText($Account->GetNickname());
+			$Emails = [ Atlantis\Util\Filters::Email($Account->GetEmail()) ];
+
+			// github tends to not return an email address even if
+			// you have one set as public, so, here we go.
+
+			if(!$Emails[0]) {
+				$Request = $Client->GetAuthenticatedRequest(
+					'GET','https://api.github.com/user/emails',
+					$Token
+				);
+
+				$Emails = array_filter(
+					(Array)$Client->GetParsedResponse($Request),
+					function($Val) { return $Val['verified'] === TRUE; }
+				);
+
+				$Emails = array_map(
+					function($Val) { return $Val['email']; },
+					$Emails
+				);
+			}
+		}
+
+		catch(Throwable $Error) {
+			$this->AddErrorMessage('We did not get the data from Github we expected.');
+			return;
+		}
+
+		////////
+
+		if(!$Alias || !count($Emails)) {
+			$this->AddErrorMessage('Github did not give us a nickname or email address.');
+			return;
+		}
+
+		foreach($Emails as $Email) {
+			$User = Atlantis\Prototype\User::GetByEmail($Email);
+			if($User) break;
+		}
+
+		if(!$User)
+		if(Nether\Option::Get('Atlantis.User.Join.Mode') === Atlantis\Prototype\User::JoinModeNormal)
+		$User = Atlantis\Prototype\User::Insert([
+			'Alias'     => $Alias,
+			'Email'     => current($Emails),
+			'Password1' => $UUID,
+			'Password2' => $UUID
+		]);
+
+		if(!$User) {
+			$this->AddErrorMessage('Unable to locate a user account to log into.');
+			return;
+		}
+
+		////////
+
+		Atlantis\Prototype\User::LaunchSession($User);
+		$this->Goto(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home'));
+		return;
+	}
+
+	public function
 	Destroy():
 	Void {
 
@@ -32,6 +134,9 @@ extends Atlantis\Site\PublicWeb {
 		$this->Goto('/');
 		return;
 	}
+
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
 
 	protected function
 	HandleLogin():
@@ -65,5 +170,7 @@ extends Atlantis\Site\PublicWeb {
 		$this->Goto($Goto);
 		return;
 	}
+
+
 
 }

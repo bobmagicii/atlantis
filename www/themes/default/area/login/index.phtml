@@ -1,8 +1,16 @@
-<div class="container pt-4 pb-4">
+<div class="container pt-8 pb-8">
 	<div class="row justify-content-center">
 		<div class="col-12 col-sm-6 col-md-5">
-			<h3 class="mb-0">Log In</h3>
-			<hr class="mt-2 mb-2" />
+			<h3 class="font-weight-bold text-uppercase mb-0">Log In</h3>
+			<hr class="mt-2 mb-4" />
+			<div class="mb-4">
+				<div class="mb-2"><a href="<?php $Printer($Endpoint('Atlantis.Login.Auth.Github')) ?>" class="btn btn-dark btn-block text-left"><i class="fab fa-fw fa-github mr-2"></i> Log In With Github</a></div>
+			</div>
+			<div class="row align-items-center mb-4">
+				<div class="col"><hr /></div>
+				<div class="col-auto">OR</div>
+				<div class="col"><hr /></div>
+			</div>
 			<form method="post">
 				<div class="form-group mb-2">
 					<input type="text" name="Account" class="form-control" placeholder="Email..." />

@@ -19,6 +19,12 @@
 	'Routes\\Login::Index'
 )
 ->Register(
+	'Atlantis.Login.Auth.Github',
+	'{&}//login/auth/github',
+	'//{{Domain}}/login/auth/github',
+	'Routes\\Login::Github'
+)
+->Register(
 	'Atlantis.Logout',
 	'{&}//logout',
 	'//{{Domain}}/logout',

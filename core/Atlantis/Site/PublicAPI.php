@@ -128,6 +128,19 @@ extends PublicWeb {
 	}
 
 	protected function
+	SetMessage(String $Input):
+	self {
+	/*//
+	@date 2020-10-20
+	//*/
+
+		($this->Surface)
+		->Set('Message',$Input);
+
+		return $this;
+	}
+
+	protected function
 	SetLocation(String $Input):
 	self {
 	/*//

@@ -210,6 +210,18 @@ class PublicWeb {
 		return $this->User->ShouldAdultSafespace();
 	}
 
+	public function
+	AddErrorMessage(String $Message):
+	self {
+
+		($this->Errors)
+		->Push(new Atlantis\Site\Error\Inline([
+			'Message' => $Message
+		]));
+
+		return $this;
+	}
+
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
 

@@ -24,6 +24,9 @@ Nether\Option::Set([
 	],
 	'Atlantis.File.DefaultMount' => 'upl',
 
+	'Atlantis.Auth.Github.ClientID'     => 'ur-client-id',
+	'Atlantis.Auth.Github.ClientSecret' => 'ur-client-secret',
+
 	////////////////////////////////////////////////////////////////
 	// Google reCaptcha Config /////////////////////////////////////
 
