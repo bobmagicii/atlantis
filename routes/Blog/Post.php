@@ -13,17 +13,17 @@ extends Atlantis\Site\PublicWeb {
 	@date 2020-05-24
 	//*/
 
+		// $BlogAlias/$PostAlias
 		if($PostAlias2 === NULL && !ctype_digit($PostAlias1)) {
-			// /$BlogAlias/$PostAlias
 			$Post = Atlantis\Prototype\BlogPost::GetByAlias(
 				$BlogAlias,
 				$PostAlias1
 			);
 		}
 
+		// $BlogAlias/$PostID/$PostAlias
+		// $BlogAlias/$PostID
 		else {
-			// /$BlogAlias/$PostID/$PostAlias
-			// /$BlogAlias/$PostID
 			$Post = Atlantis\Prototype\BlogPost::GetByID($PostAlias1);
 
 			// but nuke it so you cant look at someone elses post.
@@ -114,7 +114,6 @@ extends Atlantis\Site\PublicWeb {
 	@override Atlantis\Site\PublicWeb
 	//*/
 
-		if($this->User)
 		if($this->Post->Action === 'ignore-adult-safespace')
 		return FALSE;
 
