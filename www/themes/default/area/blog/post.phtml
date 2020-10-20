@@ -79,38 +79,33 @@ echo (new Atlantis\Element\PagePromo)
 					</div>
 				</div>
 			</div>
-			<div class="jumbotron jumbotron-tertiary p-4 mb-0">
-				<div class="PostContent">
-				<?php if($Post->IsAdult() && $Route->ShouldAdultSafespace()): ?>
-				<div class="alert alert-adult">
-					<?php if($User): ?>
-					<p>
-						This post has been hidden because your account settings are currently configured to not display adult content.
-						You may change the setting in your dashboard <a href="<?php echo $Endpoint('Atlantis.Dashboard.Account.Settings') ?>">Account Settings</a>.
-					</p>
-					<div class="text-center">
-						<form method="post">
-							<input type="hidden" name="Action" value="ignore-adult-safespace" />
-							<button type="submit" class="btn btn-adult">View Post Anyway</button>
-						</form>
-					</div>
-					<?php else: ?>
-					<p>
-						This post has been hidden because you are not <a href="<?php echo $Endpoint('Atlantis.Login') ?>">logged in</a> and have opted-in to have adult content displayed.
-					</p>
-					<div class="text-center">
-						<form method="post">
-							<input type="hidden" name="Action" value="ignore-adult-safespace" />
-							<button type="submit" class="btn btn-adult">View Post Anyway</button>
-						</form>
-					</div>
-					<?php endif; ?>
-				</div>
+
+			<?php if($Post->IsAdult() && $Route->ShouldAdultSafespace()): ?>
+			<div class="alert alert-adult mb-0">
+				<?php if($User): ?>
+				<p>
+					This post has been hidden because your account settings are currently configured to not display adult content.
+					You may change the setting in your dashboard <a href="<?php echo $Endpoint('Atlantis.Dashboard.Account.Settings') ?>">Account Settings</a>.
+				</p>
 				<?php else: ?>
-				<?php echo new Atlantis\Util\Texture($Post->Content ?: $Post->RenderFromJSON()), PHP_EOL ?>
+				<p>
+					This post has been hidden because you are not <a href="<?php echo $Endpoint('Atlantis.Login') ?>">logged in</a> and have opted-in to have adult content displayed.
+				</p>
 				<?php endif; ?>
+				<div class="text-center">
+					<form method="post">
+						<input type="hidden" name="Action" value="ignore-adult-safespace" />
+						<button type="submit" class="btn btn-adult">View Post Anyway</button>
+					</form>
 				</div>
 			</div>
+			<?php else: ?>
+			<div class="jumbotron jumbotron-tertiary p-4 mb-0">
+				<div class="PostContent">
+					<?php echo new Atlantis\Util\Texture($Post->Content ?: $Post->RenderFromJSON()), PHP_EOL ?>
+				</div>
+			</div>
+			<?php endif; ?>
 		</div>
 
 		<div class="col-12 mb-4">
