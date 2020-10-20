@@ -1,8 +1,11 @@
 <?php
 
-$Profile = $Surface->Get('User.Profile');
+/**
+ * @var Atlantis\Prototype\User $Profile
+ */
 
 echo (new Atlantis\Element\PagePromo)
+->SetArea('element/page-promo-artsy')
 ->SetURL($Profile->GetURL())
 ->SetImageURL($Profile->GetImageHeaderURL('lg'))
 ->SetIconURL($Profile->GetImageIconURL('th'))
@@ -11,5 +14,37 @@ echo (new Atlantis\Element\PagePromo)
 ?>
 
 <div class="container pb-4">
-	[TODO: User Profile Stuffs]
+
+	<div class="row">
+		<div class="col-12 col-md-6">
+			<div class="jumbotron jumbotron-secondary p-4 mb-4">
+				<div class="PostListing HideTheLastHr ">
+					<h2 class="font-size-normal">
+						Blogs <?php $Printer($Profile->Alias) ?> Writes For...
+					</h2>
+					<hr class="mt-2 mb-2" />
+					<?php foreach($Blogs->Payload as $BlogUser): ?>
+					<div class="Post">
+						<h3 class="d-flex font-size-larger align-items-center mb-0" style="line-height:1em;">
+							<a class="flex-grow-0" href="<?php $Printer($BlogUser->Blog->GetURL()) ?>"><?php $Printer($BlogUser->Blog->Title) ?></a>
+						</h3>
+						<div class="About">
+						</div>
+					</div>
+					<hr class="mt-2 mb-2" />
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</div>
+		<div class="col-12 col-md-6">
+			<div class="jumbotron jumbotron-secondary p-4 m-0">
+			<?php
+			echo (new Atlantis\Element\PostListingSidebar)
+			->SetTitle("Recent Posts by {$Profile->Alias}")
+			->SetItemStore($RecentPosts->Payload);
+			?>
+			</div>
+		</div>
+	</div>
+
 </div>

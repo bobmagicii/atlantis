@@ -22,3 +22,23 @@
 	height: 100%;
 	width: 100%;
 }
+
+.WallpaperedBox > .TopLeft {
+	position: absolute;
+	top: 2px; left: 2px;
+}
+
+.WallpaperedBox > .TopRight {
+	position: absolute;
+	top: 2px; right: 2px;
+}
+
+.WallpaperedBox > .BottomLeft {
+	position: absolute;
+	bottom: 2px; left: 2px;
+}
+
+.WallpaperedBox > .BottomRight {
+	position: absolute;
+	bottom: 2px; right: 2px;
+}

@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-10-09 19:00:30
+@date 2020-10-19 15:57:24
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -445,6 +445,26 @@ given an image to display to art shit up.
 
 	height: 100%;
 	width: 100%;
+}
+
+.WallpaperedBox > .TopLeft {
+	position: absolute;
+	top: 2px; left: 2px;
+}
+
+.WallpaperedBox > .TopRight {
+	position: absolute;
+	top: 2px; right: 2px;
+}
+
+.WallpaperedBox > .BottomLeft {
+	position: absolute;
+	bottom: 2px; left: 2px;
+}
+
+.WallpaperedBox > .BottomRight {
+	position: absolute;
+	bottom: 2px; right: 2px;
 }
 
 .ErrorTray .Error {

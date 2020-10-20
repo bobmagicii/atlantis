@@ -67,9 +67,12 @@ implements
 	//*/
 
 		return [
-			'ID'   => $this->ID,
-			'UUID' => $this->UUID,
-			'URL'  => $this->URL,
+			'ID'            => $this->ID,
+			'UUID'          => $this->UUID,
+			'Bytes'         => $this->Bytes,
+			'BytesReadable' => Atlantis\Util::BytesReadable($this->Bytes),
+			'URL'           => $this->URL,
+
 			'Sources' => [
 				'Main'      => $this->GetURL('image'),
 				'Large'     => $this->GetURL('lg'),

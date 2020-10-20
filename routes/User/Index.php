@@ -17,21 +17,23 @@ extends Atlantis\Site\PublicWeb {
 	Void {
 
 		$Profile = NULL;
+		$Scope = [];
 
 		if(!($Profile = Atlantis\Prototype\User::GetByAlias($Alias)))
 		$this->Area('error/not-found')->Quit(404);
 
-		$Promo = (new Atlantis\Element\PagePromo)
-		->SetTitle($Profile->Alias)
-		->SetSubtitle("User Profile");
+		////////
+
+		$Scope['Profile'] = $Profile;
+		$Scope['Blogs'] = $Profile->GetBlogs();
+		$Scope['RecentPosts'] = Atlantis\Prototype\BlogPost::Find([
+			'UserID' => $Profile->ID,
+			'Sort'   => 'newest'
+		]);
 
 		////////
 
-		($this->Surface)
-		->Set('Page.Promo',$Promo)
-		->Set('User.Profile',$Profile)
-		->Area('user/index');
-
+		$this->Area('user/index',$Scope);
 		return;
 	}
 

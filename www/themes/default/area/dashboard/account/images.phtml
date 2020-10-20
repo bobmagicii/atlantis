@@ -2,10 +2,7 @@
 <?php $Surface->Area('dashboard/promo') ?>
 
 <style type="text/css">
-.Gallery .Selected a:link,
-.Gallery .Selected a:visited {
-	background: #ccca;
-}
+
 </style>
 
 <div class="container pt-4 pb-4">
@@ -192,12 +189,22 @@ class AtlantisImageManager {
 						'background-image': `url(${this.Sources.Thumbnail})`
 					})
 					.append(
-						jQuery('<a />')
-						.attr('href','#')
-						.on('click',function(){
-							that.OnClickItem(jQuery(this).parent().parent());
-							return false;
-						})
+						jQuery('<div />')
+						.addClass('row TopLeft')
+						.append(
+							jQuery('<div />')
+							.addClass('col-auto')
+							.append(
+								jQuery('<button />')
+								.attr('type','button')
+								.addClass('btn btn-dark btn-sm SelectBtn')
+								.html('<i class="fas fa-fw fa-square"></i>')
+								.on('click',function(){
+									that.OnClickItem(jQuery(this).parents('.GalleryItem'));
+									return false;
+								})
+							)
+						)
 					)
 				)
 			);
@@ -253,9 +260,16 @@ class AtlantisImageManager {
 
 		this.Selected.push(ImageID);
 		Item.addClass('Selected');
-		this.UpdateSelectedInfo();
 
-		console.log(this.Selected);
+		(Item.find('.SelectBtn'))
+		.addClass('btn-primary')
+		.removeClass('btn-dark')
+		.trigger('blur')
+		.find('i')
+		.addClass('fa-check-square')
+		.removeClass('fa-square');
+
+		this.UpdateSelectedInfo();
 		return;
 	}
 
@@ -270,8 +284,16 @@ class AtlantisImageManager {
 		);
 
 		Item.removeClass('Selected');
-		this.UpdateSelectedInfo();
 
+		(Item.find('.SelectBtn'))
+		.addClass('btn-dark')
+		.removeClass('btn-primary')
+		.trigger('blur')
+		.find('i')
+		.addClass('fa-square')
+		.removeClass('fa-check-square');
+
+		this.UpdateSelectedInfo();
 		return;
 	}
 

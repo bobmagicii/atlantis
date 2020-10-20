@@ -310,18 +310,49 @@ extends Atlantis\Prototype {
 		return ($this->User->ID === $User->ID);
 	}
 
+	public function
+	UpdateUploadImageUsage():
+	Void {
+	/*//
+	@date 2020-10-19
+	//*/
+
+		// @todo 2020-10-19 this
+
+		// loop over the json struct
+		// look for images from our upload system
+		// build list of images
+		// flush use list
+		// insert new use list
+
+		return;
+	}
+
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
 	public function
+	StructureFromJSON():
+	Atlantis\Struct\EditorJS\Content {
+	/*//
+	@date 2020-10-19
+	//*/
+
+		return Atlantis\Struct\EditorJS\Content::FromString(
+			$this->ContentJSON ?: 'null'
+		);
+	}
+
+	public function
 	RenderFromJSON():
 	String {
+	/*//
+	@date 2020-10-09
+	//*/
 
 		$Output = '';
 		$Block = NULL;
-
-		$Content = Atlantis\Struct\EditorJS\Content::FromString($this->ContentJSON);
-		//Atlantis\Util::VarDump($Content);
+		$Content = $this->StructureFromJSON();
 
 		foreach($Content->Blocks as $Block) {
 			$Output .= (String)$Block;

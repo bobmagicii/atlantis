@@ -258,7 +258,7 @@ extends Atlantis\Site\ProtectedAPI {
 			$this->Quit(4,'should a blog post not have content');
 
 			$Dataset['ContentJSON'] = (String)$this->Post->ContentJSON ?: NULL;
-			$Dataset['Content'] = NULL;
+			$Dataset['Content'] = NULL; // actually cache the render here when done dicking around
 		}
 
 		////////
@@ -268,12 +268,19 @@ extends Atlantis\Site\ProtectedAPI {
 
 		$Post->Update($Dataset);
 
+		////////
+
 		if(array_key_exists('Enabled',$Dataset) && array_key_exists('TimeCreated',$Dataset)) {
 			$Tags = $Post->GetTags();
 
 			foreach($Tags->Payload as $Tag)
 			$Tag->UpdateUsage();
 		}
+
+		if(array_key_exists('ContentJSON',$Dataset))
+		$Post->UpdateUploadImageUsage();
+
+		////////
 
 		$this
 		->SetLocation($Post->GetURL())
