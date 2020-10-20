@@ -209,8 +209,9 @@ extends Atlantis\Site\ProtectedAPI {
 			if(!strlen($this->Post->Title))
 			$this->Quit(3,'post must have a title');
 
+			$Dataset['Title'] = $this->Post->Title;
+
 			if(strtolower($this->Post->Title) !== strtolower($Post->Title)) {
-				$Dataset['Title'] = $this->Post->Title;
 				$AliasRegen = TRUE;
 			}
 		}
