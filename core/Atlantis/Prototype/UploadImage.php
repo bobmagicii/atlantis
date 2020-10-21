@@ -55,6 +55,12 @@ implements
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
 
+	// specialized query AddonFieds.
+
+	public ?Bool $UsedBlogPosts = NULL;
+	public ?Bool $UsedBlogs = NULL;
+	public ?Bool $UsedUser = NULL;
+
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
@@ -72,6 +78,10 @@ implements
 			'Bytes'         => $this->Bytes,
 			'BytesReadable' => Atlantis\Util::BytesReadable($this->Bytes),
 			'URL'           => $this->URL,
+
+			'UsedBlogPosts' => $this->UsedBlogPosts,
+			'UsedBlogs'     => $this->UsedBlogs,
+			'UsedUser'      => $this->UsedUser,
 
 			'Sources' => [
 				'Main'      => $this->GetURL('image'),
@@ -95,7 +105,8 @@ implements
 
 		($this)
 		->OnReady_GetUser($Raw)
-		->OnReady_GetDates($Raw);
+		->OnReady_GetDates($Raw)
+		->OnReady_AddonFields($Raw);
 
 		$this->URL = $this->GetURL();
 
@@ -132,6 +143,42 @@ implements
 
 		$this->DateCreated = new Atlantis\Util\Date("@{$Raw['TimeCreated']}");
 		$this->DateUpdated = new Atlantis\Util\Date("@{$Raw['TimeUpdated']}");
+		return $this;
+	}
+
+	protected function
+	OnReady_AddonFields(Array $Raw):
+	self {
+	/*//
+	@date 2020-10-21
+	//*/
+
+		// this field exists if a query was performed using the
+		// CheckBlogPosts or UsedBlogPosts option on Find. it is
+		// just the ID of whatever the first post it found was to
+		// determine if it is used at all for anything.
+
+		if(array_key_exists('CheckBlogPosts',$Raw)) {
+			if($Raw['CheckBlogPosts'])
+			$this->UsedBlogPosts = TRUE;
+			else
+			$this->UsedBlogPosts = FALSE;
+		}
+
+		if(array_key_exists('CheckBlogs',$Raw)) {
+			if($Raw['CheckBlogs'])
+			$this->UsedBlogs = TRUE;
+			else
+			$this->UsedBlogs = FALSE;
+		}
+
+		if(array_key_exists('CheckUser',$Raw)) {
+			if($Raw['CheckUser'])
+			$this->UsedUser = TRUE;
+			else
+			$this->UsedUser = FALSE;
+		}
+
 		return $this;
 	}
 
@@ -291,6 +338,12 @@ implements
 	//*/
 
 		return [
+			'CheckUser'      => FALSE,
+			'UsedUser'       => FALSE,
+			'CheckBlogPosts' => FALSE,
+			'UsedBlogPosts'  => FALSE,
+			'CheckBlogs'     => FALSE,
+			'UsedBlogs'      => FALSE
 		];
 	}
 
@@ -300,6 +353,66 @@ implements
 	/*//
 	@date 2018-06-08
 	//*/
+
+		if($Opt->UsedBlogs)
+		$Opt->CheckBlogs = $Opt->UsedBlogs;
+
+		if($Opt->UsedBlogPosts)
+		$Opt->CheckBlogPosts = $Opt->UsedBlogPosts;
+
+		if($Opt->UsedUser)
+		$Opt->CheckUser = $Opt->UsedUser;
+
+		////////
+
+		if($Opt->CheckBlogs) {
+			$SQL
+			->Fields('BLUI.ID AS CheckBlogs')
+			->Join(sprintf(
+				'Blogs BLUI ON BLUI.ID=(%s)',
+				($SQL->GetDatabase()->NewVerse())
+				->Select('Blogs BLUII')
+				->Fields('BLUII.ID')
+				->Where('(BLUII.ImageHeaderID=Main.ID OR BLUII.ImageIconID=Main.ID)')
+				->Limit(1)
+			));
+
+			if($Opt->UsedBlogs)
+			$SQL->Having('CheckBlogs IS NOT NULL');
+		}
+
+		if($Opt->CheckBlogPosts) {
+			$SQL
+			->Fields('BPUI.ID AS CheckBlogPosts')
+			->Join(sprintf(
+				'BlogPostUploadImages BPUI ON BPUI.ID=(%s)',
+				($SQL->GetDatabase()->NewVerse())
+				->Select('BlogPostUploadImages BPUII')
+				->Fields('BPUII.ID')
+				->Where('BPUII.ImageID=Main.ID')
+				->Limit(1)
+			));
+
+			if($Opt->UsedBlogPosts)
+			$SQL->Having('CheckBlogPosts IS NOT NULL');
+		}
+
+		if($Opt->CheckUser) {
+			$SQL
+			->Fields('USUI.ID AS CheckUser')
+			->Join(sprintf(
+				'Users USUI ON USUI.ID=(%s)',
+				($SQL->GetDatabase()->NewVerse())
+				->Select('Users USUII')
+				->Fields('USUII.ID')
+				->Where('USUII.ID=:CheckUser')
+				->Where('(USUII.ImageHeaderID=Main.ID OR USUII.ImageIconID=Main.ID)')
+				->Limit(1)
+			));
+
+			if($Opt->UsedUser)
+			$SQL->Having('CheckUser IS NOT NULL');
+		}
 
 		return;
 	}
@@ -493,7 +606,7 @@ implements
 			// try to create the reference row in the db.
 
 			try {
-				$Upload = Atlantis\Prototype\UploadImage::Upsert([
+				$Upload = Atlantis\Prototype\UploadImage::Insert([
 					'UserID'      => $User->ID,
 					'TimeCreated' => $Now->Format('U'),
 					'Mount'       => $Mount,

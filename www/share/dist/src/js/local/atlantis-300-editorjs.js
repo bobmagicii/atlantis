@@ -1,6 +1,6 @@
 'use strict';
 
-if(typeof Atlantis.Editor === 'undefined')
+if(typeof Atlantis.EditorJS === 'undefined')
 Atlantis.EditorJS = { Editor: null, Plugins: { } };
 
 Atlantis.EditorJS.Editor = function(Opt) {

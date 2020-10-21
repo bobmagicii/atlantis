@@ -303,6 +303,7 @@ namespace.
 			'Sort'                 => 'newest',
 			'CustomFilterFunc'     => NULL,
 			'CustomSortFunc'       => NULL,
+			'AddonFields'          => [],
 			'OutputFilter'         => NULL,
 
 			// short circuit as many things needed to make the query as fast
@@ -476,8 +477,17 @@ namespace.
 
 		////////
 
-		while($Row = $Result->Next())
-		$Output->Payload->Push(new static($Row));
+		$Item = NULL;
+		$AddonSrc = NULL;
+		$AddonDest = NULL;
+
+		while($Row = $Result->Next()) {
+			$Output->Payload->Push($Item = new static($Row));
+
+			if(is_array($Opt->AddonFields) && count($Opt->AddonFields))
+			foreach($Opt->AddonFields as $AddonSrc => $AddonDest)
+			$Item->{$AddonDest} = $Row->{$AddonSrc};
+		}
 
 		$Output->Count = count($Output->Payload);
 		$Output->Page = $Opt->Page;

@@ -117,12 +117,24 @@ extends Atlantis\Site\ProtectedAPI {
 	Void {
 
 		($this->Post)
-		->Page('Atlantis\\Util\\Filters::PageNumber');
+		->Page('Atlantis\\Util\\Filters::PageNumber')
+		->CheckBlogs('Atlantis\\Util\\Filters::TypeBool')
+		->CheckBlogPosts('Atlantis\\Util\\Filters::TypeBool')
+		->CheckUser(function($Val) {
+			if(Atlantis\Util\Filters::TypeBool($Val))
+			if($this->User)
+			return $this->User->ID;
+
+			return NULL;
+		});
 
 		$Result = Atlantis\Prototype\UploadImage::Find([
-			'UserID' => $this->User->ID,
-			'Page'   => $this->Post->Page,
-			'Limit'  => 0
+			'UserID'         => $this->User->ID,
+			'Page'           => $this->Post->Page,
+			'Limit'          => 0,
+			'CheckBlogs'     => $this->Post->CheckBlogs,
+			'CheckBlogPosts' => $this->Post->CheckBlogPosts,
+			'CheckUser'      => $this->Post->CheckUser
 		]);
 
 		$this->SetPayload([

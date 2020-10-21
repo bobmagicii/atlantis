@@ -1,5 +1,5 @@
 "use strict";
-var Atlantis = {};
+var Atlantis = { };
 
 Atlantis.CopyToClipboard = function(What) {
 /*//
@@ -102,11 +102,13 @@ jQuery(document)
 	jQuery('.CopyValueToClipboard')
 	.on('click',Atlantis.CopyValueToClipboard);
 
-	jQuery('.HasTooltip')
+	jQuery('.HasTooltip, .AtlantisTooltip')
 	.each(function(){
 		let that = jQuery(this);
 
-		let Opts = {};
+		let Opts = {
+			'container': 'body'
+		};
 
 		that.tooltip(Opts);
 		return;

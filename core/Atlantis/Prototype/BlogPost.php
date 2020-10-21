@@ -325,6 +325,32 @@ extends Atlantis\Prototype {
 		// flush use list
 		// insert new use list
 
+		$Images = [];
+		$Struct = $this->StructureFromJSON();
+		$ImageID = 0;
+		$Block = NULL;
+
+		// find all the images from our upload system
+
+		foreach($Struct->Blocks as $Block)
+		if($Block instanceof Atlantis\Struct\EditorJS\Blocks\Image)
+		if($Block->Data->ImageID)
+		$Images[] = $Block->Data->ImageID;
+
+		// clean out our old references.
+
+		Atlantis\Prototype\BlogPostUploadImage::DropByPostID($this->ID);
+
+		// insert new references
+
+		$Images = array_unique($Images);
+
+		foreach($Images as $ImageID)
+		Atlantis\Prototype\BlogPostUploadImage::Insert([
+			'PostID'  => $this->ID,
+			'ImageID' => $ImageID
+		]);
+
 		return;
 	}
 

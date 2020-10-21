@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-10-18 07:18:59
+@date 2020-10-21 20:59:16
 @files [
     "src\/js\/libs\/000-jquery-3.1.1.min.js",
     "src\/js\/libs\/100-bootstrap.bundle.min.js",
@@ -15,6 +15,7 @@
     "src\/js\/libs\/600-editorjs-header.js",
     "src\/js\/libs\/600-editorjs-quote.js",
     "src\/js\/local\/atlantis-000-main.js",
+    "src\/js\/local\/atlantis-100-element.js",
     "src\/js\/local\/atlantis-200-action-status-handler.js",
     "src\/js\/local\/atlantis-200-blogpost.js",
     "src\/js\/local\/atlantis-200-request.js",
@@ -23,6 +24,8 @@
     "src\/js\/local\/atlantis-300-blogtag.js",
     "src\/js\/local\/atlantis-300-editorjs.js",
     "src\/js\/local\/atlantis-300-element-checkboxbutton.js",
+    "src\/js\/local\/atlantis-300-element-row.js",
+    "src\/js\/local\/atlantis-300-element-rowitem.js",
     "src\/js\/local\/atlantis-300-upload-button.js",
     "src\/js\/local\/atlantis-500-editorjs-codemirror.js",
     "src\/js\/local\/atlantis-500-editorjs-hr.js",
@@ -11730,7 +11733,7 @@ var a=function(){function e(t){var n=t.data,r=t.config,i=t.api,a=t.readOnly;!fun
 // src/js/local/atlantis-000-main.js //////////////////////////////////////
 
 "use strict";
-var Atlantis = {};
+var Atlantis = { };
 
 Atlantis.CopyToClipboard = function(What) {
 /*//
@@ -11833,11 +11836,13 @@ jQuery(document)
 	jQuery('.CopyValueToClipboard')
 	.on('click',Atlantis.CopyValueToClipboard);
 
-	jQuery('.HasTooltip')
+	jQuery('.HasTooltip, .AtlantisTooltip')
 	.each(function(){
 		let that = jQuery(this);
 
-		let Opts = {};
+		let Opts = {
+			'container': 'body'
+		};
 
 		that.tooltip(Opts);
 		return;
@@ -11904,6 +11909,60 @@ jQuery(document)
 
 	return;
 });
+
+///////////////////////////////////////////////////////////////////////////
+// src/js/local/atlantis-100-element.js ///////////////////////////////////
+
+'use strict';
+
+if(typeof Atlantis.Element === 'undefined')
+Atlantis.Element = { };
+
+Atlantis.Element.Base = class {
+
+	constructor(ClassList) {
+	/*//
+	@date 2020-10-21
+	//*/
+
+		this.ClassList = null;
+
+		if(ClassList instanceof Array)
+		this.ClassList = ClassList;
+
+		this.OnConstruct();
+		return;
+	}
+
+	OnConstruct() {
+	/*//
+	@date 2020-10-21
+	@return self
+	//*/
+
+		return this;
+	}
+
+	Compile() {
+	/*//
+	@date 2020-10-21
+	@return jQuery
+	this method should be overloaded to construct your structure.
+	//*/
+
+		return null;
+	}
+
+	Get() {
+	/*//
+	@date 2020-10-21
+	@return jQuery
+	//*/
+
+		return this.Compile();
+	}
+
+};
 
 ///////////////////////////////////////////////////////////////////////////
 // src/js/local/atlantis-200-action-status-handler.js /////////////////////
@@ -12422,7 +12481,7 @@ Atlantis.BlogTag
 
 'use strict';
 
-if(typeof Atlantis.Editor === 'undefined')
+if(typeof Atlantis.EditorJS === 'undefined')
 Atlantis.EditorJS = { Editor: null, Plugins: { } };
 
 Atlantis.EditorJS.Editor = function(Opt) {
@@ -12648,6 +12707,100 @@ Atlantis.Element.CheckboxButton = class {
 	//*/
 
 		return;
+	}
+
+}
+
+///////////////////////////////////////////////////////////////////////////
+// src/js/local/atlantis-300-element-row.js ///////////////////////////////
+
+'use strict';
+
+Atlantis.Element.Row = class extends Atlantis.Element.Base {
+
+	OnConstruct() {
+
+		this.Items = new Array;
+
+		return this;
+	}
+
+	Append(Item) {
+		this.Items.push(Item);
+		return this;
+	}
+
+	Prepend(Item) {
+		this.Items.unshift(Item);
+		return this;
+	}
+
+	Compile() {
+
+		let Output = (
+			jQuery('<div />')
+			.addClass('row')
+		);
+
+		jQuery(this.ClassList)
+		.each(function(){
+			Output.addClass(this);
+			return;
+		});
+
+		jQuery(this.Items)
+		.each(function(){
+			if(this instanceof Atlantis.Element.Base) {
+				Output.append(this.Get());
+				return;
+			}
+
+			Output.append(this);
+			return;
+		});
+
+		return Output;
+	}
+
+}
+
+///////////////////////////////////////////////////////////////////////////
+// src/js/local/atlantis-300-element-rowitem.js ///////////////////////////
+
+'use strict';
+
+Atlantis.Element.RowItem = class extends Atlantis.Element.Base {
+
+	OnConstruct() {
+		this.Contents = null;
+
+		return this;
+	}
+
+	Set(Item) {
+		this.Contents = Item;
+		return this;
+	}
+
+	Compile() {
+
+		let Output = jQuery('<div />');
+
+		if(!this.ClassList || this.ClassList.length === 0)
+		this.ClassList = ['col'];
+
+		jQuery(this.ClassList)
+		.each(function(){
+			Output.addClass(this);
+			return;
+		});
+
+		if(this.Contents instanceof Atlantis.Element.Base)
+		Output.append(this.Contents.Get());
+		else
+		Output.append(this.Contents);
+
+		return Output;
 	}
 
 }

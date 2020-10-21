@@ -3,6 +3,18 @@
 
 <style type="text/css">
 
+.GalleryItem .WallpaperedBox {
+	border: 1px solid #666;
+}
+
+.GalleryItem .WallpaperedBox span {
+	display: inline-block;
+	background: #000c;
+	border-radius: 4px;
+	color: #fff;
+	padding: 0px 3px;
+}
+
 </style>
 
 <div class="container pt-4 pb-4">
@@ -65,6 +77,11 @@ class AtlantisImageManager {
 		catch(Error) { alert('Error Fetching Data'); return; }
 
 		this.ResetPage(this.GeneratePage(Result));
+
+		(this.Container)
+		.find('.AtlantisTooltip')
+		.tooltip();
+
 		this.UpdateSelectedInfo();
 
 		return;
@@ -79,7 +96,12 @@ class AtlantisImageManager {
 			Atlantis.Request({
 				'Method': 'LIST',
 				'URL': '/api/v1/image/entity',
-				'Data': { 'Page': Num },
+				'Data': {
+					'Page': Num,
+					'CheckBlogs': true,
+					'CheckBlogPosts': true,
+					'CheckUser': true
+				},
 				'OnSuccess': function(Result){
 					Next(Result);
 					return;
@@ -127,92 +149,151 @@ class AtlantisImageManager {
 		let that = this;
 		let Row = null;
 
-		////////
+		let Toolbar;
+		let TbPageCounter;
+		let TbGridActions;
+		let TbSelectedInfo;
+		let TbSelectedActions;
+		let TbSpacer;
 
-		Row = (
-			jQuery('<div class="Header" />')
-			.addClass('row align-items-center')
-			.append(
-				jQuery('<div />')
-				.addClass('col-auto mb-4')
-				.text(`Page ${Result.Payload.Page} of ${Result.Payload.PageCount}`)
-			)
-			.append(
-				jQuery('<div />')
-				.addClass('col-auto mb-4')
-				.text(`${Result.Payload.Total} Images`)
-			)
-			.append(
-				jQuery('<div />')
-				.addClass('col-auto mb-4')
-				.text(`${Result.Payload.UserBytesReadable}`)
-			)
-			.append(
-				jQuery('<div />')
-				.addClass('col')
-			)
-			.append(
-				jQuery('<div />')
-				.addClass('col-auto mb-4 SelectedInfo')
-			)
-			.append(
-				jQuery('<div />')
-				.addClass('col-auto mb-4 SelectedActions')
-				.append(
-					jQuery('<button />')
-					.addClass('btn btn-danger btn-sm')
-					.append('<i class="fas fa-fw fa-trash"></i>')
-					.on('click',function(){
-						that.OnDeleteItems();
-						return;
-					})
+		TbPageCounter = (
+			(new Atlantis.Element.RowItem(['col-auto']))
+			.Set(`Page ${Result.Payload.Page} of ${Result.Payload.PageCount}`)
+		);
+
+		TbSpacer = (
+			new Atlantis.Element.RowItem(['col'])
+		);
+
+		TbGridActions = (
+			(new Atlantis.Element.RowItem(['col-12','col-md-auto','mt-2','mt-md-0']))
+			.Set(
+				(new Atlantis.Element.Row(['tight']))
+				.Append(
+					(new Atlantis.Element.RowItem(['col','col-md-auto']))
+					.Set(
+						jQuery('<button />')
+						.addClass('btn btn-block btn-dark')
+						.html('All')
+						.on('click',function(){ that.OnSelectAll(); })
+					)
+				)
+				.Append(
+					(new Atlantis.Element.RowItem(['col','col-md-auto']))
+					.Set(
+						jQuery('<button />')
+						.addClass('btn btn-block btn-dark')
+						.html('None')
+						.on('click',function(){ that.OnSelectNone(); })
+					)
+				)
+				.Append(
+					(new Atlantis.Element.RowItem(['col col-md-auto']))
+					.Set(
+						jQuery('<button />')
+						.addClass('btn btn-block btn-danger')
+						.html('<i class="fa fa-fw fa-trash"></i>')
+						.on('click',function(){ that.OnDeleteItems(); })
+					)
 				)
 			)
-			.append(
-				jQuery('<div />')
-				.addClass('col-12')
+		);
+
+		TbSelectedInfo = (
+			(new Atlantis.Element.RowItem(['col-auto']))
+			.Set('<span class="SelectedInfo">0 Selected</span>')
+		);
+
+		Toolbar = (
+			(new Atlantis.Element.RowItem(['col-12','mb-4']))
+			.Set(
+				(new Atlantis.Element.Row(['align-items-center']))
+				.Append(TbPageCounter)
+				.Append(TbSpacer)
+				.Append(TbSelectedInfo)
+				.Append(TbGridActions)
 			)
+		);
+
+		Row = (
+			(new Atlantis.Element.Row())
+			.Append(Toolbar)
 		);
 
 		jQuery(Result.Payload.Payload)
 		.each(function(){
 
-			Row.append(
+			let Used = this.UsedBlogPosts || this.UsedBlogs || this.UsedUser;
+			let Item = null;
+			let Tray1 = null;
+			let Tray2 = null;
+
+			Item = (
 				jQuery('<div />')
-				.addClass('col-4 col-sm-3 col-md-2 mb-4 GalleryItem')
+				.addClass('col-6 col-sm-4 col-md-3 col-lg-2 mb-4 GalleryItem')
 				.addClass(that.IsSelected(this.ID)?'Selected':'')
 				.attr('data-image-id',this.ID)
 				.append(
 					jQuery('<div />')
 					.addClass('WallpaperedBox Square rounded')
-					.css({
-						'background-image': `url(${this.Sources.Thumbnail})`
-					})
+					.css('background-image',`url(${this.Sources.Thumbnail})`)
 					.append(
-						jQuery('<div />')
-						.addClass('row TopLeft')
-						.append(
-							jQuery('<div />')
-							.addClass('col-auto')
-							.append(
-								jQuery('<button />')
-								.attr('type','button')
-								.addClass('btn btn-dark btn-sm SelectBtn')
-								.html('<i class="fas fa-fw fa-square"></i>')
-								.on('click',function(){
-									that.OnClickItem(jQuery(this).parents('.GalleryItem'));
-									return false;
-								})
-							)
-						)
+						Tray1 = jQuery('<div />')
+						.addClass('row tighter TopLeft')
+					)
+					.append(
+						Tray2 = jQuery('<div />')
+						.addClass('row tighter BottomRight')
 					)
 				)
 			);
 
+			Tray1.append(
+				jQuery('<div />')
+				.addClass('col-auto')
+				.append(
+					jQuery('<span />')
+					.addClass('SelectBtn')
+					.html('<i class="fas fa-fw fa-square"></i>')
+					.on('click',function(){
+						that.OnClickItem(jQuery(this).parents('.GalleryItem'));
+						return false;
+					})
+				)
+			);
+
+			if(this.UsedUser)
+			Tray1.append(
+				jQuery('<div />')
+				.addClass('col-auto')
+				.append('<span class="AtlantisTooltip" title="Used on your user profile."><i class="fas fa-fw fa-user"></i></span>')
+			);
+
+			if(this.UsedBlogPosts)
+			Tray1.append(
+				jQuery('<div />')
+				.addClass('col-auto')
+				.append('<span class="AtlantisTooltip" title="Used in a blog post."><i class="fas fa-fw fa-file-alt"></i></span>')
+			);
+
+			if(this.UsedBlogs)
+			Tray1.append(
+				jQuery('<div />')
+				.addClass('col-auto')
+				.append('<span class="AtlantisTooltip" title="Used on a blog."><i class="fas fa-fw fa-blog"></i></span>')
+			);
+
+			Tray2.append(
+				jQuery('<div />')
+				.addClass('col-auto')
+				.append(`<span class="font-weight-bold AtlantisTooltip" title="Including auto-generated image sizes.">${this.BytesReadable}</span>`)
+			);
+
+			Row.Append(Item);
 			return;
 		});
 
-		return Row;
+		return Row.Get();
 	}
 
 	IsSelected(ImageID) {
@@ -262,8 +343,6 @@ class AtlantisImageManager {
 		Item.addClass('Selected');
 
 		(Item.find('.SelectBtn'))
-		.addClass('btn-primary')
-		.removeClass('btn-dark')
 		.trigger('blur')
 		.find('i')
 		.addClass('fa-check-square')
@@ -286,8 +365,6 @@ class AtlantisImageManager {
 		Item.removeClass('Selected');
 
 		(Item.find('.SelectBtn'))
-		.addClass('btn-dark')
-		.removeClass('btn-primary')
 		.trigger('blur')
 		.find('i')
 		.addClass('fa-square')
@@ -320,6 +397,42 @@ class AtlantisImageManager {
 				}
 			});
 		}
+
+		return;
+	}
+
+	OnSelectAll() {
+	/*//
+	@date 2020-10-21
+	//*/
+
+		(this.Container)
+		.find('.GalleryItem:not(.Selected)')
+		.each(function(){
+
+			(jQuery(this).find('.SelectBtn'))
+			.trigger('click');
+
+			return;
+		});
+
+		return;
+	}
+
+	OnSelectNone() {
+	/*//
+	@date 2020-10-21
+	//*/
+
+		(this.Container)
+		.find('.GalleryItem.Selected')
+		.each(function(){
+
+			(jQuery(this).find('.SelectBtn'))
+			.trigger('click');
+
+			return;
+		});
 
 		return;
 	}
