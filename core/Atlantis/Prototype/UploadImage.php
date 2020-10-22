@@ -376,9 +376,6 @@ implements
 				->Where('(BLUII.ImageHeaderID=Main.ID OR BLUII.ImageIconID=Main.ID)')
 				->Limit(1)
 			));
-
-			if($Opt->UsedBlogs)
-			$SQL->Having('CheckBlogs IS NOT NULL');
 		}
 
 		if($Opt->CheckBlogPosts) {
@@ -392,9 +389,6 @@ implements
 				->Where('BPUII.ImageID=Main.ID')
 				->Limit(1)
 			));
-
-			if($Opt->UsedBlogPosts)
-			$SQL->Having('CheckBlogPosts IS NOT NULL');
 		}
 
 		if($Opt->CheckUser) {
@@ -409,9 +403,17 @@ implements
 				->Where('(USUII.ImageHeaderID=Main.ID OR USUII.ImageIconID=Main.ID)')
 				->Limit(1)
 			));
+		}
 
-			if($Opt->UsedUser)
-			$SQL->Having('CheckUser IS NOT NULL');
+		if($Opt->UsedBlogs) {
+			if($Opt->CheckBlogPosts)
+			$SQL
+			->Fields('BP.BlogID AS BlogID')
+			->Join('BlogPosts BP ON BP.ID=BPUI.PostID')
+			->Having('(BlogID=:UsedBlogs OR CheckBlogs=:UsedBlogs)');
+			else
+			$SQL
+			->Having('CheckBlogs=:UsedBlogs');
 		}
 
 		return;

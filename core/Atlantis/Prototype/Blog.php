@@ -352,7 +352,7 @@ implements JsonSerializable {
 	///////////////////////////////////////////////////////////////////////////
 
 	static public function
-	_GetByID(Int $ID):
+	GetByID(Int $ID):
 	?self {
 	/*//
 	@date 2020-06-19

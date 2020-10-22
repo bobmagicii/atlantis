@@ -118,6 +118,7 @@ extends Atlantis\Site\ProtectedAPI {
 
 		($this->Post)
 		->Page('Atlantis\\Util\\Filters::PageNumber')
+		->Limit('Atlantis\\Util\\Filters::TypeInt')
 		->CheckBlogs('Atlantis\\Util\\Filters::TypeBool')
 		->CheckBlogPosts('Atlantis\\Util\\Filters::TypeBool')
 		->CheckUser(function($Val) {
@@ -126,15 +127,35 @@ extends Atlantis\Site\ProtectedAPI {
 			return $this->User->ID;
 
 			return NULL;
-		});
+		})
+		->UsedBlogs('Atlantis\\Util\\Filters::TypeInt');
+
+		////////
+
+		$FilterByBlog = NULL;
+
+		////////
+
+		if($this->Post->UsedBlogs) {
+			$BlogUser = Atlantis\Prototype\BlogUser::GetByBlogUser(
+				$this->Post->UsedBlogs,
+				$this->User->ID
+			);
+
+			if($BlogUser && $BlogUser->HasManagePriv())
+			$FilterByBlog = $BlogUser->BlogID;
+		}
+
+		////////
 
 		$Result = Atlantis\Prototype\UploadImage::Find([
 			'UserID'         => $this->User->ID,
 			'Page'           => $this->Post->Page,
-			'Limit'          => 0,
+			'Limit'          => $this->Post->Limit,
 			'CheckBlogs'     => $this->Post->CheckBlogs,
 			'CheckBlogPosts' => $this->Post->CheckBlogPosts,
-			'CheckUser'      => $this->Post->CheckUser
+			'CheckUser'      => $this->Post->CheckUser,
+			'UsedBlogs'      => $FilterByBlog ?: NULL
 		]);
 
 		$this->SetPayload([

@@ -144,6 +144,42 @@ implements Atlantis\Packages\Upsertable {
 		return;
 	}
 
+	static public function
+	GetBytesByBlogID(Int $BlogID):
+	Int {
+
+		$SQL = Nether\Database::Get()->NewVerse();
+		$Blog = Atlantis\Prototype\Blog::GetByID($BlogID);
+		$Where = [];
+
+		$SQL
+		->Select('UploadImages UI')
+		->Join('BlogPostUploadImages PI ON PI.ImageID=UI.ID')
+		->Join('BlogPosts BP ON BP.ID=PI.PostID')
+		->Join('Blogs BL ON BL.ID=BP.BlogID')
+		->Fields('SUM(UI.Bytes) AS TotalBytes');
+
+		$Where[] = 'BL.ID=:BlogID';
+
+		if($Blog->ImageHeaderID)
+		$Where[] = 'UI.ID=:ImageHeaderID';
+
+		if($Blog->ImageIconID)
+		$Where[] = 'UI.ID=:ImageIconID';
+
+		$SQL->Where($Where,$SQL::WhereOr);
+
+		$Result = $SQL->Query([
+			':BlogID'        => $BlogID,
+			':ImageHeaderID' => $Blog->ImageHeaderID,
+			':ImageIconID'   => $Blog->ImageIconID
+		]);
+
+		$Bytes = (Int)($Result->Next()->TotalBytes);
+
+		return $Bytes;
+	}
+
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 

@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-10-21 20:59:16
+@date 2020-10-21 23:55:51
 @files [
     "src\/js\/libs\/000-jquery-3.1.1.min.js",
     "src\/js\/libs\/100-bootstrap.bundle.min.js",
@@ -13600,10 +13600,12 @@ a piece of content using codemirror as the code syntax magic thing.
 		this.InputURL = null;
 		this.Image = null;
 		this.ButtonUpload = null;
+		this.ButtonChooser = null;
 		this.InputUpload = null;
 		this.LabelGallery = null;
 		this.InputGallery = null;
 		this.InputImageID = null;
+		this.Chooser = null;
 		this.Loader = null;
 
 		return;
@@ -13705,8 +13707,10 @@ a piece of content using codemirror as the code syntax magic thing.
 
 		this.ButtonUpload = (
 			jQuery('<button />')
-			.addClass('btn btn-block btn-dark font-size-smaller')
-			.text('Upload')
+			.addClass('btn btn-sm btn-block btn-dark')
+			.addClass('AtlantisTooltip')
+			.attr('title','Upload an image.')
+			.html('<span class="fas fa-fw fa-cloud-upload"></span>')
 			.append(
 				this.InputUpload = jQuery('<input />')
 				.attr('type','file')
@@ -13714,6 +13718,137 @@ a piece of content using codemirror as the code syntax magic thing.
 				.on('click',function(Ev){ Ev.stopPropagation(); return; })
 			)
 		);
+
+		return;
+	}
+
+	BuildButtonChooser() {
+	/*//
+	@date 2020-10-11
+	construct the ui elements for the upload button.
+	//*/
+
+		let that = this;
+
+		this.ButtonChooser = (
+			jQuery('<button />')
+			.addClass('btn btn-sm btn-block btn-dark')
+			.addClass('AtlantisTooltip')
+			.attr('title','Choose an image from your gallery.')
+			.html('<span class="fas fa-fw fa-th"></span>')
+			.on('click',function(){
+
+				if(jQuery(this).hasClass('active')) {
+					jQuery(this).removeClass('active');
+					that.Chooser.empty();
+				}
+
+				else {
+					jQuery(this).addClass('active');
+					that.LoadChooser(1);
+				}
+			})
+		);
+
+		return;
+	}
+
+	BuildChooser() {
+
+		this.Chooser = (
+			jQuery('<div />')
+			.addClass('row tight mb-4')
+		);
+
+		return;
+	}
+
+	LoadChooser(PageNum) {
+
+		let that = this;
+
+		(this.Chooser).empty();
+
+		Atlantis.Request({
+			'Method': 'LIST',
+			'URL': '/api/v1/image/entity',
+			'Data': { 'Limit':12, 'Page':PageNum },
+			'OnSuccess': function(Result){
+
+				let Toolbar;
+
+				Toolbar = (
+					(new Atlantis.Element.Row(['align-items-center','justify-content-center','mb-4']))
+					.Append(
+						(new Atlantis.Element.RowItem(['col-auto']))
+						.Set(`Page ${Result.Payload.Page} of ${Result.Payload.PageCount}`)
+					)
+				);
+
+				if(Result.Payload.Page > 1)
+				Toolbar.Prepend(
+					(new Atlantis.Element.RowItem(['col-auto']))
+					.Set(
+						jQuery('<button />')
+						.attr('type','button')
+						.addClass('btn btn-dark btn-sm')
+						.append('<span class="fas fa-fw fa-caret-left"></span>')
+						.on('click',function(){ that.LoadChooser(PageNum-1); return; })
+					)
+				);
+
+				if(Result.Payload.Page < Result.Payload.PageCount)
+				Toolbar.Append(
+					(new Atlantis.Element.RowItem(['col-auto']))
+					.Set(
+						jQuery('<button />')
+						.attr('type','button')
+						.addClass('btn btn-dark btn-sm')
+						.append('<span class="fas fa-fw fa-caret-right"></span>')
+						.on('click',function(){ that.LoadChooser(PageNum+1); return; })
+					)
+				);
+
+				(that.Chooser)
+				.append(
+					jQuery('<div />')
+					.addClass('col-12')
+					.append(Toolbar.Get())
+				);
+
+				jQuery(Result.Payload.Payload)
+				.each(function(){
+
+					(that.Chooser)
+					.append(
+						jQuery('<div />')
+						.addClass('col-3 col-md-2 mb-4')
+						.append(
+							jQuery('<div />')
+							.addClass('WallpaperedBox Square rounded')
+							.attr('data-image-lg',this.Sources.Large)
+							.attr('data-image-id',this.ID)
+							.css('background-image',`url(${this.Sources.Thumbnail})`)
+							.css('cursor','pointer')
+							.on('click',function(){
+
+								that.InputURL
+								.val(jQuery(this).attr('data-image-lg'))
+								.trigger('change');
+
+								that.InputImageID.val(jQuery(this).attr('data-image-id'));
+
+								return;
+							})
+						)
+					);
+
+					return;
+				});
+
+				return;
+			}
+		});
 
 		return;
 	}
@@ -13772,7 +13907,9 @@ a piece of content using codemirror as the code syntax magic thing.
 		this.BuildInputURL();
 		this.BuildInputGallery();
 		this.BuildButtonUpload();
+		this.BuildButtonChooser();
 		this.BuildImage();
+		this.BuildChooser();
 
 		this.UI
 		.append(
@@ -13798,7 +13935,13 @@ a piece of content using codemirror as the code syntax magic thing.
 		)
 		.append(
 			jQuery('<div />')
+			.addClass('col-auto mb-4')
+			.append(this.ButtonChooser)
+		)
+		.append(
+			jQuery('<div />')
 			.addClass('col-12 text-center')
+			.append(this.Chooser)
 			.append(this.Image)
 		)
 		.append(
@@ -13806,7 +13949,12 @@ a piece of content using codemirror as the code syntax magic thing.
 			.attr('src','about:blank')
 			.addClass('d-none')
 			.on('load',function(){ that.Initialize(); return; })
-		)
+		);
+
+
+		(this.UI)
+		.find('.AtlantisTooltip')
+		.tooltip();
 
 		this.InputURL.trigger('change');
 		return this.UI[0];

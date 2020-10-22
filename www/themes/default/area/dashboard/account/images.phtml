@@ -1,5 +1,11 @@
+<?php
 
-<?php $Surface->Area('dashboard/promo') ?>
+/**
+ * @var Atlantis\Prototype\Blog $Blog
+ * @var Atlantis\Datastore $Blogs
+ */
+
+?>
 
 <style type="text/css">
 
@@ -17,6 +23,8 @@
 
 </style>
 
+<?php $Surface->Area('dashboard/promo') ?>
+
 <div class="container pt-4 pb-4">
 
 	<ol class="breadcrumb mb-4">
@@ -25,7 +33,39 @@
 		<li class="breadcrumb-item active">Images</li>
 	</ol>
 
-	<div id="Gallery" class="jumbotron-secondary p-4 Gallery">
+	<div class="jumbotron jumbotron-secondary p-4 mb-4">
+		<div class="row justify-content-center align-items-center">
+			<div class="col-auto mb-4">
+				<div id="BlogChooser" class="dropdown" data-blog-id="<?php $Printer($Route->Get->Blog) ?>">
+					<button class="btn btn-dark btn-lg dropdown-toggle" data-toggle="dropdown">
+						<?php $Printer($Blog ? $Blog->Title : 'Filter By Blog') ?>
+					</button>
+					<div class="dropdown-menu">
+						<div class="dropdown-item"><a href="?">All Blogs</a></div>
+						<?php foreach($Blogs as $Current): ?>
+						<div class="dropdown-item" data-blog-id="<?php $Printer($Current->ID) ?>"><a href="?blog=<?php $Printer($Current->ID) ?>"><?php $Printer($Current->Title) ?></a></div>
+						<?php endforeach; ?>
+					</div>
+				</div>
+			</div>
+			<div class="col-12 font-weight-bold">
+				<div>Account Usage: <?php $Printer(Atlantis\Util::BytesReadable($TotalUsage)) ?> of <?php $Printer(Atlantis\Util::BytesReadable($TotalSpace)) ?> (<?php $Printer(round(($TotalUsagePercent+$BlogUsagePercent),1)) ?>%)</div>
+				<?php if($Blog): ?>
+				<div><?php $Printer($Blog->Title) ?>: <?php $Printer(Atlantis\Util::BytesReadable($BlogUsage)) ?> (<?php $Printer(round($BlogUsagePercent,1)) ?>%)</div>
+				<?php endif; ?>
+				<div class="progress mt-2">
+					<?php if($Blog): ?>
+					<div class="progress-bar progress-bar bg-success" style="width:<?php $Printer($BlogUsagePercent) ?>%;"></div>
+					<div class="progress-bar progress-bar bg-dark" style="width:<?php $Printer($TotalUsagePercent) ?>%;"></div>
+					<?php else: ?>
+					<div class="progress-bar progress-bar bg-success" style="width:<?php $Printer($TotalUsagePercent) ?>%;"></div>
+					<?php endif; ?>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="Gallery" class="jumbotron jumbotron-secondary p-4 Gallery" data-blog-id="<?php $Printer($Route->Get->Blog) ?>">
 		<div class="text-center p-4">
 			<i class="fas fa-fw fa-asterisk fa-spin"></i> Loading...
 		</div>
@@ -45,6 +85,7 @@ class AtlantisImageManager {
 		this.Container = null;
 		this.Page = 1;
 		this.Selected = new Array;
+		this.BlogID = null;
 
 		NUI.Util.MergeProperties(Opt,this);
 
@@ -57,6 +98,7 @@ class AtlantisImageManager {
 		if(!(this.Container instanceof jQuery))
 		throw "invalid Container object";
 
+		this.BlogID = parseInt(this.Container.attr('data-blog-id') || null);
 		this.LoadPage(this.Page);
 		return;
 	}
@@ -74,7 +116,7 @@ class AtlantisImageManager {
 		this.ResetPage();
 
 		try { Result = await this.FetchPage(Num); }
-		catch(Error) { alert('Error Fetching Data'); return; }
+		catch(Error) { alert(Error); return; }
 
 		this.ResetPage(this.GeneratePage(Result));
 
@@ -92,6 +134,8 @@ class AtlantisImageManager {
 	@date 2020-10-18
 	//*/
 
+		let that = this;
+
 		return new Promise(function(Next,Halt){
 			Atlantis.Request({
 				'Method': 'LIST',
@@ -100,7 +144,8 @@ class AtlantisImageManager {
 					'Page': Num,
 					'CheckBlogs': true,
 					'CheckBlogPosts': true,
-					'CheckUser': true
+					'CheckUser': true,
+					'UsedBlogs': that.BlogID
 				},
 				'OnSuccess': function(Result){
 					Next(Result);
