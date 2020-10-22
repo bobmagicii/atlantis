@@ -46,7 +46,15 @@ extends ProtectedWeb {
 		$BlogUsage = 0.0;
 		$TotalUsagePercent = NULL;
 		$BlogUsagePercent = 0.0;
-		$TotalSpace = 1024 * 1024 * 1024;
+		$TotalSpace = 1024 * 1024 * 1024; // @todo make this real from the account
+
+		////////
+
+		$Blogs = (
+			(BlogUser::Find([ 'UserID' => $this->User->ID ])->Payload)
+			->Filter(function(BlogUser $Val){ return $Val->HasManagePriv(); })
+			->Remap(function(BlogUser $Val){ return $Val->Blog; })
+		);
 
 		////////
 
@@ -59,12 +67,6 @@ extends ProtectedWeb {
 			$BlogUsagePercent = ($BlogUsage / $TotalSpace) * 100;
 			$TotalUsagePercent = $TotalUsagePercent - $BlogUsagePercent;
 		}
-
-		$Blogs = (
-			(BlogUser::Find([ 'UserID' => $this->User->ID ])->Payload)
-			->Filter(function(BlogUser $Val){ return $Val->HasManagePriv(); })
-			->Remap(function(BlogUser $Val){ return $Val->Blog; })
-		);
 
 		////////
 
