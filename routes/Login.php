@@ -32,6 +32,18 @@ extends Atlantis\Site\PublicWeb {
 	}
 
 	public function
+	Destroy():
+	Void {
+
+		Atlantis\Prototype\User::DestroySession();
+		$this->Goto('/');
+		return;
+	}
+
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
+	public function
 	Github():
 	Void {
 
@@ -43,10 +55,12 @@ extends Atlantis\Site\PublicWeb {
 		$Account = NULL;
 		$Alias = NULL;
 		$Emails = NULL;
+		$AuthID = NULL;
 
 		$User = NULL;
 		$Email = NULL;
-		$UUID = Atlantis\Util::UUID(4);
+		$UUID1 = Atlantis\Util::UUID(4);
+		$UUID2 = Atlantis\Util::UUID(4);
 
 		////////
 
@@ -64,7 +78,10 @@ extends Atlantis\Site\PublicWeb {
 
 		try {
 			$Account = $Client->GetResourceOwner($Token);
-			$Alias = Atlantis\Util\Filters::TrimmedText($Account->GetNickname());
+			/** @var League\OAuth2\Client\Provider\GithubResourceOwner $Account */
+
+			$Alias = Atlantis\Util\Filters::RouteSafeAlias($Account->GetNickname());
+			$AuthID = $Account->GetID();
 			$Emails = [ Atlantis\Util\Filters::Email($Account->GetEmail()) ];
 
 			// github tends to not return an email address even if
@@ -78,7 +95,7 @@ extends Atlantis\Site\PublicWeb {
 
 				$Emails = array_filter(
 					(Array)$Client->GetParsedResponse($Request),
-					function($Val) { return $Val['verified'] === TRUE; }
+					function($Val) { return $Val['primary'] === TRUE; }
 				);
 
 				$Emails = array_map(
@@ -95,24 +112,37 @@ extends Atlantis\Site\PublicWeb {
 
 		////////
 
-		if(!$Alias || !count($Emails)) {
-			$this->AddErrorMessage('Github did not give us a nickname or email address.');
+		if(!$Alias || !count($Emails) || !$AuthID) {
+			$this->AddErrorMessage('Github did not give us a nickname, email, or auth id.');
 			return;
 		}
 
+		////////
+
+		// try to find an account already identified as using this auth.
+
+		$User = Atlantis\Prototype\User::GetByGithubID($AuthID);
+
+		// try to find a user by the email address.
+
+		if(!$User)
 		foreach($Emails as $Email) {
 			$User = Atlantis\Prototype\User::GetByEmail($Email);
 			if($User) break;
 		}
 
-		if(!$User)
-		if(Nether\Option::Get('Atlantis.User.Join.Mode') === Atlantis\Prototype\User::JoinModeNormal)
-		$User = Atlantis\Prototype\User::Insert([
-			'Alias'     => $Alias,
-			'Email'     => current($Emails),
-			'Password1' => $UUID,
-			'Password2' => $UUID
-		]);
+		if(!$User) {
+			reset($Emails);
+
+			//if(Nether\Option::Get('Atlantis.User.Join.Mode') === Atlantis\Prototype\User::JoinModeNormal)
+			$User = Atlantis\Prototype\User::Insert([
+				'Alias'        => $Alias,
+				'Email'        => current($Emails),
+				'PHash'        => $UUID1,
+				'PSand'        => $UUID2,
+				'AuthGithubID' => $AuthID
+			]);
+		}
 
 		if(!$User) {
 			$this->AddErrorMessage('Unable to locate a user account to log into.');
@@ -121,17 +151,98 @@ extends Atlantis\Site\PublicWeb {
 
 		////////
 
+		if(!$User->AuthGithubID)
+		$User->Update(['AuthGithubID'=>$AuthID]);
+
 		Atlantis\Prototype\User::LaunchSession($User);
 		$this->Goto(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home'));
 		return;
 	}
 
 	public function
-	Destroy():
+	Twitter():
 	Void {
 
-		Atlantis\Prototype\User::DestroySession();
-		$this->Goto('/');
+		$Client = new League\OAuth1\Client\Server\Twitter([
+			'identifier'   => Nether\Option::Get('Atlantis.Auth.Twitter.ClientID'),
+			'secret'       => Nether\Option::Get('Atlantis.Auth.Twitter.ClientSecret'),
+			'callback_uri' => 'https:'.Atlantis\Site\Endpoint::Get('Atlantis.Login.Auth.Twitter')
+		]);
+
+		$SessionTokenKey = 'Atlantis.Login.Auth.Twitter.Token';
+		$Account = NULL;
+		$Alias = NULL;
+		$Email = NULL;
+		$AuthID = NULL;
+
+		$User = NULL;
+		$UUID1 = Atlantis\Util::UUID(4);
+		$UUID2 = Atlantis\Util::UUID(4);
+
+		////////
+
+		if(!$this->Get->OAuth_Token) {
+			$Client->Authorize(
+				$_SESSION[$SessionTokenKey] = $Client->GetTemporaryCredentials()
+			);
+			return;
+		}
+
+		////////
+
+		try {
+			$Token = $Client->GetTokenCredentials(
+				$_SESSION[$SessionTokenKey],
+				$this->Get->OAuth_Token,
+				$this->Get->OAuth_Verifier
+			);
+
+			$Account = $Client->GetUserDetails($Token);
+			$Alias = Atlantis\Util\Filters::RouteSafeAlias($Account->nickname);
+			$AuthID = $Account->uid;
+			$Email = Atlantis\util\Filters::Email($Account->email);
+		}
+
+		catch(Throwable $Error) {
+			$this->AddErrorMessage('We did not get the data from Twitter we expected.');
+			return;
+		}
+
+		////////
+
+		if(!$Alias || !$Email || !$AuthID) {
+			$this->AddErrorMessage('Twitter did not give us a nickname, email, or auth id.');
+			return;
+		}
+
+		$User = Atlantis\Prototype\User::GetByTwitterID($AuthID);
+
+		if(!$User)
+		$User = Atlantis\Prototype\User::GetByEmail($Email);
+
+		if(!$User) {
+			if(Nether\Option::Get('Atlantis.User.Join.Mode') === Atlantis\Prototype\User::JoinModeNormal)
+			$User = Atlantis\Prototype\User::Insert([
+				'Alias'         => $Alias,
+				'Email'         => $Email,
+				'PHash'         => $UUID1,
+				'PSand'         => $UUID2,
+				'AuthTwitterID' => $AuthID
+			]);
+		}
+
+		if(!$User) {
+			$this->AddErrorMessage('Unable to locate a user account to log into.');
+			return;
+		}
+
+		////////
+
+		if(!$User->AuthTwitterID)
+		$User->Update(['AuthTwitterID'=>$AuthID]);
+
+		Atlantis\Prototype\User::LaunchSession($User);
+		$this->Goto(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home'));
 		return;
 	}
 

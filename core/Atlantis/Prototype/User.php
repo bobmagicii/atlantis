@@ -35,7 +35,9 @@ implements JsonSerializable {
 		'ImageIconID'   => 'ImageIconID:int',
 		'OptAdult'      => 'OptAdult:int',
 		'OptAllowSeen'  => 'OptAllowSeen:int',
-		'BytesImages'   => 'BytesImages:int'
+		'BytesImages'   => 'BytesImages:int',
+		'AuthGithubID'  => 'AuthGithubID',
+		'AuthTwitterID' => 'AuthTwitterID'
 	];
 
 	// data properties
@@ -53,6 +55,8 @@ implements JsonSerializable {
 	public String $PSand;
 	public Int $OptAdult;
 	public Int $BytesImages;
+	public ?String $AuthGithubID;
+	public ?String $AuthTwitterID;
 
 	// extended properties
 
@@ -555,73 +559,90 @@ implements JsonSerializable {
 	}
 
 	static public function
-	GetByAlias(String $Alias):
+	GetByFieldValue(String $Field, String $Value, String $Comp='LIKE'):
 	?self {
 	/*//
-	@date 2017-02-10
-	return the specified user looking up by username/alias.
+	@date 2020-10-23
+	return the specified user by the specified field with the specified value.
 	//*/
 
-		$SQL = Nether\Database::Get()->NewVerse();
+		$Comp = strtoupper($Comp);
+		$SQL = NULL;
 
-		$SQL
-		->Select(sprintf('%s Main',static::$Table))
-		->Fields('Main.*')
-		->Where('Main.Alias LIKE :Alias')
-		->Limit(1);
+		////////
+
+		if(!array_key_exists($Field,static::$PropertyMap))
+		throw new Exception('You asked for an invalid field.');
+
+		if($Comp !== '=' && $Comp !== 'LIKE')
+		throw new Exception('You asked for an invalid comparison.');
+
+		////////
+
+		$SQL = (
+			(Nether\Database::Get()->NewVerse())
+			->Select(sprintf('%s Main',static::$Table))
+			->Fields('Main.*')
+			->Where(sprintf('Main.%s %s :Value',$Field,$Comp))
+			->Limit(1)
+		);
 
 		static::ExtendQueryJoins($SQL);
 		static::ExtendQueryFields($SQL);
 
-		$Result = $SQL->Query([
-			':Alias' => $Alias
-		]);
+		$Result = $SQL->Query([ ':Value' => $Value ]);
 
-		// boom boom pow
 		if(!$Result->IsOK())
-		throw new Exception('User::GetByAlias critical phail');
+		throw new Exception("GetByFieldValue failed ({$Field},{$Value})");
 
-		// user not found
 		if(!$Result->GetCount())
 		return NULL;
 
-		// get user.
 		return (new static($Result->Next()));
+	}
+
+	static public function
+	GetByAlias(String $Alias):
+	?self {
+	/*//
+	@date 2020-10-23
+	return the specified user looking up by user alias.
+	//*/
+
+		return static::GetByFieldValue('Alias',$Alias);
 	}
 
 	static public function
 	GetByEmail(String $Email):
 	?self {
 	/*//
-	@date 2017-02-10
-	return the specified user looking up by email address.
+	@date 2020-10-23
+	return the specified user looking up by email.
 	//*/
 
-		$SQL = Nether\Database::Get()->NewVerse();
+		return static::GetByFieldValue('Email',$Email);
+	}
 
-		$SQL
-		->Select(sprintf('%s Main',static::$Table))
-		->Fields('Main.*')
-		->Where('Main.Email LIKE :Email')
-		->Limit(1);
+	static public function
+	GetByGithubID(String $GithubID):
+	?self {
+	/*//
+	@date 2020-10-23
+	return the specified user looking up by github auth id.
+	//*/
 
-		static::ExtendQueryJoins($SQL);
-		static::ExtendQueryFields($SQL);
+		return static::GetByFieldValue('AuthGithubID',$GithubID);
+	}
 
-		$Result = $SQL->Query([
-			':Email' => $Email
-		]);
+	static public function
+	GetByTwitterID(String $TwitterID):
+	?self {
+	/*//
+	@date 2020-10-23
+	return the specified user looking up by twitter auth id.
+	//*/
 
-		// boom boom pow
-		if(!$Result->IsOK())
-		throw new Exception('User::GetByEmail critical phail');
-
-		// user not found
-		if(!$Result->GetCount())
-		return NULL;
-
-		// get user.
-		return (new static($Result->Next()));
+		return static::GetByFieldValue('AuthTwitterID',$TwitterID);
 	}
 
 	////////////////////////////////////////////////////////////////
@@ -654,6 +675,8 @@ implements JsonSerializable {
 
 		static::Insert_ValidateAlias($Opt);
 		static::Insert_ValidateEmail($Opt);
+
+		if($Opt->PHash === NULL && $Opt->PSand === NULL)
 		static::Insert_ValidatePassword($Opt);
 
 		return parent::Insert($Opt);

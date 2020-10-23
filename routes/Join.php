@@ -29,13 +29,6 @@ extends Atlantis\Site\PublicWeb {
 	HandleJoin():
 	Void {
 
-		if($this->Post->Email !== 'bob@pegasusgate.net') {
-			$this->Errors->Push(new InlineError([
-				'Message' => 'Did you not believe me or something?'
-			]));
-			return;
-		}
-
 		// check if they can fool google into believing they are real.
 
 		$Human = new ReCaptcha\ReCaptcha(Nether\Option::Get('Google.ReCaptcha.Secret'));

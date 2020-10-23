@@ -25,6 +25,12 @@
 	'Routes\\Login::Github'
 )
 ->Register(
+	'Atlantis.Login.Auth.Twitter',
+	'{&}//login/auth/twitter',
+	'//{{Domain}}/login/auth/twitter',
+	'Routes\\Login::Twitter'
+)
+->Register(
 	'Atlantis.Logout',
 	'{&}//logout',
 	'//{{Domain}}/logout',

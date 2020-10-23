@@ -111,8 +111,25 @@ select:focus {
 	color: #ffe6ea;
 }
 
+.btn-twitter {
+	background: #1DA1F2;
+	border-color: #1DA1F2;
+	color: #fff;
+}
+
+.btn-twitter:hover,
+.btn-twitter.active {
+	background: #1DA1F2;
+	border-color: #1DA1F2;
+	color: #fff;
+}
+
 .text-adult {
 	color: #c25684;
+}
+
+.text-twitter {
+	color: #1DA1F2;
 }
 
 .opacity-0 {

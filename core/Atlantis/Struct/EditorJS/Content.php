@@ -57,10 +57,9 @@ extends Nether\Object\Mapped {
 	FromString(String $Input):
 	self {
 
-		$Object = json_decode($Input);
-
-		if(!is_object($Object))
-		throw new Exception('Error parsing content');
+		$Object = json_decode(json_encode(
+			new Atlantis\Struct\EditorJS\Validator($Input)
+		));
 
 		return new static($Object);
 	}
