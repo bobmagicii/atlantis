@@ -131,7 +131,7 @@ jQuery(document)
 		InputOptAdult.prop('checked',true);
 
 		InputOptAdult.trigger('change');
-
+		ElementTagList.find('.CmdTagRemove').empty();
 		return;
 	});
 
@@ -269,6 +269,7 @@ jQuery(document)
 			let Title = jQuery.trim(InputTitle.val());
 			let OptAdult = InputOptAdult.is(':checked') ? 1 : 0;
 			let OptDraft = InputOptDraft.is(':checked') ? 1 : 0;
+			let Tags = GetTagList();
 			let Content = await Editor.GetContent();
 
 			Atlantis.Request({
@@ -278,6 +279,7 @@ jQuery(document)
 					'BlogID': BlogID,
 					'Title': Title,
 					'ContentJSON': JSON.stringify(Content),
+					'Tags': Tags,
 					'OptAdult': OptAdult,
 					'OptDraft': OptDraft
 				},
