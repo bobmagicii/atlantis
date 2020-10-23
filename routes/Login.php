@@ -134,7 +134,7 @@ extends Atlantis\Site\PublicWeb {
 		if(!$User) {
 			reset($Emails);
 
-			//if(Nether\Option::Get('Atlantis.User.Join.Mode') === Atlantis\Prototype\User::JoinModeNormal)
+			if(Nether\Option::Get('Atlantis.User.Join.Mode') === Atlantis\Prototype\User::JoinModeNormal)
 			$User = Atlantis\Prototype\User::Insert([
 				'Alias'        => $Alias,
 				'Email'        => current($Emails),
