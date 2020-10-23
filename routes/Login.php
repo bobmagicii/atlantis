@@ -46,8 +46,10 @@ extends Atlantis\Site\PublicWeb {
 	public function
 	Github():
 	Void {
+	/*//
+	@date 2020-10-20
+	//*/
 
-		$AllowJoin = Nether\Option::Get('Atlantis.User.Join.Mode') === Atlantis\Prototype\User::JoinModeNormal;
 		$Client = NULL;
 		$Account = NULL;
 		$User = NULL;
@@ -144,22 +146,12 @@ extends Atlantis\Site\PublicWeb {
 		if(!$User)
 		$User = Atlantis\Prototype\User::GetByEmail($Email);
 
-		if(!$User && $AllowJoin) {
-			try {
-				$User = Atlantis\Prototype\User::Insert([
-					'Alias'        => $Alias,
-					'Email'        => $Email,
-					'AuthGithubID' => $AuthID,
-					'PHash'        => Atlantis\Util::UUID(4),
-					'PSand'        => Atlantis\Util::UUID(4)
-				]);
-			}
-
-			catch(Throwable $Error) {
-				$this->AddErrorMessage("Unable to create a new account: {$Error->GetMessage()}");
-				return;
-			}
-		}
+		if(!$User)
+		$User = $this->JoinOnTheFly([
+			'Alias'        => $Alias,
+			'Email'        => $Email,
+			'AuthGithubID' => $AuthID
+		]);
 
 		if(!$User) {
 			$this->AddErrorMessage('Unable to locate a user account to log into.');
@@ -183,8 +175,10 @@ extends Atlantis\Site\PublicWeb {
 	public function
 	Twitter():
 	Void {
+	/*//
+	@date 2020-10-23
+	//*/
 
-		$AllowJoin = Nether\Option::Get('Atlantis.User.Join.Mode') === Atlantis\Prototype\User::JoinModeNormal;
 		$SessionTokenKey = 'Atlantis.Login.Auth.Twitter.Token';
 		$Client = NULL;
 		$Account = NULL;
@@ -260,22 +254,12 @@ extends Atlantis\Site\PublicWeb {
 		if(!$User)
 		$User = Atlantis\Prototype\User::GetByEmail($Email);
 
-		if(!$User && $AllowJoin) {
-			try {
-				$User = Atlantis\Prototype\User::Insert([
-					'Alias'         => $Alias,
-					'Email'         => $Email,
-					'AuthTwitterID' => $AuthID,
-					'PHash'         => Atlantis\Util::UUID(4),
-					'PSand'         => Atlantis\Util::UUID(4)
-				]);
-			}
-
-			catch(Throwable $Error) {
-				$this->AddErrorMessage("Unable to create a new account: {$Error->GetMessage()}");
-				return;
-			}
-		}
+		if(!$User)
+		$User = $this->JoinOnTheFly([
+			'Alias'         => $Alias,
+			'Email'         => $Email,
+			'AuthTwitterID' => $AuthID
+		]);
 
 		if(!$User) {
 			$this->AddErrorMessage('Unable to locate a user account to log into.');
@@ -332,6 +316,38 @@ extends Atlantis\Site\PublicWeb {
 		return;
 	}
 
+	protected function
+	JoinOnTheFly($Opt):
+	?Atlantis\Prototype\User {
+	/*//
+	@date 2020-10-23
+	//*/
 
+		$User = NULL;
+
+		////////
+
+		if(Nether\Option::Get('Atlantis.User.Join.Mode') !== Atlantis\Prototype\User::JoinModeNormal)
+		return $User;
+
+		////////
+
+		$Opt = new Nether\Object\Mapped($Opt,[
+			'Alias' => NULL,
+			'Email' => NULL,
+			'PHash' => Atlantis\Util::UUID(4),
+			'PSand' => Atlantis\Util::UUID(4)
+		]);
+
+		try {
+			$User = Atlantis\Prototype\User::Insert($Opt);
+		}
+
+		catch(Throwable $Error) {
+			$this->AddErrorMessage("Unable to create new account: {$Error->GetMessage()}");
+		}
+
+		return $User;
+	}
 
 }
