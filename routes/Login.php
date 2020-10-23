@@ -184,23 +184,26 @@ extends Atlantis\Site\PublicWeb {
 	Twitter():
 	Void {
 
-		$Client = new League\OAuth1\Client\Server\Twitter([
-			'identifier'   => Nether\Option::Get('Atlantis.Auth.Twitter.ClientID'),
-			'secret'       => Nether\Option::Get('Atlantis.Auth.Twitter.ClientSecret'),
-			'callback_uri' => 'https:'.Atlantis\Site\Endpoint::Get('Atlantis.Login.Auth.Twitter')
-		]);
-
+		$AllowJoin = Nether\Option::Get('Atlantis.User.Join.Mode') === Atlantis\Prototype\User::JoinModeNormal;
 		$SessionTokenKey = 'Atlantis.Login.Auth.Twitter.Token';
+		$Client = NULL;
 		$Account = NULL;
+		$User = NULL;
+
+		$AuthID = NULL;
 		$Alias = NULL;
 		$Email = NULL;
-		$AuthID = NULL;
-
-		$User = NULL;
-		$UUID1 = Atlantis\Util::UUID(4);
-		$UUID2 = Atlantis\Util::UUID(4);
 
 		////////
+
+		$Client = new League\OAuth1\Client\Server\Twitter([
+			'identifier' => Nether\Option::Get('Atlantis.Auth.Twitter.ClientID'),
+			'secret'     => Nether\Option::Get('Atlantis.Auth.Twitter.ClientSecret')
+		]);
+
+		////////
+
+		// kick off an auth flow with a redirect to the remote app.
 
 		if(!$this->Get->OAuth_Token) {
 			$Client->Authorize(
@@ -211,16 +214,30 @@ extends Atlantis\Site\PublicWeb {
 
 		////////
 
+		// finish an auth flow by getting a token from the auth code.
+
 		try {
 			$Token = $Client->GetTokenCredentials(
 				$_SESSION[$SessionTokenKey],
 				$this->Get->OAuth_Token,
 				$this->Get->OAuth_Verifier
 			);
+		}
 
+		catch(Throwable $Error) {
+			$this->AddErrorMessage('Unnable to process the auth code.');
+			return;
+		}
+
+		////////
+
+		// get information about the user's identity.
+
+		try {
 			$Account = $Client->GetUserDetails($Token);
-			$Alias = Atlantis\Util\Filters::RouteSafeAlias($Account->nickname);
+
 			$AuthID = $Account->uid;
+			$Alias = Atlantis\Util\Filters::RouteSafeAlias($Account->nickname);
 			$Email = Atlantis\util\Filters::Email($Account->email);
 		}
 
@@ -230,6 +247,8 @@ extends Atlantis\Site\PublicWeb {
 		}
 
 		////////
+
+		// determine if we have enough information to proceed with an identity.
 
 		if(!$Alias || !$Email || !$AuthID) {
 			$this->AddErrorMessage('Twitter did not give us a nickname, email, or auth id.');
@@ -241,15 +260,21 @@ extends Atlantis\Site\PublicWeb {
 		if(!$User)
 		$User = Atlantis\Prototype\User::GetByEmail($Email);
 
-		if(!$User) {
-			if(Nether\Option::Get('Atlantis.User.Join.Mode') === Atlantis\Prototype\User::JoinModeNormal)
-			$User = Atlantis\Prototype\User::Insert([
-				'Alias'         => $Alias,
-				'Email'         => $Email,
-				'PHash'         => $UUID1,
-				'PSand'         => $UUID2,
-				'AuthTwitterID' => $AuthID
-			]);
+		if(!$User && $AllowJoin) {
+			try {
+				$User = Atlantis\Prototype\User::Insert([
+					'Alias'         => $Alias,
+					'Email'         => $Email,
+					'AuthTwitterID' => $AuthID,
+					'PHash'         => Atlantis\Util::UUID(4),
+					'PSand'         => Atlantis\Util::UUID(4)
+				]);
+			}
+
+			catch(Throwable $Error) {
+				$this->AddErrorMessage("Unable to create a new account: {$Error->GetMessage()}");
+				return;
+			}
 		}
 
 		if(!$User) {
@@ -259,8 +284,12 @@ extends Atlantis\Site\PublicWeb {
 
 		////////
 
+		// handle if a user is authing for the first time later on.
+
 		if(!$User->AuthTwitterID)
 		$User->Update(['AuthTwitterID'=>$AuthID]);
+
+		////////
 
 		Atlantis\Prototype\User::LaunchSession($User);
 		$this->Goto(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home'));
