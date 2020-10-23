@@ -47,61 +47,81 @@ extends Atlantis\Site\PublicWeb {
 	Github():
 	Void {
 
+		$AllowJoin = Nether\Option::Get('Atlantis.User.Join.Mode') === Atlantis\Prototype\User::JoinModeNormal;
+		$Client = NULL;
+		$Account = NULL;
+		$User = NULL;
+
+		$AuthID = NULL;
+		$Alias = NULL;
+		$Emails = NULL;
+		$Email = NULL;
+
+		////////
+
 		$Client = new League\OAuth2\Client\Provider\Github([
 			'clientId'     => Nether\Option::Get('Atlantis.Auth.Github.ClientID'),
 			'clientSecret' => Nether\Option::Get('Atlantis.Auth.Github.ClientSecret')
 		]);
 
-		$Account = NULL;
-		$Alias = NULL;
-		$Emails = NULL;
-		$AuthID = NULL;
+		////////
 
-		$User = NULL;
-		$Email = NULL;
-		$UUID1 = Atlantis\Util::UUID(4);
-		$UUID2 = Atlantis\Util::UUID(4);
+		// kick off an auth flow with a redirect to the remote app.
+
+		if(!$this->Get->Code) {
+			$this->Goto($Client->GetAuthorizationUrl([
+				'state' => 'OPTIONAL_CUSTOM_CONFIGURED_STATE',
+				'scope' => [ 'user:email' ]
+			]));
+
+			return;
+		}
 
 		////////
 
-		if(!$this->Get->Code)
-		$this->Goto($Client->GetAuthorizationUrl([
-			'state' => 'OPTIONAL_CUSTOM_CONFIGURED_STATE',
-			'scope' => [ 'user:email' ]
-		]));
+		// finish an auth flow by getting a token from the auth code.
+
+		try {
+			$Token = $Client->GetAccessToken(
+				'authorization_code',
+				[ 'code' => $this->Get->Code ]
+			);
+		}
+
+		catch(Throwable $Error) {
+			$this->AddErrorMessage('Unable to process the auth code.');
+			return;
+		}
 
 		////////
 
-		$Token = $Client->GetAccessToken('authorization_code',[
-			'code' => $this->Get->Code
-		]);
+		// get information about the user's identity.
 
 		try {
 			$Account = $Client->GetResourceOwner($Token);
 			/** @var League\OAuth2\Client\Provider\GithubResourceOwner $Account */
 
-			$Alias = Atlantis\Util\Filters::RouteSafeAlias($Account->GetNickname());
 			$AuthID = $Account->GetID();
-			$Emails = [ Atlantis\Util\Filters::Email($Account->GetEmail()) ];
+			$Alias = Atlantis\Util\Filters::RouteSafeAlias($Account->GetNickname());
+			$Email = Atlantis\Util\Filters::Email($Account->GetEmail());
 
 			// github tends to not return an email address even if
 			// you have one set as public, so, here we go.
 
-			if(!$Emails[0]) {
+			if(!$Email) {
 				$Request = $Client->GetAuthenticatedRequest(
-					'GET','https://api.github.com/user/emails',
+					'GET', 'https://api.github.com/user/emails',
 					$Token
 				);
 
-				$Emails = array_filter(
-					(Array)$Client->GetParsedResponse($Request),
-					function($Val) { return $Val['primary'] === TRUE; }
+				$Emails = (
+					(new Atlantis\Datastore((Array)$Client->GetParsedResponse($Request)))
+					->Filter(function($Val){ return $Val['primary'] === TRUE; })
+					->Remap(function($Val){ return $Val['email']; })
 				);
 
-				$Emails = array_map(
-					function($Val) { return $Val['email']; },
-					$Emails
-				);
+				if($Emails->Count() >= 1)
+				$Email = $Emails->Shift();
 			}
 		}
 
@@ -112,36 +132,33 @@ extends Atlantis\Site\PublicWeb {
 
 		////////
 
-		if(!$Alias || !count($Emails) || !$AuthID) {
+		// determine if we have enough information to proceed with an identity.
+
+		if(!$Alias || !$Email || !$AuthID) {
 			$this->AddErrorMessage('Github did not give us a nickname, email, or auth id.');
 			return;
 		}
 
-		////////
-
-		// try to find an account already identified as using this auth.
-
 		$User = Atlantis\Prototype\User::GetByGithubID($AuthID);
 
-		// try to find a user by the email address.
-
 		if(!$User)
-		foreach($Emails as $Email) {
-			$User = Atlantis\Prototype\User::GetByEmail($Email);
-			if($User) break;
-		}
+		$User = Atlantis\Prototype\User::GetByEmail($Email);
 
-		if(!$User) {
-			reset($Emails);
+		if(!$User && $AllowJoin) {
+			try {
+				$User = Atlantis\Prototype\User::Insert([
+					'Alias'        => $Alias,
+					'Email'        => $Email,
+					'AuthGithubID' => $AuthID,
+					'PHash'        => Atlantis\Util::UUID(4),
+					'PSand'        => Atlantis\Util::UUID(4)
+				]);
+			}
 
-			if(Nether\Option::Get('Atlantis.User.Join.Mode') === Atlantis\Prototype\User::JoinModeNormal)
-			$User = Atlantis\Prototype\User::Insert([
-				'Alias'        => $Alias,
-				'Email'        => current($Emails),
-				'PHash'        => $UUID1,
-				'PSand'        => $UUID2,
-				'AuthGithubID' => $AuthID
-			]);
+			catch(Throwable $Error) {
+				$this->AddErrorMessage("Unable to create a new account: {$Error->GetMessage()}");
+				return;
+			}
 		}
 
 		if(!$User) {
@@ -151,8 +168,12 @@ extends Atlantis\Site\PublicWeb {
 
 		////////
 
+		// handle if a user is authing for the first time later on.
+
 		if(!$User->AuthGithubID)
 		$User->Update(['AuthGithubID'=>$AuthID]);
+
+		////////
 
 		Atlantis\Prototype\User::LaunchSession($User);
 		$this->Goto(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home'));
