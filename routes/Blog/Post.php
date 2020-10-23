@@ -58,6 +58,7 @@ extends Atlantis\Site\PublicWeb {
 		$Recent = $Post->Blog->GetRecentPosts(5,1);
 		$Popular = $Post->Blog->GetPopularPosts(5,1);
 		$Tags = $Post->GetTags();
+		$Keywords = join(',',$Tags->Payload->Map(function($Val){ return $Val->Tag->Title; })->GetData());
 		$Hit = NULL;
 
 		($Popular->Payload)
@@ -90,6 +91,9 @@ extends Atlantis\Site\PublicWeb {
 			$Post->Title,
 			$Post->Blog->Title
 		))
+		->Set('Page.Desc',$Post->GetShortDesc())
+		->Set('Page.Keywords',$Keywords)
+		->Set('Page.Authour',$Post->User->Alias)
 		->Set('Social.Image',$Post->Blog->GetImageIconURL('sm'))
 		->Set('Social.Authour',$Post->User->Alias)
 		->Area('blog/post',[

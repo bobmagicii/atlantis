@@ -60,11 +60,15 @@ extends Atlantis\Site\PublicWeb {
 		// get blogs tags.
 
 		$Tags = $Blog->GetTags();
+		$Keywords = join(',',$Tags->Payload->Map(function($Val){ return $Val->Title; })->GetData());
 
 		////////
 
 		$this
 		->Set('Page.Title',$Blog->Title)
+		->Set('Page.Desc',$Blog->Tagline)
+		->Set('Page.Keywords',$Keywords)
+		->Set('Page.Authour',$Blog->User->Alias)
 		->Area('blog/index',[
 			'Blog'          => $Blog,
 			'BlogUser'      => $BlogUser,

@@ -60,6 +60,8 @@ extends Atlantis\Prototype {
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
 
+	protected ?Atlantis\Struct\EditorJS\Content $StructJSON;
+
 	// flags and stuff
 
 	public const
@@ -224,6 +226,23 @@ extends Atlantis\Prototype {
 	}
 
 	public function
+	GetShortDesc():
+	String {
+
+		$Output = '';
+		$Block = NULL;
+
+		$Struct = $this->StructureFromJSON();
+		foreach($Struct->Blocks as $Block)
+		if($Block instanceof Atlantis\Struct\EditorJS\Blocks\Paragraph) {
+			$Output = substr($Block->Data->Text,0,256);
+			break;
+		}
+
+		return $Output;
+	}
+
+	public function
 	BumpCountViews(Int $Inc=1):
 	self {
 
@@ -364,9 +383,12 @@ extends Atlantis\Prototype {
 	@date 2020-10-19
 	//*/
 
-		return Atlantis\Struct\EditorJS\Content::FromString(
+		if(!isset($this->StructJSON))
+		$this->StructJSON = Atlantis\Struct\EditorJS\Content::FromString(
 			$this->ContentJSON ?: 'null'
 		);
+
+		return $this->StructJSON;
 	}
 
 	public function
