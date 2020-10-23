@@ -324,6 +324,9 @@ extends Atlantis\Site\PublicWeb {
 	//*/
 
 		$User = NULL;
+		$Prev = NULL;
+		$Alias = NULL;
+		$Iter = 0;
 
 		////////
 
@@ -338,6 +341,23 @@ extends Atlantis\Site\PublicWeb {
 			'PHash' => Atlantis\Util::UUID(4),
 			'PSand' => Atlantis\Util::UUID(4)
 		]);
+
+		////////
+
+		// handle a non-unique alias from the service they came from.
+
+		$Alias = $Opt->Alias;
+
+		do {
+			$Prev = Atlantis\Prototype\User::GetByAlias($Opt->Alias);
+
+			if($Prev) {
+				$Iter = $Iter + random_int(1,9);
+				$Opt->Alias = sprintf('%s%s',$Alias,$Iter);
+			}
+		} while($Prev);
+
+		////////
 
 		try {
 			$User = Atlantis\Prototype\User::Insert($Opt);
