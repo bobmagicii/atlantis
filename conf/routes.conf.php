@@ -93,7 +93,7 @@
 ->Register(
 	'Atlantis.Dashboard.Account.Images',
 	'{&}//dashboard/account/images',
-	'//{{Domain}}/dashboard/account/images',
+	'//{{Domain}}/dashboard/account/images?blog={{BlogID}}',
 	'Routes\\Dashboard\\Account::Images'
 )
 ->Register(

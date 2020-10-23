@@ -24,44 +24,61 @@
 				<hr class="mt-2 mb-3" />
 				<div class="HideTheLastHr">
 					<?php foreach($Blogs->Payload as $BlogUser): ?>
-					<div class="row align-items-center tight mb-2">
-						<div class="col-auto">
-							<a href="<?php echo $BlogUser->Blog->URL ?>" class="font-size-large font-weight-bold"><?php echo $BlogUser->Blog->Title ?></a>
-						</div>
+					<div class="WallpaperedBox rounded p-4" style="background-image:url(<?php $Printer($BlogUser->Blog->GetImageHeaderURL()) ?>);">
+						<div style="position:absolute;top:0px;left:0px;width:100%;height:100%;background-color:#000a;"></div>
+						<div class="row align-items-center">
+							<div class="col-12 col-sm-3 mb-2">
+								<div class="WallpaperedBox Square rounded" style="background-image:url(<?php $Printer($BlogUser->Blog->GetImageIconURL('sm')) ?>);">
+									<a href="<?php $Printer($BlogUser->Blog->GetURL()) ?>"></a>
+								</div>
+							</div>
+							<div class="col">
+								<div class="mb-2">
+									<a href="<?php $Printer($BlogUser->Blog->GetURL()) ?>" class="font-size-larger font-weight-bold text-white"><?php $Printer($BlogUser->Blog->Title) ?></a>
+								</div>
+								<div class="row tight">
+									<?php if($BlogUser->HasWritePriv()): ?>
+									<div class="col col-sm-auto">
+										<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Post.New',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-block btn-dark text-uppercase AtlantisTooltip" title="New Post"><i class="fa fa-fw fa-edit"></i></a>
+									</div>
+									<?php else: ?>
+									<div class="col col-sm-auto">
+										<span class="btn btn-block btn-dark text-uppercase disabled HasTooltip" title="You do not have writer privileges on this blog."><i class="fa fa-fw fa-edit"></i></span>
+									</div>
+									<?php endif; ?>
 
-						<div class="col">
-						</div>
+									<?php if($BlogUser->HasManagePriv()): ?>
+									<div class="col col-sm-auto">
+										<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Tags',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-block btn-dark text-uppercase AtlantisTooltip" title="Manage Blog Tags"><i class="fa fa-fw fa-tag"></i></a>
+									</div>
+									<?php else: ?>
+									<div class="col col-sm-auto">
+										<span class="btn btn-block btn-dark text-uppercase disabled HasTooltip" title="You do not have manage privileges on this blog."><i class="fa fa-fw fa-tag"></i></span>
+									</div>
+									<?php endif; ?>
 
-						<?php if($BlogUser->HasWritePriv()): ?>
-						<div class="col-auto">
-							<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Post.New',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-dark text-uppercase"><i class="fa fa-fw fa-edit"></i></a>
-						</div>
-						<?php else: ?>
-						<div class="col-auto">
-							<span class="btn btn-dark text-uppercase disabled HasTooltip" title="You do not have writer privileges on this blog."><i class="fa fa-fw fa-edit"></i></span>
-						</div>
-						<?php endif; ?>
+									<?php if($BlogUser->HasManagePriv()): ?>
+									<div class="col col-sm-auto">
+										<a href="<?php echo $Endpoint('Atlantis.Dashboard.Account.Images',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-block btn-dark text-uppercase AtlantisTooltip" title="Manage Blog Images"><i class="fa fa-fw fa-image"></i></a>
+									</div>
+									<?php else: ?>
+									<div class="col col-sm-auto">
+										<span class="btn btn-block btn-dark text-uppercase disabled HasTooltip" title="You do not have manage privileges on this blog."><i class="fa fa-fw fa-image"></i></span>
+									</div>
+									<?php endif; ?>
 
-						<?php if($BlogUser->HasManagePriv()): ?>
-						<div class="col-auto">
-							<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Tags',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-dark text-uppercase"><i class="fa fa-fw fa-tag"></i></a>
+									<?php if($BlogUser->HasManagePriv()): ?>
+									<div class="col col-sm-auto">
+										<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Settings',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-block btn-dark text-uppercase AtlantisTooltip" title="Blog Settings"><i class="fa fa-fw fa-wrench"></i></a>
+									</div>
+									<?php else: ?>
+									<div class="col col-sm-auto">
+										<span class="btn btn-block btn-dark text-uppercase disabled HasTooltip" title="You do not have manage privileges on this blog."><i class="fa fa-fw fa-wrench"></i></span>
+									</div>
+									<?php endif; ?>
+								</div>
+							</div>
 						</div>
-						<?php else: ?>
-						<div class="col-auto">
-							<span class="btn btn-dark text-uppercase disabled HasTooltip" title="You do not have manage privileges on this blog."><i class="fa fa-fw fa-tag"></i></span>
-						</div>
-						<?php endif; ?>
-
-						<?php if($BlogUser->HasManagePriv()): ?>
-						<div class="col-auto">
-							<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Settings',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-dark text-uppercase"><i class="fa fa-fw fa-wrench"></i></a>
-						</div>
-						<?php else: ?>
-						<div class="col-auto">
-							<span class="btn btn-dark text-uppercase disabled HasTooltip" title="You do not have manage privileges on this blog."><i class="fa fa-fw fa-wrench"></i></span>
-						</div>
-						<?php endif; ?>
-
 					</div>
 					<hr />
 					<?php endforeach; ?>

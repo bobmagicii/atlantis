@@ -41,9 +41,9 @@
 						<?php $Printer($Blog ? $Blog->Title : 'Filter By Blog') ?>
 					</button>
 					<div class="dropdown-menu">
-						<div class="dropdown-item"><a href="?">All Blogs</a></div>
+						<div class="dropdown-item"><a href="?" class="text-white">All Blogs</a></div>
 						<?php foreach($Blogs as $Current): ?>
-						<div class="dropdown-item" data-blog-id="<?php $Printer($Current->ID) ?>"><a href="?blog=<?php $Printer($Current->ID) ?>"><?php $Printer($Current->Title) ?></a></div>
+						<div class="dropdown-item" data-blog-id="<?php $Printer($Current->ID) ?>"><a href="?blog=<?php $Printer($Current->ID) ?>" class="text-white"><?php $Printer($Current->Title) ?></a></div>
 						<?php endforeach; ?>
 					</div>
 				</div>
