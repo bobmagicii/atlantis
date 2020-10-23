@@ -4,8 +4,12 @@
 			<h3 class="font-weight-bold text-uppercase mb-0">Log In</h3>
 			<hr class="mt-2 mb-4" />
 			<div class="mb-4">
+				<?php if(Nether\Option::Get('Atlantis.Auth.Github.ClientID')): ?>
 				<div class="mb-2"><a href="<?php $Printer($Endpoint('Atlantis.Login.Auth.Github')) ?>" class="btn btn-dark btn-block text-left"><i class="fab fa-fw fa-github mr-2"></i> Log In With Github</a></div>
+				<?php endif; ?>
+				<?php if(Nether\Option::Get('Atlantis.Auth.Twitter.ClientID')): ?>
 				<div class="mb-2"><a href="<?php $Printer($Endpoint('Atlantis.Login.Auth.Twitter')) ?>" class="btn btn-twitter btn-block text-left"><i class="fab fa-fw fa-twitter mr-2"></i> Log In With Twitter</a></div>
+				<?php endif; ?>
 			</div>
 			<div class="row align-items-center mb-4">
 				<div class="col"><hr /></div>

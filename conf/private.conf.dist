@@ -24,8 +24,15 @@ Nether\Option::Set([
 	],
 	'Atlantis.File.DefaultMount' => 'upl',
 
-	'Atlantis.Auth.Github.ClientID'     => 'ur-client-id',
-	'Atlantis.Auth.Github.ClientSecret' => 'ur-client-secret',
+	////////////////////////////////////////////////////////////////
+	// Auth API Keys ///////////////////////////////////////////////
+
+	// set to NULL to disable these login mechanisms.
+
+	'Atlantis.Auth.Github.ClientID'      => 'ur-client-id',
+	'Atlantis.Auth.Github.ClientSecret'  => 'ur-client-secret',
+	'Atlantis.Auth.Twitter.ClientID'     => 'ur-client-id',
+	'Atlantis.Auth.Twitter.ClientSecret' => 'ur-client-secret',
 
 	////////////////////////////////////////////////////////////////
 	// Google reCaptcha Config /////////////////////////////////////
