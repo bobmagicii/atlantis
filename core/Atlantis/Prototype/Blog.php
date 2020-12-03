@@ -352,17 +352,6 @@ implements JsonSerializable {
 	///////////////////////////////////////////////////////////////////////////
 
 	static public function
-	GetByID(Int $ID):
-	?self {
-	/*//
-	@date 2020-06-19
-	@todo php8: make parent class return 'static' and delete this.
-	//*/
-
-		return parent::GetByID($ID);
-	}
-
-	static public function
 	GetByAlias(String $Alias):
 	?self {
 

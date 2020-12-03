@@ -144,7 +144,7 @@ namespace.
 
 	static public function
 	GetByID(Int $ID):
-	?self {
+	?static {
 	/*//
 	@date 2018-06-08
 	//*/

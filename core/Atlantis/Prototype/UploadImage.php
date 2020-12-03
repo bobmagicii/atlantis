@@ -423,17 +423,6 @@ implements
 	///////////////////////////////////////////////////////////////////////////
 
 	static public function
-	GetByID(Int $ID):
-	?self {
-	/*//
-	@date 2020-10-17
-	@todo set parent to return static and delete this shit
-	//*/
-
-		return parent::GetByID($ID);
-	}
-
-	static public function
 	Insert($Opt):
 	self {
 
