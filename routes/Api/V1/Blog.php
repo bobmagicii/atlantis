@@ -12,14 +12,15 @@ use \Exception as Exception;
 class Blog
 extends Atlantis\Site\ProtectedAPI {
 
-	/**
-	 * @input ?Int ID
-	 * @input ?String Alias
-	 */
-
+	#[Atlantis\Meta\Info('Fetch the public info about a blog.')]
+	#[Atlantis\Meta\Parameter('ID','?Int')]
+	#[Atlantis\Meta\Parameter('Alias','?String')]
+	#[Atlantis\Meta\Error(1,'Blog Not Found')]
 	final public function
 	EntityGet():
 	Void {
+
+		////////
 
 		$Blog = NULL;
 
@@ -29,13 +30,10 @@ extends Atlantis\Site\ProtectedAPI {
 		elseif($this->Get->Alias)
 		$Blog = Atlantis\Prototype\Blog::GetByAlias($this->Get->Alias);
 
-		if(!$Blog) {
-			// todo: write a blog post about how 404 makes no god damn
-			// sense since you found and succesfully queried the api
-			// and that its none of the transport protocol's god damn
-			// business to need to know if the result set was empty.
-			$this->Quit(1,'not found');
-		}
+		////////
+
+		if(!$Blog)
+		$this->Quit(1);
 
 		$this
 		->SetPayload($Blog);
@@ -43,12 +41,14 @@ extends Atlantis\Site\ProtectedAPI {
 		return;
 	}
 
-	/**
-	 * @input String Title
-	 * @input String Alias
-	 * @input Int OptAdult
-	 */
-
+	#[Atlantis\Meta\Info('Create a new blog.')]
+	#[Atlantis\Meta\Parameter('Title','String')]
+	#[Atlantis\Meta\Parameter('Alias','String')]
+	#[Atlantis\Meta\Error(1,'Blog must have a title.')]
+	#[Atlantis\Meta\Error(2,'Blog must have an alias.')]
+	#[Atlantis\Meta\Error(3,'A blog with this URL already exists.')]
+	#[Atlantis\Meta\Error(100,'Database shit itself inserting blog.')]
+	#[Atlantis\Meta\Error(101,'Database shit itself inserting blog ownership.')]
 	final public function
 	EntityPost():
 	Void {
@@ -64,13 +64,13 @@ extends Atlantis\Site\ProtectedAPI {
 		$Alias = $this->Post->Alias;
 
 		if(!$Title)
-		$this->Quit(1,'Blog must have a title.');
+		$this->Quit(1);
 
 		if(!$Alias)
-		$this->Quit(2,'Blog must have a link alias.');
+		$this->Quit(2);
 
 		if($Blog = Atlantis\Prototype\Blog::GetByAlias($Alias))
-		$this->Quit(3,'A blog with this URL already exists.');
+		$this->Quit(3);
 
 		////////
 
@@ -84,7 +84,7 @@ extends Atlantis\Site\ProtectedAPI {
 
 		if(!$Blog) {
 			$DB->Rollback();
-			$this->Quit(100,'There was problem creating the blog.');
+			$this->Quit(100);
 		}
 
 		////////
@@ -97,7 +97,7 @@ extends Atlantis\Site\ProtectedAPI {
 
 		if(!$BlogUser) {
 			$DB->Rollback();
-			$this->Quit(101,'There was problem creating the blog ownership.');
+			$this->Quit(101);
 		}
 
 		$DB->Commit();
@@ -109,27 +109,23 @@ extends Atlantis\Site\ProtectedAPI {
 		return;
 	}
 
-	/**
-	 * @input Int ID
-	 * @input ?String Title
-	 * @input ?String Alias
-	 * @input ?String Tagline
-	 * @input ?Int OptAdult
-	 * @input ?Bool RemoveImageHeader
-	 * @input ?Bool RemoveImageIcon
-	 */
-
+	#[Atlantis\Meta\Info('Update a blog.')]
+	#[Atlantis\Meta\Parameter('ID','Int')]
+	#[Atlantis\Meta\Parameter('Title','?String')]
+	#[Atlantis\Meta\Parameter('Alias','?String')]
+	#[Atlantis\Meta\Parameter('Tagline','?String')]
+	#[Atlantis\Meta\Parameter('OptAdult','?Int')]
+	#[Atlantis\Meta\Parameter('RemoveImageHeader','?Int')]
+	#[Atlantis\Meta\Parameter('RemoveImageIcon','?Int')]
+	#[Atlantis\Meta\Error(1,'Blog not found.')]
+	#[Atlantis\Meta\Error(2,'Permission Denied')]
+	#[Atlantis\Meta\Error(3,'Blog must have a Title.')]
+	#[Atlantis\Meta\Error(4,'Blog is forced into Adult Mode so get rekt')]
+	#[Atlantis\Meta\Error(5,'Blog must have an Alias.')]
+	#[Atlantis\Meta\Error(6,'Blog Alias is already in use.')]
 	final public function
 	EntityPatch():
 	Void {
-	/*//
-	@error 1 blog not found
-	@error 2 not a blog manaager
-	@error 3 blog must have a title
-	@error 4 blog is forced into adult mode so get rekt
-	@error 5 blog must have an alias
-	@error 6 blog alias already in use
-	//*/
 
 		$Dataset = [];
 		$BlogUser = Atlantis\Prototype\BlogUser::GetByBlogUser($this->Post->ID,$this->User->ID);
@@ -144,33 +140,33 @@ extends Atlantis\Site\ProtectedAPI {
 		->RemoveImageIcon('Atlantis\Util\Filters::NumberValidRange',[0,1,0]);
 
 		if(!$BlogUser)
-		$this->Quit(1,'blog not found');
+		$this->Quit(1);
 
 		if(!$BlogUser->HasManagePriv())
-		$this->Quit(2,'not a blog manager');
+		$this->Quit(2);
 
 		////////
 
 		if($Fields->Exists('Title')) {
 			if(!strlen($Fields->Title))
-			$this->Quit(3,'blog must have a title');
+			$this->Quit(3);
 
 			$Dataset['Title'] = $Fields->Title;
 		}
 
 		if($Fields->Exists('Alias') && $Fields->Alias !== $BlogUser->Blog->Alias) {
 			if(!strlen($Fields->Alias))
-			$this->Quit(5,'blog must have an alias');
+			$this->Quit(5);
 
 			if(Atlantis\Prototype\Blog::GetByAlias($Fields->Alias))
-			$this->Quit(6,'blog alias already in use');
+			$this->Quit(6);
 
 			$Dataset['Alias'] = $Fields->Alias;
 		}
 
 		if($Fields->Exists('OptAdult')) {
 			if($BlogUser->Blog->OptAdult === Atlantis\Prototype\Blog::AdultForced)
-			$this->Quit(4,'this blog has been forced into adult mode');
+			$this->Quit(4);
 
 			$Dataset['OptAdult'] = $Fields->OptAdult;
 		}
@@ -209,14 +205,11 @@ extends Atlantis\Site\ProtectedAPI {
 		return;
 	}
 
-	/**
-	 * @info Use a specific TagID or BlogID/TagTitle combo
-	 * @input Int TagID
-	 * @input Int BlogID
-	 * @input String TagTitle
-	 * @error 1 tag not found
-	 */
-
+	#[Atlantis\Meta\Info('Get a Blog Tag. Use either the TagID or a BlogID/TagTitle combo.')]
+	#[Atlantis\Meta\Parameter('TagID','?Int')]
+	#[Atlantis\Meta\Parameter('BlogID','?Int')]
+	#[Atlantis\Meta\Parameter('TagTitle','?String')]
+	#[Atlantis\Meta\Error(1,'Tag not found.')]
 	final public function
 	EntityTagget():
 	Void {
@@ -244,19 +237,18 @@ extends Atlantis\Site\ProtectedAPI {
 		////////
 
 		if(!$Tag)
-		$this->Quit(1,'tag not found');
+		$this->Quit(1);
 
 		$this->SetPayload($Tag);
 		return;
 	}
 
-	/**
-	 * @input Int TagID
-	 * @input String TagTitle
-	 * @error 1 tag not found
-	 * @error 2 invalid user
-	 */
-
+	#[Atlantis\Meta\Info('Update a tag.')]
+	#[Atlantis\Meta\Parameter('TagID','Int')]
+	#[Atlantis\Meta\Parameter('TagTitle','?String')]
+	#[Atlantis\Meta\Error(1,'Tag not found.')]
+	#[Atlantis\Meta\Error(2,'Permission denied.')]
+	#[Atlantis\Meta\Error(3,'Tag already exists.')]
 	final public function
 	EntityTagpatch():
 	Void {
@@ -303,14 +295,12 @@ extends Atlantis\Site\ProtectedAPI {
 		return;
 	}
 
-	/**
-	 * @info Create a new tag in this blog.
-	 * @input Int ID
-	 * @input String TagTitle
-	 * @error 1 blog not found
-	 * @error 2 invalid user
-	 */
-
+	#[Atlantis\Meta\Info('Create a new tag in this blog.')]
+	#[Atlantis\Meta\Parameter('ID','Int')]
+	#[Atlantis\Meta\Parameter('TagTitle','?String')]
+	#[Atlantis\Meta\Error(1,'Blog not found.')]
+	#[Atlantis\Meta\Error(2,'Permission denied.')]
+	#[Atlantis\Meta\Error(3,'Tag already exists.')]
 	final public function
 	EntityTagpost():
 	Void {
@@ -325,10 +315,10 @@ extends Atlantis\Site\ProtectedAPI {
 		$BlogUser = Atlantis\Prototype\BlogUser::GetByBlogUser($this->Post->ID,$this->User->ID);
 
 		if(!$BlogUser)
-		$this->Quit(1,'blog not found');
+		$this->Quit(1);
 
 		if(!$BlogUser->HasManagePriv())
-		$this->Quit(2,'not a blog manager');
+		$this->Quit(2);
 
 		////////
 
@@ -368,22 +358,10 @@ extends Atlantis\Site\ProtectedAPI {
 		return;
 	}
 
-	/**
-	 * @info Upload an image to be this blog's icon
-	 * @input Int ID
-	 * @input File Image
-	 * @error 1 blog not found
-	 * @error 2 user not blog manager
-	 * @error 3 no image upload
-	 * @error 4 upload too large
-	 */
-
-	/**
-	 * @input Int TagID
-	 * @error 1 tag not found
-	 * @error 2 invalid user
-	 */
-
+	#[Atlantis\Meta\Info('Delete a tag from this blog.')]
+	#[Atlantis\Meta\Parameter('TagID','Int')]
+	#[Atlantis\Meta\Error(1,'Tag not found.')]
+	#[Atlantis\Meta\Error(2,'Permission denied.')]
 	final public function
 	EntityTagdelete():
 	Void {
@@ -415,6 +393,15 @@ extends Atlantis\Site\ProtectedAPI {
 		return;
 	}
 
+	/**
+	 * @info Upload an image to be this blog's icon
+	 * @input Int ID
+	 * @input File Image
+	 * @error 1 blog not found
+	 * @error 2 user not blog manager
+	 * @error 3 no image upload
+	 * @error 4 upload too large
+	 */
 
 	final public function
 	IconPost():

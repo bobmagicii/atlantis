@@ -2,12 +2,11 @@
 
 namespace Atlantis\Site;
 
-use
-\Atlantis as Atlantis,
-\Nether   as Nether;
+use Atlantis;
+use Nether;
 
-use
-\ReflectionMethod as ReflectionMethod;
+use ReflectionMethod;
+use Exception;
 
 class PublicAPI
 extends PublicWeb {
@@ -72,6 +71,22 @@ extends PublicWeb {
 	@date 2020-05-22
 	so long and thanks for all the fish.
 	//*/
+
+		if($ErrNum !== 0 && $Message === 'OK') {
+			$Reflect = new ReflectionMethod(
+				static::class,
+				(new Exception)->GetTrace()[1]['function']
+			);
+
+			foreach($Reflect->GetAttributes('Atlantis\\Meta\\Error') as $Attrib) {
+				$Meta = $Attrib->NewInstance();
+
+				if($Meta->Code === $ErrNum) {
+					$Message = $Meta->Message;
+					break;
+				}
+			}
+		}
 
 		($this->Surface)
 		->Set('Error',$ErrNum)
@@ -171,6 +186,65 @@ extends PublicWeb {
 
 	public function
 	HelpGet():
+	Void {
+	/*//
+	@date 2020-12-03
+	//*/
+
+
+		$List = get_class_methods(static::class);
+		$Output = [];
+
+		$Method = NULL;
+		$Verb = NULL;
+		$Match = NULL;
+		$Reflect = NULL;
+		$Vars = NULL;
+
+		foreach($List as $Method) {
+			$Reflect = new ReflectionMethod(static::class,$Method);
+
+			if(!$Reflect->IsFinal())
+			continue;
+
+			if(!preg_match('/(.+?)([A-Z][a-z]+)$/',$Method,$Match))
+			continue;
+
+			$Match[1] = strtolower(preg_replace('/[A-Z]/','-$0',$Match[1]));
+			$Match[1] = sprintf('%s/%s',dirname($this->Router->GetPath()),trim($Match[1],'-'));
+			$Verb = strtoupper($Match[2]);
+			$Output[$Match[1]][$Verb] = NULL;
+			$Vars = [ 'Info' => NULL, 'Args' => [], 'Errors' => [] ];
+
+			$Attribs = $Reflect->GetAttributes();
+			foreach($Attribs as $Attrib) {
+				$Meta = $Attrib->NewInstance();
+
+				if($Meta instanceof Atlantis\Meta\Parameter)
+				$Vars['Args'][$Meta->Name] = $Meta->Type;
+
+				elseif($Meta instanceof Atlantis\Meta\Error)
+				$Vars['Errors'][$Meta->Code] = $Meta->Message;
+
+				elseif($Meta instanceof Atlantis\Meta\Info)
+				$Vars['Info'] = $Meta->Message;
+			}
+
+			ksort($Vars['Errors']);
+			$Output[$Match[1]][$Verb] = count($Vars) ? $Vars : NULL;
+		}
+
+		ksort($Output);
+
+		$this
+		->SetPayload($Output)
+		->Quit(123,'ヽ(~_~(・_・ )ゝ');
+
+		return;
+	}
+
+	public function
+	HelpOldGet():
 	Void {
 	/*//
 	@date 2020-06-01
