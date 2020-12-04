@@ -211,27 +211,27 @@ extends Atlantis\Site\ProtectedAPI {
 	#[Atlantis\Meta\Parameter('TagTitle','?String')]
 	#[Atlantis\Meta\Error(1,'Tag not found.')]
 	final public function
-	EntityTagget():
+	TagGet():
 	Void {
 	/*//
 	@date 2020-09-30
 	//*/
 
 		($this->Post)
-		->BlogID('Atlantis\\Util\\Filters::TypeInt')
 		->TagID('Atlantis\\Util\\Filters::TypeInt')
+		->BlogID('Atlantis\\Util\\Filters::TypeInt')
 		->TagTitle('Atlantis\\Util\\Filters::TrimmedText');
 
 		$Tag = NULL;
 
 		////////
 
-		if($this->Post->Exists('TagID'))
-		$Tag = Atlantis\Prototype\BlogTag::GetByID($this->Post->TagID);
+		if($this->Get->Exists('TagID'))
+		$Tag = Atlantis\Prototype\BlogTag::GetByID($this->Get->TagID);
 		else
 		$Tag = Atlantis\Prototype\BlogTag::GetByBlogTitle(
-			$this->Post->BlogID,
-			$this->Post->TagTitle
+			$this->Get->BlogID,
+			$this->Get->TagTitle
 		);
 
 		////////
@@ -250,7 +250,7 @@ extends Atlantis\Site\ProtectedAPI {
 	#[Atlantis\Meta\Error(2,'Permission denied.')]
 	#[Atlantis\Meta\Error(3,'Tag already exists.')]
 	final public function
-	EntityTagpatch():
+	TagPatch():
 	Void {
 	/*//
 	@date 2020-09-30
@@ -302,7 +302,7 @@ extends Atlantis\Site\ProtectedAPI {
 	#[Atlantis\Meta\Error(2,'Permission denied.')]
 	#[Atlantis\Meta\Error(3,'Tag already exists.')]
 	final public function
-	EntityTagpost():
+	TagPost():
 	Void {
 	/*//
 	@date 2020-09-30
@@ -363,7 +363,7 @@ extends Atlantis\Site\ProtectedAPI {
 	#[Atlantis\Meta\Error(1,'Tag not found.')]
 	#[Atlantis\Meta\Error(2,'Permission denied.')]
 	final public function
-	EntityTagdelete():
+	TagDelete():
 	Void {
 	/*//
 	@date 2020-09-30

@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2020-10-21 23:55:51
+@date 2020-12-04 00:44:09
 @files [
     "src\/js\/libs\/000-jquery-3.1.1.min.js",
     "src\/js\/libs\/100-bootstrap.bundle.min.js",
@@ -12307,8 +12307,8 @@ Atlantis.BlogTag
 
 	Prepare = function(){
 		Atlantis.Request({
-			'Method': 'TAGGET',
-			'URL': '/api/v1/blog/entity',
+			'Method': 'GET',
+			'URL': '/api/v1/blog/tag',
 			'Data': { 'TagID': TagID },
 			'OnSuccess': function(Result){
 				Construct(Result);
@@ -12354,8 +12354,8 @@ Atlantis.BlogTag
 		let TagTitle = InputText.val();
 
 		Atlantis.Request({
-			'Method': 'TAGPATCH',
-			'URL': '/api/v1/blog/entity',
+			'Method': 'PATCH',
+			'URL': '/api/v1/blog/tag',
 			'Data': { 'TagID':TagID, 'TagTitle':TagTitle },
 			'OnSuccess': function(Result){
 				if(typeof Config.OnSuccess === 'function')
@@ -12409,8 +12409,8 @@ Atlantis.BlogTag
 
 	Prepare = function(){
 		Atlantis.Request({
-			'Method': 'TAGGET',
-			'URL': '/api/v1/blog/entity',
+			'Method': 'GET',
+			'URL': '/api/v1/blog/tag',
 			'Data': { 'TagID': TagID },
 			'OnSuccess': function(Result){
 				Construct(Result);
@@ -12449,8 +12449,8 @@ Atlantis.BlogTag
 	Commit = function(){
 
 		Atlantis.Request({
-			'Method': 'TAGDELETE',
-			'URL': '/api/v1/blog/entity',
+			'Method': 'DELETE',
+			'URL': '/api/v1/blog/tag',
 			'Data': { 'TagID':TagID },
 			'OnSuccess': function(Result){
 				if(typeof Config.OnSuccess === 'function')

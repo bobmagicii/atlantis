@@ -29,8 +29,8 @@ Atlantis.BlogTag
 
 	Prepare = function(){
 		Atlantis.Request({
-			'Method': 'TAGGET',
-			'URL': '/api/v1/blog/entity',
+			'Method': 'GET',
+			'URL': '/api/v1/blog/tag',
 			'Data': { 'TagID': TagID },
 			'OnSuccess': function(Result){
 				Construct(Result);
@@ -76,8 +76,8 @@ Atlantis.BlogTag
 		let TagTitle = InputText.val();
 
 		Atlantis.Request({
-			'Method': 'TAGPATCH',
-			'URL': '/api/v1/blog/entity',
+			'Method': 'PATCH',
+			'URL': '/api/v1/blog/tag',
 			'Data': { 'TagID':TagID, 'TagTitle':TagTitle },
 			'OnSuccess': function(Result){
 				if(typeof Config.OnSuccess === 'function')
@@ -131,8 +131,8 @@ Atlantis.BlogTag
 
 	Prepare = function(){
 		Atlantis.Request({
-			'Method': 'TAGGET',
-			'URL': '/api/v1/blog/entity',
+			'Method': 'GET',
+			'URL': '/api/v1/blog/tag',
 			'Data': { 'TagID': TagID },
 			'OnSuccess': function(Result){
 				Construct(Result);
@@ -171,8 +171,8 @@ Atlantis.BlogTag
 	Commit = function(){
 
 		Atlantis.Request({
-			'Method': 'TAGDELETE',
-			'URL': '/api/v1/blog/entity',
+			'Method': 'DELETE',
+			'URL': '/api/v1/blog/tag',
 			'Data': { 'TagID':TagID },
 			'OnSuccess': function(Result){
 				if(typeof Config.OnSuccess === 'function')

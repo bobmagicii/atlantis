@@ -181,8 +181,8 @@ jQuery(document)
 				'OnAccept': function(){
 
 					Atlantis.Request({
-						'Method': 'TAGPOST',
-						'URL': '/api/v1/blog/entity',
+						'Method': 'POST',
+						'URL': '/api/v1/blog/tag',
 						'Data': { 'ID':InputBlogID.val(), 'TagTitle':InputText.val() },
 						'OnSuccess': function(Result) {
 							Overlay.Destroy();
