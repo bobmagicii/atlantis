@@ -12,7 +12,7 @@ use \Exception as Exception;
 class Blog
 extends Atlantis\Site\ProtectedAPI {
 
-	#[Atlantis\Meta\Info('Fetch the public info about a blog.')]
+	#[Atlantis\Meta\Info('Fetch the public info about a blog. Use either the Blog ID or the Blog Alias.')]
 	#[Atlantis\Meta\Parameter('ID','?Int')]
 	#[Atlantis\Meta\Parameter('Alias','?String')]
 	#[Atlantis\Meta\Error(1,'Blog Not Found')]
@@ -393,16 +393,13 @@ extends Atlantis\Site\ProtectedAPI {
 		return;
 	}
 
-	/**
-	 * @info Upload an image to be this blog's icon
-	 * @input Int ID
-	 * @input File Image
-	 * @error 1 blog not found
-	 * @error 2 user not blog manager
-	 * @error 3 no image upload
-	 * @error 4 upload too large
-	 */
-
+	#[Atlantis\Meta\Info('Upload an image to use as a Blog Icon.')]
+	#[Atlantis\Meta\Parameter('ID','Int')]
+	#[Atlantis\Meta\Parameter('Image','File')]
+	#[Atlantis\Meta\Error(1,'Blog not found.')]
+	#[Atlantis\Meta\Error(2,'Permission denied.')]
+	#[Atlantis\Meta\Error(3,'No Image was uploaded.')]
+	#[Atlantis\Meta\Error(4,'Uploaded Image was too heavy.')]
 	final public function
 	IconPost():
 	Void {
@@ -451,16 +448,13 @@ extends Atlantis\Site\ProtectedAPI {
 		return;
 	}
 
-	/**
-	 * @info Upload an image to be this blog's header graphic
-	 * @input Int ID
-	 * @input File Image
-	 * @error 1 blog not found
-	 * @error 2 user not blog manager
-	 * @error 3 no image upload
-	 * @error 4 upload too large
-	 */
-
+	#[Atlantis\Meta\Info('Upload an image to use as a Blog Header Image.')]
+	#[Atlantis\Meta\Parameter('ID','Int')]
+	#[Atlantis\Meta\Parameter('Image','File')]
+	#[Atlantis\Meta\Error(1,'Blog not found.')]
+	#[Atlantis\Meta\Error(2,'Permission denied.')]
+	#[Atlantis\Meta\Error(3,'No Image was uploaded.')]
+	#[Atlantis\Meta\Error(4,'Uploaded Image was too heavy.')]
 	final public function
 	HeaderPost():
 	Void {
