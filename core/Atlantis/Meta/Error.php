@@ -7,11 +7,14 @@ use Attribute;
 #[Attribute(Attribute::IS_REPEATABLE|Attribute::TARGET_ALL)]
 class Error {
 
+	public
+	Int $Code;
+
+	public
+	String $Message;
+
 	public function
-	__Construct(
-		public Int $Code=0,
-		public String $Message='OK'
-	) {
+	__Construct(Int $Code=0, String $Message='OK') {
 
 		return;
 	}

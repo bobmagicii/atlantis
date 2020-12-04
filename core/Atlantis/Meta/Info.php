@@ -7,11 +7,11 @@ use Attribute;
 #[Attribute]
 class Info {
 
-	public function
-	__Construct(
-		public ?String $Message=NULL
-	) {
+	public
+	String $Message;
 
+	public function
+	__Construct(String $Message) {
 		return;
 	}
 

@@ -73,6 +73,8 @@ extends PublicWeb {
 	//*/
 
 		if($ErrNum !== 0 && $Message === 'OK') {
+			$Attrib = NULL;
+			$Message = 'Err';
 			$Reflect = new ReflectionMethod(
 				static::class,
 				(new Exception)->GetTrace()[1]['function']
@@ -238,7 +240,7 @@ extends PublicWeb {
 
 		$this
 		->SetPayload($Output)
-		->Quit(123,'ヽ(~_~(・_・ )ゝ');
+		->Quit(0,'ヽ(~_~(・_・ )ゝ');
 
 		return;
 	}

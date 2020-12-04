@@ -7,11 +7,14 @@ use Attribute;
 #[Attribute(Attribute::IS_REPEATABLE|Attribute::TARGET_ALL)]
 class Parameter {
 
+	public
+	String $Name;
+
+	public
+	String $Type;
+
 	public function
-	__Construct(
-		public ?String $Name=NULL,
-		public ?String $Type=NULL
-	) {
+	__Construct(String $Name, String $Type) {
 
 		return;
 	}
