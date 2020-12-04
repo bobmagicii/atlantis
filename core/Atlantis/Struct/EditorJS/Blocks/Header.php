@@ -12,7 +12,8 @@ extends Atlantis\Struct\EditorJS\Block {
 		parent::OnReady($Raw);
 
 		($this->Data)
-		->Text('Atlantis\\Util\\Filters::StrippedText');
+		->Text('Atlantis\\Util\\Filters::StrippedText')
+		->Level('Atlantis\\Util\\Filters::TypeInt');
 
 		return;
 	}
@@ -21,7 +22,9 @@ extends Atlantis\Struct\EditorJS\Block {
 	__ToString():
 	String {
 
-		return "<h2 class=\"PostHeading mb-4\">{$this->Data->Text}</h2>\n";
+		$Level = $this->Data->Level;
+
+		return "<h{$this->Data->Level} class=\"PostHeading mb-4\">{$this->Data->Text}</h{$this->Data->Level}>\n";
 	}
 
 }
