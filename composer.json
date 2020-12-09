@@ -14,7 +14,7 @@
 		"netherphp/surface": "~3.0.0",
 		"netherjs/nui": "^3.0",
 		"ramsey/uuid": "^4.0",
-		"robmorgan\/phinx": "^0.6",
+		"robmorgan/phinx": "^0.12.4",
 		"google\/recaptcha": "^1.1",
 		"artem_c/emmet": "^1.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
