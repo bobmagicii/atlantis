@@ -107,6 +107,28 @@
 		</div>
 	</div>
 
+	<!-- Details -->
+	<div id="DashBlogDetails" class="row tight align-items-end mb-6">
+		<div class="col-12 mb-2">
+			<h2 class="font-size-large font-weight-bold">Details</h2>
+			<hr class="mb-2 mt-2" />
+			A short description about the type of things you are going to blog about.
+		</div>
+		<div class="col mb-2">
+			<textarea id="InputDetails" type="text" autocomplete="off" class="form-control" placeholder="Enter Details Here..."><?php echo $Printer($Blog->Details) ?></textarea>
+		</div>
+		<div class="col-auto mb-2">
+			<div class="d-flex">
+				<i class="ActionStatus ActionStatusThink fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
+				<i class="ActionStatus ActionStatusGood fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
+				<i class="ActionStatus ActionStatusBad fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
+			</div>
+		</div>
+		<div class="col-auto mb-2">
+			<button type="button" class="btn btn-block btn-dark ActionCommit">Save</button>
+		</div>
+	</div>
+
 	<!-- ALIAS -->
 	<div id="DashBlogAlias" class="row tight align-items-center mb-6">
 		<div class="col-12 mb-2">
@@ -239,6 +261,40 @@ jQuery(document)
 					Atlantis.Toaster({
 						'Title': 'Blog Settings',
 						'Content': 'Your blog tagline has been successfully updated.',
+						'ContentClass': 'alert-success'
+					});
+					return;
+				},
+				'OnError': function(Result) {
+					Handler.SetStatus('bad');
+					Atlantis.Toaster({
+						'Title': 'Blog Settings',
+						'Content': 'Error: ' + Result.Message,
+						'ContentClass': 'alert-danger'
+					});
+					return;
+				}
+			});
+
+			return;
+		}
+	});
+
+	let Details = new Atlantis.Action.StatusHandler({
+		'Element': '#DashBlogDetails',
+		'OnCommit': function(Handler){
+			let Input = jQuery.trim(jQuery('#InputDetails').val());
+
+			Atlantis.Request({
+				'Method': 'PATCH',
+				'URL': '/api/v1/blog/entity',
+				'Data': { 'ID': BlogID, 'Fields': { 'Details': Input } },
+				'OnSuccess': function(Result){
+					jQuery('.BlogHeaderDemo p').text(Result.Payload.Tagline);
+					Handler.SetStatus('good');
+					Atlantis.Toaster({
+						'Title': 'Blog Settings',
+						'Content': 'Your blog details has been successfully updated.',
 						'ContentClass': 'alert-success'
 					});
 					return;

@@ -114,6 +114,7 @@ extends Atlantis\Site\ProtectedAPI {
 	#[Atlantis\Meta\Parameter('Title','?String')]
 	#[Atlantis\Meta\Parameter('Alias','?String')]
 	#[Atlantis\Meta\Parameter('Tagline','?String')]
+	#[Atlantis\Meta\Parameter('Details','?String')]
 	#[Atlantis\Meta\Parameter('OptAdult','?Int')]
 	#[Atlantis\Meta\Parameter('RemoveImageHeader','?Int')]
 	#[Atlantis\Meta\Parameter('RemoveImageIcon','?Int')]
@@ -132,9 +133,10 @@ extends Atlantis\Site\ProtectedAPI {
 		$Fields = new Nether\Input\Filter($this->Post->Fields ?: []);
 
 		$Fields
-		->Title('Atlantis\Util\Filters::TrimmedText')
+		->Title('Atlantis\Util\Filters::EncodedText')
 		->Alias('Atlantis\Util\Filters::RouteSafeAlias')
-		->Tagline('Atlantis\Util\Filters::TrimmedText')
+		->Tagline('Atlantis\Util\Filters::EncodedText')
+		->Detalis('Atlantis\Util\Filters::EncodedText')
 		->OptAdult('Atlantis\Util\Filters::NumberValidRange',[0,2,0])
 		->RemoveImageHeader('Atlantis\Util\Filters::NumberValidRange',[0,1,0])
 		->RemoveImageIcon('Atlantis\Util\Filters::NumberValidRange',[0,1,0]);
@@ -173,6 +175,9 @@ extends Atlantis\Site\ProtectedAPI {
 
 		if($Fields->Exists('Tagline'))
 		$Dataset['Tagline'] = $Fields->Tagline;
+
+		if($Fields->Exists('Details'))
+		$Dataset['Details'] = $Fields->Details;
 
 		if($Fields->Exists('RemoveImageHeader') && (Int)$Fields->RemoveImageHeader) {
 			$Dataset['ImageHeaderID'] = NULL;

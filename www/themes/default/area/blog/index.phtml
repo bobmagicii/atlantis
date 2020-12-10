@@ -77,6 +77,21 @@ echo (new Atlantis\Element\PagePromo)
 					</div>
 					<?php endif; ?>
 
+					<!-- ABOUT -->
+					<?php if($Blog->Details): ?>
+					<div class="jumbotron jumbotron-secondary p-4 mb-4">
+						<h2 class="font-size-normal">
+							About
+						</h2>
+						<hr class="mt-2 mb-2" />
+						<div class="row tight align-items-center justify-content-center">
+							<div class="col-12">
+								<?php $Printer($Blog->Details) ?>
+							</div>
+						</div>
+					</div>
+					<?php endif; ?>
+
 					<!-- TAGS -->
 					<div class="jumbotron jumbotron-secondary p-4 m-0">
 						<h2 class="font-size-normal">

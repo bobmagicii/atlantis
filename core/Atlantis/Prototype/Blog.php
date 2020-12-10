@@ -31,6 +31,7 @@ implements JsonSerializable {
 		'Alias'          => 'Alias',
 		'Title'          => 'Title',
 		'Tagline'        => 'Tagline',
+		'Details'        => 'Details',
 		'ImageHeaderID'  => 'ImageHeaderID:int',
 		'ImageHeaderURL' => 'ImageHeaderURL',
 		'ImageIconID'    => 'ImageIconID:int',
@@ -49,6 +50,7 @@ implements JsonSerializable {
 	public String $Title;
 	public String $Alias;
 	public ?String $Tagline;
+	public ?String $Details;
 	public ?Int $ImageHeaderID;
 	public ?String $ImageHeaderURL;
 	public ?Int $ImageIconID;
