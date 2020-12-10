@@ -16,6 +16,9 @@ class Parameter {
 	public function
 	__Construct(String $Name, String $Type) {
 
+		$this->Name = $Name;
+		$this->Type = $Type;
+
 		return;
 	}
 

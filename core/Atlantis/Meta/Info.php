@@ -12,6 +12,7 @@ class Info {
 
 	public function
 	__Construct(String $Message) {
+		$this->Message = $Message;
 		return;
 	}
 

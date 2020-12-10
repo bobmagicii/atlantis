@@ -16,6 +16,9 @@ class Error {
 	public function
 	__Construct(Int $Code=0, String $Message='OK') {
 
+		$this->Code = $Code;
+		$this->Message = $Message;
+
 		return;
 	}
 
