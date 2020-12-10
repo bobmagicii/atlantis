@@ -86,7 +86,7 @@ echo (new Atlantis\Element\PagePromo)
 						<hr class="mt-2 mb-2" />
 						<div class="row tight align-items-center justify-content-center">
 							<div class="col-12">
-								<?php $Printer($Blog->Details) ?>
+								<?php echo nl2br($Encoder($Blog->Details)) ?>
 							</div>
 						</div>
 					</div>

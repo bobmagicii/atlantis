@@ -25,7 +25,7 @@ echo (new Atlantis\Element\PagePromo)
 					</h2>
 					<hr class="mt-2 mb-3" />
 					<div class="">
-						<?php $Printer($Profile->Details ?: "{$Profile->Alias} has not added a profile bio.") ?>
+						<?php echo nl2br($Encoder($Profile->Details ?: "{$Profile->Alias} has not added a profile bio.")) ?>
 					</div>
 					<hr />
 					<?php if($Profile->Location): ?>
