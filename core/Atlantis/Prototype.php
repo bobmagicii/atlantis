@@ -333,6 +333,9 @@ namespace.
 
 		$Opt->Offset = ($Opt->Page - 1) * $Opt->Limit;
 
+		if(!is_array($Opt->OutputFilter))
+		$Opt->OutputFilter = [ $Opt->OutputFilter ];
+
 		// quick mode short circuit
 
 		if($Opt->Quick !== FALSE) {
@@ -494,15 +497,13 @@ namespace.
 		$Output->Limit = $Opt->Limit;
 		$Output->Total = $Found;
 
-		if($Opt->OutputFilter !== NULL) {
-			if(is_array($Opt->OutputFilter)) {
-				foreach($Opt->OutputFilter as $OutputFilter)
+		if(is_array($Opt->OutputFilter)) {
+			foreach($Opt->OutputFilter as $OutputFilter) {
+				if(is_string($OutputFilter) && strpos($OutputFilter,'::') === 0)
+				$OutputFilter = sprintf('%s%s',static::class,$OutputFilter);
+
 				if(is_callable($OutputFilter))
 				($OutputFilter)($Output,$Opt);
-			}
-
-			elseif(is_callable($Opt->OutputFilter)) {
-				($Opt->OutputFilter)($Output,$Opt);
 			}
 		}
 
