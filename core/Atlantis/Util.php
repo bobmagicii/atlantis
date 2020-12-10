@@ -94,7 +94,7 @@ class Util {
 
 		foreach($Dataset as $Property => $Value)
 		if(strpos($Property,$Prefix) === 0)
-		$Output[str_replace($Prefix,'',$Property)] = $Value;
+		$Output[substr_replace($Property,'',0,strlen($Prefix))] = $Value;
 
 		return $Output;
 	}
