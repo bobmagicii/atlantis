@@ -17,7 +17,7 @@ $Posts = $Element->GetItemStore();
 		<div class="letter-space-barely font-weight-normal font-size-smaller opacity-75 mb-2"><?php echo $Element->GetSubtitle() ?></div>
 		<?php endif; ?>
 	</h2>
-	<hr class="mt-2 mb-3" />
+	<hr class="mt-2 mb-4" />
 	<?php foreach($Posts as $Post): ?>
 	<div class="Post <?php echo $Post->GetStyleClassAttr() ?>">
 
@@ -55,7 +55,7 @@ $Posts = $Element->GetItemStore();
 		</div>
 
 	</div>
-	<hr />
+	<hr class="mt-4 mb-4" />
 	<?php endforeach; ?>
 	<?php if(!$Posts->Count()): ?>
 	<div class="p-4 text-center font-italic">
