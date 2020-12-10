@@ -59,6 +59,50 @@
 		</div>
 	</div>
 
+	<!-- DETAILS -->
+	<div id="DashAccountDetails" class="row tight align-items-end mb-6">
+		<div class="col-12 mb-2">
+			<h2 class="font-size-large font-weight-bold">Profile Bio</h2>
+			<hr class="mb-2 mt-2" />
+			A short little bio about yourself if you wish to share it.
+		</div>
+		<div class="col mb-2">
+			<textarea id="InputDetails" type="text" autocomplete="off" class="form-control" placeholder="Details..." rows="3"><?php echo $Printer($User->Details) ?></textarea>
+		</div>
+		<div class="col-auto mb-2">
+			<div class="d-flex">
+				<i class="ActionStatus ActionStatusThink fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
+				<i class="ActionStatus ActionStatusGood fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
+				<i class="ActionStatus ActionStatusBad fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
+			</div>
+		</div>
+		<div class="col-auto mb-2">
+			<butt type="button" class="btn btn-block btn-dark ActionCommit">Save</button>
+		</div>
+	</div>
+
+	<!-- LOCATION -->
+	<div id="DashAccountLocation" class="row tight align-items-center mb-6">
+		<div class="col-12 mb-2">
+			<h2 class="font-size-large font-weight-bold">Location</h2>
+			<hr class="mb-2 mt-2" />
+			Some location like city or state if you wish to share it. Most people will probably put something stupid like "behind you" or "at your mom's house". It is not used for anything except being on the profile.
+		</div>
+		<div class="col mb-2">
+			<input id="InputLocation" type="text" autocomplete="off" class="form-control" placeholder="Location..." value="<?php echo $Printer($User->Location) ?>" />
+		</div>
+		<div class="col-auto mb-2">
+			<div class="d-flex">
+				<i class="ActionStatus ActionStatusThink fa fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero"></i>
+				<i class="ActionStatus ActionStatusGood fa fas fa-check font-size-anim font-size-normal font-size-zero text-success"></i>
+				<i class="ActionStatus ActionStatusBad fa fas fa-times font-size-anim font-size-normal font-size-zero text-danger"></i>
+			</div>
+		</div>
+		<div class="col-auto mb-2">
+			<butt type="button" class="btn btn-block btn-dark ActionCommit">Save</button>
+		</div>
+	</div>
+
 	<!-- ADULT CONTENT -->
 	<div id="UserOptAdult" class="mb-6">
 		<h2 class="font-size-large font-weight-bold">Adult Content</h2>
@@ -212,7 +256,7 @@ jQuery(document)
 		}
 	});
 
-	let Title = new Atlantis.Action.StatusHandler({
+	let Email = new Atlantis.Action.StatusHandler({
 		'Element': '#DashAccountEmail',
 		'OnCommit': function(Handler){
 			let Input = jQuery.trim(jQuery('#InputEmail').val());
@@ -226,6 +270,72 @@ jQuery(document)
 					Atlantis.Toaster({
 						'Title': 'Account Settings',
 						'Content': 'Your e-mail address has been updated.',
+						'ContentClass': 'alert-success'
+					});
+					return;
+				},
+				'OnError': function(Result) {
+					Handler.SetStatus('bad');
+					Atlantis.Toaster({
+						'Title': 'Account Settings',
+						'Content': 'Error: ' + Result.Message,
+						'ContentClass': 'alert-danger'
+					});
+					return;
+				}
+			});
+
+			return;
+		}
+	});
+
+	let Details = new Atlantis.Action.StatusHandler({
+		'Element': '#DashAccountDetails',
+		'OnCommit': function(Handler){
+			let Input = jQuery.trim(jQuery('#InputDetails').val());
+
+			Atlantis.Request({
+				'Method': 'PATCH',
+				'URL': '/api/v1/user/entity',
+				'Data': { 'Fields': { 'Details': Input } },
+				'OnSuccess': function(Result){
+					Handler.SetStatus('good');
+					Atlantis.Toaster({
+						'Title': 'Account Settings',
+						'Content': 'Your profile bio has been updated.',
+						'ContentClass': 'alert-success'
+					});
+					return;
+				},
+				'OnError': function(Result) {
+					Handler.SetStatus('bad');
+					Atlantis.Toaster({
+						'Title': 'Account Settings',
+						'Content': 'Error: ' + Result.Message,
+						'ContentClass': 'alert-danger'
+					});
+					return;
+				}
+			});
+
+			return;
+		}
+	});
+
+	let Location = new Atlantis.Action.StatusHandler({
+		'Element': '#DashAccountLocation',
+		'OnCommit': function(Handler){
+			let Input = jQuery.trim(jQuery('#InputLocation').val());
+
+			Atlantis.Request({
+				'Method': 'PATCH',
+				'URL': '/api/v1/user/entity',
+				'Data': { 'Fields': { 'Location': Input } },
+				'OnSuccess': function(Result){
+					Handler.SetStatus('good');
+					Atlantis.Toaster({
+						'Title': 'Account Settings',
+						'Content': 'Your location has been updated.',
 						'ContentClass': 'alert-success'
 					});
 					return;

@@ -9,13 +9,34 @@ echo (new Atlantis\Element\PagePromo)
 ->SetURL($Profile->GetURL())
 ->SetImageURL($Profile->GetImageHeaderURL('lg'))
 ->SetIconURL($Profile->GetImageIconURL('th'))
-->SetTitle("User Profile: {$Profile->Alias}")
+->SetTitle($Profile->Alias)
+->SetSubtitle('User Profile')
 
 ?>
 
 <div class="container pb-4">
 
 	<div class="row">
+		<div class="col-12">
+			<div class="jumbotron jumbotron-secondary p-4 mb-4">
+				<div class="PostListing HideTheLastHr">
+					<h2 class="font-size-normal">
+						About
+					</h2>
+					<hr class="mt-2 mb-3" />
+					<div class="">
+						<?php $Printer($Profile->Details ?: "{$Profile->Alias} has not added a profile bio.") ?>
+					</div>
+					<hr />
+					<?php if($Profile->Location): ?>
+					<div class="">
+						<strong class="font-weight-bold">Location:</strong> <?php $Printer($Profile->Location) ?>
+					</div>
+					<?php endif; ?>
+					<hr />
+				</div>
+			</div>
+		</div>
 		<div class="col-12 col-md-6">
 			<div class="jumbotron jumbotron-secondary p-4 mb-4">
 				<div class="PostListing HideTheLastHr ">

@@ -36,6 +36,8 @@ implements JsonSerializable {
 		'OptAdult'      => 'OptAdult:int',
 		'OptAllowSeen'  => 'OptAllowSeen:int',
 		'BytesImages'   => 'BytesImages:int',
+		'Location'      => 'Location',
+		'Details'       => 'Details',
 		'AuthGithubID'  => 'AuthGithubID',
 		'AuthTwitterID' => 'AuthTwitterID'
 	];
@@ -55,6 +57,8 @@ implements JsonSerializable {
 	public String $PSand;
 	public Int $OptAdult;
 	public Int $BytesImages;
+	public ?String $Location;
+	public ?String $Details;
 	public ?String $AuthGithubID;
 	public ?String $AuthTwitterID;
 

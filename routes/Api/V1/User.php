@@ -27,14 +27,22 @@ extends Atlantis\Site\ProtectedAPI {
 		$Fields = new Nether\Input\Filter($this->Post->Fields);
 
 		$Fields
-		->Email('Atlantis\Util\Filters::Email')
-		->OptAdult('Atlantis\Util\Filters::NumberValidRange',[0,2,0])
-		->OptAllowSeen('Atlantis\Util\Filters::NumberValidRange',[0,1,0]);
+		->Location('Atlantis\\Util\\Filters::EncodedText')
+		->Details('Atlantis\\Util\\Filters::EncodedText')
+		->Email('Atlantis\\Util\\Filters::Email')
+		->OptAdult('Atlantis\\Util\\Filters::NumberValidRange',[0,2,0])
+		->OptAllowSeen('Atlantis\\Util\\Filters::NumberValidRange',[0,1,0]);
 
 		////////
 
 		if($Fields->Exists('Email'))
 		$Dataset['Email'] = $Fields->Email;
+
+		if($Fields->Exists('Location'))
+		$Dataset['Location'] = $Fields->Location;
+
+		if($Fields->Exists('Details'))
+		$Dataset['Details'] = $Fields->Details;
 
 		if($Fields->Exists('OptAdult'))
 		$Dataset['OptAdult'] = $Fields->OptAdult;
