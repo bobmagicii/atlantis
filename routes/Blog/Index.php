@@ -22,6 +22,7 @@ extends Atlantis\Site\PublicWeb {
 		$Page = 1;
 		$Limit = 10;
 		$QueryTags = NULL;
+		$Users = NULL;
 		$Opt = [
 			'Adult'   => NULL,
 			'Enabled' => Post::EnableStatePublic,
@@ -62,6 +63,12 @@ extends Atlantis\Site\PublicWeb {
 		$Tags = $Blog->GetTags();
 		$Keywords = join(',',$Tags->Payload->Map(function($Val){ return $Val->Title; })->GetData());
 
+		// get blog users.
+
+		$Bloggers = Atlantis\Prototype\BlogUser::Find([
+			'BlogID' => $Blog->ID
+		]);
+
 		////////
 
 		$this
@@ -75,7 +82,8 @@ extends Atlantis\Site\PublicWeb {
 			'Posts'         => $Blog->GetRecentPosts($Limit,$Page,$Opt),
 			'Tags'          => $Tags,
 			'PopularPosts'  => $PopularPosts,
-			'QueryTags'     => $QueryTags
+			'QueryTags'     => $QueryTags,
+			'Bloggers'      => $Bloggers
 		]);
 
 		return;

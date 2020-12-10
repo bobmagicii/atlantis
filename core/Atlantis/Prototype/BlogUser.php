@@ -170,6 +170,25 @@ extends Atlantis\Prototype {
 		return $this->HasFlagsAny(static::FlagOwner|static::FlagEditor);
 	}
 
+	public function
+	GetRoleWord():
+	String {
+
+		if($this->HasOwnerPriv())
+		return 'Blog Owner';
+
+		if($this->HasWritePriv())
+		return 'Writer';
+
+		if($this->HasEditPriv())
+		return 'Editor';
+
+		if($this->HasManagePriv())
+		return 'Manager';
+
+		return 'Someone';
+	}
+
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
@@ -195,6 +214,22 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
+	static public function
+	ResultChopToUser(Atlantis\Struct\SearchResult $Result):
+	Void {
+	/*//
+	@date 2020-12-10
+	//*/
+
+		($Result->Payload)
+		->Remap(function($Val){ return $Val->User; });
+
+		return;
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
 	static protected function
 	ExtendQueryJoins($SQL, String $TableAlias='Main', String $FieldPrefix=''):
 	Void {
@@ -207,7 +242,7 @@ extends Atlantis\Prototype {
 		->Join("Users {$FieldPrefix}US ON {$TableAlias}.UserID={$FieldPrefix}US.ID");
 
 		Atlantis\Prototype\Blog::ExtendQueryJoins($SQL,"{$FieldPrefix}BL","{$FieldPrefix}B_");
-		Atlantis\Prototype\User::ExtendQueryJoins($SQL,"{$FieldPrefix}US","{$FieldPrefix}US_");
+		Atlantis\Prototype\User::ExtendQueryJoins($SQL,"{$FieldPrefix}US","{$FieldPrefix}U_");
 
 		return;
 	}
@@ -219,7 +254,9 @@ extends Atlantis\Prototype {
 	@date 2018-06-08
 	//*/
 
+
 		Atlantis\Prototype\User::ExtendMainFields($SQL,"{$FieldPrefix}US","{$FieldPrefix}U_");
+		Atlantis\Prototype\User::ExtendQueryFields($SQL,"{$FieldPrefix}US","{$FieldPrefix}U_");
 		Atlantis\Prototype\Blog::ExtendMainFields($SQL,"{$FieldPrefix}BL","{$FieldPrefix}B_");
 		Atlantis\Prototype\Blog::ExtendQueryFields($SQL,"{$FieldPrefix}BL","{$FieldPrefix}B_");
 

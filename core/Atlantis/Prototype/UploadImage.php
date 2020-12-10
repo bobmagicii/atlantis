@@ -309,7 +309,7 @@ implements
 	//*/
 
 		$SQL
-		->Join(sprintf('Users %2$sPU ON %1$s.UserID=%2$sPU.ID',$TableAlias,$FieldPrefix));
+		->Join("Users {$FieldPrefix}PU ON {$TableAlias}.UserID={$FieldPrefix}PU.ID");
 
 		return;
 	}
@@ -321,11 +321,7 @@ implements
 	@date 2018-06-08
 	//*/
 
-		$SQL
-		->Fields(Atlantis\Util::BuildPrefixedQueryFields(
-			Atlantis\Prototype\User::GetPropertyMap(),
-			"{$FieldPrefix}PU", "{$FieldPrefix}PU_"
-		));
+		Atlantis\Prototype\User::ExtendMainFields($SQL,"{$FieldPrefix}PU","{$FieldPrefix}PU_");
 
 		return;
 	}

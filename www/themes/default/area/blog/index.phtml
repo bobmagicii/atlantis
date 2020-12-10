@@ -93,7 +93,7 @@ echo (new Atlantis\Element\PagePromo)
 					<?php endif; ?>
 
 					<!-- TAGS -->
-					<div class="jumbotron jumbotron-secondary p-4 m-0">
+					<div class="jumbotron jumbotron-secondary p-4 mb-4">
 						<h2 class="font-size-normal">
 							Tags
 						</h2>
@@ -110,6 +110,31 @@ echo (new Atlantis\Element\PagePromo)
 						<?php endif; ?>
 						</div>
 					</div>
+
+					<?php if($Bloggers->Count): ?>
+					<!-- USERS -->
+					<div class="jumbotron jumbotron-secondary p-4 m-0 HideTheLastHr">
+						<h2 class="font-size-normal">
+							Bloggers
+						</h2>
+						<hr class="mt-2 mb-2" />
+						<?php foreach($Bloggers->Payload as $Blogger): ?>
+						<div class="row tight align-items-center justify-content-center">
+							<div class="col-3">
+								<div class="WallpaperedBox Square rounded" style="background-image:url(<?php $Printer($Blogger->User->GetImageIconURL('th')) ?>);">
+									<a href="<?php $Printer($Blogger->User->GetURL()) ?>"></a>
+								</div>
+							</div>
+							<div class="col">
+								<div class="text-uppercase font-size-smallerer font-weight-bold"><?php $Printer($Blogger->GetRoleWord()) ?></div>
+								<a href="<?php $Printer($Blogger->User->GetURL()) ?>" class="font-size-large font-weight-bold"><?php $Printer($Blogger->User->Alias) ?></a>
+								<?php if($Blogger->User->Location): ?><div><?php $Printer($Blogger->User->Location) ?></div><?php endif; ?>
+							</div>
+						</div>
+						<hr />
+						<?php endforeach; ?>
+					</div>
+					<?php endif; ?>
 
 				</div>
 				<div class="col-12 col-md-6 col-lg-12 mb-4">
