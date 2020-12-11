@@ -15,6 +15,11 @@ class Date
 extends DateTime
 implements JsonSerializable {
 
+	const
+	FormatDate = 'Y-m-d',
+	FormatDateTime = 'Y-m-d g:ia',
+	FormatDateTimeZone = 'Y-m-d g:ia T';
+
 	public function
 	__Construct(...$Args) {
 		parent::__Construct(...$Args);
@@ -53,7 +58,7 @@ implements JsonSerializable {
 	////////////////////////////////////////////////////////////////
 
 	protected
-	$DefaultFormat = 'Y-m-d';
+	$DefaultFormat = self::FormatDate;
 
 	public function
 	GetDefaultFormat():
