@@ -56,6 +56,7 @@ implements JsonSerializable {
 	public String $PHash;
 	public String $PSand;
 	public Int $OptAdult;
+	public Int $OptAllowSeen;
 	public Int $BytesImages;
 	public ?String $Location;
 	public ?String $Details;
@@ -143,13 +144,41 @@ implements JsonSerializable {
 			'UUID'           => $this->UUID,
 			'Alias'          => $this->Alias,
 			'URL'            => $this->URL,
+			'ImageHeader'    => [
+				'Large'  => $this->GetImageHeaderURL('lg'),
+				'Medium' => $this->GetImageHeaderURL('md'),
+				'Small'  => $this->GetImageHeaderURL('sm')
+			],
+			'ImageIcon'    => [
+				'Large'  => $this->GetImageIconURL('lg'),
+				'Medium' => $this->GetImageIconURL('md'),
+				'Small'  => $this->GetImageIconURL('sm'),
+				'Tiny'   => $this->GetImageIconURL('th'),
+			],
 			'TimeCreated'    => $this->TimeCreated,
-			'TimeSeen'       => $this->TimeSeen
+			'TimeSeen'       => ($this->OptAllowSeen?$this->TimeSeen:$this->TimeCreated),
+			'DateCreated'    => (String)$this->DateCreated,
+			'DateSeen'       => ($this->OptAllowSeen?(String)$this->DateSeen:$this->DateCreated),
 		];
 	}
 
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
+
+	public function
+	IsFriendsWith(?Atlantis\Prototype\User $User):
+	Bool {
+	/*//
+	@date 2020-12-11
+	//*/
+
+		if($User === NULL)
+		return FALSE;
+
+		// @todo
+
+		return FALSE;
+	}
 
 	public function
 	IsAdmin(Int $Flags=1):
