@@ -293,7 +293,7 @@ implements
 		);
 
 		if($CacheBust)
-		$URL .= sprintf('?t=%d',$this->TimeCreated);
+		$URL .= sprintf('?t=%d',$this->TimeUpdated);
 
 		return $URL;
 	}
@@ -464,7 +464,6 @@ implements
 			'Mount'       => $Opt->Mount,
 			'Format'      => $Opt->Format,
 			'Bytes'       => $Opt->Bytes,
-			'TimeCreated' => $Opt->TimeCreated,
 			'TimeUpdated' => $Opt->TimeUpdated,
 			'Enabled'     => 1
 		]);
