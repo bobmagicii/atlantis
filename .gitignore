@@ -12,6 +12,7 @@
 /conf/private.conf.php
 /conf/servers/apache24.conf
 /conf/tools/acmephp.yml
+/prod.lock
 
 # ignore my ssl files
 /conf/ssl/
