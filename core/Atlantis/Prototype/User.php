@@ -153,7 +153,7 @@ implements JsonSerializable {
 				'Large'  => $this->GetImageIconURL('lg'),
 				'Medium' => $this->GetImageIconURL('md'),
 				'Small'  => $this->GetImageIconURL('sm'),
-				'Tiny'   => $this->GetImageIconURL('th'),
+				'Tiny'   => $this->GetImageIconURL('th')
 			],
 			'TimeCreated'    => $this->TimeCreated,
 			'TimeSeen'       => ($this->OptAllowSeen?$this->TimeSeen:$this->TimeCreated),
