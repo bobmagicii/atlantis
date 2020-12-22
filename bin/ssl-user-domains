@@ -9,13 +9,35 @@ require(sprintf(
 (new class extends Nether\Console\Client {
 
 	public function
+	HandleHelp():
+	Int {
+
+		$this::Messages(
+			'',
+			'USAGE: ssl-user-domains <command> <options>',
+			'',
+			'    update <options>',
+			'    processes all the configured domain acmephp files and runs through them to keep the ssl certs up to date.',
+			'',
+			'      --list',
+			'      print out a list of the config files beforehand.',
+			''
+		);
+
+		return 0;
+	}
+
+	public function
 	HandleUpdate():
 	Int {
 
 		$Opt = NULL;
 		$Files = NULL;
 		$File = NULL;
+
 		$Command = NULL;
+		$Output = NULL;
+		$Result = NULL;
 
 		////////
 
@@ -33,16 +55,27 @@ require(sprintf(
 		$this::Message(sprintf('found %d config files',count($Files)));
 
 		if($Opt->ListFoundFiles) foreach($Files as $File)
-		$this::Message(sprintf(' - %s',basename($File)));
+		$this::Message(sprintf('-> %s',basename($File)));
 
 		////////
 
 		foreach($Files as $File) {
-			$Command = sprintf('php /opt/pegasusgate/bin/acmephp.phar run %s',$File);;
-			system($Command);
+			$Command = sprintf(
+				'php /opt/pegasusgate/bin/acmephp.phar run %s',
+				escapeshellarg($File)
+			);
+
+			$this::Message(sprintf('>> running %s',basename($File)));
+			exec($Command,$Output,$Result);
+
+			if($Result !== 0) {
+				$this::Message(sprintf('X> acmephp ended with error code %d',$Result));
+				print_r($Output);
+			}
 		}
 
 		return 0;
 	}
 
-})->Run();
+})
+->Run();
