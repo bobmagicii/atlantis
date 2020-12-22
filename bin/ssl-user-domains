@@ -1,0 +1,48 @@
+#!/usr/bin/env php
+<?php
+
+require(sprintf(
+	'%s/conf/start.php',
+	dirname(__FILE__,2)
+));
+
+(new class extends Nether\Console\Client {
+
+	public function
+	HandleUpdate():
+	Int {
+
+		$Opt = NULL;
+		$Files = NULL;
+		$File = NULL;
+		$Command = NULL;
+
+		////////
+
+		$Opt = new Nether\Object\Mapped(NULL,[
+			'ListFoundFiles' => $this->GetOption('list')
+		]);
+
+		$Files = glob(sprintf(
+			'%s/data/domains/*.acmephp.yml',
+			ProjectRoot
+		));
+
+		////////
+
+		$this::Message(sprintf('found %d config files',count($Files)));
+
+		if($Opt->ListFoundFiles) foreach($Files as $File)
+		$this::Message(sprintf(' - %s',basename($File)));
+
+		////////
+
+		foreach($Files as $File) {
+			$Command = sprintf('php /opt/pegasusgate/bin/acmephp.phar run %s',$File);;
+			system($Command);
+		}
+
+		return 0;
+	}
+
+})->Run();
