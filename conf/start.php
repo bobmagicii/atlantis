@@ -60,6 +60,18 @@ require(sprintf(
 	return;
 })();
 
+if(ENV\DEV) (function(){
+	$Filename = sprintf(
+		'%s/conf/dev.conf.php',
+		ProjectRoot
+	);
+
+	if(file_exists($Filename))
+	require($Filename);
+
+	return;
+})();
+
 if(defined('ProjectAutoloadOnly'))
 return;
 

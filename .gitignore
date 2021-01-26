@@ -10,6 +10,7 @@
 # ignore my actual config files while allowing the templates.
 /conf/database.conf.php
 /conf/private.conf.php
+/conf/dev.conf.php
 /conf/servers/apache24.conf
 /conf/tools/acmephp.yml
 /prod.lock
