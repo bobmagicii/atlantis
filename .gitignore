@@ -1,6 +1,7 @@
 # ignore some application paths.
 /cache/
 /data/
+/local/
 /logs/
 /vendor/
 /www/themes/local/
