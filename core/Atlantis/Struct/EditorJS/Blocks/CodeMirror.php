@@ -12,8 +12,8 @@ extends Atlantis\Struct\EditorJS\Block {
 		parent::OnReady($Raw);
 
 		($this->Data)
-		->Title('Atlantis\\Util\\FIlters::StrippedText')
-		->Mime('Atlantis\\Util\\FIlters::StrippedText')
+		->Title('Atlantis\\Util\\Filters::StrippedText')
+		->Mime('Atlantis\\Util\\Filters::StrippedText')
 		->Text('Atlantis\\Util\\Filters::TrimmedText');
 
 		return;

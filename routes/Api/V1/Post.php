@@ -438,4 +438,40 @@ extends Atlantis\Site\ProtectedAPI {
 		return;
 	}
 
+	#[Atlantis\Meta\Info('Get a list of comments on a post.')]
+	#[Atlantis\Meta\Parameter('ID','Int')]
+	#[Atlantis\Meta\Parameter('Page','Int')]
+	#[Atlantis\Meta\Error(1,'Post not found.')]
+	final public function
+	CommentList():
+	Void {
+
+		($this->Post)
+		->ID('Atlantis\\Util\\Filters::TypeInt')
+		->Page('Atlantis\\Util\\Filters::PageNumber')
+		->Limit('Atlantis\Util\Filters::NumberValidRange',[1,30,10]);
+
+		$Comments = NULL;
+		$Page = $this->Post->Page;
+		$Limit = $this->Post->Limit;
+
+		$Comments = Atlantis\Prototype\BlogPostComment::Find([
+			'PostID' => $this->Get->ID,
+			'Page'   => $Page,
+			'Limit'  => $Limit,
+			'Sort'   => 'newest'
+		]);
+
+		$this->SetPayload([
+			'Count'    => $Comments->Count,
+			'Total'    => $Comments->Total,
+			'Page'     => $Comments->Page,
+			'PageCount' => $Comments->GetPageCount(),
+			'Limit'    => $Comments->Limit,
+			'Comments' => $Comments->Payload->GetData()
+		]);
+
+		return;
+	}
+
 }

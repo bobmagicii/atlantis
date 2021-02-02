@@ -21,7 +21,6 @@ echo (new Atlantis\Element\PagePromo)
 ?>
 
 <div class="container">
-
 	<div class="row">
 		<?php if($Post->IsAdult()): ?>
 		<div class="col-12 mb-4">
@@ -102,6 +101,9 @@ echo (new Atlantis\Element\PagePromo)
 			<?php else: ?>
 			<div class="jumbotron jumbotron-tertiary p-4 mb-0">
 				<div class="PostContent">
+					<?php if($Route->Get->ShowJson): ?>
+					<pre class="CodeViewer" data-mime="application/json" data-title="EditorJS Structure" data-theme="synthwave84"><?php echo json_encode(json_decode($Post->ContentJSON),JSON_PRETTY_PRINT) ?></pre>
+					<?php endif; ?>
 					<?php echo new Atlantis\Util\Texture($Post->Content ?: $Post->RenderFromJSON()), PHP_EOL ?>
 				</div>
 			</div>
@@ -110,10 +112,34 @@ echo (new Atlantis\Element\PagePromo)
 
 		<div class="col-12 mb-4">
 			<div class="jumbotron jumbotron-secondary p-4 m-0">
-				<h3 class="font-weight-bold">Comments (#)</h3>
+				<h3 class="font-weight-bold">Comments (<span class="PostCommentCount">#</span>)</h3>
 				<hr />
-				<div class="text-center pt-4 pb-4">
-					I haven't built the comment system yet (っ˘̩╭╮˘̩)っ
+				<div id="PostComments" data-post-id="<?php $Printer($Post->ID) ?>">
+
+				</div>
+				<div class="pt-4 pb-4">
+					<?php if($Post->IsCommentingAllowed($User)): ?>
+						<div class="text-center font-weight-bold mb-2">Comments don't actually work yet.</div>
+						<div class="text-center font-size-largerer mb-4">(っ˘̩╭╮˘̩)っ</div>
+						<div id="CommentForm" class="row">
+							<?php if($User): ?>
+							<input type="hidden" name="UserID" value="<?php $Printer($User->ID) ?>" />
+							<?php else: ?>
+							<div class="col-12 col-sm-6 col-md-4 mb-2">
+								<input type="text" name="Name" class="form-control" placeholder="Your Name..." />
+							</div>
+							<?php endif; ?>
+							<div class="col-12 mb-2">
+								<textarea name="Content" class="form-control" placeholder="Your Comment..."></textarea>
+							</div>
+							<div class="col-12 mb-0">
+								<button type="button" class="btn btn-dark CmdCommentPost">Post Comment</button>
+							</div>
+						</div>
+					<?php else: ?>
+						<div class="text-center font-weight-bold mb-2">Comments are disabled.</div>
+						<div class="text-center font-size-largerer">(っ˘̩╭╮˘̩)っ</div>
+					<?php endif; ?>
 				</div>
 			</div>
 		</div>
@@ -140,7 +166,138 @@ echo (new Atlantis\Element\PagePromo)
 			?>
 			</div>
 		</div>
-
 	</div>
-
 </div>
+
+<script type="text/javascript">
+class AtlantisPostComments {
+
+	constructor(Selector) {
+	/*//
+	@date 2020-12-11
+	//*/
+
+		this.Container = jQuery(Selector);
+		this.PostID = this.Container.attr('data-post-id');
+		this.Page = 1;
+		this.PageCount = 1;
+		this.CommentCount = 0;
+
+		this.Loading = (
+			jQuery('<div />')
+			.addClass('d-none')
+			.addClass('Loading')
+			.addClass('text-center')
+			.append('<i class="fa fa-fw fa-spin fa-asterisk"></i> Loading...')
+		)
+
+		this.Listing = (
+			jQuery('<div />')
+			.addClass('d-none')
+			.addClass('Listing')
+		);
+
+		(this.Container)
+		.append(this.Loading)
+		.append(this.Listing);
+
+		this.LoadPage(1);
+		return;
+	}
+
+	async LoadNextPage() {
+	/*//
+	@date 2020-12-11
+	//*/
+
+		if(this.Page < this.PageCount)
+		this.LoadPage(this.Page + 1);
+
+		return;
+	}
+
+	async LoadPrevPage() {
+	/*//
+	@date 2020-12-11
+	//*/
+
+		if(this.Page > 1)
+		this.LoadPage(this.Page - 1);
+
+		return;
+	}
+
+	async LoadPage(PageNum) {
+	/*//
+	@date 2020-12-11
+	//*/
+
+		let Result = null;
+
+		this.ShowLoading();
+
+		Result = await this.FetchPage(PageNum);
+		this.Page = Result.Payload.Page;
+		this.PageCount = Result.Payload.PageCount;
+		this.CommentCount = Result.Payload.Total;
+
+		// ..
+
+		return;
+	}
+
+	async FetchPage(PageNum) {
+	/*//
+	@date 2020-12-11
+	//*/
+
+		let that = this;
+		let Result = null;
+
+		return (
+			new Promise(function(Next,Fail){
+				Atlantis.Request({
+					'Method': 'LIST',
+					'URL': '/api/v1/post/comment',
+					'Data': { 'ID': that.PostID },
+					'OnSuccess': function(Result){ Next(Result); return; },
+					'OnError': function() { Fail(); return; }
+				});
+			})
+			.then(function(Result){ return Result; })
+		);
+	}
+
+	ShowLoading() {
+	/*//
+	@date 2020-12-11
+	//*/
+
+		this.Listing.addClass('d-none');
+		this.Loading.removeClass('d-none');
+
+		return;
+	}
+
+	ShowListing() {
+	/*//
+	@date 2020-12-11
+	//*/
+
+		this.Loading.addClass('d-none');
+		this.Listing.removeClass('d-none');
+
+		return;
+	}
+
+
+
+}
+
+jQuery(document)
+.ready(function(){
+	new AtlantisPostComments('#PostComments');
+	return;
+});
+</script>
+

@@ -22,9 +22,10 @@ extends Atlantis\Struct\EditorJS\Block {
 	__ToString():
 	String {
 
-		$Level = $this->Data->Level;
+		$Level = $this->Data->Level ?? 1;
+		$Tag = "h{$Level}";
 
-		return "<h{$this->Data->Level} class=\"PostHeading mb-4\">{$this->Data->Text}</h{$this->Data->Level}>\n";
+		return "<{$Tag} class=\"PostHeading mb-4\">{$this->Data->Text}</{$Tag}>\n";
 	}
 
 }

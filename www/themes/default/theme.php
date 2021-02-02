@@ -45,7 +45,17 @@ class Theme {
 			public function
 			__ToString():
 			String {
-				return "database { {$this->GetDatabase()} }<br />cache{ {$this->GetCache()} }<br />atlantis { {$this->GetApp()} }";
+				return "database { {$this->GetDatabase()} }<br />cache{ {$this->GetCache()} }<br />atlantis{$this->GetEnv()} { {$this->GetApp()} }";
+			}
+
+			public function
+			GetEnv():
+			String {
+
+				if(ENV\DEV)
+				return '.dev';
+
+				return '';
 			}
 
 			public function

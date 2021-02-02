@@ -30,6 +30,7 @@ extends Atlantis\Prototype {
 		'CountViews'  => 'CountViews:int',
 		'UUID'        => 'UUID',
 		'OptAdult'    => 'OptAdult:int',
+		'OptComments' => 'OptComments:int',
 		'Title'       => 'Title',
 		'Alias'       => 'Alias',
 		'Content'     => 'Content',
@@ -51,6 +52,7 @@ extends Atlantis\Prototype {
 	public ?String $Content;
 	public ?String $ContentJSON;
 	public Int $OptAdult;
+	public Int $OptComments;
 
 	// extension fields.
 
@@ -71,6 +73,12 @@ extends Atlantis\Prototype {
 	EnableStatePublic   = 1,
 	EnableStateUnlisted = 2,
 	EnableStateFriends  = 3;
+
+	public const
+	CommentsDisabled = 0,
+	CommentsEnabled  = 1,
+	CommentsMembers  = 2,
+	CommentsFriends  = 3;
 
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
@@ -327,6 +335,22 @@ extends Atlantis\Prototype {
 		return FALSE;
 
 		return ($this->User->ID === $User->ID);
+	}
+
+	public function
+	IsCommentingAllowed(Atlantis\Prototype\User $User=NULL):
+	Bool {
+	/*//
+	@date 2020-12-10
+	//*/
+
+		return match($this->OptComments) {
+			static::CommentsDisabled => FALSE,
+			static::CommentsEnabled  => TRUE,
+			static::CommentsMembers  => ($User !== NULL),
+			static::CommentsFriends  => $this->User->IsFriendsWith($User),
+			default => FALSE
+		};
 	}
 
 	public function

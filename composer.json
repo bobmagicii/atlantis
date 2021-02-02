@@ -35,11 +35,11 @@
 	},
 	"autoload": {
 		"psr-0": {
-			"Atlantis\\": "core\/",
-			"Nether\\": "core\/"
+			"Atlantis\\": "core\/"
 		},
 		"psr-4": {
-			"Routes\\": "routes\/"
+			"Routes\\": "routes\/",
+			"Local\\": "local\/"
 		}
 	},
 	"require-dev": {
