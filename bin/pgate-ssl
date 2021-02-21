@@ -8,28 +8,30 @@ require(sprintf(
 
 (new class extends Nether\Console\Client {
 
+	#[Nether\Console\Meta\Subcommand]
+	#[Nether\Console\Meta\Info('process the main site ssl.')]
 	public function
-	HandleHelp():
-	Int {
+	HandleMain():
+	int {
 
-		$this::Messages(
-			'',
-			'USAGE: ssl-user-domains <command> <options>',
-			'',
-			'    update <options>',
-			'    processes all the configured domain acmephp files and runs through them to keep the ssl certs up to date.',
-			'',
-			'      --list',
-			'      print out a list of the config files beforehand.',
-			''
-		);
+		$Output = NULL;
+		$Result = NULL;
+
+		exec('/opt/pegasusgate/bin/acmephp.phar run /opt/pegasusgate/conf/tools/acmephp.yml',$Output,$Result);
+		static::Messages(...$Output);
+
+		static::Message('rehashing apache config');
+		exec('sudo /usr/sbin/apachectl graceful');
 
 		return 0;
 	}
 
+	#[Nether\Console\Meta\Subcommand]
+	#[Nether\Console\Meta\Info('process all the configured user domains.')]
+	#[Nether\Console\Meta\SubcommandOption('--list',FALSE,'print a list of the found config files.')]
 	public function
-	HandleUpdate():
-	Int {
+	HandleUsers():
+	int {
 
 		$Opt = NULL;
 		$Files = NULL;
@@ -73,6 +75,9 @@ require(sprintf(
 				print_r($Output);
 			}
 		}
+
+		static::Message('rehashing apache config');
+		exec('sudo /usr/sbin/apachectl graceful');
 
 		return 0;
 	}
