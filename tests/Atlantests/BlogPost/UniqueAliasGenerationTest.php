@@ -14,15 +14,16 @@ extends Atlantis\Prototype\BlogPost {
 
 		if($BlogAlias === 'conflict' && $PostAlias === 'test-post')
 		return new static([
+			'ID'                => 1,
 			'Alias'             => $PostAlias,
 			'TimeCreated'       => time(),
 			'TimeUpdated'       => time(),
-			'BL_ID'             => 1,
-			'BL_Alias'          => $BlogAlias,
-			'BL_TimeCreated'    => time(),
-			'BL_TimeUpdated'    => time(),
-			'BL_ImageHeaderURL' => '',
-			'BL_ImageIconURL'   => ''
+			'B_ID'             => 1,
+			'B_Alias'          => $BlogAlias,
+			'B_TimeCreated'    => time(),
+			'B_TimeUpdated'    => time(),
+			'B_ImageHeaderURL' => '',
+			'B_ImageIconURL'   => ''
 		]);
 
 		return NULL;
