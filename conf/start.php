@@ -8,12 +8,14 @@ ini_set('display_errors',TRUE);
 ////////////////////////////////////////////////////////////////////////////////
 
 if(file_exists(sprintf('%s/prod.lock',ProjectRoot))) {
+	define('ENV','prod');
 	define('ENV\\DEV',FALSE);
 	define('ENV\\PROD',TRUE);
 }
 
 else {
 	error_reporting(E_ALL);
+	define('ENV','dev');
 	define('ENV\\DEV',TRUE);
 	define('ENV\\PROD',FALSE);
 }
@@ -36,21 +38,9 @@ require(sprintf(
 
 (function(){
 	$Filename = sprintf(
-		'%s/conf/database.conf.php',
-		ProjectRoot
-	);
-
-	if(!file_exists($Filename))
-	throw new Exception('No database configuration.');
-
-	require($Filename);
-	return;
-})();
-
-(function(){
-	$Filename = sprintf(
-		'%s/conf/private.conf.php',
-		ProjectRoot
+		'%s/conf/env/%s/atlantis.conf.php',
+		ProjectRoot,
+		ENV
 	);
 
 	if(!file_exists($Filename))
@@ -60,15 +50,17 @@ require(sprintf(
 	return;
 })();
 
-if(ENV\DEV) (function(){
+(function(){
 	$Filename = sprintf(
-		'%s/conf/dev.conf.php',
-		ProjectRoot
+		'%s/conf/env/%s/database.conf.php',
+		ProjectRoot,
+		ENV
 	);
 
-	if(file_exists($Filename))
-	require($Filename);
+	if(!file_exists($Filename))
+	throw new Exception('No database configuration.');
 
+	require($Filename);
 	return;
 })();
 

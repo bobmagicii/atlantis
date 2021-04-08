@@ -17,7 +17,18 @@ require(sprintf(
 		$Output = NULL;
 		$Result = NULL;
 
-		exec('/opt/pegasusgate/bin/acmephp.phar run /opt/pegasusgate/conf/tools/acmephp.yml',$Output,$Result);
+		$AcmeFile = match(ENV) {
+			'dev'   => '/conf/env/dev/acmephp.yml',
+			default => '/conf/env/prod/acmephp.yml'
+		};
+
+		$Command = sprintf(
+			'sudo /opt/ssl/acmephp.phar run %1$s%2$s',
+			ProjectRoot,
+			$AcmeFile
+		);
+
+		exec($Command,$Output,$Result);
 		static::Messages(...$Output);
 
 		static::Message('rehashing apache config');

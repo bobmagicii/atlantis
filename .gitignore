@@ -7,14 +7,10 @@
 /www/themes/local/
 /www/upl
 /www/.well-known
+/prod.lock
 
 # ignore my actual config files while allowing the templates.
-/conf/database.conf.php
-/conf/private.conf.php
-/conf/dev.conf.php
-/conf/servers/apache24.conf
-/conf/tools/acmephp.yml
-/prod.lock
+/conf/env
 
 # ignore my ssl files
 /conf/ssl/
