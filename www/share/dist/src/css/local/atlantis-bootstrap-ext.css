@@ -6,6 +6,9 @@
 	border: 0px;
 }
 
+.fa-stack { font-size: 0.325em; }
+.fa-stack i { vertical-align: middle; }
+
 .font-size-normal { font-size: 1.0em; }
 .font-size-small { font-size: 0.90em; }
 .font-size-smaller { font-size: 0.80em; }
@@ -26,6 +29,18 @@
 .letter-space-barely { letter-spacing: 0.05em; }
 .letter-space-large { letter-spacing: 0.10em; }
 .letter-space-larger { letter-spacing: 0.25em; }
+
+.position-absolute { position: absolute; top: 0px; left: 0px; }
+.position-relative { position: relative; }
+.position-top-left { top: 0px; left: 0px; }
+
+.opacity-0 { opacity: 0.0; }
+.opacity-25 { opacity: 0.25; }
+.opacity-50 { opacity: 0.50; }
+.opacity-75 { opacity: 0.75; }
+.opacity-100 { opacity: 1.0; }
+
+.wallpapered { background-size:cover; background-position: center center; background-repeat: no-repeat; }
 
 .p-5 { padding: 2rem !important; }
 .p-6 { padding: 3rem !important; }
@@ -98,60 +113,49 @@ select:focus {
 	display: inline-block;
 }
 
+/* new button colours for social media and whatnot. */
+
 .btn-adult {
-	background: #c25684;
-	border-color: #c25684;
-	color: #ffe6ea;
+	background: var(--ColourAdultButton);
+	border-color: var(--ColourAdultButton);
+	color: var(--ColourAdultText);
 }
 
 .btn-adult:hover,
 .btn-adult.active {
-	background: #cf6694;
-	border-color: #cf6694;
-	color: #ffe6ea;
+	background: var(--ColourAdultHoverButton);
+	border-color: var(--ColourAdultHoverButton);
+	color: var(--ColourAdultHoverText);
 }
 
 .btn-twitter {
-	background: #1DA1F2;
-	border-color: #1DA1F2;
-	color: #fff;
+	background: var(--ColourTwitterButton);
+	border-color: var(--ColourTwitterButton);
+	color: var(--ColourTwitterText);
 }
 
 .btn-twitter:hover,
 .btn-twitter.active {
-	background: #1DA1F2;
-	border-color: #1DA1F2;
-	color: #fff;
+	background: var(--ColourTwitterHoverButton);
+	border-color: var(--ColourTwitterHoverButton);
+	color: var(--ColourTwitterHoverText);
 }
 
-.text-adult {
-	color: #c25684;
+.btn-github {
+	background: var(--ColourGithubButton);
+	border-color: var(--ColourGithubButton);
+	color: var(--ColourGithubText);
 }
 
-.text-twitter {
-	color: #1DA1F2;
+.btn-github:hover,
+.btn-github.active {
+	background: var(--ColourGithubHoverButton);
+	border-color: var(--ColourGithubHoverButton);
+	color: var(--ColourGithubHoverText);
 }
 
-.opacity-0 {
-	opacity: 0.0;
-}
-
-.opacity-25 {
-	opacity: 0.25;
-}
-
-.opacity-50 {
-	opacity: 0.50;
-}
-
-.opacity-75 {
-	opacity: 0.75;
-}
-
-.opacity-100 {
-	opacity: 1.0;
-}
-
-.fa-stack { font-size: 0.325em; }
-.fa-stack i { vertical-align: middle; }
+.text-decoration-none { text-decoration: none; }
+.text-adult { color: var(--ColourAdultButton); }
+.text-twitter { color: var(--ColourTwitterButton); }
+.text-github { color: var(--ColourGithubButton); }
 

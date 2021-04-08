@@ -1,3 +1,26 @@
+:root {
+
+	--ColourPrimary: #222222;
+	--ColourSecondary: #eeeeee;
+
+	--ColourBackgroundPrimary: #eeeeee;
+
+	--ColourAdultButton: #c25684;
+	--ColourAdultText: #ffe6ea;
+	--ColourAdultHoverButton: #cf6694;
+	--ColourAdultHoverText: #ffe6ea;
+
+	--ColourTwitterButton: #1DA1F2;
+	--ColourTwitterText: #eee;
+	--ColourTwitterHoverButton: #36abf3;
+	--ColourTwitterHoverText: #eee;
+
+	--ColourGithubButton: #222;
+	--ColourGithubText: #eee;
+	--ColourGithubHoverButton: rgb(49, 49, 49);
+	--ColourGithubHoverText: #eee;
+}
+
 * {
 	box-sizing: border-box;
 }
@@ -19,7 +42,7 @@
 
 html,
 body {
-	background: #ddd;
+	background: var(--ColourBackgroundPrimary);
 	font-weight: 300;
 	margin: 0px;
 	padding: 0px;
@@ -122,7 +145,7 @@ li:last-of-type {
 /* the page content area where most of the generated content goes. */
 
 body > section {
-	background: #efefef;
+	background: var(--ColourBackgroundPrimary);
 	padding: 0px 0px 0px 0px;
 }
 
