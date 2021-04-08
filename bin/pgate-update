@@ -1,0 +1,66 @@
+#!/usr/bin/env php
+<?php
+
+require(sprintf(
+	'%s/conf/start.php',
+	dirname(__FILE__,2)
+));
+
+(new class extends Nether\Console\Client {
+
+	#[Nether\Console\Meta\Subcommand]
+	#[Nether\Console\Meta\Info('full update all the things')]
+	public function
+	HandleAll():
+	int {
+
+		$this->Run(['git']);
+		$this->Run(['conf']);
+		$this->Run(['composer']);
+		$this->Run(['phinx']);
+
+		return 0;
+	}
+
+	#[Nether\Console\Meta\Subcommand]
+	#[Nether\Console\Meta\Info('pull updates from git.')]
+	public function
+	HandleGit():
+	int {
+
+		exec('git pull origin master');
+		return 0;
+	}
+
+	#[Nether\Console\Meta\Subcommand]
+	#[Nether\Console\Meta\Info('pull the latest prod config over.')]
+	public function
+	HandleConf():
+	int {
+
+		exec('cp /opt/web-dev/conf/env/prod/* conf/env/prod');
+		return 0;
+	}
+
+	#[Nether\Console\Meta\Subcommand]
+	#[Nether\Console\Meta\Info('pull the package via composer')]
+	public function
+	HandleComposer():
+	int {
+
+		exec('composer install');
+		return 0;
+	}
+
+	#[Nether\Console\Meta\Subcommand]
+	#[Nether\Console\Meta\Info('run the database migrations')]
+	public function
+	HandlePhinx():
+	int {
+
+		exec('phinx migrate');
+		return 0;
+	}
+
+})
+->Run();
