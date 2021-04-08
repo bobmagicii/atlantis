@@ -50,20 +50,6 @@ require(sprintf(
 	return;
 })();
 
-(function(){
-	$Filename = sprintf(
-		'%s/conf/env/%s/database.conf.php',
-		ProjectRoot,
-		ENV
-	);
-
-	if(!file_exists($Filename))
-	throw new Exception('No database configuration.');
-
-	require($Filename);
-	return;
-})();
-
 if(defined('ProjectAutoloadOnly'))
 return;
 

@@ -1,0 +1,18 @@
+contact_email: '<your email address>'
+certificates:
+  - domain: '<your domain name>'
+    subject_alternative_names:
+      - '<your domain name again>'
+      - '<any additional domain or subdomains>'
+    distinguished_name:
+      country: '<your country code>'
+      locality: '<your city name>'
+      organization_name: '<your company name>'
+    solver:
+      name: 'http-file'
+      adapter: 'local'
+      root: '<your project dir>/www'
+    install:
+      - action: 'mirror_file'
+        adapter: 'local'
+        root: '/opt/ssl'

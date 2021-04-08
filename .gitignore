@@ -9,10 +9,8 @@
 /www/.well-known
 /prod.lock
 
-# ignore my actual config files while allowing the templates.
-/conf/env
-
-# ignore my ssl files
-/conf/ssl/
-
-# eof
+# exclude configurations except for the example distro files.
+/conf/env/dev/*
+!/conf/env/dev/*.dist
+/conf/env/prod/*
+!/conf/env/prod/*.dist

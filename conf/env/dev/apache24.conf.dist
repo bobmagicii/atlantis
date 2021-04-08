@@ -1,0 +1,101 @@
+################################################################################
+## PREDEFINED MACROS ###########################################################
+
+## These are some simple macros that are defined that should be able to get a
+## domain online with Apache 2.4 fairly easily. The only edits you might need to
+## make in this section are maybe the paths to the Let's Encrypt directory in
+## the SSLd version.
+
+<Macro AtlantisHTTP $Domain $Path $WebRoot>
+	<Directory $Path/$WebRoot>
+		Options -Indexes +MultiViews
+		Require all granted
+		AllowOverride All
+	</Directory>
+	<VirtualHost *:80>
+		Documentroot $Path/$WebRoot
+		ServerName $Domain
+		ServerAlias $Domain *.$Domain
+	</VirtualHost>
+</Macro>
+
+<Macro AtlantisHTTPS $Domain $Path $WebRoot>
+	<Directory $Path/$WebRoot>
+		Options -Indexes +MultiViews
+		Require all granted
+		AllowOverride All
+	</Directory>
+	<VirtualHost *:80>
+		Documentroot $Path/$WebRoot
+		ServerName $Domain
+		ServerAlias $Domain *.$Domain
+	</VirtualHost>
+	<VirtualHost *:443>
+		DocumentRoot $Path/$WebRoot
+		ServerName $Domain
+		ServerAlias $Domain *.$Domain
+		SSLEngine             on
+		SSLProtocol           all -SSLv2 -SSLv3
+		SSLCipherSuite        ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA
+		SSLHonorCipherOrder   on
+		SSLCompression        off
+		SSLOptions            +StrictRequire
+		SSLCertificateFile    "/opt/ssl/certs/$Domain/public/cert.pem"
+		SSLCACertificateFile  "/opt/ssl/certs/$Domain/public/fullchain.pem"
+		SSLCertificateKeyFile "/opt/ssl/certs/$Domain/private/key.private.pem"
+	</VirtualHost>
+</Macro>
+
+<Macro AtlantisUserHTTPS $Domain $Path $WebRoot>
+	<Directory $Path/$WebRoot>
+		Options -Indexes +MultiViews
+		Require all granted
+		AllowOverride All
+	</Directory>
+	<VirtualHost _default_:80>
+		Documentroot $Path/$WebRoot
+		ServerName $Domain
+		ServerAlias $Domain
+		ServerAlias *
+	</VirtualHost>
+	<VirtualHost _default_:443>
+		DocumentRoot $Path/$WebRoot
+		ServerName $Domain
+		ServerAlias $Domain
+		SSLEngine             on
+		SSLProtocol           all -SSLv2 -SSLv3
+		SSLCipherSuite        ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA
+		SSLHonorCipherOrder   on
+		SSLCompression        off
+		SSLOptions            +StrictRequire
+		SSLCertificateFile    "/opt/ssl/certs/$Domain/public/cert.pem"
+		SSLCACertificateFile  "/opt/ssl/certs/$Domain/public/fullchain.pem"
+		SSLCertificateKeyFile "/opt/ssl/certs/$Domain/private/key.private.pem"
+	</VirtualHost>
+</Macro>
+
+################################################################################
+## ACTUAL CONFIG ###############################################################
+
+## To turn HTTP only only for a domain
+## Use AtlantisHTTP <YourDomainName.Here </path/to/your/project> www
+
+## To turn on both HTTP and HTTPS for a domain (requires existing certs)
+## Use AtlantisHTTPS <YourDomainName.Here </path/to/your/project> www
+
+## Ok, so how do you get your HTTPS?
+## 1) turn on HTTP only.
+## 2) do stuff with LetsEncrypt via certbot-auto or whatever.
+## 3) after a successful LetsEncrypt, add an S to AtlantisHTTP rehash Apache.
+
+# Use AtlantisHTTP <YourDomainName.Here> </path/to/your/project> www
+
+################################################################################
+## CLEANUP #####################################################################
+
+## This prevents Apache from blowing chunks if you're using this config file for
+## multiple projects.
+
+UndefMacro AtlantisHTTP
+UndefMacro AtlantisHTTPS
+UndefMacro AtlantisUserHTTPS
