@@ -115,13 +115,27 @@ echo (new Atlantis\Element\PagePromo)
 				<h3 class="font-weight-bold">Comments (<span class="PostCommentCount">#</span>)</h3>
 				<hr />
 				<div id="PostComments" data-post-id="<?php $Printer($Post->ID) ?>">
-
+					<div class="PostCommentTemplate d-none">
+						<div class="row">
+							<div class="col-3 col-sm-2 col-md-2 col-lg-1">
+								<div class="PostCommentIcon wallpapered background-primary ratio-square rounded w-100" style="background-image:url(<?php $Printer(Nether\Option::Get('Atlantis.Blog.DefaultImageIconURL')) ?>);"></div>
+							</div>
+							<div class="col">
+								<div class="PostCommentHeading font-size-smaller text-muted">
+									<span class="PostCommentDate">[Date]</span> by
+									<span class="PostCommentName">[Name]</span>
+								</div>
+								<div class="PostCommentBody">[Comment Body]</div>
+							</div>
+						</div>
+						<hr />
+					</div>
 				</div>
 				<div class="pt-4 pb-4">
 					<?php if($Post->IsCommentingAllowed($User)): ?>
 						<div class="text-center font-weight-bold mb-2">Comments don't actually work yet.</div>
 						<div class="text-center font-size-largerer mb-4">(っ˘̩╭╮˘̩)っ</div>
-						<div id="CommentForm" class="d-none row">
+						<div id="CommentForm" class="row">
 							<?php if($User): ?>
 							<input type="hidden" name="UserID" value="<?php $Printer($User->ID) ?>" />
 							<?php else: ?>
@@ -183,20 +197,27 @@ class AtlantisPostComments {
 		this.PageCount = 1;
 		this.CommentCount = 0;
 
+		this.Template = (
+			this.Container
+			.find('.PostCommentTemplate')
+			.clone()
+			.removeClass('d-none')
+		);
+
 		this.Loading = (
 			jQuery('<div />')
 			.addClass('d-none')
 			.addClass('Loading')
 			.addClass('text-center')
-			.style('display','none') // just for now
 			.append('<i class="fa fa-fw fa-spin fa-asterisk"></i> Loading...')
-		)
+		);
 
 		this.Listing = (
 			jQuery('<div />')
 			.addClass('d-none')
 			.addClass('Listing')
 		);
+
 
 		(this.Container)
 		.append(this.Loading)
@@ -206,7 +227,7 @@ class AtlantisPostComments {
 		return;
 	}
 
-	async LoadNextPage() {
+	LoadNextPage() {
 	/*//
 	@date 2020-12-11
 	//*/
@@ -217,7 +238,7 @@ class AtlantisPostComments {
 		return;
 	}
 
-	async LoadPrevPage() {
+	LoadPrevPage() {
 	/*//
 	@date 2020-12-11
 	//*/
@@ -234,15 +255,45 @@ class AtlantisPostComments {
 	//*/
 
 		let Result = null;
+		let Element = null;
 
 		this.ShowLoading();
 
 		Result = await this.FetchPage(PageNum);
+		console.log(Result);
 		this.Page = Result.Payload.Page;
 		this.PageCount = Result.Payload.PageCount;
 		this.CommentCount = Result.Payload.Total;
 
-		// ..
+		for(const Comment of Result.Payload.Comments) {
+			Element = this.Template.clone();
+
+			Element
+			.find('.PostCommentBody')
+			.text(Comment.Content);
+
+			Element
+			.find('.PostCommentDate')
+			.text(Comment.DateTimeCreated);
+
+			Element
+			.find('.PostCommentName')
+			.text(Comment.Name);
+
+			if(Comment.User) {
+				Element
+				.find('.PostCommentIcon')
+				.css('background-image',`url(${Comment.User.ImageIcon.Tiny})`);
+
+				Element
+				.find('.PostCommentName')
+				.html(`<a href="${Comment.User.URL}">${Comment.Name}</a>`);
+			}
+
+			this.Listing.append(Element);
+		}
+
+		this.ShowListing();
 
 		return;
 	}

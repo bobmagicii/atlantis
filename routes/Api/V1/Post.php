@@ -2,9 +2,10 @@
 
 namespace Routes\Api\V1;
 
-use
-\Atlantis as Atlantis,
-\Nether as Nether;
+use Atlantis;
+use Nether;
+
+use Atlantis\Prototype\BlogPostComment;
 
 class Post
 extends Atlantis\Site\ProtectedAPI {
@@ -443,17 +444,17 @@ extends Atlantis\Site\ProtectedAPI {
 	#[Atlantis\Meta\Parameter('Page','Int')]
 	#[Atlantis\Meta\Error(1,'Post not found.')]
 	final public function
-	CommentList():
+	CommentGet():
 	Void {
 
-		($this->Post)
+		($this->Get)
 		->ID('Atlantis\\Util\\Filters::TypeInt')
 		->Page('Atlantis\\Util\\Filters::PageNumber')
 		->Limit('Atlantis\Util\Filters::NumberValidRange',[1,30,10]);
 
 		$Comments = NULL;
-		$Page = $this->Post->Page;
-		$Limit = $this->Post->Limit;
+		$Page = $this->Get->Page;
+		$Limit = $this->Get->Limit;
 
 		$Comments = Atlantis\Prototype\BlogPostComment::Find([
 			'PostID' => $this->Get->ID,
@@ -462,13 +463,21 @@ extends Atlantis\Site\ProtectedAPI {
 			'Sort'   => 'newest'
 		]);
 
+		// make another pass over the comment so the front end can just
+		// dump it without care.
+
+		$Comments->Payload->Each(function(BlogPostComment $Val){
+			$Val->Content = Atlantis\Util\Filters::StrippedText($Val->Content);
+			return;
+		});
+
 		$this->SetPayload([
-			'Count'    => $Comments->Count,
-			'Total'    => $Comments->Total,
-			'Page'     => $Comments->Page,
+			'Count'     => $Comments->Count,
+			'Total'     => $Comments->Total,
+			'Page'      => $Comments->Page,
 			'PageCount' => $Comments->GetPageCount(),
-			'Limit'    => $Comments->Limit,
-			'Comments' => $Comments->Payload->GetData()
+			'Limit'     => $Comments->Limit,
+			'Comments'  => $Comments->Payload->GetData()
 		]);
 
 		return;

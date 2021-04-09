@@ -6,6 +6,23 @@
 	border: 0px;
 }
 
+.background-primary { background-color: var(--ColourPrimary); }
+.background-secondary { background-color: var(--ColourSecondary); }
+.background-tertiary { background-color: var(--ColourTertiary); }
+.background-quaternary { background-color: var(--ColourQuaternary); }
+
+.text-primary { background-color: var(--ColourPrimary); }
+.text-secondary { background-color: var(--ColourSecondary); }
+.text-tertiary { background-color: var(--ColourTertiary); }
+.text-quaternary { background-color: var(--ColourQuaternary); }
+
+.ratio-square::after {
+	content: '';
+	display: block;
+	position: relative;
+	padding-top: 100%;
+}
+
 .fa-stack { font-size: 0.325em; }
 .fa-stack i { vertical-align: middle; }
 

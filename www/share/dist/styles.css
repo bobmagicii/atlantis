@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-09 00:33:36
+@date 2021-04-09 06:14:38
 @files [
     "src\/codemirror-themes\/3024-day.css",
     "src\/codemirror-themes\/3024-night.css",
@@ -3782,6 +3782,23 @@ span.CodeMirror-selectedtext { background: none; }
 *:focus[readonly] {
 	background: transparent;
 	border: 0px;
+}
+
+.background-primary { background-color: var(--ColourPrimary); }
+.background-secondary { background-color: var(--ColourSecondary); }
+.background-tertiary { background-color: var(--ColourTertiary); }
+.background-quaternary { background-color: var(--ColourQuaternary); }
+
+.text-primary { background-color: var(--ColourPrimary); }
+.text-secondary { background-color: var(--ColourSecondary); }
+.text-tertiary { background-color: var(--ColourTertiary); }
+.text-quaternary { background-color: var(--ColourQuaternary); }
+
+.ratio-square::after {
+	content: '';
+	display: block;
+	position: relative;
+	padding-top: 100%;
 }
 
 .fa-stack { font-size: 0.325em; }
