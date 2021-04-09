@@ -41,45 +41,40 @@ echo (new Atlantis\Element\PagePromo)
 		<?php endif; ?>
 
 		<div class="col-12 mb-4">
-			<div class="jumbotron jumbotron-secondary p-4 mb-4">
-				<div class="PostListing">
-					<div class="Post">
-						<h3 class="mb-0"><a href="<?php $Printer($Post->GetURL()) ?>"><?php $Printer($Post->Title) ?></a></h3>
-						<div class="About">
-							Posted on <a class="Date" href="<?php $Printer($Post->URL) ?>"><?php $Printer($Post->DateCreated->Format('F jS g:ia')) ?></a>
-							From <a class="Source" href="<?php $Printer($Post->Blog->URL) ?>"><?php $Printer($Post->Blog->Title) ?></a>
-							By <a class="Authour" href="<?php $Printer($Post->User->URL) ?>"><?php $Printer($Post->User->Alias) ?></a>
-							<?php if($UserCanEdit) printf('- Views: %d',$Post->CountViews); ?>
+
+			<!-- POST HEADING -->
+			<div class="row">
+				<div class="col-12 mb-1">
+					<?php $Printer($Post->DateCreated->Format('F jS g:ia')) ?>
+				</div>
+				<div class="col-12 mb-2">
+					<h3 class="font-weight-bold mb-2"><a href="<?php $Post->URL ?>"><?php $Printer($Post->Title) ?></a></h3>
+					<div class="row tight align-items-center">
+						<?php foreach($Tags->Payload as $PostTag): ?>
+						<div class="col-auto">
+							<a href="<?php $Printer($Blog->GetTagURL($PostTag->Tag)) ?>" class="btn btn-sm btn-secondary pt-0 pb-0"><?php $Printer($PostTag->Tag->Title) ?></a>
 						</div>
-						<?php if($Tags->Count || $UserCanEdit || $UserCanDelete): ?>
-						<div class="Tags">
-							<div class="row tight align-items-center">
-								<?php foreach($Tags->Payload as $PostTag): ?>
-								<div class="col-auto">
-									<a href="<?php $Printer($Blog->GetTagURL($PostTag->Tag)) ?>" class="btn btn-sm btn-secondary pt-0 pb-0"><?php $Printer($PostTag->Tag->Title) ?></a>
-								</div>
-								<?php endforeach; ?>
-								<?php if($UserCanEdit): ?>
-								<div class="col-auto">
-									<a href="#" class="btn btn-sm btn-dark pt-0 pb-0 pl-1 pr-1"><i class="fas fa-fw fa-plus"></i></a>
-								</div>
-								<div class="col-auto">
-									<a class="btn btn-sm btn-dark pt-0 pb-0" href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Post.Edit',['PostID'=>$Post->ID]) ?>">Edit</a>
-								</div>
-								<?php endif; ?>
-								<?php if($UserCanDelete): ?>
-								<div class="col-auto">
-									<a class="btn btn-sm btn-dark pt-0 pb-0 AtlantisActionPostDelete" href="#" data-post-id="<?php echo $Post->ID ?>">Delete</a>
-								</div>
-								<?php endif; ?>
-							</div>
+						<?php endforeach; ?>
+						<?php if($UserCanEdit || $UserCanDelete): ?>
+						<div class="col-auto">|</div>
+						<?php endif ?>
+						<?php if($UserCanEdit): ?>
+						<div class="col-auto">
+							<a class="btn btn-sm btn-dark pt-0 pb-0" href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Post.Edit',['PostID'=>$Post->ID]) ?>">Edit</a>
+						</div>
+						<?php endif; ?>
+						<?php if($UserCanDelete): ?>
+						<div class="col-auto">
+							<a class="btn btn-sm btn-dark pt-0 pb-0 AtlantisActionPostDelete" href="#" data-post-id="<?php echo $Post->ID ?>">Delete</a>
 						</div>
 						<?php endif; ?>
 					</div>
 				</div>
 			</div>
+			<hr />
 
 			<?php if($Post->IsAdult() && $Route->ShouldAdultSafespace()): ?>
+			<!-- ADULT CONTENT WARNING -->
 			<div class="alert alert-adult mb-0">
 				<?php if($User): ?>
 				<p>
@@ -98,8 +93,9 @@ echo (new Atlantis\Element\PagePromo)
 					</form>
 				</div>
 			</div>
+			<hr />
 			<?php else: ?>
-			<div class="jumbotron jumbotron-tertiary p-4 mb-0">
+			<div class="mb-0">
 				<div class="PostContent">
 					<?php if($Route->Get->ShowJson): ?>
 					<pre class="CodeViewer" data-mime="application/json" data-title="EditorJS Structure" data-theme="synthwave84"><?php echo json_encode(json_decode($Post->ContentJSON),JSON_PRETTY_PRINT) ?></pre>

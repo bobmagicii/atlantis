@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-08 22:27:45
+@date 2021-04-09 18:18:54
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -21,7 +21,7 @@
 	--ColourPrimary: #222222;
 	--ColourSecondary: #eeeeee;
 
-	--ColourBackgroundPrimary: #eeeeee;
+	--ColourBackgroundPrimary: #fafafa;
 
 	--ColourAdultButton: #c25684;
 	--ColourAdultText: #ffe6ea;
@@ -96,7 +96,6 @@ h4 {
 }
 
 h2 {
-	-border-bottom: 1px solid #999;
 	font-weight: bold;
 	margin: 0px;
 	letter-spacing: 0.25em;
@@ -201,6 +200,10 @@ body > footer code {
 	color: #666;
 }
 
+hr {
+	border-top-color: var(--ColourPrimary);
+	opacity: 0.25;
+}
 
 /*//////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////*/
