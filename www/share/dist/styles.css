@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-08 22:27:45
+@date 2021-04-09 00:33:36
 @files [
     "src\/codemirror-themes\/3024-day.css",
     "src\/codemirror-themes\/3024-night.css",
@@ -3932,6 +3932,7 @@ select:focus {
 	color: var(--ColourGithubHoverText);
 }
 
+.text-decoration-none { text-decoration: none; }
 .text-adult { color: var(--ColourAdultButton); }
 .text-twitter { color: var(--ColourTwitterButton); }
 .text-github { color: var(--ColourGithubButton); }

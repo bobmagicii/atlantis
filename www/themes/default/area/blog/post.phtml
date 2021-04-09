@@ -121,7 +121,7 @@ echo (new Atlantis\Element\PagePromo)
 					<?php if($Post->IsCommentingAllowed($User)): ?>
 						<div class="text-center font-weight-bold mb-2">Comments don't actually work yet.</div>
 						<div class="text-center font-size-largerer mb-4">(っ˘̩╭╮˘̩)っ</div>
-						<div id="CommentForm" class="row">
+						<div id="CommentForm" class="d-none row">
 							<?php if($User): ?>
 							<input type="hidden" name="UserID" value="<?php $Printer($User->ID) ?>" />
 							<?php else: ?>
@@ -188,6 +188,7 @@ class AtlantisPostComments {
 			.addClass('d-none')
 			.addClass('Loading')
 			.addClass('text-center')
+			.style('display','none') // just for now
 			.append('<i class="fa fa-fw fa-spin fa-asterisk"></i> Loading...')
 		)
 

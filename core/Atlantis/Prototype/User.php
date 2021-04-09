@@ -158,7 +158,7 @@ implements JsonSerializable {
 			'TimeCreated'    => $this->TimeCreated,
 			'TimeSeen'       => ($this->OptAllowSeen?$this->TimeSeen:$this->TimeCreated),
 			'DateCreated'    => (String)$this->DateCreated,
-			'DateSeen'       => ($this->OptAllowSeen?(String)$this->DateSeen:$this->DateCreated),
+			'DateSeen'       => ($this->OptAllowSeen?(String)$this->DateSeen:$this->DateCreated)
 		];
 	}
 
