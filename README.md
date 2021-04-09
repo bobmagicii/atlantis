@@ -10,8 +10,6 @@ A multi user blogging platform. I'm just trying to make a thing to do a thing, a
 * Composer for PHP
 * A ReCaptcha API key (https://www.google.com/recaptcha/intro/)
 
-Note: the PHP requirement of 7.4 will quickly be pushed up to 8 after it, you know, comes out.
-
 # Suggestions
 
 * PHP-OpenSSL
