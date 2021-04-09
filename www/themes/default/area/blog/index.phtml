@@ -56,6 +56,7 @@ echo (new Atlantis\Element\PagePromo)
 			echo (new Atlantis\Element\PostListing)
 			->AddClasses('NoBlogIcon')
 			->SetTitle($PostListTitle)
+			->SetShowSourceBlog(FALSE)
 			->SetSubtitle($PostListSubtitle)
 			->SetItemStore($Posts->Payload);
 			?>
