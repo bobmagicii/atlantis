@@ -31,6 +31,6 @@ I am the most NIH coder you know but there are still things I depend on. Here ar
 
 ### JS
 
-* [Jodit3](https://xdsoft.net/jodit/)
+* [Editor.js](https://editorjs.io/)
 
 
