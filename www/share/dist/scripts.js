@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-08 20:47:55
+@date 2021-04-10 07:08:53
 @files [
     "src\/js\/libs\/000-jquery-3.1.1.min.js",
     "src\/js\/libs\/100-bootstrap.bundle.min.js",
@@ -12140,7 +12140,7 @@ Atlantis.Request = function(Opt){
 		Data: null,
 		IsFormData: false,
 		OnSuccess: null,
-		OnError: null
+		OnError: ((Result)=> alert(Result.Message))
 	};
 
 	NUI.Util.MergeProperties(Opt,Config);
@@ -12162,6 +12162,10 @@ Atlantis.Request = function(Opt){
 
 	jQuery
 	.ajax(Request)
+	.fail(function(jqXHR,Status,Error){
+		alert(`API Failure: ${Error}`);
+		return;
+	})
 	.done(function(Result){
 
 		// handle api result errors.

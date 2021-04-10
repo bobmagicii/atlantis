@@ -77,7 +77,7 @@ implements JsonSerializable {
 
 		$this->User = NULL;
 
-		if(array_key_exists('CU_ID',$Raw))
+		if(array_key_exists('CU_ID',$Raw) && $Raw['CU_ID'])
 		$this->User = new Atlantis\Prototype\User(
 			Atlantis\Util::StripPrefixedQueryFields(
 				$Raw, 'CU_'

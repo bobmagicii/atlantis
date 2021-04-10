@@ -14,7 +14,33 @@ methods here are safe for direct use or use as callback filtering.
 //*/
 
 	static public function
-	TypeBool($Val):
+	__CallStatic(string $Fn, array $Argv):
+	mixed {
+	/*//
+	@date 2021-04-10
+	//*/
+
+		if(str_ends_with($Fn,'Callable'))
+		return static::__CallStatic_Callable(
+			substr($Fn,0,-8),
+			$Argv
+		);
+
+		return NULL;
+	}
+
+	static protected function
+	__CallStatic_Callable(string $Fn, array $Argv):
+	mixed {
+	/*//
+	@date 2021-04-10
+	//*/
+
+		return (fn(...$Input)=> static::{$Fn}(...$Input));
+	}
+
+	static public function
+	TypeBool(mixed $Val):
 	Bool {
 	/*//
 	@date 2017-12-15
@@ -37,7 +63,7 @@ methods here are safe for direct use or use as callback filtering.
 	}
 
 	static public function
-	TypeInt($Val):
+	TypeInt(mixed $Val):
 	Int {
 	/*//
 	@date 2017-12-15
@@ -47,7 +73,7 @@ methods here are safe for direct use or use as callback filtering.
 	}
 
 	static public function
-	TypeFloat($Val):
+	TypeFloat(mixed $Val):
 	Float {
 	/*//
 	@date 2017-12-15
@@ -57,7 +83,7 @@ methods here are safe for direct use or use as callback filtering.
 	}
 
 	static public function
-	TypeString($Val):
+	TypeString(mixed $Val):
 	String {
 	/*//
 	@date 2017-12-15
@@ -70,7 +96,7 @@ methods here are safe for direct use or use as callback filtering.
 	////////////////////////////////
 
 	static public function
-	NumberValidRange($Val, String $Var, Int $Min=0, Int $Max=0, Int $Def=0):
+	NumberValidRange(mixed $Val, String $Var, Int $Min=0, Int $Max=0, Int $Def=0):
 	Int {
 	/*//
 	@date 2017-12-15
@@ -84,7 +110,7 @@ methods here are safe for direct use or use as callback filtering.
 	}
 
 	static public function
-	NumberLimit25($Val):
+	NumberLimit25(mixed $Val):
 	Int {
 	/*//
 	@date 2017-02-27
@@ -99,7 +125,7 @@ methods here are safe for direct use or use as callback filtering.
 	}
 
 	static public function
-	PageNumber($Val):
+	PageNumber(mixed $Val):
 	Int {
 	/*//
 	@date 2017-02-27
@@ -114,7 +140,7 @@ methods here are safe for direct use or use as callback filtering.
 	}
 
 	static public function
-	TrimmedText($Val):
+	TrimmedText(mixed $Val):
 	String {
 	/*//
 	@date 2020-06-01
@@ -124,7 +150,7 @@ methods here are safe for direct use or use as callback filtering.
 	}
 
 	static public function
-	EncodedText($Val):
+	EncodedText(mixed $Val):
 	String {
 	/*//
 	@date 2020-06-01
@@ -134,7 +160,7 @@ methods here are safe for direct use or use as callback filtering.
 	}
 
 	static public function
-	StrippedText($Val):
+	StrippedText(mixed $Val):
 	String {
 	/*//
 	@date 2020-06-01
@@ -144,7 +170,7 @@ methods here are safe for direct use or use as callback filtering.
 	}
 
 	static public function
-	RouteSafeAlias($Val):
+	RouteSafeAlias(mixed $Val):
 	String {
 	/*//
 	@date 2017-02-27
@@ -170,7 +196,7 @@ methods here are safe for direct use or use as callback filtering.
 	}
 
 	static public function
-	MethodFromAlias($Val):
+	MethodFromAlias(mixed $Val):
 	String {
 	/*//
 	@date 2020-05-22
@@ -197,7 +223,7 @@ methods here are safe for direct use or use as callback filtering.
 	}
 
 	static public function
-	SafeForHTML($Val):
+	SafeForHTML(mixed $Val):
 	String {
 	/*//
 	@date 2017-02-11
@@ -209,7 +235,7 @@ methods here are safe for direct use or use as callback filtering.
 	}
 
 	static public function
-	Email($Val):
+	Email(mixed $Val):
 	?String {
 	/*//
 	@date 2020-10-05
@@ -225,7 +251,7 @@ methods here are safe for direct use or use as callback filtering.
 	}
 
 	static public function
-	ObjectAsJSON($Val):
+	ObjectAsJSON(mixed $Val):
 	?String {
 
 		$Output = json_decode($Val);
@@ -237,7 +263,7 @@ methods here are safe for direct use or use as callback filtering.
 	}
 
 	static public function
-	ValidatorForEditorJS($Val):
+	ValidatorForEditorJS(mixed $Val):
 	?Object {
 
 		return new Atlantis\Struct\EditorJS\Validator($Val);

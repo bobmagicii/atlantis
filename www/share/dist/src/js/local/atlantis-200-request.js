@@ -8,7 +8,7 @@ Atlantis.Request = function(Opt){
 		Data: null,
 		IsFormData: false,
 		OnSuccess: null,
-		OnError: null
+		OnError: ((Result)=> alert(Result.Message))
 	};
 
 	NUI.Util.MergeProperties(Opt,Config);
@@ -30,6 +30,10 @@ Atlantis.Request = function(Opt){
 
 	jQuery
 	.ajax(Request)
+	.fail(function(jqXHR,Status,Error){
+		alert(`API Failure: ${Error}`);
+		return;
+	})
 	.done(function(Result){
 
 		// handle api result errors.

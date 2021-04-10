@@ -338,7 +338,12 @@ namespace.
 
 		// quick mode short circuit
 
-		if($Opt->Quick !== FALSE) {
+		if($Opt->Quick === TRUE) {
+			$Opt->Page = 1;
+			$Opt->Limit = 1;
+		}
+
+		if($Opt->Quick === 1) {
 			$Opt->Pagination = FALSE;
 			$Opt->Page = 1;
 			$Opt->Limit = 1;

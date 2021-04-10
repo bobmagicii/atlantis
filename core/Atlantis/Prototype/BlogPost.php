@@ -2,13 +2,10 @@
 
 namespace Atlantis\Prototype;
 
-use
-\Atlantis as Atlantis,
-\Nether   as Nether,
-\Ramsey   as Ramsey;
+use Atlantis;
+use Nether;
 
-use
-\Exception as Exception;
+use Exception;
 
 class BlogPost
 extends Atlantis\Prototype {
@@ -21,44 +18,46 @@ extends Atlantis\Prototype {
 
 	protected static
 	$PropertyMap = [
-		'ID'          => 'ID:int',
-		'BlogID'      => 'BlogID:int',
-		'UserID'      => 'UserID:int',
-		'TimeCreated' => 'TimeCreated:int',
-		'TimeUpdated' => 'TimeUpdated:int',
-		'Enabled'     => 'Enabled:int',
-		'CountViews'  => 'CountViews:int',
-		'UUID'        => 'UUID',
-		'OptAdult'    => 'OptAdult:int',
-		'OptComments' => 'OptComments:int',
-		'Title'       => 'Title',
-		'Alias'       => 'Alias',
-		'Content'     => 'Content',
-		'ContentJSON' => 'ContentJSON'
+		'ID'            => 'ID:int',
+		'BlogID'        => 'BlogID:int',
+		'UserID'        => 'UserID:int',
+		'TimeCreated'   => 'TimeCreated:int',
+		'TimeUpdated'   => 'TimeUpdated:int',
+		'Enabled'       => 'Enabled:int',
+		'CountViews'    => 'CountViews:int',
+		'CountComments' => 'CountComments:int',
+		'UUID'          => 'UUID',
+		'OptAdult'      => 'OptAdult:int',
+		'OptComments'   => 'OptComments:int',
+		'Title'         => 'Title',
+		'Alias'         => 'Alias',
+		'Content'       => 'Content',
+		'ContentJSON'   => 'ContentJSON'
 	];
 
 	// database fields.
 
-	public Int $ID;
-	public Int $BlogID;
-	public Int $UserID;
-	public Int $TimeCreated;
-	public Int $TimeUpdated;
-	public Int $Enabled;
-	public Int $CountViews;
-	public String $UUID;
-	public String $Title;
-	public String $Alias;
-	public ?String $Content;
-	public ?String $ContentJSON;
-	public Int $OptAdult;
-	public Int $OptComments;
+	public int $ID;
+	public int $BlogID;
+	public int $UserID;
+	public int $TimeCreated;
+	public int $TimeUpdated;
+	public int $Enabled;
+	public int $CountViews;
+	public int $CountComments;
+	public string $UUID;
+	public string $Title;
+	public string $Alias;
+	public ?string $Content;
+	public ?string $ContentJSON;
+	public int $OptAdult;
+	public int $OptComments;
 
 	// extension fields.
 
 	public ?Atlantis\Prototype\Blog $Blog;
 	public ?Atlantis\Prototype\User $User;
-	public ?String $URL;
+	public ?string $URL;
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
 
@@ -252,10 +251,26 @@ extends Atlantis\Prototype {
 
 	public function
 	BumpCountViews(Int $Inc=1):
-	self {
+	static {
 
 		$this->Update([
 			'CountViews' => ($this->CountViews + 1)
+		]);
+
+		return $this;
+	}
+
+	public function
+	UpdateCounts():
+	static {
+
+		$Comments = Atlantis\Prototype\BlogPostComment::Find([
+			'PostID' => $this->ID,
+			'Quick'  => TRUE
+		]);
+
+		$this->Update([
+			'CountComments' => $Comments->Total
 		]);
 
 		return $this;

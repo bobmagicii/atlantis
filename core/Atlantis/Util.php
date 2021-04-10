@@ -2,12 +2,11 @@
 
 namespace Atlantis;
 
-use
-\Nether as Nether,
-\Ramsey as Ramsey;
+use Nether;
+use Ramsey;
+use ReCaptcha;
 
-use
-\Exception as Exception;
+use Exception;
 
 class Util {
 
@@ -315,6 +314,25 @@ class Util {
 
 		echo "<pre>{$Output}</pre>";
 		return;
+	}
+
+	static public function
+	IsRecaptchaValid():
+	bool {
+	/*//
+	@date 2021-04-10
+	//*/
+
+		$Human = new ReCaptcha\ReCaptcha(
+			Nether\Option::Get('Google.ReCaptcha.Secret')
+		);
+
+		var_dump($_POST);
+
+		$CVal = $_POST['g-recaptcha-response'];
+		$IP = $_SERVER['REMOTE_ADDR'];
+
+		return $Human->Verify($CVal,$IP)->IsSuccess();
 	}
 
 }

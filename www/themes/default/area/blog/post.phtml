@@ -107,49 +107,63 @@ echo (new Atlantis\Element\PagePromo)
 		</div>
 
 		<div class="col-12 mb-4">
-			<div class="jumbotron jumbotron-secondary p-4 m-0">
-				<h3 class="font-weight-bold">Comments (<span class="PostCommentCount">#</span>)</h3>
+			<div class="boxtron-secondary p-4 m-0">
+
+				<div class="row align-items-center">
+					<div class="col">
+						<h3 class="font-weight-bold">Comments (<span class="PostCommentCount"><?php $Printer($Post->CountComments) ?></span>)</h3>
+					</div>
+				</div>
 				<hr />
-				<div id="PostComments" data-post-id="<?php $Printer($Post->ID) ?>">
-					<div class="PostCommentTemplate d-none">
-						<div class="row">
+
+				<?php if($Post->IsCommentingAllowed($User)): ?>
+				<div id="CommentForm" class="CommentForm">
+					<div class="row">
+						<?php if($User): ?>
+						<div class="col-12 font-italic">
+							Posting as <a href="<?php $Printer($User->URL) ?>"><?php $Printer($User->Alias) ?></a>
+						</div>
+						<?php else: ?>
+						<div class="col-12 mb-2">
+							<input type="text" name="Name" class="form-control" placeholder="Name (optional)..." />
+						</div>
+						<?php endif; ?>
+						<div class="col-12 mb-2">
+							<textarea name="Content" class="form-control" placeholder="Comment..."></textarea>
+						</div>
+						<div class="col-12 mb-2">
+							<div class="g-recaptcha" data-sitekey="<?php echo Nether\Option::Get('Google.ReCaptcha.Key') ?>"></div>
+						</div>
+						<div class="col-12 mb-0">
+							<button type="button" class="btn btn-dark CmdCommentSubmit">Post Comment</button>
+						</div>
+					</div>
+				</div>
+				<?php else: ?>
+				<div class="text-center font-weight-bold mb-2">Comments are disabled.</div>
+				<div class="text-center font-size-largerer">(っ˘̩╭╮˘̩)っ</div>
+				<?php endif; ?>
+				<hr />
+
+				<div id="Comments" class="Comments" data-post-id="<?php $Printer($Post->ID) ?>">
+					<div class="Template d-none">
+						<div class="row pt-2 pb-2">
 							<div class="col-3 col-sm-2 col-md-2 col-lg-1">
-								<div class="PostCommentIcon wallpapered background-primary ratio-square rounded w-100" style="background-image:url(<?php $Printer(Nether\Option::Get('Atlantis.Blog.DefaultImageIconURL')) ?>);"></div>
+								<div class="UserIconBG wallpapered background-primary ratio-square rounded w-100" style="background-image:url(<?php $Printer(Nether\Option::Get('Atlantis.Blog.DefaultImageIconURL')) ?>);"></div>
 							</div>
 							<div class="col">
-								<div class="PostCommentHeading font-size-smaller text-muted">
-									<span class="PostCommentDate">[Date]</span> by
-									<span class="PostCommentName">[Name]</span>
+								<div class="Heading font-size-smaller text-muted">
+									<span class="Date"></span> by
+									<span class="UserName"></span>
 								</div>
-								<div class="PostCommentBody">[Comment Body]</div>
+								<blockquote></blockquote>
 							</div>
 						</div>
 						<hr />
 					</div>
 				</div>
-				<div class="pt-4 pb-4">
-					<?php if($Post->IsCommentingAllowed($User)): ?>
-						<div class="text-center font-weight-bold mb-2">Comments don't actually work yet.</div>
-						<div class="text-center font-size-largerer mb-4">(っ˘̩╭╮˘̩)っ</div>
-						<div id="CommentForm" class="row">
-							<?php if($User): ?>
-							<input type="hidden" name="UserID" value="<?php $Printer($User->ID) ?>" />
-							<?php else: ?>
-							<div class="col-12 col-sm-6 col-md-4 mb-2">
-								<input type="text" name="Name" class="form-control" placeholder="Your Name..." />
-							</div>
-							<?php endif; ?>
-							<div class="col-12 mb-2">
-								<textarea name="Content" class="form-control" placeholder="Your Comment..."></textarea>
-							</div>
-							<div class="col-12 mb-0">
-								<button type="button" class="btn btn-dark CmdCommentPost">Post Comment</button>
-							</div>
-						</div>
-					<?php else: ?>
-						<div class="text-center font-weight-bold mb-2">Comments are disabled.</div>
-						<div class="text-center font-size-largerer">(っ˘̩╭╮˘̩)っ</div>
-					<?php endif; ?>
+
+				<div class="">
 				</div>
 			</div>
 		</div>
@@ -179,172 +193,12 @@ echo (new Atlantis\Element\PagePromo)
 	</div>
 </div>
 
-<script type="text/javascript">
-class AtlantisPostComments {
-
-	constructor(Selector) {
-	/*//
-	@date 2020-12-11
-	//*/
-
-		this.Container = jQuery(Selector);
-		this.PostID = this.Container.attr('data-post-id');
-		this.Page = 1;
-		this.PageCount = 1;
-		this.CommentCount = 0;
-
-		this.Template = (
-			this.Container
-			.find('.PostCommentTemplate')
-			.clone()
-			.removeClass('d-none')
-		);
-
-		this.Loading = (
-			jQuery('<div />')
-			.addClass('d-none')
-			.addClass('Loading')
-			.addClass('text-center')
-			.append('<i class="fa fa-fw fa-spin fa-asterisk"></i> Loading...')
-		);
-
-		this.Listing = (
-			jQuery('<div />')
-			.addClass('d-none')
-			.addClass('Listing')
-		);
-
-
-		(this.Container)
-		.append(this.Loading)
-		.append(this.Listing);
-
-		this.LoadPage(1);
-		return;
-	}
-
-	LoadNextPage() {
-	/*//
-	@date 2020-12-11
-	//*/
-
-		if(this.Page < this.PageCount)
-		this.LoadPage(this.Page + 1);
-
-		return;
-	}
-
-	LoadPrevPage() {
-	/*//
-	@date 2020-12-11
-	//*/
-
-		if(this.Page > 1)
-		this.LoadPage(this.Page - 1);
-
-		return;
-	}
-
-	async LoadPage(PageNum) {
-	/*//
-	@date 2020-12-11
-	//*/
-
-		let Result = null;
-		let Element = null;
-
-		this.ShowLoading();
-
-		Result = await this.FetchPage(PageNum);
-		console.log(Result);
-		this.Page = Result.Payload.Page;
-		this.PageCount = Result.Payload.PageCount;
-		this.CommentCount = Result.Payload.Total;
-
-		for(const Comment of Result.Payload.Comments) {
-			Element = this.Template.clone();
-
-			Element
-			.find('.PostCommentBody')
-			.text(Comment.Content);
-
-			Element
-			.find('.PostCommentDate')
-			.text(Comment.DateTimeCreated);
-
-			Element
-			.find('.PostCommentName')
-			.text(Comment.Name);
-
-			if(Comment.User) {
-				Element
-				.find('.PostCommentIcon')
-				.css('background-image',`url(${Comment.User.ImageIcon.Tiny})`);
-
-				Element
-				.find('.PostCommentName')
-				.html(`<a href="${Comment.User.URL}">${Comment.Name}</a>`);
-			}
-
-			this.Listing.append(Element);
-		}
-
-		this.ShowListing();
-
-		return;
-	}
-
-	async FetchPage(PageNum) {
-	/*//
-	@date 2020-12-11
-	//*/
-
-		let that = this;
-		let Result = null;
-
-		return (
-			new Promise(function(Next,Fail){
-				Atlantis.Request({
-					'Method': 'LIST',
-					'URL': '/api/v1/post/comment',
-					'Data': { 'ID': that.PostID },
-					'OnSuccess': function(Result){ Next(Result); return; },
-					'OnError': function() { Fail(); return; }
-				});
-			})
-			.then(function(Result){ return Result; })
-		);
-	}
-
-	ShowLoading() {
-	/*//
-	@date 2020-12-11
-	//*/
-
-		this.Listing.addClass('d-none');
-		this.Loading.removeClass('d-none');
-
-		return;
-	}
-
-	ShowListing() {
-	/*//
-	@date 2020-12-11
-	//*/
-
-		this.Loading.addClass('d-none');
-		this.Listing.removeClass('d-none');
-
-		return;
-	}
-
-
-
-}
+<script type="module">
+import AtlantisPostComments from '/share/atlantis/post/comments.js';
 
 jQuery(document)
 .ready(function(){
-	new AtlantisPostComments('#PostComments');
+	new AtlantisPostComments('#Comments','#CommentForm');
 	return;
 });
 </script>

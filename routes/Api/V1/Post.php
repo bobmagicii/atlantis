@@ -8,7 +8,7 @@ use Nether;
 use Atlantis\Prototype\BlogPostComment;
 
 class Post
-extends Atlantis\Site\ProtectedAPI {
+extends Atlantis\Site\PublicAPI {
 
 	/**
 	 * @input ?Int ID
@@ -19,6 +19,8 @@ extends Atlantis\Site\ProtectedAPI {
 	final public function
 	EntityGet():
 	Void {
+
+		$this->RequireUserSession();
 
 		$Post = NULL;
 
@@ -57,12 +59,15 @@ extends Atlantis\Site\ProtectedAPI {
 	EntityPost():
 	Void {
 	/*//
+	@require user
 	@error 1 blog user not found
 	@error 2 blog user does not have write priv
 	@error 3 error inserting post
 	@error 4 post needs a title
 	@error 5 post needs content
 	//*/
+
+		$this->RequireUserSession();
 
 		($this->Post)
 		->BlogID('Atlantis\Util\Filters::TypeInt')
@@ -169,11 +174,14 @@ extends Atlantis\Site\ProtectedAPI {
 	EntityPatch():
 	Void {
 	/*//
+	@require user
 	@error 1 post not found
 	@error 2 user not allowed
 	@error 3 post must have a title
 	@error 4 post needs content
 	//*/
+
+		$this->RequireUserSession();
 
 		($this->Post)
 		->ID('Atlantis\Util\Filters::TypeInt')
@@ -299,9 +307,12 @@ extends Atlantis\Site\ProtectedAPI {
 	EntityDelete():
 	Void {
 	/*//
+	@require user
 	@error 1 post not found
 	@error 2 invalid user
 	//*/
+
+		$this->RequireUserSession();
 
 		($this->Post)
 		->ID('Atlantis\\Util\\Filters::TypeInt');
@@ -344,10 +355,13 @@ extends Atlantis\Site\ProtectedAPI {
 	EntityTagdelete():
 	Void {
 	/*//
+	@require user
 	@error 1 post not found
 	@error 2 invalid user
 	@error 3 tag not found
 	//*/
+
+		$this->RequireUserSession();
 
 		$Post = Atlantis\Prototype\BlogPost::GetByID($this->Post->ID);
 		if(!$Post) $this->Quit(1,'post not found');
@@ -379,9 +393,12 @@ extends Atlantis\Site\ProtectedAPI {
 	EntityTagpost():
 	Void {
 	/*//
+	@require user
 	@error 1 post not found
 	@error 2 invalid user
 	//*/
+
+		$this->RequireUserSession();
 
 		($this->Post)
 		->ID('Atlantis\\Util\\Filters::TypeInt')
@@ -439,25 +456,28 @@ extends Atlantis\Site\ProtectedAPI {
 		return;
 	}
 
-	#[Atlantis\Meta\Info('Get a list of comments on a post.')]
+	#[Atlantis\Meta\Info('Fetch a list of comments on a post.')]
 	#[Atlantis\Meta\Parameter('ID','Int')]
 	#[Atlantis\Meta\Parameter('Page','Int')]
 	#[Atlantis\Meta\Error(1,'Post not found.')]
 	final public function
-	CommentGet():
+	CommentList():
 	Void {
+	/*//
+	@date 2021-04-10
+	//*/
 
-		($this->Get)
+		($this->Post)
 		->ID('Atlantis\\Util\\Filters::TypeInt')
 		->Page('Atlantis\\Util\\Filters::PageNumber')
-		->Limit('Atlantis\Util\Filters::NumberValidRange',[1,30,10]);
+		->Limit('Atlantis\\Util\\Filters::NumberValidRange',[1,30,10]);
 
 		$Comments = NULL;
-		$Page = $this->Get->Page;
-		$Limit = $this->Get->Limit;
+		$Page = $this->Post->Page;
+		$Limit = $this->Post->Limit;
 
 		$Comments = Atlantis\Prototype\BlogPostComment::Find([
-			'PostID' => $this->Get->ID,
+			'PostID' => $this->Post->ID,
 			'Page'   => $Page,
 			'Limit'  => $Limit,
 			'Sort'   => 'newest'
@@ -479,6 +499,53 @@ extends Atlantis\Site\ProtectedAPI {
 			'Limit'     => $Comments->Limit,
 			'Comments'  => $Comments->Payload->GetData()
 		]);
+
+		return;
+	}
+
+	#[Atlantis\Meta\Info('Submit a new comment to the post.')]
+	#[Atlantis\Meta\Parameter('ID','int')]
+	#[Atlantis\Meta\Parameter('Name','string')]
+	#[Atlantis\Meta\Parameter('Content','string')]
+	#[Atlantis\Meta\Error(1,'post not found')]
+	#[Atlantis\Meta\Error(2,'recaptcha not valid')]
+	final public function
+	CommentPost():
+	void {
+	/*//
+	@date 2021-04-10
+	//*/
+
+		($this->Post)
+		->ID(Atlantis\Util\Filters::TypeIntCallable())
+		->Name(Atlantis\Util\Filters::StrippedTextCallable())
+		->Content(Atlantis\Util\Filters::StrippedTextCallable());
+
+		////////
+
+		if(!Atlantis\Util::IsRecaptchaValid())
+		$this->Quit(2);
+
+		////////
+
+		$BlogPost = Atlantis\Prototype\BlogPost::GetByID($this->Post->ID);
+
+		if(!$BlogPost)
+		$this->Quit(1);
+
+		////////
+
+		$Dataset = [
+			'BlogID'  => $BlogPost->Blog->ID,
+			'PostID'  => $BlogPost->ID,
+			'UserID'  => ($this->User ? $this->User->ID : NULL),
+			'Name'    => ($this->User ? $this->User->Alias : $this->Post->Name),
+			'Content' => $this->Post->Content
+		];
+
+		$Comment = Atlantis\Prototype\BlogPostComment::Insert($Dataset);
+
+		$this->SetPayload($Comment);
 
 		return;
 	}
