@@ -9,7 +9,7 @@
 		"netherphp/object": "^4.0",
 		"netherphp/onescript": "^4.0",
 		"netherphp/option": ">=1.0.0",
-		"netherphp/standards": ">=0.1.0",
+		"netherphp/standards": "^0.2.1",
 		"netherphp/stash": ">=2.0.0",
 		"netherphp/surface": "^4.0",
 		"ramsey/uuid": "^4.0",

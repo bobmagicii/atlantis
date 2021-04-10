@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "414de23a62ce5d9c8de72a1ec8e4c142",
+    "content-hash": "f9fd76c7e97f39231d37817c19c909e3",
     "packages": [
         {
             "name": "artem_c/emmet",
@@ -2145,16 +2145,16 @@
         },
         {
             "name": "netherphp/standards",
-            "version": "v0.1.9",
+            "version": "v0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/netherphp/standards.git",
-                "reference": "50967dba60b79d79300fe0979440fc0bde0d1579"
+                "reference": "b5aa3684835cf90da1876fdc0c1cf4c00c1f664f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/netherphp/standards/zipball/50967dba60b79d79300fe0979440fc0bde0d1579",
-                "reference": "50967dba60b79d79300fe0979440fc0bde0d1579",
+                "url": "https://api.github.com/repos/netherphp/standards/zipball/b5aa3684835cf90da1876fdc0c1cf4c00c1f664f",
+                "reference": "b5aa3684835cf90da1876fdc0c1cf4c00c1f664f",
                 "shasum": ""
             },
             "require": {
@@ -2187,9 +2187,9 @@
             ],
             "support": {
                 "issues": "https://github.com/netherphp/standards/issues",
-                "source": "https://github.com/netherphp/standards/tree/v0.1.9"
+                "source": "https://github.com/netherphp/standards/tree/v0.2.1"
             },
-            "time": "2020-05-22T18:33:17+00:00"
+            "time": "2021-04-09T22:27:19+00:00"
         },
         {
             "name": "netherphp/stash",
