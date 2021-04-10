@@ -1,0 +1,16 @@
+.DropContainer {
+	position: relative;
+	overflow: hidden;
+}
+
+.DropContainer > div {
+	position: relative;
+	margin-top: 0px;
+	transition: margin-top 400ms;
+	transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+}
+
+.DropContainer > div.Hidden {
+	position: relative;
+	margin-top: var(--local-height);
+}

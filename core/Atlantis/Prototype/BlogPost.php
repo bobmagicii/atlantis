@@ -263,17 +263,35 @@ extends Atlantis\Prototype {
 	public function
 	UpdateCounts():
 	static {
+	/*//
+	@date 2021-04-10
+	//*/
+
+		$this->Update([
+			'CountComments' => $this->UpdateCountComments(FALSE)
+		]);
+
+		return $this;
+	}
+
+	public function
+	UpdateCountComments(bool $Commit=TRUE):
+	int {
+	/*//
+	@date 2021-04-10
+	//*/
 
 		$Comments = Atlantis\Prototype\BlogPostComment::Find([
 			'PostID' => $this->ID,
 			'Quick'  => TRUE
 		]);
 
+		if($Commit)
 		$this->Update([
 			'CountComments' => $Comments->Total
 		]);
 
-		return $this;
+		return $Comments->Total;
 	}
 
 	///////////////////////////////////////////////////////////////////////////

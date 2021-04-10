@@ -24,6 +24,7 @@ implements JsonSerializable {
 		'BlogID'         => 'BlogID:int',
 		'PostID'         => 'PostID:int',
 		'UserID'         => 'UserID:int',
+		'RemoteAddr'     => 'RemoteAddr:int',
 		'TimeCreated'    => 'TimeCreated:int',
 		'TimeUpdated'    => 'TimeUpdated:int',
 		'Name'           => 'Name',
@@ -32,15 +33,15 @@ implements JsonSerializable {
 
 	// database fields.
 
-	public Int $ID;
-	public String $UUID;
-	public Int $BlogID;
-	public Int $PostID;
-	public Int $UserID;
-	public Int $TimeCreated;
-	public Int $TimeUpdated;
-	public ?String $Name;
-	public String $Content;
+	public int $ID;
+	public string $UUID;
+	public int $BlogID;
+	public int $PostID;
+	public int $UserID;
+	public int $TimeCreated;
+	public int $TimeUpdated;
+	public ?string $Name;
+	public string $Content;
 
 	// extension fields.
 
@@ -54,8 +55,8 @@ implements JsonSerializable {
 	///////////////////////////////////////////////////////////////////////////
 
 	public function
-	OnReady(Array $Raw):
-	Void {
+	OnReady(array $Raw):
+	void {
 	/*//
 	prepare some data for this object.
 	//*/
@@ -64,11 +65,13 @@ implements JsonSerializable {
 		->OnReady_GetUser($Raw)
 		->OnReady_GetDates($Raw);
 
+		$this->RemoteAddr = inet_ntop($this->RemoteAddr);
+
 		return;
 	}
 
 	protected function
-	OnReady_GetUser(Array $Raw):
+	OnReady_GetUser(array $Raw):
 	self {
 	/*//
 	prepare a blog object depending on if it was fetched with an inclusion
@@ -89,7 +92,7 @@ implements JsonSerializable {
 	}
 
 	protected function
-	OnReady_GetDates(Array $Raw):
+	OnReady_GetDates(array $Raw):
 	self {
 	/*//
 	prepare the date objects.
@@ -102,7 +105,7 @@ implements JsonSerializable {
 
 	public function
 	JsonSerialize():
-	Array {
+	array {
 	/*//
 	@date 2020-06-01
 	@implements JsonSerializable
@@ -127,8 +130,8 @@ implements JsonSerializable {
 	///////////////////////////////////////////////////////////////////////////
 
 	static protected function
-	ExtendQueryJoins($SQL, String $TableAlias='Main', String $FieldPrefix=''):
-	Void {
+	ExtendQueryJoins($SQL, string $TableAlias='Main', string $FieldPrefix=''):
+	void {
 	/*//
 	@date 2018-06-08
 	//*/
@@ -146,8 +149,8 @@ implements JsonSerializable {
 	}
 
 	static protected function
-	ExtendQueryFields($SQL, String $TablePrefix='', String $FieldPrefix=''):
-	Void {
+	ExtendQueryFields($SQL, string $TablePrefix='', string $FieldPrefix=''):
+	void {
 	/*//
 	@date 2018-06-08
 	//*/
@@ -166,7 +169,7 @@ implements JsonSerializable {
 
 	static protected function
 	FindExtendOptions($Opt):
-	Array {
+	array {
 	/*//
 	@date 2020-05-23
 	//*/
@@ -181,7 +184,7 @@ implements JsonSerializable {
 
 	static protected function
 	FindApplyFilters($Opt,$SQL):
-	Void {
+	void {
 	/*//
 	@date 2018-06-08
 	//*/
@@ -210,6 +213,7 @@ implements JsonSerializable {
 			'BlogID'      => NULL,
 			'PostID'      => NULL,
 			'UserID'      => NULL,
+			'RemoteAddr'  => NULL,
 			'TimeCreated' => time(),
 			'TimeUpdated' => time(),
 			'Name'        => NULL,
@@ -221,6 +225,9 @@ implements JsonSerializable {
 
 		if(!$Opt->PostID)
 		throw new Exception('Comment must have a Post ID');
+
+		if($Opt->RemoteAddr)
+		$Opt->RemoteAddr = inet_pton($Opt->RemoteAddr);
 
 		return parent::Insert($Opt);
 	}

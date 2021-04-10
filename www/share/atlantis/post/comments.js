@@ -56,6 +56,7 @@ class Comments {
 			jQuery('<div />')
 			.addClass('d-none')
 			.addClass('Listing')
+			.addClass('HideTheLastHr')
 		);
 
 		(this.Container)
@@ -76,6 +77,18 @@ class Comments {
 
 		this.CmdSubmit
 		.on('click',()=> this.OnSubmit());
+
+		// bind some page level things.
+
+		jQuery('.PostCommentToggle')
+		.on('click',()=> this.OnCommentToggle());
+
+		if(this.Form.parent().hasClass('DropContainer'))
+		this.Form[0].style
+		.setProperty(
+			'--local-height',
+			`-${this.Form.outerHeight()}px`
+		);
 
 		return;
 	};
@@ -108,7 +121,6 @@ class Comments {
 	//*/
 
 		let Result = null;
-		let Element = null;
 
 		this.ShowLoading();
 
@@ -131,10 +143,12 @@ class Comments {
 	@date 2021-04-09
 	//*/
 
+		this.Listing.empty();
+
 		// find any on-page counters.
 
 		jQuery('.PostCommentCount')
-		.text(Result.Total);
+		.text(Result.Payload.Total);
 
 		// then construct the comment list.
 
@@ -151,7 +165,7 @@ class Comments {
 
 			Element
 			.find('.UserName')
-			.text(Comment.Name);
+			.text(Comment.Name || '<Anonymous>');
 
 			if(Comment.User) {
 				Element
@@ -165,6 +179,18 @@ class Comments {
 
 			this.Listing.append(Element);
 		}
+
+		this.Listing
+		.append(
+			jQuery('<div />')
+			.addClass('row')
+			.addClass('justify-content-center')
+			.append(
+				jQuery('<div />')
+				.addClass('col-auto')
+				.text(`Page ${this.Page} of ${this.PageCount}`)
+			)
+		);
 
 		return;
 	};
@@ -258,6 +284,9 @@ class Comments {
 		.find('input,textarea')
 		.val('');
 
+		if(typeof grecaptcha === 'object')
+		grecaptcha.reset();
+
 		return;
 	};
 
@@ -268,7 +297,7 @@ class Comments {
 
 		let Name = trim(this.InputName.val());
 		let Content = trim(this.InputContent.val());
-		let ReRe = this.Form.find('.g-recaptcha-response').val();
+		let ReCaptcha = this.Form.find('.g-recaptcha-response').val();
 
 		// come on man.
 
@@ -284,7 +313,7 @@ class Comments {
 				'ID': this.PostID,
 				'Name': Name,
 				'Content': Content,
-				'g-recaptcha-response': ReRe
+				'g-recaptcha-response': ReCaptcha
 			},
 			'OnSuccess': ((Result)=> this.OnSubmitted(Result))
 		});
@@ -297,8 +326,21 @@ class Comments {
 	@date 2021-04-10
 	//*/
 
+		this.LoadPage(1);
+
 		this.ClearForm();
 		this.UnlockForm();
+
+		return;
+	};
+
+	OnCommentToggle() {
+	/*//
+	@date 2021-04-10
+	//*/
+
+		this.Form
+		.toggleClass('Hidden');
 
 		return;
 	}

@@ -509,6 +509,7 @@ extends Atlantis\Site\PublicAPI {
 	#[Atlantis\Meta\Parameter('Content','string')]
 	#[Atlantis\Meta\Error(1,'post not found')]
 	#[Atlantis\Meta\Error(2,'recaptcha not valid')]
+	#[Atlantis\Meta\Error(3,'too fast bro')]
 	final public function
 	CommentPost():
 	void {
@@ -536,17 +537,18 @@ extends Atlantis\Site\PublicAPI {
 		////////
 
 		$Dataset = [
-			'BlogID'  => $BlogPost->Blog->ID,
-			'PostID'  => $BlogPost->ID,
-			'UserID'  => ($this->User ? $this->User->ID : NULL),
-			'Name'    => ($this->User ? $this->User->Alias : $this->Post->Name),
-			'Content' => $this->Post->Content
+			'BlogID'     => $BlogPost->Blog->ID,
+			'PostID'     => $BlogPost->ID,
+			'UserID'     => ($this->User ? $this->User->ID : NULL),
+			'RemoteAddr' => $this->Router->GetRemoteAddr(),
+			'Name'       => ($this->User ? $this->User->Alias : $this->Post->Name),
+			'Content'    => $this->Post->Content
 		];
 
 		$Comment = Atlantis\Prototype\BlogPostComment::Insert($Dataset);
+		$BlogPost->UpdateCountComments();
 
 		$this->SetPayload($Comment);
-
 		return;
 	}
 

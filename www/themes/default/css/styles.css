@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-10 06:42:12
+@date 2021-04-10 19:52:51
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -9,6 +9,7 @@
     "src\/local\/200-element-promo.css",
     "src\/local\/200-element-wallpaperedbox.css",
     "src\/local\/200-error-tray.css",
+    "src\/local\/300-element-drop-container.css",
     "src\/local\/500-misc.css",
     "src\/local\/900-bootstrap-alerts.css",
     "src\/local\/900-bootstrap-breadcrumb.css",
@@ -340,10 +341,11 @@ body > header a {
 }
 
 .CommentForm .form-control,
-.CommentForm textarea {
+.CommentForm textarea,
+.CommentForm .g-recaptcha {
 	border: 0px;
-	border-top: 1px solid transparent;
-	border-bottom: 1px solid transparent;
+	border-top: 0px solid transparent;
+	border-bottom: 0px solid transparent;
 	border-left: 4px solid var(--ColourPrimary);
 	border-right: 4px solid var(--ColourPrimary);
 }
@@ -353,6 +355,10 @@ body > header a {
 	outline: none;
 	box-shadow: none;
 	border-color: var(--ColourTwitterButton);
+}
+
+.CommentForm .g-recaptcha {
+	display: inline-block;
 }
 
 .PostListing h3 {
@@ -544,6 +550,23 @@ given an image to display to art shit up.
 
 .ErrorTray .ErrorItem:first-of-type {
 	border-top-width: 2px;
+}
+
+.DropContainer {
+	position: relative;
+	overflow: hidden;
+}
+
+.DropContainer > div {
+	position: relative;
+	margin-top: 0px;
+	transition: margin-top 400ms;
+	transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+}
+
+.DropContainer > div.Hidden {
+	position: relative;
+	margin-top: var(--local-height);
 }
 
 .DefocusUntilHover {

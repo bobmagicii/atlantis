@@ -113,37 +113,42 @@ echo (new Atlantis\Element\PagePromo)
 					<div class="col">
 						<h3 class="font-weight-bold">Comments (<span class="PostCommentCount"><?php $Printer($Post->CountComments) ?></span>)</h3>
 					</div>
+					<div class="col-auto">
+						<button class="btn btn-dark PostCommentToggle"><i class="fas fa-fw fa-plus"></i> Comment</button>
+					</div>
 				</div>
 				<hr />
 
 				<?php if($Post->IsCommentingAllowed($User)): ?>
-				<div id="CommentForm" class="CommentForm">
-					<div class="row">
-						<?php if($User): ?>
-						<div class="col-12 font-italic">
-							Posting as <a href="<?php $Printer($User->URL) ?>"><?php $Printer($User->Alias) ?></a>
+				<div class="DropContainer">
+					<div id="CommentForm" class="CommentForm Hidden" style="--local-height:-100%;">
+						<div class="row">
+							<?php if($User): ?>
+							<div class="col-12 font-italic">
+								Posting as <a href="<?php $Printer($User->URL) ?>"><?php $Printer($User->Alias) ?></a>
+							</div>
+							<?php else: ?>
+							<div class="col-12 mb-2">
+								<input type="text" name="Name" class="form-control" placeholder="Name (optional)..." />
+							</div>
+							<?php endif; ?>
+							<div class="col-12 mb-2">
+								<textarea name="Content" class="form-control" placeholder="Comment..."></textarea>
+							</div>
+							<div class="col-12 mb-2">
+								<div class="g-recaptcha mb-0 pb-0" data-theme="light" data-sitekey="<?php echo Nether\Option::Get('Google.ReCaptcha.Key') ?>"></div>
+							</div>
+							<div class="col-12 mb-0">
+								<button type="button" class="btn btn-dark CmdCommentSubmit">Post Comment</button>
+							</div>
 						</div>
-						<?php else: ?>
-						<div class="col-12 mb-2">
-							<input type="text" name="Name" class="form-control" placeholder="Name (optional)..." />
-						</div>
-						<?php endif; ?>
-						<div class="col-12 mb-2">
-							<textarea name="Content" class="form-control" placeholder="Comment..."></textarea>
-						</div>
-						<div class="col-12 mb-2">
-							<div class="g-recaptcha" data-sitekey="<?php echo Nether\Option::Get('Google.ReCaptcha.Key') ?>"></div>
-						</div>
-						<div class="col-12 mb-0">
-							<button type="button" class="btn btn-dark CmdCommentSubmit">Post Comment</button>
-						</div>
+						<hr class="mb-0 pb-3" />
 					</div>
 				</div>
 				<?php else: ?>
 				<div class="text-center font-weight-bold mb-2">Comments are disabled.</div>
 				<div class="text-center font-size-largerer">(っ˘̩╭╮˘̩)っ</div>
 				<?php endif; ?>
-				<hr />
 
 				<div id="Comments" class="Comments" data-post-id="<?php $Printer($Post->ID) ?>">
 					<div class="Template d-none">
