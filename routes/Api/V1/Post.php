@@ -18,7 +18,7 @@ extends Atlantis\Site\PublicAPI {
 
 	final public function
 	EntityGet():
-	Void {
+	void {
 
 		$this->RequireUserSession();
 
@@ -57,7 +57,7 @@ extends Atlantis\Site\PublicAPI {
 
 	final public function
 	EntityPost():
-	Void {
+	void {
 	/*//
 	@require user
 	@error 1 blog user not found
@@ -172,7 +172,7 @@ extends Atlantis\Site\PublicAPI {
 
 	final public function
 	EntityPatch():
-	Void {
+	void {
 	/*//
 	@require user
 	@error 1 post not found
@@ -305,7 +305,7 @@ extends Atlantis\Site\PublicAPI {
 
 	final public function
 	EntityDelete():
-	Void {
+	void {
 	/*//
 	@require user
 	@error 1 post not found
@@ -353,7 +353,7 @@ extends Atlantis\Site\PublicAPI {
 
 	final public function
 	EntityTagdelete():
-	Void {
+	void {
 	/*//
 	@require user
 	@error 1 post not found
@@ -391,7 +391,7 @@ extends Atlantis\Site\PublicAPI {
 
 	final public function
 	EntityTagpost():
-	Void {
+	void {
 	/*//
 	@require user
 	@error 1 post not found
@@ -462,7 +462,7 @@ extends Atlantis\Site\PublicAPI {
 	#[Atlantis\Meta\Error(1,'Post not found.')]
 	final public function
 	CommentList():
-	Void {
+	void {
 	/*//
 	@date 2021-04-10
 	//*/
@@ -509,7 +509,7 @@ extends Atlantis\Site\PublicAPI {
 	#[Atlantis\Meta\Parameter('Content','string')]
 	#[Atlantis\Meta\Error(1,'post not found')]
 	#[Atlantis\Meta\Error(2,'recaptcha not valid')]
-	#[Atlantis\Meta\Error(3,'too fast bro')]
+	#[Atlantis\Meta\Error(3,'user not allowed to comment here')]
 	final public function
 	CommentPost():
 	void {
@@ -533,6 +533,9 @@ extends Atlantis\Site\PublicAPI {
 
 		if(!$BlogPost)
 		$this->Quit(1);
+
+		if(!$BlogPost->IsCommentingAllowed($this->User))
+		$this->Quit(3);
 
 		////////
 

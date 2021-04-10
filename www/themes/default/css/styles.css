@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-10 19:52:51
+@date 2021-04-10 22:05:33
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -359,6 +359,37 @@ body > header a {
 
 .CommentForm .g-recaptcha {
 	display: inline-block;
+}
+
+.PostCommentToggle div.fa-fw {
+	position: relative;
+	display: inline-block;
+}
+
+.PostCommentToggle div.fa-fw > i.fa-fw {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+.PostCommentToggle div.fa-fw > i.fa-fw:first-of-type {
+	position: relative;
+}
+
+.PostCommentToggle div.fa-fw > i.fa-fw {
+	opacity: 1.0;
+	transform: scaleY(0.0);
+	transition: opacity 400ms, transform 400ms;
+}
+
+.PostCommentToggle.Plus div.fa-fw > i.fa-plus {
+	opacity: 1.0 !important;
+	transform: scaleY(1.0);
+}
+
+.PostCommentToggle.Minus div.fa-fw > i.fa-minus {
+	opacity: 1.0 !important;
+	transform: scaleY(1.0);
 }
 
 .PostListing h3 {

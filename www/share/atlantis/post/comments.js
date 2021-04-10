@@ -44,9 +44,13 @@ class Comments {
 	@date 2021-04-10
 	//*/
 
+		let DropContainer = (
+			jQuery('<div />')
+			.addClass('DropContainer')
+		);
+
 		this.Loading = (
 			jQuery('<div />')
-			.addClass('d-none')
 			.addClass('Loading')
 			.addClass('')
 			.append('<i class="fa fa-fw fa-spin fa-asterisk"></i> Loading...')
@@ -54,13 +58,12 @@ class Comments {
 
 		this.Listing = (
 			jQuery('<div />')
-			.addClass('d-none')
 			.addClass('Listing')
 			.addClass('HideTheLastHr')
 		);
 
 		(this.Container)
-		.append(this.Loading)
+		.append(DropContainer.clone().append(this.Loading))
 		.append(this.Listing);
 
 		return;
@@ -78,17 +81,19 @@ class Comments {
 		this.CmdSubmit
 		.on('click',()=> this.OnSubmit());
 
+		// if using the drop container system mark the height
+		// it needs to know.
+
+		if(this.Form.parent().hasClass('DropContainer'))
+		this.Form[0].style.setProperty(
+			'--local-height',
+			`-${this.Form.outerHeight()}px`
+		);
+
 		// bind some page level things.
 
 		jQuery('.PostCommentToggle')
 		.on('click',()=> this.OnCommentToggle());
-
-		if(this.Form.parent().hasClass('DropContainer'))
-		this.Form[0].style
-		.setProperty(
-			'--local-height',
-			`-${this.Form.outerHeight()}px`
-		);
 
 		return;
 	};
@@ -165,7 +170,7 @@ class Comments {
 
 			Element
 			.find('.UserName')
-			.text(Comment.Name || '<Anonymous>');
+			.text(`<${Comment.Name || 'Anonymous'}>`);
 
 			if(Comment.User) {
 				Element
@@ -235,8 +240,15 @@ class Comments {
 	@date 2020-12-11
 	//*/
 
-		this.Listing.addClass('d-none');
-		this.Loading.removeClass('d-none');
+		this.Container
+		.find('.DropContainer')
+		.each((function(){
+			this.style.setProperty('--local-height',`-${jQuery(this).height()}px`);
+			return;
+		}));
+
+		this.Listing.addClass('Hidden');
+		this.Loading.removeClass('Hidden');
 
 		return;
 	};
@@ -246,8 +258,15 @@ class Comments {
 	@date 2020-12-11
 	//*/
 
-		this.Loading.addClass('d-none');
-		this.Listing.removeClass('d-none');
+		this.Container
+		.find('.DropContainer')
+		.each((function(){
+			this.style.setProperty('--local-height',`-${jQuery(this).height()}px`);
+			return;
+		}));
+
+		this.Loading.addClass('Hidden');
+		this.Listing.removeClass('Hidden');
 
 		return;
 	};
@@ -270,7 +289,7 @@ class Comments {
 
 		this.Form
 		.find('input,textarea,button')
-		.removeProp('disabled')
+		.prop('disabled',false)
 		.removeClass('disabled');
 
 		return;
@@ -331,6 +350,9 @@ class Comments {
 		this.ClearForm();
 		this.UnlockForm();
 
+		jQuery('.PostCommentToggle:first')
+		.trigger('click');
+
 		return;
 	};
 
@@ -341,6 +363,16 @@ class Comments {
 
 		this.Form
 		.toggleClass('Hidden');
+
+		if(this.Form.hasClass('Hidden'))
+		jQuery('.PostCommentToggle')
+		.addClass('Plus')
+		.removeClass('Minus');
+
+		else
+		jQuery('.PostCommentToggle')
+		.addClass('Minus')
+		.removeClass('Plus');
 
 		return;
 	}

@@ -74,17 +74,20 @@ extends Atlantis\Prototype {
 	EnableStateFriends  = 3;
 
 	public const
-	CommentsDisabled = 0,
-	CommentsEnabled  = 1,
-	CommentsMembers  = 2,
-	CommentsFriends  = 3;
+	CommentsDisabled  = 0,
+	CommentsPublic    = 1,
+	CommentsEnabled   = 1,
+	CommentsProtected = 2,
+	CommentsMembers   = 2,
+	CommentsPrivate   = 3,
+	CommentsFriends   = 3;
 
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
 	public function
-	OnReady(Array $Raw):
-	Void {
+	OnReady(array $Raw):
+	void {
 	/*//
 	prepare some data for this object.
 	//*/
@@ -100,7 +103,7 @@ extends Atlantis\Prototype {
 	}
 
 	protected function
-	OnReady_GetBlog(Array $Raw):
+	OnReady_GetBlog(array $Raw):
 	self {
 	/*//
 	prepare a blog object depending on if it was fetched with an inclusion
@@ -120,7 +123,7 @@ extends Atlantis\Prototype {
 	}
 
 	protected function
-	OnReady_GetUser(Array $Raw):
+	OnReady_GetUser(array $Raw):
 	self {
 	/*//
 	prepare a blog object depending on if it was fetched with an inclusion
@@ -141,7 +144,7 @@ extends Atlantis\Prototype {
 	}
 
 	protected function
-	OnReady_GetDates(Array $Raw):
+	OnReady_GetDates(array $Raw):
 	self {
 	/*//
 	prepare the date objects.
@@ -200,7 +203,7 @@ extends Atlantis\Prototype {
 
 	public function
 	GetStyleClassList():
-	Array {
+	array {
 	/*//
 	@date 2020-09-04
 	//*/
@@ -224,7 +227,7 @@ extends Atlantis\Prototype {
 
 	public function
 	GetStyleClassAttr():
-	String {
+	string {
 	/*//
 	@date 2020-09-04
 	//*/
@@ -234,7 +237,7 @@ extends Atlantis\Prototype {
 
 	public function
 	GetShortDesc():
-	String {
+	string {
 
 		$Output = '';
 		$Block = NULL;
@@ -250,7 +253,7 @@ extends Atlantis\Prototype {
 	}
 
 	public function
-	BumpCountViews(Int $Inc=1):
+	BumpCountViews(int $Inc=1):
 	static {
 
 		$this->Update([
@@ -299,7 +302,7 @@ extends Atlantis\Prototype {
 
 	public function
 	IsAdult():
-	Bool {
+	bool {
 	/*//
 	@date 2020-06-18
 	//*/
@@ -309,7 +312,7 @@ extends Atlantis\Prototype {
 
 	public function
 	IsAdultForced():
-	Bool {
+	bool {
 	/*//
 	@date 2020-06-18
 	//*/
@@ -319,7 +322,7 @@ extends Atlantis\Prototype {
 
 	public function
 	IsNuked():
-	Bool {
+	bool {
 	/*//
 	@date 2020-09-04
 	//*/
@@ -329,7 +332,7 @@ extends Atlantis\Prototype {
 
 	public function
 	IsDraft():
-	Bool {
+	bool {
 	/*//
 	@date 2020-09-04
 	//*/
@@ -339,7 +342,7 @@ extends Atlantis\Prototype {
 
 	public function
 	IsPublic():
-	Bool {
+	bool {
 	/*//
 	@date 2020-09-04
 	//*/
@@ -349,7 +352,7 @@ extends Atlantis\Prototype {
 
 	public function
 	IsFriendsOnly():
-	Bool {
+	bool {
 	/*//
 	@date 2020-09-04
 	//*/
@@ -359,7 +362,7 @@ extends Atlantis\Prototype {
 
 	public function
 	IsUserOwner(?Atlantis\Prototype\User $User):
-	Bool {
+	bool {
 	/*//
 	@date 2020-07-04
 	//*/
@@ -371,24 +374,64 @@ extends Atlantis\Prototype {
 	}
 
 	public function
-	IsCommentingAllowed(Atlantis\Prototype\User $User=NULL):
-	Bool {
+	IsCommentingAllowed(?Atlantis\Prototype\User $User=NULL):
+	bool {
 	/*//
 	@date 2020-12-10
 	//*/
 
 		return match($this->OptComments) {
-			static::CommentsDisabled => FALSE,
-			static::CommentsEnabled  => TRUE,
-			static::CommentsMembers  => ($User !== NULL),
-			static::CommentsFriends  => $this->User->IsFriendsWith($User),
+			static::CommentsDisabled  => FALSE,
+			static::CommentsPublic    => TRUE,
+			static::CommentsProtected => ($User instanceof Atlantis\Prototype\User),
+			static::CommentsPrivate   => $this->User->IsFriendsWith($User),
 			default => FALSE
 		};
 	}
 
 	public function
+	IsCommentingPublic():
+	bool {
+	/*//
+	@date 2021-04-10
+	//*/
+
+		return ($this->OptComments === static::CommentsPublic);
+	}
+
+	public function
+	IsCommentingProtected():
+	bool {
+	/*//
+	@date 2021-04-10
+	//*/
+
+		return ($this->OptComments === static::CommentsProtected);
+	}
+
+	public function
+	IsCommentingPrivate():
+	bool {
+	/*//
+	@date 2021-04-10
+	//*/
+
+		return ($this->OptComments === static::CommentsPrivate);
+	}
+
+	public function
+	IsCommentingDisabled():
+	bool {
+	/*//
+	@date 2021-04-10
+	//*/
+
+		return ($this->OptComments === static::CommentsDisabled);
+	}
+
+	public function
 	UpdateUploadImageUsage():
-	Void {
+	void {
 	/*//
 	@date 2020-10-19
 	//*/
@@ -450,7 +493,7 @@ extends Atlantis\Prototype {
 
 	public function
 	RenderFromJSON():
-	String {
+	string {
 	/*//
 	@date 2020-10-09
 	//*/
@@ -470,7 +513,7 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 
 	static public function
-	GetByAlias(String $BlogAlias, String $Alias):
+	GetByAlias(string $BlogAlias, string $Alias):
 	?self {
 
 		$SQL = Nether\Database::Get()->NewVerse();
@@ -505,8 +548,8 @@ extends Atlantis\Prototype {
 	}
 
 	static public function
-	GenerateUniqueAlias(Blog $Blog, String $Title):
-	String {
+	GenerateUniqueAlias(Blog $Blog, string $Title):
+	string {
 
 		$Alias = Atlantis\Util\Filters::RouteSafeAlias($Title);
 		$AliasTest = $Alias;
@@ -536,8 +579,8 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 
 	static protected function
-	ExtendQueryJoins($SQL, String $TableAlias='Main', String $FieldPrefix=''):
-	Void {
+	ExtendQueryJoins($SQL, string $TableAlias='Main', string $FieldPrefix=''):
+	void {
 	/*//
 	@date 2018-06-08
 	//*/
@@ -552,8 +595,8 @@ extends Atlantis\Prototype {
 	}
 
 	static protected function
-	ExtendQueryFields($SQL, String $TablePrefix='', String $FieldPrefix=''):
-	Void {
+	ExtendQueryFields($SQL, string $TablePrefix='', string $FieldPrefix=''):
+	void {
 	/*//
 	@date 2018-06-08
 	//*/
@@ -567,7 +610,7 @@ extends Atlantis\Prototype {
 
 	static protected function
 	FindExtendOptions($Opt):
-	Array {
+	array {
 	/*//
 	@date 2020-05-23
 	//*/
@@ -583,7 +626,7 @@ extends Atlantis\Prototype {
 
 	static protected function
 	FindApplyFilters($Opt,$SQL):
-	Void {
+	void {
 	/*//
 	@date 2018-06-08
 	//*/

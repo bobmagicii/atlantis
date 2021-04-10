@@ -1,14 +1,15 @@
 <?php
 
 namespace Routes\Blog;
-use \Atlantis as Atlantis;
+
+use Atlantis;
 
 class Post
 extends Atlantis\Site\PublicWeb {
 
 	public function
-	Index(String $BlogAlias=NULL, String $PostAlias1=NULL, ?String $PostAlias2=NULL):
-	Void {
+	Index(string $BlogAlias=NULL, string $PostAlias1=NULL, ?string $PostAlias2=NULL):
+	void {
 	/*//
 	@date 2020-05-24
 	//*/
@@ -47,6 +48,8 @@ extends Atlantis\Site\PublicWeb {
 			$Post->IsUserOwner($this->User)
 			|| ($BlogUser && $BlogUser->HasManagePriv())
 		);
+
+		$UserCanComment = $Post->IsCommentingAllowed($this->User);
 
 		if($Post->Enabled === $Post::EnableStateDraft) {
 			if(!$UserCanEdit)
@@ -97,14 +100,15 @@ extends Atlantis\Site\PublicWeb {
 		->Set('Social.Image',$Post->Blog->GetImageIconURL('sm'))
 		->Set('Social.Authour',$Post->User->Alias)
 		->Area('blog/post',[
-			'Blog'          => $Post->Blog,
-			'Post'          => $Post,
-			'Tags'          => $Tags,
-			'BlogUser'      => $BlogUser,
-			'UserCanEdit'   => $UserCanEdit,
-			'UserCanDelete' => $UserCanDelete,
-			'RecentPosts'   => $Recent,
-			'PopularPosts'  => $Popular
+			'Blog'           => $Post->Blog,
+			'Post'           => $Post,
+			'Tags'           => $Tags,
+			'BlogUser'       => $BlogUser,
+			'UserCanEdit'    => $UserCanEdit,
+			'UserCanDelete'  => $UserCanDelete,
+			'UserCanComment' => $UserCanComment,
+			'RecentPosts'    => $Recent,
+			'PopularPosts'   => $Popular
 		]);
 
 		return;
@@ -112,7 +116,7 @@ extends Atlantis\Site\PublicWeb {
 
 	public function
 	ShouldAdultSafespace():
-	Bool {
+	bool {
 	/*//
 	@date 2020-06-18
 	@override Atlantis\Site\PublicWeb

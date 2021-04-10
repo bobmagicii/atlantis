@@ -6,8 +6,9 @@
  * @var Atlantis\Prototype\BlogPost $Post
  * @var Atlantis\Prototype\BlogUser $BlogUser
  * @var Atlantis\Struct\SearchResult $Tags
- * @var Bool $UserCanEdit
- * @var Bool $UserCanDelete
+ * @var bool $UserCanEdit
+ * @var bool $UserCanDelete
+ * @var bool $UserCanComment
 */
 
 echo (new Atlantis\Element\PagePromo)
@@ -106,20 +107,45 @@ echo (new Atlantis\Element\PagePromo)
 			<?php endif; ?>
 		</div>
 
+		<!-- POST COMMENTS -->
 		<div class="col-12 mb-4">
 			<div class="boxtron-secondary p-4 m-0">
 
 				<div class="row align-items-center">
 					<div class="col">
-						<h3 class="font-weight-bold">Comments (<span class="PostCommentCount"><?php $Printer($Post->CountComments) ?></span>)</h3>
+						<h3 class="font-weight-bold">
+							Comments
+							<?php if(!$Post->IsCommentingDisabled()): ?>
+							(<span class="PostCommentCount"><?php $Printer($Post->CountComments) ?></span>)
+							<?php endif; ?>
+						</h3>
 					</div>
 					<div class="col-auto">
-						<button class="btn btn-dark PostCommentToggle"><i class="fas fa-fw fa-plus"></i> Comment</button>
+						<?php if($UserCanComment): ?>
+						<button class="btn btn-dark PostCommentToggle Plus">
+							<div class="fas fa-fw">
+								<i class="fas fa-fw fa-derp"></i>
+								<i class="fas fa-fw fa-plus"></i>
+								<i class="fas fa-fw fa-minus"></i>
+							</div>
+							Comment
+						</button>
+						<?php else: ?>
+							<div class="background-primary text-white opacity-50 p-1 pl-3 pr-3 rounded">
+								<?php $Printer(match($Post->OptComments){
+									$Post::CommentsDisabled  => 'Disabled',
+									$Post::CommentsPublic    => 'Open',
+									$Post::CommentsProtected => 'Log In To Comment',
+									$Post::CommentsPrivate   => 'Friends Only'
+								}) ?>
+							</div>
+						<?php endif; ?>
 					</div>
 				</div>
-				<hr />
 
-				<?php if($Post->IsCommentingAllowed($User)): ?>
+				<?php if(!$Post->IsCommentingDisabled()): ?>
+				<hr />
+				<?php if($UserCanComment): ?>
 				<div class="DropContainer">
 					<div id="CommentForm" class="CommentForm Hidden" style="--local-height:-100%;">
 						<div class="row">
@@ -145,9 +171,6 @@ echo (new Atlantis\Element\PagePromo)
 						<hr class="mb-0 pb-3" />
 					</div>
 				</div>
-				<?php else: ?>
-				<div class="text-center font-weight-bold mb-2">Comments are disabled.</div>
-				<div class="text-center font-size-largerer">(っ˘̩╭╮˘̩)っ</div>
 				<?php endif; ?>
 
 				<div id="Comments" class="Comments" data-post-id="<?php $Printer($Post->ID) ?>">
@@ -168,8 +191,16 @@ echo (new Atlantis\Element\PagePromo)
 					</div>
 				</div>
 
-				<div class="">
-				</div>
+				<script type="module">
+				import AtlantisPostComments from '/share/atlantis/post/comments.js';
+				jQuery(document)
+				.ready(function(){
+					new AtlantisPostComments('#Comments','#CommentForm');
+					return;
+				});
+				</script>
+				<?php endif; ?>
+
 			</div>
 		</div>
 
@@ -197,14 +228,3 @@ echo (new Atlantis\Element\PagePromo)
 		</div>
 	</div>
 </div>
-
-<script type="module">
-import AtlantisPostComments from '/share/atlantis/post/comments.js';
-
-jQuery(document)
-.ready(function(){
-	new AtlantisPostComments('#Comments','#CommentForm');
-	return;
-});
-</script>
-
