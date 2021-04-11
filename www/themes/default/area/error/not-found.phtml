@@ -5,10 +5,12 @@ http_response_code(404);
 echo (new Atlantis\Element\PagePromo)
 ->AddClasses('mb-')
 ->SetTitle('Not Found')
-->SetSubtitle('Maybe try another castle. <i class="fas fa-fw fa-game-console-handheld"></i>');
+->SetSubtitle(Atlantis\Util\Emote::Random('angry'));
 
 ?>
 
-<div class="container mb-4">
-	<p>For whatever reason the page you expected to be here was not.</p>
+<div class="container pb-4">
+	<div class="font-size-larger font-weight-bold">
+		the page no more thusly so
+	</div>
 </div>

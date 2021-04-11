@@ -106,7 +106,7 @@ echo (new Atlantis\Element\PagePromo)
 						<?php if($Tags->Count): ?>
 						<?php foreach($Tags->Payload as $Tag): ?>
 							<div class="col-auto mb-1">
-								<a href="<?php $Printer($Blog->GetTagURL($Tag)) ?>" class="btn btn-sm btn-secondary pt-0 pb-0"><?php $Printer($Tag->Title) ?></a>
+								<a href="<?php $Printer($Blog->GetTagURL($Tag)) ?>" class="btn btn-sm btn-outline-dark pt-0 pb-0"><?php $Printer($Tag->Title) ?></a>
 							</div>
 						<?php endforeach; ?>
 						<?php else: ?>

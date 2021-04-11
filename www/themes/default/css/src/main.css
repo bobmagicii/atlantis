@@ -1,8 +1,8 @@
 :root {
 
 	--ColourPrimary: #222222;
-	--ColourSecondary: #ddd;
-	--ColourSecondary: #e9e9e9;
+	--ColourSecondary: #dddddd;
+	--ColourTertiary: #e9e9e9;
 	--ColourQuaternary: #eeeeee;
 
 	--ColourBackgroundPrimary: #fafafa;
@@ -50,7 +50,7 @@
 
 html,
 body {
-	background: var(--ColourBackgroundPrimary);
+	background: var(--ColourSecondary);
 	font-weight: 300;
 	margin: 0px;
 	padding: 0px;
@@ -159,7 +159,7 @@ body > section {
 /* the page footer which contains notices and stats. */
 
 body > footer {
-	background: #ddd;
+	background: var(--ColourSecondary);
 	color: #999;
 	padding: 32px 0px;
 }
