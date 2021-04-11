@@ -75,9 +75,12 @@ $Posts = $Element->GetItemStore();
 	</div>
 	<hr class="mt-4 mb-4" />
 	<?php endforeach; ?>
+
 	<?php if(!$Posts->Count()): ?>
-	<div class="p-4 text-center font-italic">
-		No posts here yet.
+	<div class="p-4 text-center">
+		<div class="mb-4">This blog has no posts yet.</div>
+		<div class="font-weight-bold font-size-larger"><?php $Printer(Atlantis\Util\Emote::Random('angry')) ?></div>
 	</div>
+	<hr class="mt-4 mb-4" />
 	<?php endif; ?>
 </div>
