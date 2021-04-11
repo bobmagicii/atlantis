@@ -67,8 +67,8 @@ echo (new Atlantis\Element\PagePromo)
 		<div class="col-12 col-lg-4 mb-4">
 
 			<div class="row">
+				<?php if($BlogUser):?>
 				<div class="col-12 col-md-6 col-lg-12 mb-6">
-					<?php if($BlogUser):?>
 					<div class="">
 						<?php if($BlogUser->HasWritePriv()): ?>
 						<a class="btn btn-dark btn-block text-left mb-2" href="<?php $Printer($Endpoint('Atlantis.Dashboard.Blog.Post.New',['BlogID'=>$Blog->ID])) ?>"><i class="fas fa-fw fa-pen mr-1"></i> Write</a>
@@ -77,11 +77,11 @@ echo (new Atlantis\Element\PagePromo)
 						<a class="btn btn-dark btn-block text-left mb-2" href="<?php $Printer($Endpoint('Atlantis.Dashboard.Blog.Settings',['BlogID'=>$Blog->ID])) ?>"><i class="fas fa-fw fa-wrench mr-1"></i> Settings</a>
 						<?php endif; ?>
 					</div>
-					<?php endif; ?>
 				</div>
+				<?php endif; ?>
+				<?php if($Blog->Details): ?>
 				<div class="col-12 col-md-6 col-lg-12 mb-6">
 					<!-- ABOUT -->
-					<?php if($Blog->Details): ?>
 					<div class="quotron-primary pl-2">
 						<h2 class="font-size-normal">
 							About
@@ -93,8 +93,8 @@ echo (new Atlantis\Element\PagePromo)
 							</div>
 						</div>
 					</div>
-					<?php endif; ?>
 				</div>
+				<?php endif; ?>
 				<div class="col-12 col-md-6 col-lg-12 mb-6">
 					<!-- TAGS -->
 					<div class="quotron-primary pl-2">
@@ -140,6 +140,7 @@ echo (new Atlantis\Element\PagePromo)
 					</div>
 				</div>
 
+				<?php if($PopularPosts->Count): ?>
 				<div class="col-12 col-md-6 col-lg-12 mb-6">
 					<!-- POPULAR POSTS -->
 					<div class="quotron-primary pl-2">
@@ -149,8 +150,9 @@ echo (new Atlantis\Element\PagePromo)
 						->SetItemStore($PopularPosts->Payload);
 						?>
 					</div>
-
 				</div>
+				<?php endif; ?>
+
 			</div>
 
 		</div>
