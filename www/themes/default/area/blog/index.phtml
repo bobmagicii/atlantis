@@ -63,13 +63,12 @@ echo (new Atlantis\Element\PagePromo)
 			?>
 
 		</div>
-		<div class="col-12 col-lg-4 mb-4BlogSidebar">
+		<div class="col-12 col-lg-4 mb-4">
 
 			<div class="row">
-				<div class="col-12 col-md-6 col-lg-12 mb-4">
-
+				<div class="col-12 col-md-6 col-lg-12 mb-6">
 					<?php if($BlogUser):?>
-					<div class="mb-4">
+					<div class="">
 						<?php if($BlogUser->HasWritePriv()): ?>
 						<a class="btn btn-dark btn-block text-left mb-2" href="<?php $Printer($Endpoint('Atlantis.Dashboard.Blog.Post.New',['BlogID'=>$Blog->ID])) ?>"><i class="fas fa-fw fa-pen mr-1"></i> Write</a>
 						<?php endif; ?>
@@ -78,10 +77,11 @@ echo (new Atlantis\Element\PagePromo)
 						<?php endif; ?>
 					</div>
 					<?php endif; ?>
-
+				</div>
+				<div class="col-12 col-md-6 col-lg-12 mb-6">
 					<!-- ABOUT -->
 					<?php if($Blog->Details): ?>
-					<div class="jumbotron jumbotron-secondary p-4 mb-4">
+					<div class="quotron-primary pl-2">
 						<h2 class="font-size-normal">
 							About
 						</h2>
@@ -93,9 +93,10 @@ echo (new Atlantis\Element\PagePromo)
 						</div>
 					</div>
 					<?php endif; ?>
-
+				</div>
+				<div class="col-12 col-md-6 col-lg-12 mb-6">
 					<!-- TAGS -->
-					<div class="jumbotron jumbotron-secondary p-4 mb-4">
+					<div class="quotron-primary pl-2">
 						<h2 class="font-size-normal">
 							Tags
 						</h2>
@@ -112,9 +113,10 @@ echo (new Atlantis\Element\PagePromo)
 						<?php endif; ?>
 						</div>
 					</div>
-
+				</div>
+				<div class="col-12 col-md-6 col-lg-12 mb-6">
 					<!-- USERS -->
-					<div class="jumbotron jumbotron-secondary p-4 m-0 HideTheLastHr">
+					<div class="quotron-primary pl-2 HideTheLastHr">
 						<h2 class="font-size-normal">
 							Bloggers
 						</h2>
@@ -135,19 +137,17 @@ echo (new Atlantis\Element\PagePromo)
 						<hr />
 						<?php endforeach; ?>
 					</div>
-
 				</div>
-				<div class="col-12 col-md-6 col-lg-12 mb-4">
-
+				<div class="col-12 col-md-6 col-lg-12 mb-6">
 					<!-- POPULAR POSTS -->
-					<div class="jumbotron jumbotron-secondary p-4 m-0">
-					<?php
-					echo (new Atlantis\Element\PostListingSidebar)
-					->SetTitle('Popular Posts')
-					->SetItemStore($PopularPosts->Payload);
-					?>
-
+					<div class="quotron-primary pl-2">
+						<?php
+						echo (new Atlantis\Element\PostListingSidebar)
+						->SetTitle('Popular Posts')
+						->SetItemStore($PopularPosts->Payload);
+						?>
 					</div>
+
 				</div>
 			</div>
 
