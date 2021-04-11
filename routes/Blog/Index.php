@@ -74,6 +74,25 @@ extends Atlantis\Site\PublicWeb {
 
 		////////
 
+		if(!$Blog->IsUserOwner($this->User)) {
+			$Hit = Atlantis\Prototype\LogBlogPostTraffic::GetByHithashSince(
+				$this->GetHitHash(),
+				strtotime('-20 minutes')
+			);
+
+			//if(!$Hit)
+			//$Blog->BumpCountViews();
+
+			Atlantis\Prototype\LogBlogPostTraffic::Upsert([
+				'BlogID' => $Blog->ID,
+				'PostID' => NULL,
+				'UserID' => ($this->User)?($this->User->ID):NULL,
+				'HitHash'=> $this->GetHitHash()
+			]);
+		}
+
+		////////
+
 		$this
 		->Set('Page.Title',$Blog->Title)
 		->Set('Page.Desc',$Blog->Tagline)
