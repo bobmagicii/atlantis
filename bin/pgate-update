@@ -16,6 +16,7 @@ require(sprintf(
 
 		$this->Run(['git']);
 		$this->Run(['conf']);
+		$this->Run(['local']);
 		$this->Run(['composer']);
 		$this->Run(['phinx']);
 
@@ -39,6 +40,17 @@ require(sprintf(
 	int {
 
 		exec('cp /opt/web-dev/conf/env/prod/* conf/env/prod');
+		return 0;
+	}
+
+	#[Nether\Console\Meta\Subcommand]
+	#[Nether\Console\Meta\Info('pull the latest local app things.')]
+	public function
+	HandleLocal():
+	int {
+
+		exec('cp -r /opt/web-dev/www/themes/local www/themes');
+		exec('cp -r /opt/web-dev/data/pages data');
 		return 0;
 	}
 
