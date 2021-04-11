@@ -7,17 +7,14 @@ use
 
 class PopularPost {
 
-	public
-	Atlantis\Prototype\BlogPost $Post;
-
-	public
-	Int $Views = 0;
+	public Atlantis\Prototype\BlogPost $Post;
+	public int $Views = 0;
 
 	public function
 	__Construct(Atlantis\Prototype\BlogPost $Post, Int $Views) {
 
-		$this->Views = $Views;
 		$this->Post = $Post;
+		$this->Views = $Views;
 
 		return;
 	}

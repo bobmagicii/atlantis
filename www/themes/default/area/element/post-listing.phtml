@@ -58,7 +58,7 @@ $Posts = $Element->GetItemStore();
 						</h3>
 					</div>
 					<div class="col-12 order-1 mt-0">
-						<div><a class="text-decoration-none" href="<?php echo $Post->URL ?>"><?php echo $Post->DateCreated->Format('F jS g:ia') ?></a></div>
+						<div><a class="text-decoration-none" href="<?php echo $Post->URL ?>"><?php echo $Post->DateCreated->Fancy() ?></a></div>
 					</div>
 					<?php if($Element->GetShowSourceBlog()): ?>
 					<div class="col-12 order-3 mt-2">

@@ -5,9 +5,6 @@
  * @var Atlantis\Struct\SearchResult $PostsRecent
  * @var Atlantis\Struct\SearchResult $PostsPopular
  * @var Atlantis\Struct\SearchResult $UsersRecent
- * @var Atlantis\Prototype\Blog $Blog
- * @var Atlantis\Prototype\BlogPost $Post
- * @var Atlantis\Struct\PopularPost $PostPop
  * @var Atlantis\Prototype\User $User
  */
 
@@ -20,87 +17,53 @@ echo (new Atlantis\Element\PagePromo)
 <div class="container">
 
 	<div class="row">
-		<div class="col-12 col-md-6">
-			<div class="jumbotron p-4 mb-4">
-				<div class="row align-items-center font-size-largerer font-weight-bold mb-4">
-					<div class="col">Posts</div>
-					<div class="col-auto"><div><?php echo $PostsRecent->Total ?></div></div>
+		<div class="col">
+			<div class="row">
+				<div class="col-12 mb-6">
+					<h2>Popular Posts (30D)</h2>
+					<hr />
+					<?php foreach($PostsPopular->Payload as $Post): ?>
+					<div>
+						<div class="font-size-smaller text-muted">
+							From <a href="<?php $Printer($Post->Post->Blog->URL) ?>" target="_blank"><?php $Printer($Post->Post->Blog->Title) ?></a>
+							On <b><?php $Printer($Post->Post->DateCreated->Fancy()) ?></b>
+						</div>
+						<div class="font-size-large font-weight-bold"><a href="<?php $Printer($Post->Post->URL) ?>" target="_blank"><?php $Printer($Post->Post->Title) ?></a></div>
+						<div>
+							<?php $Printer($Post->Views) ?> Views (<?php $Printer($Post->Post->CountViews) ?> Total)
+						</div>
+					</div>
+					<hr />
+					<?php endforeach; ?>
 				</div>
-				<div class="mb-4">
-					<h2 class="font-size-normal">Newest Posts</h2>
+				<div class="col-12 mb-6">
+					<h2>Newest Posts</h2>
+					<hr />
 					<?php foreach($PostsRecent->Payload as $Post): ?>
-					<div class="row mb-2">
-						<div class="col-auto">
-							<div><a href="<?php echo $Post->URL ?>"><?php $Printer($Post->Title) ?></a></div>
-							<div><a href="<?php echo $Post->Blog->URL ?>" class="text-muted font-size-small"><?php $Printer($Post->Blog->Title) ?></a></div>
+					<div>
+						<div class="font-size-smaller text-muted">
+							From <a href="<?php $Printer($Post->Blog->URL) ?>" target="_blank"><?php $Printer($Post->Blog->Title) ?></a>
+							On <b><?php $Printer($Post->DateCreated->Fancy()) ?></b>
 						</div>
-						<div class="col"></div>
-						<div class="col-auto text-truncate">
-							<div><?php $Printer($Post->DateCreated->Format('Y-m-d')) ?></div>
-							<div class="text-right"><span class="text-muted font-size-small"><?php $Printer($Post->DateCreated->Format('H:i:s')) ?></span></div>
-						</div>
+						<div class="font-size-large font-weight-bold"><a href="<?php $Printer($Post->URL) ?>" target="_blank"><?php $Printer($Post->Title) ?></a></div>
 					</div>
-					<?php endforeach; ?>
-				</div>
-				<div class="mb-4">
-					<h2 class="font-size-normal">Popular Posts (30 Days)</h2>
-					<?php foreach($PostsPopular->Payload as $PostPop): ?>
-					<div class="row mb-2">
-						<div class="col-auto">
-							<div><a href="<?php echo $PostPop->Post->URL ?>"><?php $Printer($PostPop->Post->Title) ?></a></div>
-							<div><a href="<?php echo $PostPop->Post->Blog->URL ?>" class="text-muted font-size-small"><?php $Printer($PostPop->Post->Blog->Title) ?></a></div>
-						</div>
-						<div class="col"></div>
-						<div class="col-auto text-truncate">
-							<?php $Printer($PostPop->Views) ?>
-						</div>
-					</div>
+					<hr />
 					<?php endforeach; ?>
 				</div>
 			</div>
 		</div>
-		<div class="col-12 col-md-6">
-			<div class="jumbotron p-4 mb-4">
-				<div class="row align-items-center font-size-largerer font-weight-bold mb-4">
-					<div class="col">Blogs</div>
-					<div class="col-auto"><div><?php echo $BlogsRecent->Total ?></div></div>
-				</div>
-				<h2 class="font-size-normal">Newest Blogs</h2>
-				<?php foreach($BlogsRecent->Payload as $Blog): ?>
-				<div class="row mb-2">
-					<div class="col-auto">
-						<div><a href="<?php echo $Blog->URL ?>"><?php $Printer($Blog->Title) ?></a></div>
-						<div><a href="<?php echo $Blog->User->URL ?>" class="text-muted font-size-small"><?php $Printer($Blog->User->Alias) ?></a></div>
-					</div>
-					<div class="col"></div>
-					<div class="col-auto text-truncate">
-						<div><?php $Printer($User->DateCreated->Format('Y-m-d')) ?></div>
-						<div class="text-right"><span class="text-muted font-size-small"><?php $Printer($Blog->DateCreated->Format('H:i:s')) ?></span></div>
-					</div>
-				</div>
-				<?php endforeach; ?>
+		<div class="col-4">
+			<div class="quotron-primary pl-2 mb-4">
+				<div class="font-weight-bold text-uppercase">Posts</div>
+				<hr class="mt-0 mb-2" />
+				<a href="#" class="btn btn-dark btn-block text-left mb-2">Popular</a>
+				<a href="#" class="btn btn-dark btn-block text-left mb-2">Newest</a>
 			</div>
-		<div class="jumbotron p-4 mb-4">
-				<div class="row align-items-center font-size-largerer font-weight-bold mb-4">
-					<div class="col">Users</div>
-					<div class="col-auto"><div><?php echo $UsersRecent->Total ?></div></div>
-				</div>
-				<h2 class="font-size-normal">Newest Users</h2>
-				<?php foreach($UsersRecent->Payload as $User): ?>
-				<div class="row mb-2">
-					<div class="col-auto">
-						<div><a href="<?php echo $User->URL ?>"><?php $Printer($User->Alias) ?></a></div>
-						<div><span href="<?php echo $User->URL ?>" class="text-muted font-size-small"><?php $Printer($User->Email) ?></span></div>
-					</div>
-					<div class="col"></div>
-					<div class="col-auto text-truncate">
-						<div><?php $Printer($User->DateCreated->Format('Y-m-d')) ?></div>
-						<div class="text-right"><span class="text-muted font-size-small"><?php $Printer($User->DateCreated->Format('H:i:s')) ?></span></div>
-					</div>
-				</div>
-				<?php endforeach; ?>
+			<div class="quotron-primary pl-2 mb-4">
+				<div class="font-weight-bold text-uppercase">Users</div>
+				<hr class="mt-0 mb-2" />
+				<a href="#" class="btn btn-dark btn-block text-left mb-2">Newest</a>
+				<a href="#" class="btn btn-dark btn-block text-left mb-2">Active</a>
 			</div>
 		</div>
-	</div>
-
 </div>

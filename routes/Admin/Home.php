@@ -30,7 +30,7 @@ extends Atlantis\Site\PrivateWeb {
 
 		return Atlantis\Prototype\Blog::Find([
 			'Adult' => TRUE,
-			'Limit' => 10,
+			'Limit' => 4,
 			'Page'  => 1,
 			'Sort'  => 'newest'
 		]);
@@ -42,7 +42,7 @@ extends Atlantis\Site\PrivateWeb {
 
 		return Atlantis\Prototype\BlogPost::Find([
 			'Adult' => TRUE,
-			'Limit' => 10,
+			'Limit' => 4,
 			'Page'  => 1,
 			'Sort'  => 'newest'
 		]);
@@ -53,7 +53,7 @@ extends Atlantis\Site\PrivateWeb {
 	Atlantis\Struct\SearchResult {
 
 		return Atlantis\Prototype\User::Find([
-			'Limit' => 10,
+			'Limit' => 4,
 			'Page'  => 1,
 			'Sort'  => 'newest'
 		]);
@@ -65,7 +65,7 @@ extends Atlantis\Site\PrivateWeb {
 
 		$Output = Atlantis\Prototype\LogBlogPostTraffic::FindPopularPosts([
 			'Adult'     => TRUE,
-			'Limit'     => 10,
+			'Limit'     => 4,
 			'Page'      => 1,
 			'Timeframe' => strtotime('-30 days')
 		]);

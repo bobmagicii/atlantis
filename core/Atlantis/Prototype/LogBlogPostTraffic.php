@@ -18,13 +18,15 @@ implements Atlantis\Packages\Upsertable {
 
 	protected static
 	$PropertyMap = [
-		'ID'         => 'ID:int',
-		'Time'       => 'Time:int',
-		'BlogID'     => 'BlogID:int',
-		'PostID'     => 'PostID:int',
-		'UserID'     => 'UserID:int',
-		'RemoteAddr' => 'RemoteAddr',
-		'HitHash'    => 'HitHash'
+		'ID'           => 'ID:int',
+		'Time'         => 'Time:int',
+		'BlogID'       => 'BlogID:int',
+		'PostID'       => 'PostID:int',
+		'UserID'       => 'UserID:int',
+		'RemoteAddr'   => 'RemoteAddr',
+		'RemoteClient' => 'RemoteClient',
+		'HitHash'      => 'HitHash',
+		'SourceURL'    => 'SourceURL'
 	];
 
 	////////////////////////////////////////////////////////////////
@@ -32,7 +34,7 @@ implements Atlantis\Packages\Upsertable {
 
 	protected function
 	OnReady():
-	Void {
+	void {
 
 		if(!$this->UserID)
 		$this->UserID = NULL;
@@ -233,7 +235,7 @@ implements Atlantis\Packages\Upsertable {
 	}
 
 	static public function
-	GetByHithashSince(String $HitHash, Int $Since=0):
+	GetByHithashSince(string $HitHash, int $Since=0):
 	?self {
 
 		$DB = Nether\Database::Get();
@@ -278,8 +280,14 @@ implements Atlantis\Packages\Upsertable {
 			'PostID'     => NULL,
 			'UserID'     => NULL,
 			'HitHash'    => NULL,
+			'SourceURL'  => (array_key_exists('HTTP_REFERER',$_SERVER))?
+				($_SERVER['HTTP_REFERER']):
+				(NULL),
 			'RemoteAddr' => (array_key_exists('REMOTE_ADDR',$_SERVER))?
 				($_SERVER['REMOTE_ADDR']):
+				(NULL),
+			'RemoteClient' => (array_key_exists('HTTP_USER_AGENT',$_SERVER))?
+				($_SERVER['HTTP_USER_AGENT']):
 				(NULL)
 		]);
 
