@@ -16,23 +16,21 @@ echo (new Atlantis\Element\PagePromo)
 
 <div class="container">
 	<div class="row">
-		<div class="col-12 col-lg-8">
+		<div class="col-12 col-lg-8 mb-6">
 
-			<div class="jumbotron jumbotron-secondary p-4 mb-4">
 			<?php
 			if($Posts->Total)
 			echo (new Atlantis\Element\PostListing)
 			->SetTitle('Recent Posts')
 			->SetItemStore($Posts->Payload);
 			?>
-			</div>
 
 		</div>
-		<div class="col-12 col-lg-4">
+		<div class="col-12 col-lg-4 mb-4">
 
 			<div class="row">
-				<div class="col-12 col-md-6 col-lg-12 mb-4">
-					<div class="jumbotron jumbotron-secondary p-4 mb-4">
+				<div class="col-12 col-md-6 col-lg-12">
+					<div class="quotron-primary pl-2 mb-6">
 						<h2 class="font-size-normal">Recent Users</h2>
 						<hr class="mt-1 mb-2" />
 						<div class="row tight">
@@ -43,7 +41,7 @@ echo (new Atlantis\Element\PagePromo)
 						<?php endforeach ?>
 						</div>
 					</div>
-					<div class="jumbotron jumbotron-secondary p-4 m-0">
+					<div class="quotron-primary pl-2 mb-6">
 					<?php
 					echo (new Atlantis\Element\PostListingSidebar)
 					->SetTitle('Popular Posts')
@@ -51,8 +49,8 @@ echo (new Atlantis\Element\PagePromo)
 					?>
 					</div>
 				</div>
-				<div class="col-12 col-md-6 col-lg-12 mb-4">
-					<div class="jumbotron jumbotron-secondary p-4 mb-0 HideTheLastHr">
+				<div class="col-12 col-md-6 col-lg-12">
+					<div class="quotron-primary pl-2 mb-6">
 						<h2 class="font-size-normal">Popular Blogs</h2>
 						<hr class="mt-1 mb-2" />
 						<?php foreach($PopularBlogs->Payload as $Pop): ?>

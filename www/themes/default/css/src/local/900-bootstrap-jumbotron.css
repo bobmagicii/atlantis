@@ -21,6 +21,12 @@
 	border-top-color: #eee;
 }
 
+.jumbotron.jumbotron-fadedown {
+	background: #222;
+	background: linear-gradient(180deg, #222222ff 0%, #22222200 95%);
+}
+
+
 /* provide a more muted jumbotron for the theme */
 
 .jumbotron-secondary {
@@ -113,4 +119,20 @@
 	background: transparent;
 	border: 4px solid var(--ColourQuaternary);
 	border-radius: 5px;
+}
+
+.quotron-primary {
+	border-left: 4px solid var(--ColourPrimary);
+}
+
+.quotron-secondary {
+	border-left: 4px solid var(--ColourSecondary);
+}
+
+.quotron-tertiary {
+	border-left: 4px solid var(--ColourTertiary);
+}
+
+.quotron-quatarnary {
+	border-left: 4px solid var(--ColourQuaternary;
 }
