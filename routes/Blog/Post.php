@@ -97,6 +97,7 @@ extends Atlantis\Site\PublicWeb {
 		->Set('Page.Desc',$Post->GetShortDesc())
 		->Set('Page.Keywords',$Keywords)
 		->Set('Page.Authour',$Post->User->Alias)
+		->Set('Page.FeedURL',"{$Post->Blog->URL}?format=rss")
 		->Set('Social.Image',$Post->Blog->GetImageIconURL('sm'))
 		->Set('Social.Authour',$Post->User->Alias)
 		->Area('blog/post',[

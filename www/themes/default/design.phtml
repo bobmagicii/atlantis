@@ -46,6 +46,9 @@ $GetStylesheetURL = function(String $URI):String {
 	<meta property="og:title" content="<?php $Surface->Show('Page.Title') ?>">
 	<meta property="og:image" content="<?php $Surface->Show('Social.Image') ?>">
 
+	<?php if($Surface->Get('Page.FeedURL')): ?><link rel="alternate" type="application/rss+xml" href="<?php $Surface->Show('Page.FeedURL') ?>" />
+	<?php endif; ?>
+
 
 </head>
 <body class="font-family-regular">

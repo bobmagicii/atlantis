@@ -79,6 +79,7 @@ extends Atlantis\Site\PublicWeb {
 		->Set('Page.Desc',$Blog->Tagline)
 		->Set('Page.Keywords',$Keywords)
 		->Set('Page.Authour',$Blog->User->Alias)
+		->Set('Page.FeedURL',"{$Blog->URL}?format=rss")
 		->Area($Area,[
 			'Blog'          => $Blog,
 			'BlogUser'      => $BlogUser,
