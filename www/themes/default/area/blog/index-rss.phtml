@@ -28,6 +28,9 @@ header('content-type: application/rss+xml');
 			<title><?php $Printer($Post->Title) ?></title>
 			<link>https:<?php $Printer($Post->URL) ?></link>
 			<description></description>
+<?php if($Post->Tags) foreach($Post->Tags as $Tag): ?>
+			<category><?php $Printer($Tag->Title) ?></category>
+<?php endforeach; ?>
 		</item>
 <?php endforeach; ?>
 
