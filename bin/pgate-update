@@ -8,10 +8,14 @@ require(sprintf(
 
 (new class extends Nether\Console\Client {
 
+	protected
+	$DefaultHandlerName = 'all';
+
 	#[Nether\Console\Meta\Subcommand]
 	#[Nether\Console\Meta\Info('full update all the things')]
 	#[Nether\Console\Meta\SubcommandOption('-e',FALSE,'errors will not stop the full pipeline')]
 	#[Nether\Console\Meta\SubcommandOption('-o',FALSE,'show command output')]
+	#[Nether\Console\Meta\SubcommandOption('-h',FALSE,'show help')]
 	public function
 	HandleAll():
 	int {
@@ -30,6 +34,14 @@ require(sprintf(
 
 		$IgnoreErrors = $this->GetOption('e');
 		$ShowOutput = $this->GetOption('o');
+		$ShowHelp = $this->GetOption('h');
+
+		////////
+
+		if($ShowHelp)
+		return $this->Run(['help']);
+
+		////////
 
 		foreach($Commands as $Cmd) {
 			$Args = [];
