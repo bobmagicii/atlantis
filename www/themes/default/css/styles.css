@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-10 22:05:33
+@date 2021-04-11 00:44:35
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -328,6 +328,16 @@ body > header a {
 
 }
 
+.Comments .Comment .CmdAdmin i {
+	font-family: "Font Awesome 5 Pro";
+	font-weight: 400;
+}
+
+.Comments .Comment:hover .CmdAdmin i {
+	font-family: "Font Awesome 5 Pro";
+	font-weight: 900 !important;
+}
+
 .Comments .Heading {
 	margin-bottom: 0.20em;
 }
@@ -377,18 +387,28 @@ body > header a {
 }
 
 .PostCommentToggle div.fa-fw > i.fa-fw {
-	opacity: 1.0;
 	transform: scaleY(0.0);
-	transition: opacity 400ms, transform 400ms;
+	transition: transform 100ms;
 }
 
 .PostCommentToggle.Plus div.fa-fw > i.fa-plus {
-	opacity: 1.0 !important;
 	transform: scaleY(1.0);
 }
 
 .PostCommentToggle.Minus div.fa-fw > i.fa-minus {
-	opacity: 1.0 !important;
+	transform: scaleY(1.0);
+}
+
+.PostCommentToggle.Thinking div.fa-fw > i.fa-spin {
+	transform: scaleY(1.0);
+}
+
+.PostCommentToggle.Thinking div.fa-fw > i:not(.fa-derp-think) {
+	transform: scaleY(0.0) !important;
+}
+
+.PostCommentToggle.Thinking div.fa-fw > i.fa-derp-think {
+	animation: fa-spin 3s linear infinite;
 	transform: scaleY(1.0);
 }
 

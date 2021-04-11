@@ -63,6 +63,7 @@ implements JsonSerializable {
 
 		($this)
 		->OnReady_GetUser($Raw)
+		->OnReady_GetBlogPost($Raw)
 		->OnReady_GetDates($Raw);
 
 		$this->RemoteAddr = inet_ntop($this->RemoteAddr);
@@ -86,6 +87,25 @@ implements JsonSerializable {
 				$Raw, 'CU_'
 			),
 			TRUE
+		);
+
+		return $this;
+	}
+
+	protected function
+	OnReady_GetBlogPost(array $Raw):
+	self {
+	/*//
+	@date2021-04-10
+	//*/
+
+		$this->Post = NULL;
+
+		if(array_key_exists('CP_ID',$Raw) && $Raw['CP_ID'])
+		$this->Post = new Atlantis\Prototype\BlogPost(
+			Atlantis\Util::StripPrefixedQueryFields(
+				$Raw, 'CP_'
+			)
 		);
 
 		return $this;

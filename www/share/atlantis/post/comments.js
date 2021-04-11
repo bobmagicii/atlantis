@@ -49,13 +49,6 @@ class Comments {
 			.addClass('DropContainer')
 		);
 
-		this.Loading = (
-			jQuery('<div />')
-			.addClass('Loading')
-			.addClass('')
-			.append('<i class="fa fa-fw fa-spin fa-asterisk"></i> Loading...')
-		);
-
 		this.Listing = (
 			jQuery('<div />')
 			.addClass('Listing')
@@ -63,7 +56,6 @@ class Comments {
 		);
 
 		(this.Container)
-		.append(DropContainer.clone().append(this.Loading))
 		.append(this.Listing);
 
 		return;
@@ -172,6 +164,11 @@ class Comments {
 			.find('.UserName')
 			.text(`<${Comment.Name || 'Anonymous'}>`);
 
+			Element
+			.find('.CmdCommentDelete')
+			.attr('data-comment-id',Comment.ID)
+			.on('click',((Ev)=> this.OnCommentDelete(jQuery(Ev.currentTarget))));
+
 			if(Comment.User) {
 				Element
 				.find('.UserIconBG')
@@ -240,15 +237,10 @@ class Comments {
 	@date 2020-12-11
 	//*/
 
-		this.Container
-		.find('.DropContainer')
-		.each((function(){
-			this.style.setProperty('--local-height',`-${jQuery(this).height()}px`);
-			return;
-		}));
-
 		this.Listing.addClass('Hidden');
-		this.Loading.removeClass('Hidden');
+
+		jQuery('.PostCommentToggle')
+		.addClass('Thinking');
 
 		return;
 	};
@@ -258,15 +250,10 @@ class Comments {
 	@date 2020-12-11
 	//*/
 
-		this.Container
-		.find('.DropContainer')
-		.each((function(){
-			this.style.setProperty('--local-height',`-${jQuery(this).height()}px`);
-			return;
-		}));
-
-		this.Loading.addClass('Hidden');
 		this.Listing.removeClass('Hidden');
+
+		jQuery('.PostCommentToggle')
+		.removeClass('Thinking');
 
 		return;
 	};
@@ -373,6 +360,25 @@ class Comments {
 		jQuery('.PostCommentToggle')
 		.addClass('Minus')
 		.removeClass('Plus');
+
+		return;
+	};
+
+	OnCommentDelete(Btn) {
+	/*//
+	@date 2021-04-10
+	//*/
+
+		let ID = parseInt(Btn.attr('data-comment-id'));
+		let Todo = ()=> Atlantis.Request({
+			'Method': 'DELETE',
+			'URL': '/api/v1/post/comment',
+			'Data': { CommentID: ID },
+			'OnSuccess': (()=> this.LoadPage(this.Page))
+		});
+
+		if(confirm(`Really delete comment #${ID}?`))
+		Todo();
 
 		return;
 	}

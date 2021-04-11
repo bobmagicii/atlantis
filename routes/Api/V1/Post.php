@@ -555,4 +555,38 @@ extends Atlantis\Site\PublicAPI {
 		return;
 	}
 
+	#[Atlantis\Meta\Info('Delete a comment.')]
+	#[Atlantis\Meta\Parameter('ID','Int')]
+	#[Atlantis\Meta\Error(1,'comment not found')]
+	#[Atlantis\Meta\Error(2,'permission denied')]
+	final public function
+	CommentDelete():
+	void {
+	/*//
+	@date 2021-04-10
+	//*/
+
+		($this->Post)
+		->CommentID(Atlantis\Util\Filters::TypeIntCallable());
+
+		////////
+
+		$Comment = Atlantis\Prototype\BlogPostComment::GetByID($this->Post->CommentID);
+
+		if(!$Comment)
+		$this->Quit(1);
+
+		////////
+
+		$BlogUser = $Comment->Post->GetBlogUser($this->User);
+
+		if(!$BlogUser->HasEditPriv())
+		$this->Quit(2);
+
+		////////
+
+		$Comment->Drop();
+		return;
+	}
+
 }

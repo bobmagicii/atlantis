@@ -111,6 +111,7 @@ echo (new Atlantis\Element\PagePromo)
 		<div class="col-12 mb-4">
 			<div class="boxtron-secondary p-4 m-0">
 
+				<!-- COMMENT TITLE BAR -->
 				<div class="row align-items-center">
 					<div class="col">
 						<h3 class="font-weight-bold">
@@ -122,11 +123,12 @@ echo (new Atlantis\Element\PagePromo)
 					</div>
 					<div class="col-auto">
 						<?php if($UserCanComment): ?>
-						<button class="btn btn-dark PostCommentToggle Plus">
+						<button class="btn btn-dark PostCommentToggle Plus Thinking">
 							<div class="fas fa-fw">
 								<i class="fas fa-fw fa-derp"></i>
 								<i class="fas fa-fw fa-plus"></i>
 								<i class="fas fa-fw fa-minus"></i>
+								<i class="fas fa-fw fa-sync-alt fa-derp-think"></i>
 							</div>
 							Comment
 						</button>
@@ -143,6 +145,7 @@ echo (new Atlantis\Element\PagePromo)
 					</div>
 				</div>
 
+				<!-- COMMENT FORM -->
 				<?php if(!$Post->IsCommentingDisabled()): ?>
 				<hr />
 				<?php if($UserCanComment): ?>
@@ -173,6 +176,7 @@ echo (new Atlantis\Element\PagePromo)
 				</div>
 				<?php endif; ?>
 
+				<!-- COMMENT LISTING -->
 				<div id="Comments" class="Comments" data-post-id="<?php $Printer($Post->ID) ?>">
 					<div class="Template d-none">
 						<div class="row pt-2 pb-2">
@@ -181,8 +185,17 @@ echo (new Atlantis\Element\PagePromo)
 							</div>
 							<div class="col">
 								<div class="Heading font-size-smaller text-muted">
-									<span class="Date"></span> by
-									<span class="UserName"></span>
+									<div class="row">
+										<div class="col">
+											<span class="Date"></span> by
+											<span class="UserName"></span>
+										</div>
+										<?php if($UserCanEdit): ?>
+										<div class="col-auto">
+											<button class="btn btn-sm text-danger CmdAdmin CmdCommentDelete" data-comment-id=""><i class="far fa-fw fa-trash"></i></button>
+										</div>
+										<?php endif; ?>
+									</div>
 								</div>
 								<blockquote></blockquote>
 							</div>
@@ -191,11 +204,16 @@ echo (new Atlantis\Element\PagePromo)
 					</div>
 				</div>
 
+				<!-- COMMENT SCRIPTING -->
 				<script type="module">
 				import AtlantisPostComments from '/share/atlantis/post/comments.js';
 				jQuery(document)
 				.ready(function(){
-					new AtlantisPostComments('#Comments','#CommentForm');
+					setTimeout(
+						(()=> new AtlantisPostComments('#Comments','#CommentForm')),
+						1000
+					);
+
 					return;
 				});
 				</script>
