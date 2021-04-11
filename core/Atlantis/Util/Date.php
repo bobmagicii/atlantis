@@ -16,9 +16,10 @@ extends DateTime
 implements JsonSerializable {
 
 	const
-	FormatDate = 'Y-m-d',
-	FormatDateTime = 'Y-m-d g:ia',
-	FormatDateTimeZone = 'Y-m-d g:ia T';
+	FormatYMD = 'Y-m-d',
+	FormatYMD12T = 'Y-m-d g:ia',
+	FormatYMD12TZ = 'Y-m-d g:ia T',
+	FormatFancy = 'F jS g:ia';
 
 	public function
 	__Construct(...$Args) {
@@ -34,14 +35,14 @@ implements JsonSerializable {
 
 	public function
 	__ToString():
-	String {
+	string {
 
 		return $this->Format($this->DefaultFormat);
 	}
 
 	public function
 	JsonSerialize():
-	Array {
+	array {
 	/*//
 	@date 2020-06-05
 	@implements JsonSerializable
@@ -58,17 +59,17 @@ implements JsonSerializable {
 	////////////////////////////////////////////////////////////////
 
 	protected
-	$DefaultFormat = self::FormatDate;
+	$DefaultFormat = self::FormatYMD;
 
 	public function
 	GetDefaultFormat():
-	String {
+	string {
 
 		return $this->DefaultFormat;
 	}
 
 	public function
-	SetDefaultFormat(String $Format):
+	SetDefaultFormat(string $Format):
 	self {
 
 		$this->DefaultFormat = $Format;
@@ -78,9 +79,44 @@ implements JsonSerializable {
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
 
+	public function
+	YMD() {
+	/*//
+	//*/
+
+		return $this->Format(static::FormatYMD);
+	}
+
+	public function
+	YMD12T() {
+	/*//
+	//*/
+
+		return $this->Format(static::FormatYMD12T);
+	}
+
+	public function
+	YMD12TZ() {
+	/*//
+	//*/
+
+		return $this->Format(static::FormatYMD12TZ);
+	}
+
+	public function
+	Fancy() {
+	/*//
+	//*/
+
+		return $this->Format(static::FormatFancy);
+	}
+
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
 	static public function
 	GetTimeAgo($Time):
-	String {
+	string {
 
 		$Now = new DateTime;
 		$Diff = $Now->Diff(new DateTime(date('Y-m-d H:i',$Time)));
