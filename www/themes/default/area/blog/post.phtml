@@ -57,14 +57,18 @@ echo (new Atlantis\Element\PagePromo)
 							<a href="<?php $Printer($Blog->GetTagURL($PostTag->Tag)) ?>" class="btn btn-sm btn-secondary pt-0 pb-0"><?php $Printer($PostTag->Tag->Title) ?></a>
 						</div>
 						<?php endforeach; ?>
-						<?php if($UserCanEdit || $UserCanDelete): ?>
-						<div class="col-auto">|</div>
+						<?php if(!$Tags->Count): ?>
+						<div class="col-auto">
+							<span class="text-muted"><?php $Printer(Atlantis\Util\Emote::Random('confused')) ?></span>
+						</div>
 						<?php endif ?>
 						<?php if($UserCanEdit): ?>
+						<div class="col-auto">|</div>
 						<div class="col-auto">
 							<a class="btn btn-sm btn-dark pt-0 pb-0" href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Post.Edit',['PostID'=>$Post->ID]) ?>">Edit</a>
 						</div>
 						<?php endif; ?>
+						<div class="col-auto">|</div>
 						<?php if($UserCanDelete): ?>
 						<div class="col-auto">
 							<a class="btn btn-sm btn-dark pt-0 pb-0 AtlantisActionPostDelete" href="#" data-post-id="<?php echo $Post->ID ?>">Delete</a>
@@ -75,8 +79,8 @@ echo (new Atlantis\Element\PagePromo)
 			</div>
 			<hr />
 
+			<!-- POST CONTENT -->
 			<?php if($Post->IsAdult() && $Route->ShouldAdultSafespace()): ?>
-			<!-- ADULT CONTENT WARNING -->
 			<div class="alert alert-adult mb-0">
 				<?php if($User): ?>
 				<p>
@@ -106,6 +110,7 @@ echo (new Atlantis\Element\PagePromo)
 				</div>
 			</div>
 			<?php endif; ?>
+
 		</div>
 
 		<!-- POST COMMENTS -->

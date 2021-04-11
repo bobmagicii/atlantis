@@ -5,7 +5,8 @@ namespace Atlantis\Util;
 class Emote {
 
 	const
-	Angry = 'angry';
+	Angry = 'angry',
+	Confused = 'confused';
 
 	protected static array
 	$E = [
@@ -15,6 +16,12 @@ class Emote {
 			'(」｡≧□≦)」',
 			'(눈_눈)',
 			'ヾ(｀⌒´メ)ノ″'
+		],
+		self::Confused => [
+			'(￢_￢;)',
+			'(」⊙.☉)」',
+			'┐(￣ヘ￣;)┌',
+			'ʅ（‾‸◝）ʃ'
 		]
 	];
 

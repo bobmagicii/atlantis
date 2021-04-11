@@ -74,6 +74,7 @@ extends Atlantis\Site\PublicWeb {
 
 		////////
 
+		if($Area === 'blog/index' )
 		if(!$Blog->IsUserOwner($this->User)) {
 			$Hit = Atlantis\Prototype\LogBlogPostTraffic::GetByHithashSince(
 				$this->GetHitHash(),
