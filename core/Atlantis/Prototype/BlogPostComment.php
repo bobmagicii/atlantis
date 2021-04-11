@@ -138,8 +138,8 @@ implements JsonSerializable {
 			'PostID'          => $this->PostID,
 			'TimeCreated'     => $this->TimeCreated,
 			'TimeUpdated'     => $this->TimeUpdated,
-			'DateTimeCreated' => $this->DateCreated->Format(Atlantis\Util\Date::FormatDateTimeZone),
-			'DateTimeUpdated' => $this->DateUpdated->Format(Atlantis\Util\Date::FormatDateTimeZone),
+			'DateTimeCreated' => $this->DateCreated->Fancy(),
+			'DateTimeUpdated' => $this->DateUpdated->Fancy(),
 			'User'            => $this->User,
 			'Name'            => ($this->User?$this->User->Alias:$this->Name),
 			'Content'         => $this->Content
