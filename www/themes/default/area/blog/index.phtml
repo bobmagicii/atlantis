@@ -59,6 +59,7 @@ echo (new Atlantis\Element\PagePromo)
 			->SetTitle($PostListTitle)
 			->SetShowSourceBlog(FALSE)
 			->SetSubtitle($PostListSubtitle)
+			->SetFeedURL($Blog->GetFeedURL())
 			->SetItemStore($Posts->Payload);
 			?>
 
@@ -138,6 +139,7 @@ echo (new Atlantis\Element\PagePromo)
 						<?php endforeach; ?>
 					</div>
 				</div>
+
 				<div class="col-12 col-md-6 col-lg-12 mb-6">
 					<!-- POPULAR POSTS -->
 					<div class="quotron-primary pl-2">

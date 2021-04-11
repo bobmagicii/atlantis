@@ -11,12 +11,23 @@ $Posts = $Element->GetItemStore();
 ?>
 
 <div class="PostListing HideTheLastHr <?php echo $Element->GetClassesAttrString() ?>">
-	<h2>
-		<?php echo $Element->GetTitle() ?>
-		<?php if($Element->HasSubtitle()): ?>
-		<div class="letter-space-barely font-weight-normal font-size-smaller opacity-75 mb-2"><?php echo $Element->GetSubtitle() ?></div>
+
+	<div class="row align-items-center">
+		<div class="col">
+			<h2>
+				<?php echo $Element->GetTitle() ?>
+				<?php if($Element->HasSubtitle()): ?>
+				<div class="letter-space-barely font-weight-normal font-size-smaller opacity-75 mb-2"><?php echo $Element->GetSubtitle() ?></div>
+				<?php endif; ?>
+			</h2>
+		</div>
+		<?php if($Element->HasFeedURL()): ?>
+		<div class="col-auto">
+			<a href="<?php echo $Element->GetFeedURL() ?>" target="_blank" class="btn btn-rss btn-sm btn-hover-reveal font-size-smaller"><i class="fas fa-fw fa-rss"></i><span class="ml-1 reveal">RSS</span></a>
+		</div>
 		<?php endif; ?>
-	</h2>
+	</div>
+
 	<hr class="mt-2 mb-4" />
 	<?php foreach($Posts as $Post): ?>
 	<div class="Post <?php echo $Post->GetStyleClassAttr() ?>">

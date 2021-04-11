@@ -40,16 +40,6 @@ $Icon = $Element->GetIconURL();
 					<?php endif; ?>
 					<div class="col">
 						<?php echo $Title, $Subtitle, PHP_EOL ?>
-						<?php if($Element->HasFeedURL()): ?>
-						<div>
-							<a href="<?php echo $Element->GetFeedURL() ?>" class="d-inline-block font-size-mostest-small" style="margin:0px;padding:0px;">
-								<span class="fa-stack fa-2x d-inline-block" style="margin-left:-4px;">
-									<i class="fas fa-square fa-stack-2x text-rss"></i>
-									<i class="fas fa-rss fa-stack-1x text-white"></i>
-								</span>
-							</a>
-						</div>
-						<?php endif; ?>
 					</div>
 				</div>
 			</div>

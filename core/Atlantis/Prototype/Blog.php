@@ -245,6 +245,17 @@ implements JsonSerializable {
 	}
 
 	public function
+	GetFeedURL():
+	string {
+	/*//
+	@date 2021-04-11
+	get the url to the rss feed for this blog.
+	//*/
+
+		return "{$this->GetURL()}?format=rss";
+	}
+
+	public function
 	GetBlogUser(?Atlantis\Prototype\User $User):
 	?Atlantis\Prototype\BlogUser {
 	/*//
