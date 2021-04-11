@@ -1,0 +1,49 @@
+
+.AtlantisElementPager {
+	line-height: 0.0em;
+	text-transform: uppercase;
+}
+
+.AtlantisElementPager a:link,
+.AtlantisElementPager a:visited {
+	text-decoration: none;
+}
+
+.AtlantisElementPager i {
+	font-style: normal;
+	line-height: 0.0em;
+	text-transform: uppercase;
+	vertical-align: middle;
+}
+
+.AtlantisElementPager em {
+	font-style: normal;
+	font-size: 0.6em;
+	line-height: 0.0em;
+	text-transform: uppercase;
+	vertical-align: middle;
+}
+
+.AtlantisElementPager.pager-primary hr {
+	border-top-width: 4px;
+	border-top-color: var(--ColourPrimary);
+	opacity: 1.0;
+}
+
+.AtlantisElementPager.pager-secondary hr {
+	border-top-width: 4px;
+	border-top-color: var(--ColourSecondary);
+	opacity: 1.0;
+}
+
+.AtlantisElementPager.pager-tertiary hr {
+	border-top-width: 4px;
+	border-top-color: var(--ColourTertiary);
+	opacity: 1.0;
+}
+
+.AtlantisElementPager.pager-quaternary hr {
+	border-top-width: 4px;
+	border-top-color: var(--ColourQuaternary);
+	opacity: 1.0;
+}

@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @var Atlantis\Element\Pager $Element
+ */
+
+?>
+
+<div class="AtlantisElementPager <?php $Printer($Element->GetClassesAttrString()) ?>">
+	<div class="row align-items-center">
+		<?php if($Element->HR): ?>
+		<div class="col">
+			<hr />
+		</div>
+		<?php endif; ?>
+		<div class="col-auto">
+			<div class="font-size-larger Prev">
+				<?php if($Element->Page > 1): ?>
+				<a href="<?php $Printer($Element->PrevURL) ?>"><i class="<?php $Printer($Element->PrevIcon) ?>"></i><em>Prev</em></a>
+				<?php else: ?>
+				<span class="opacity-25"><i class="<?php $Printer($Element->PrevIcon) ?>"></i><em>Prev</em></span>
+				<?php endif; ?>
+			</div>
+		</div>
+		<div class="col-auto">
+			<b class="">Page <?php $Printer($Element->Page) ?> of <?php $Printer($Element->PageCount) ?></b>
+		</div>
+		<div class="col-auto">
+			<div class="font-size-larger Next">
+				<?php if($Element->Page < $Element->PageCount): ?>
+				<a href="<?php $Printer($Element->NextURL) ?>"><em>Next</em><i class="<?php $Printer($Element->NextIcon) ?>"></i></a>
+				<?php else: ?>
+				<span class="opacity-25"><em>Next</em><i class="<?php $Printer($Element->NextIcon) ?>"></i></span>
+				<?php endif; ?>
+			</div>
+		</div>
+		<?php if($Element->HR): ?>
+		<div class="col">
+			<hr />
+		</div>
+		<?php endif; ?>
+	</div>
+</div>
