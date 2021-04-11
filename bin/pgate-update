@@ -15,6 +15,9 @@ require(sprintf(
 	public function
 	HandleAll():
 	int {
+	/*//
+	@date 2021-04-11
+	//*/
 
 		$Commands = [
 			'git',
@@ -47,6 +50,9 @@ require(sprintf(
 	public function
 	HandleGit():
 	int {
+	/*//
+	@date 2021-04-11
+	//*/
 
 		$Result = $this->ExecuteCmd('git pull origin master',$this->GetInput(1));
 		return $Result->Error;
@@ -57,6 +63,9 @@ require(sprintf(
 	public function
 	HandleConf():
 	int {
+	/*//
+	@date 2021-04-11
+	//*/
 
 		$Result = $this->ExecuteCmd('cp -v /opt/web-dev/conf/env/prod/* conf/env/prod',$this->GetInput(1));
 		return $Result->Error;
@@ -67,6 +76,9 @@ require(sprintf(
 	public function
 	HandleLocal():
 	int {
+	/*//
+	@date 2021-04-11
+	//*/
 
 		$Result = $this->ExecuteCmd('cp -vr /opt/web-dev/www/themes/local www/themes',$this->GetInput(1));
 		$Result = $this->ExecuteCmd('cp -vr /opt/web-dev/data/pages data',$this->GetInput(1));
@@ -78,6 +90,9 @@ require(sprintf(
 	public function
 	HandleChmod():
 	int {
+	/*//
+	@date 2021-04-11
+	//*/
 
 		$Result = $this->ExecuteCmd('chmod -R 777 bin',$this->GetInput(1));
 		return $Result->Error;
@@ -88,6 +103,9 @@ require(sprintf(
 	public function
 	HandleComposer():
 	int {
+	/*//
+	@date 2021-04-11
+	//*/
 
 		$Result = $this->ExecuteCmd('composer install',$this->GetInput(1));
 		return $Result->Error;
@@ -98,6 +116,9 @@ require(sprintf(
 	public function
 	HandlePhinx():
 	int {
+	/*//
+	@date 2021-04-11
+	//*/
 
 		$Result = $this->ExecuteCmd('phinx migrate',$this->GetInput(1));
 		return $Result->Error;
@@ -107,6 +128,7 @@ require(sprintf(
 	ExecuteCmd(string $Cmd, string $StageName=''):
 	object {
 	/*//
+	@date 2021-04-11
 	//*/
 
 		$F = new Nether\Console\TerminalFormatter;
