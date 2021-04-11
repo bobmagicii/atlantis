@@ -82,6 +82,7 @@ implements JsonSerializable {
 	public function
 	YMD() {
 	/*//
+	@date 2021-04-11
 	//*/
 
 		return $this->Format(static::FormatYMD);
@@ -90,6 +91,7 @@ implements JsonSerializable {
 	public function
 	YMD12T() {
 	/*//
+	@date 2021-04-11
 	//*/
 
 		return $this->Format(static::FormatYMD12T);
@@ -98,6 +100,7 @@ implements JsonSerializable {
 	public function
 	YMD12TZ() {
 	/*//
+	@date 2021-04-11
 	//*/
 
 		return $this->Format(static::FormatYMD12TZ);
@@ -106,6 +109,7 @@ implements JsonSerializable {
 	public function
 	Fancy() {
 	/*//
+	@date 2021-04-11
 	//*/
 
 		return $this->Format(static::FormatFancy);
