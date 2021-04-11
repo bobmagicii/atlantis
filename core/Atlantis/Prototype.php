@@ -45,7 +45,7 @@ namespace.
 
 	public function
 	Drop():
-	Void {
+	void {
 	/*//
 	@date 2018-04-03
 	//*/
@@ -68,7 +68,7 @@ namespace.
 	}
 
 	public function
-	Update(Array $Input):
+	Update(array $Input):
 	self {
 	/*//
 	@date 2018-06-08
@@ -130,7 +130,7 @@ namespace.
 
 	public function
 	IsUserOwner(?Atlantis\Prototype\User $User):
-	Bool {
+	bool {
 
 		if(property_exists($this,'UserID'))
 		if($User && $User->ID === $this->UserID)
@@ -143,7 +143,7 @@ namespace.
 	////////////////////////////////////////////////////////////////
 
 	static public function
-	GetByID(Int $ID):
+	GetByID(int $ID):
 	?static {
 	/*//
 	@date 2018-06-08
@@ -190,7 +190,7 @@ namespace.
 	}
 
 	static public function
-	GetByUUID(String $UUID):
+	GetByUUID(string $UUID):
 	?self {
 	/*//
 	@date 2018-06-08
@@ -238,8 +238,8 @@ namespace.
 	}
 
 	static public function
-	ExtendMainFields($SQL, String $TableAlias, String $FieldPrefix):
-	Void {
+	ExtendMainFields($SQL, string $TableAlias, string $FieldPrefix):
+	void {
 
 		$SQL->Fields(Atlantis\Util::BuildPrefixedQueryFields(
 			static::GetPropertyMap(),
@@ -250,8 +250,8 @@ namespace.
 	}
 
 	static protected function
-	ExtendQueryJoins($SQL, String $TableAlias='Main', String $FieldPrefix=''):
-	Void {
+	ExtendQueryJoins($SQL, string $TableAlias='Main', string $FieldPrefix=''):
+	void {
 	/*//
 	@date 2020-05-23
 	extension classes should override this method for use to join
@@ -262,8 +262,8 @@ namespace.
 	}
 
 	static protected function
-	ExtendQueryFields($SQL, String $TablePrefix='', String $FieldPrefix=''):
-	Void {
+	ExtendQueryFields($SQL, string $TablePrefix='', string $FieldPrefix=''):
+	void {
 	/*//
 	@date 2020-05-23
 	extension classes should override this method for use to include
@@ -517,7 +517,7 @@ namespace.
 
 	static protected function
 	FindExtendOptions($Opt):
-	Array {
+	array {
 	/*//
 	@date 2018-06-08
 	//*/
@@ -527,7 +527,7 @@ namespace.
 
 	static protected function
 	FindApplyFilters($Opt,$SQL):
-	Void {
+	void {
 	/*//
 	@date 2018-06-08
 	//*/
@@ -537,7 +537,7 @@ namespace.
 
 	static protected function
 	FindApplySorts($Opt,$SQL):
-	Void {
+	void {
 	/*//
 	@date 2018-06-08
 	//*/
@@ -595,13 +595,13 @@ namespace.
 
 	public function
 	IsUpdated():
-	Bool {
+	bool {
 
 		return $this->Updated;
 	}
 
 	public function
-	SetUpdated(Bool $Updated):
+	SetUpdated(bool $Updated):
 	self {
 
 		$this->Updated = $Updated;

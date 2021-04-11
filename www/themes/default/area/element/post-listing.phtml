@@ -35,7 +35,10 @@ $Posts = $Element->GetItemStore();
 		<div class="row align-items-top">
 			<div class="col-12">
 				<div class="row">
-					<div class="col-12 order-2 mt-2">
+					<div class="col-12 mt-0">
+						<div><a class="text-decoration-none" href="<?php echo $Post->URL ?>"><?php echo $Post->DateCreated->Fancy() ?></a></div>
+					</div>
+					<div class="col-12 mt-2">
 						<h3 class="d-flex align-items-center">
 							<?php if($Post->IsDraft()): ?>
 							<i class="flex-grow-0 fas fa-fw fa-sticky-note font-size-smallerer mr-1 HasTooltip" title="Draft"></i>
@@ -56,12 +59,16 @@ $Posts = $Element->GetItemStore();
 							<?php endif; ?>
 							<a class="flex-grow-0" href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->Title) ?></a>
 						</h3>
-					</div>
-					<div class="col-12 order-1 mt-0">
-						<div><a class="text-decoration-none" href="<?php echo $Post->URL ?>"><?php echo $Post->DateCreated->Fancy() ?></a></div>
+						<?php if(is_iterable($Post->Tags)): ?>
+						<div>
+							<?php foreach($Post->Tags as $Tag): ?>
+							<a href="<?php $Printer($Post->Blog->GetTagURL($Tag)) ?>" class="btn btn-sm btn-outline-dark pt-0 pb-0"><?php $Printer($Tag->Title) ?></a>
+							<?php endforeach; ?>
+						</div>
+						<?php endif ?>
 					</div>
 					<?php if($Element->GetShowSourceBlog()): ?>
-					<div class="col-12 order-3 mt-2">
+					<div class="col-12 mt-2">
 						<div class="About">
 							From <a class="Source" href="<?php echo $Post->Blog->URL ?>"><?php echo $Post->Blog->Title ?></a>
 							By <a class="Authour" href="<?php echo $Post->User->URL ?>"><?php echo $Post->User->Alias ?></a>

@@ -10,7 +10,7 @@ extends Atlantis\Site\PublicWeb {
 
 	public function
 	Index():
-	Void {
+	void {
 
 		$this->Area('home/index',[
 			'Posts'        => $this->GetRecentPosts(),
@@ -61,7 +61,8 @@ extends Atlantis\Site\PublicWeb {
 			'Adult' => $this->ShouldAdultAllow(),
 			'Sort'  => 'newest',
 			'Limit' => 10,
-			'Page'  => 1
+			'Page'  => 1,
+			'BindTagsToResult' => TRUE
 		]);
 
 		return $Output;

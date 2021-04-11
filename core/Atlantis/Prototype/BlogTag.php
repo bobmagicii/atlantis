@@ -54,8 +54,8 @@ implements
 	///////////////////////////////////////////////////////////////////////////
 
 	public function
-	OnReady(Array $Raw):
-	Void {
+	OnReady(array $Raw):
+	void {
 	/*//
 	prepare some data for this object.
 	//*/
@@ -67,7 +67,7 @@ implements
 	}
 
 	protected function
-	OnReady_GetDates(Array $Raw):
+	OnReady_GetDates(array $Raw):
 	self {
 	/*//
 	prepare the date objects.
@@ -79,7 +79,7 @@ implements
 
 	public function
 	JsonSerialize():
-	Array {
+	array {
 	/*//
 	@date 2020-06-01
 	@implements JsonSerializable
@@ -98,7 +98,7 @@ implements
 
 	public function
 	UpdateUsage():
-	Int {
+	int {
 	/*//
 	@date 2020-09-30
 	//*/
@@ -126,7 +126,7 @@ implements
 	///////////////////////////////////////////////////////////////////////////
 
 	static public function
-	GetByBlog(Int $BlogID):
+	GetByBlog(int $BlogID):
 	Atlantis\Struct\SearchResult {
 	/*//
 	@date 2020-09-29
@@ -140,7 +140,7 @@ implements
 	}
 
 	static public function
-	GetByBlogTitle(Int $BlogID, String $Title):
+	GetByBlogTitle(int $BlogID, string $Title):
 	?self {
 
 		return static::GetByBlogAlias(
@@ -150,7 +150,7 @@ implements
 	}
 
 	static public function
-	GetByBlogAlias(Int $BlogID, String $Alias):
+	GetByBlogAlias(int $BlogID, string $Alias):
 	?self {
 
 		$SQL = (Nether\Database::Get()->NewVerse())
@@ -178,8 +178,8 @@ implements
 	///////////////////////////////////////////////////////////////////////////
 
 	static protected function
-	ExtendQueryJoins($SQL, String $TableAlias='Main', String $FieldPrefix=''):
-	Void {
+	ExtendQueryJoins($SQL, string $TableAlias='Main', string $FieldPrefix=''):
+	void {
 	/*//
 	@date 2020-09-29
 	//*/
@@ -188,8 +188,8 @@ implements
 	}
 
 	static protected function
-	ExtendQueryFields($SQL, String $TablePrefix='', String $FieldPrefix=''):
-	Void {
+	ExtendQueryFields($SQL, string $TablePrefix='', string $FieldPrefix=''):
+	void {
 	/*//
 	@date 2020-09-29
 	//*/
@@ -199,7 +199,7 @@ implements
 
 	static protected function
 	FindExtendOptions($Opt):
-	Array {
+	array {
 	/*//
 	@date 2020-05-23
 	//*/
@@ -214,7 +214,7 @@ implements
 
 	static protected function
 	FindApplyFilters($Opt,$SQL):
-	Void {
+	void {
 	/*//
 	@date 2020-09-29
 	//*/
@@ -237,7 +237,7 @@ implements
 
 	static protected function
 	FindApplySorts($Opt,$SQL):
-	Void {
+	void {
 	/*//
 	@date 2020-09-29
 	//*/

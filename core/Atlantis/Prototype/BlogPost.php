@@ -60,6 +60,7 @@ extends Atlantis\Prototype {
 	public ?string $URL;
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
+	public ?Nether\Object\Datastore $Tags;
 
 	protected ?Atlantis\Struct\EditorJS\Content $StructJSON;
 
@@ -98,6 +99,7 @@ extends Atlantis\Prototype {
 		->OnReady_GetDates($Raw);
 
 		$this->URL = $this->GetURL();
+		$this->Tags = NULL;
 
 		return;
 	}
@@ -513,6 +515,49 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 
 	static public function
+	BindTagsToResult($Output,$Opt):
+	void {
+	/*//
+	@date 2021-04-11
+	given a search result perform one single query to get the tags for all
+	of them and then distribute the tags across the result objects.
+	//*/
+
+		// determine which posts we need to search for.
+
+		$Which = $Output->Payload->Map(fn($Val)=> $Val->ID);
+
+		// get all of those tags then.
+
+		$Tags = Atlantis\Prototype\BlogPostTag::Find([
+			'PostID'=>$Which->Value()
+		]);
+
+		// bind the relevant tags to each of the output objects.
+
+		($Output->Payload)
+		->Each(
+			fn($Post)=>
+			$Post->Tags = (
+				($Tags->Payload)
+				->Distill(fn($Tag)=> ($Tag->PostID === $Post->ID))
+				->Remap((fn($Tag)=> $Tag->Tag))
+			)
+		);
+
+		return;
+	}
+
+	static public function
+	BindTagsToResultCallable():
+	mixed {
+	/*//
+	//*/
+
+		return (static fn($Output,$Opt)=> static::BindTagsToResult($Output,$Opt));
+	}
+
+	static public function
 	GetByAlias(string $BlogAlias, string $Alias):
 	?self {
 
@@ -616,11 +661,12 @@ extends Atlantis\Prototype {
 	//*/
 
 		return [
-			'Adult'     => 0,
-			'Alias'     => NULL,
-			'BlogID'    => NULL,
-			'BlogAlias' => NULL,
-			'Tags'      => NULL
+			'Adult'            => 0,
+			'Alias'            => NULL,
+			'BlogID'           => NULL,
+			'BlogAlias'        => NULL,
+			'Tags'             => NULL,
+			'BindTagsToResult' => FALSE
 		];
 	}
 
@@ -630,6 +676,11 @@ extends Atlantis\Prototype {
 	/*//
 	@date 2018-06-08
 	//*/
+
+		if(!property_exists($Opt,'OutputFilter'))
+		$Opt->OutputFilter = [];
+		if(!is_array($Opt->OutputFilter))
+		$Opt->OutputFilter = [ $Opt->OutputFilter ];
 
 		if($Opt->Adult === FALSE)
 		$Opt->Adult = 0;
@@ -658,6 +709,9 @@ extends Atlantis\Prototype {
 			->Group('Main.ID')
 			->Having('PostTagNumAnd=:CountTags');
 		}
+
+		if($Opt->BindTagsToResult)
+		$Opt->OutputFilter[] = static::BindTagsToResultCallable();
 
 		return;
 	}

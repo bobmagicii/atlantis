@@ -4,7 +4,7 @@ namespace Routes\Blog;
 use Atlantis;
 
 use Atlantis\Prototype\Blog;
-use Atlantis\Prototype\BlogPost as Post;
+use Atlantis\Prototype\BlogPost;
 
 class Index
 extends Atlantis\Site\PublicWeb {
@@ -21,10 +21,11 @@ extends Atlantis\Site\PublicWeb {
 		$Page = 1;
 		$Limit = 10;
 		$QueryTags = NULL;
-		$Opt = [
-			'Adult'   => NULL,
-			'Enabled' => Post::EnableStatePublic,
-			'Tags'    => NULL
+		$RecentPostFilters = [
+			'Adult'            => NULL,
+			'Enabled'          => BlogPost::EnableStatePublic,
+			'Tags'             => NULL,
+			'BindTagsToResult' => TRUE
 		];
 
 		$Area = match(strtolower($this->Get->Format)) {
@@ -43,14 +44,14 @@ extends Atlantis\Site\PublicWeb {
 
 		if($BlogUser)
 		if($BlogUser->HasEditPriv())
-		$Opt['Enabled'] = Post::EnableStateAny;
+		$RecentPostFilters['Enabled'] = BlogPost::EnableStateAny;
 
 		// filter by tags if needed.
 
 		if($this->Get->Tags) {
 			$QueryTags = $this->GetTagList();
 
-			$Opt['Tags'] = array_map(
+			$RecentPostFilters['Tags'] = array_map(
 				function($Tag){ return $Tag->ID; },
 				$QueryTags
 			);
@@ -103,7 +104,7 @@ extends Atlantis\Site\PublicWeb {
 		->Area($Area,[
 			'Blog'          => $Blog,
 			'BlogUser'      => $BlogUser,
-			'Posts'         => $Blog->GetRecentPosts($Limit,$Page,$Opt),
+			'Posts'         => $Blog->GetRecentPosts($Limit,$Page,$RecentPostFilters),
 			'Tags'          => $Tags,
 			'PopularPosts'  => $PopularPosts,
 			'QueryTags'     => $QueryTags,

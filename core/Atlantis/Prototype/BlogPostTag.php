@@ -42,8 +42,8 @@ implements Atlantis\Packages\Upsertable {
 	///////////////////////////////////////////////////////////////////////////
 
 	public function
-	OnReady(Array $Raw):
-	Void {
+	OnReady(array $Raw):
+	void {
 	/*//
 	prepare some data for this object.
 	//*/
@@ -66,7 +66,7 @@ implements Atlantis\Packages\Upsertable {
 
 	public function
 	UpdateUsage():
-	Void {
+	void {
 
 		$this->Tag->UpdateUsage();
 
@@ -77,7 +77,7 @@ implements Atlantis\Packages\Upsertable {
 	///////////////////////////////////////////////////////////////////////////
 
 	static public function
-	GetByBlogPost(Int $PostID):
+	GetByBlogPost(int $PostID):
 	Atlantis\Struct\SearchResult {
 	/*//
 	@date 2020-09-29
@@ -91,7 +91,7 @@ implements Atlantis\Packages\Upsertable {
 	}
 
 	static public function
-	GetByTag(Int $TagID):
+	GetByTag(int $TagID):
 	Atlantis\Struct\SearchResult {
 	/*//
 	@date 2020-09-29
@@ -105,8 +105,8 @@ implements Atlantis\Packages\Upsertable {
 	}
 
 	static public function
-	DeleteByPostTag(Int $PostID, Int $TagID):
-	Void {
+	DeleteByPostTag(int $PostID, int $TagID):
+	void {
 
 		(Nether\Database::Get()->NewVerse())
 		->Delete(static::$Table)
@@ -124,8 +124,8 @@ implements Atlantis\Packages\Upsertable {
 	///////////////////////////////////////////////////////////////////////////
 
 	static protected function
-	ExtendQueryJoins($SQL, String $TableAlias='Main', String $FieldPrefix=''):
-	Void {
+	ExtendQueryJoins($SQL, string $TableAlias='Main', string $FieldPrefix=''):
+	void {
 	/*//
 	@date 2020-09-29
 	//*/
@@ -141,8 +141,8 @@ implements Atlantis\Packages\Upsertable {
 	}
 
 	static protected function
-	ExtendQueryFields($SQL, String $TablePrefix='', String $FieldPrefix=''):
-	Void {
+	ExtendQueryFields($SQL, string $TablePrefix='', string $FieldPrefix=''):
+	void {
 	/*//
 	@date 2020-09-29
 	//*/
@@ -158,7 +158,7 @@ implements Atlantis\Packages\Upsertable {
 
 	static protected function
 	FindExtendOptions($Opt):
-	Array {
+	array {
 	/*//
 	@date 2020-05-23
 	//*/
@@ -173,13 +173,17 @@ implements Atlantis\Packages\Upsertable {
 
 	static protected function
 	FindApplyFilters($Opt,$SQL):
-	Void {
+	void {
 	/*//
 	@date 2020-09-29
 	//*/
 
-		if($Opt->PostID !== NULL)
-		$SQL->Where('Main.PostID=:PostID');
+		if($Opt->PostID !== NULL) {
+			if(is_int($Opt->PostID))
+			$SQL->Where('Main.PostID=:PostID');
+			if(is_array($Opt->PostID))
+			$SQL->Where('Main.PostID IN(:PostID)');
+		}
 
 		if($Opt->TagID !== NULL)
 		$SQL->Where('Main.TagID=:TagID');
@@ -195,7 +199,7 @@ implements Atlantis\Packages\Upsertable {
 
 	static protected function
 	FindApplySorts($Opt,$SQL):
-	Void {
+	void {
 	/*//
 	@date 2020-09-29
 	//*/
@@ -267,7 +271,7 @@ implements Atlantis\Packages\Upsertable {
 
 	static public function
 	StripPayloadToTag(Atlantis\Struct\SearchResult $Result):
-	Void {
+	void {
 
 		($Result->Payload)
 		->Remap(function(self $Val){ return $Val->Tag; });
