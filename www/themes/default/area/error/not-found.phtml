@@ -2,9 +2,13 @@
 
 http_response_code(404);
 
+echo (new Atlantis\Element\PagePromo)
+->AddClasses('mb-')
+->SetTitle('Not Found')
+->SetSubtitle('Maybe try another castle. <i class="fas fa-fw fa-game-console-handheld"></i>');
+
 ?>
 
-<div class="container">
-	<h2>Not Found</h2>
-	<p>Maybe try the other castle.</p>
+<div class="container mb-4">
+	<p>For whatever reason the page you expected to be here was not.</p>
 </div>
