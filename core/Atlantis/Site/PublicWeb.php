@@ -80,7 +80,7 @@ class PublicWeb {
 
 	protected function
 	OnReady():
-	Void {
+	void {
 
 		return;
 	}
@@ -90,7 +90,7 @@ class PublicWeb {
 
 	public function
 	GetRequestMethod():
-	String {
+	string {
 	/*//
 	@date 2017-10-25
 	figure out what type of request this is. how is this not in nether avenue
@@ -105,7 +105,7 @@ class PublicWeb {
 
 	public function
 	GetEncodedURL():
-	String {
+	string {
 	/*//
 	@date 2020-05-22
 	get the current url encoded to be safe for url pararms.
@@ -116,7 +116,7 @@ class PublicWeb {
 
 	protected function
 	RequireUserSession():
-	Void {
+	void {
 	/*//
 	@date 2020-06-01
 	provide a method to force a user session being required.
@@ -136,7 +136,7 @@ class PublicWeb {
 
 	protected function
 	RequireAdminSession():
-	Void {
+	void {
 	/*//
 	@date 2020-06-01
 	provide a method to force a user session being required.
@@ -156,7 +156,7 @@ class PublicWeb {
 
 	protected function
 	DidValidateHuman():
-	Bool {
+	bool {
 	/*//
 	@date 2020-10-05
 	//*/
@@ -173,7 +173,7 @@ class PublicWeb {
 
 	public function
 	ShouldAdultAllow():
-	Bool {
+	bool {
 	/*//
 	@date 2020-06-18
 	//*/
@@ -186,7 +186,7 @@ class PublicWeb {
 
 	public function
 	ShouldAdultWarn():
-	Bool {
+	bool {
 	/*//
 	@date 2020-06-18
 	//*/
@@ -199,7 +199,7 @@ class PublicWeb {
 
 	public function
 	ShouldAdultSafespace():
-	Bool {
+	bool {
 	/*//
 	@date 2020-06-18
 	//*/
@@ -211,7 +211,7 @@ class PublicWeb {
 	}
 
 	public function
-	AddErrorMessage(String $Message):
+	AddErrorMessage(string $Message):
 	self {
 
 		($this->Errors)
@@ -227,7 +227,7 @@ class PublicWeb {
 
 	public function
 	GetHitHash():
-	String {
+	string {
 
 		if($this->User)
 		return hash('sha512',sprintf(
@@ -241,7 +241,7 @@ class PublicWeb {
 	}
 
 	public function
-	Push(Array $Items, ?String $Area=NULL):
+	Push(array $Items, ?string $Area=NULL):
 	self {
 	/*//
 	@date 2020-05-24
@@ -255,7 +255,7 @@ class PublicWeb {
 	}
 
 	public function
-	Set(String $Key, $Value):
+	Set(string $Key, $Value):
 	self {
 	/*//
 	@date 2020-05-24
@@ -269,7 +269,7 @@ class PublicWeb {
 	}
 
 	public function
-	Area(String $Area, ?Array $Scope=NULL):
+	Area(string $Area, ?array $Scope=NULL):
 	self {
 	/*//
 	@date 2020-05-24
@@ -286,8 +286,8 @@ class PublicWeb {
 	}
 
 	public function
-	Goto(String $URL, Int $Code=303):
-	Void {
+	Goto(string $URL, int $Code=303):
+	void {
 	/*//
 	@todo actually use the specific code.
 	@date 2020-05-22
@@ -301,8 +301,8 @@ class PublicWeb {
 	}
 
 	public function
-	Quit(Int $ErrNum=0):
-	Void {
+	Quit(int $ErrNum=0):
+	void {
 	/*//
 	@date 2020-05-22
 	so long and thanks for all the fish.
@@ -318,7 +318,7 @@ class PublicWeb {
 	////////////////////////////////////////////////////////////////
 
 	public function
-	Log(String $Msg, Int $Level, ?Array $Context=[]):
+	Log(string $Msg, int $Level, ?array $Context=[]):
 	self {
 
 		if(Nether\Stash::Get('Atlantis.Log.Application'))
@@ -329,35 +329,35 @@ class PublicWeb {
 	}
 
 	public function
-	LogCritical(String $Msg, ?Array $Context=[]):
+	LogCritical(string $Msg, ?array $Context=[]):
 	self {
 
 		return $this->Log($Msg,Monolog\Logger::CRITICAL,$Context);
 	}
 
 	public function
-	LogWarning(String $Msg, ?Array $Context=[]):
+	LogWarning(string $Msg, ?array $Context=[]):
 	self {
 
 		return $this->Log($Msg,Monolog\Logger::WARNING,$Context);
 	}
 
 	public function
-	LogNotice(String $Msg, ?Array $Context=[]):
+	LogNotice(string $Msg, ?array $Context=[]):
 	self {
 
 		return $this->Log($Msg,Monolog\Logger::NOTICE,$Context);
 	}
 
 	public function
-	LogDebug(String $Msg, ?Array $Context=[]):
+	LogDebug(string $Msg, ?array $Context=[]):
 	self {
 
 		return $this->Log($Msg,Monolog\Logger::DEBUG,$Context);
 	}
 
 	public function
-	LogInfo(String $Msg, ?Array $Context=[]):
+	LogInfo(string $Msg, ?array $Context=[]):
 	self {
 
 		return $this->Log($Msg,Monolog\Logger::INFO,$Context);

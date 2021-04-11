@@ -31,6 +31,7 @@ echo (new Atlantis\Element\PagePromo)
 ->SetURL($Blog->URL)
 ->SetImageURL($Blog->ImageHeaderURL)
 ->SetIconURL($Blog->ImageIconURL)
+->SetFeedURL("{$Blog->URL}?format=rss")
 ->SetTitle($Blog->Title ?? '')
 ->SetSubtitle($Blog->Tagline ?? '');
 

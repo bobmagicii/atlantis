@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @var Atlantis\Prototype\Blog $Blog
+ * @var Atlantis\Prototype\BlogUser $BlogUser
+ * @var Atlantis\Struct\SearchResult $Posts
+ * @var Atlantis\Prototype\BlogPost $Post
+ * @var Atlantis\Struct\SearchResult $Tags
+ */
+
+$Surface->Stop(TRUE);
+$Surface->SetAutoRender(FALSE);
+
+header('content-type: application/xml');
+
+?>
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<atom:link href="<?php $Printer($Router->GetURL()) ?>" rel="self" type="application/rss+xml" />
+		<title><?php $Printer($Blog->Title) ?></title>
+		<link>https:<?php $Printer($Blog->URL) ?></link>
+		<description><?php $Printer($Blog->Details) ?></description>
+
+<?php foreach($Posts->Payload as $Post): ?>
+		<item>
+			<guid isPermaLink="false"><?php $Printer($Post->UUID) ?></guid>
+			<title><?php $Printer($Post->Title) ?></title>
+			<link>https:<?php $Printer($Post->URL) ?></link>
+			<description></description>
+		</item>
+<?php endforeach; ?>
+
+	</channel>
+</rss>

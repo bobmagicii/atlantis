@@ -23,14 +23,16 @@
 	padding-top: 100%;
 }
 
-.fa-stack { font-size: 0.325em; }
-.fa-stack i { vertical-align: middle; }
+.-fa-stack { font-size: 0.325em; }
+.-fa-stack i { vertical-align: middle; }
 
 .font-size-normal { font-size: 1.0em; }
 .font-size-small { font-size: 0.90em; }
 .font-size-smaller { font-size: 0.80em; }
 .font-size-smallerer { font-size: 0.65em; }
 .font-size-smallerest { font-size: 0.55em; }
+.font-size-most-small { font-size: 0.42em; }
+.font-size-mostest-small { font-size: 0.35em; }
 
 .font-size-large { font-size: 1.10em; }
 .font-size-larger { font-size: 1.20em; }
@@ -171,8 +173,22 @@ select:focus {
 	color: var(--ColourGithubHoverText);
 }
 
+.btn-rss {
+	background: var(--ColourRssButton);
+	border-color: var(--ColourRssButton);
+	color: var(--ColourRssText);
+}
+
+.btn-rss:hover,
+.btn-rss.active {
+	background: var(--ColourRssHoverButton);
+	border-color: var(--ColourRssHoverButton);
+	color: var(--ColourRssHoverText);
+}
+
 .text-decoration-none { text-decoration: none; }
-.text-adult { color: var(--ColourAdultButton); }
-.text-twitter { color: var(--ColourTwitterButton); }
-.text-github { color: var(--ColourGithubButton); }
+.text-adult { color: var(--ColourAdultButton) !important; }
+.text-twitter { color: var(--ColourTwitterButton) !important; }
+.text-github { color: var(--ColourGithubButton) !important; }
+.text-rss { color: var(--ColourRssButton) !important; }
 

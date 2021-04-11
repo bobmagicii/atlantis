@@ -1,18 +1,17 @@
 <?php
 
 namespace Routes\Blog;
-use \Atlantis as Atlantis;
+use Atlantis;
 
-use
-\Atlantis\Prototype\Blog as Blog,
-\Atlantis\Prototype\BlogPost as Post;
+use Atlantis\Prototype\Blog;
+use Atlantis\Prototype\BlogPost as Post;
 
 class Index
 extends Atlantis\Site\PublicWeb {
 
 	public function
-	Index(String $BlogAlias):
-	Void {
+	Index(string $BlogAlias):
+	void {
 	/*//
 	@date 2020-05-24
 	//*/
@@ -22,12 +21,16 @@ extends Atlantis\Site\PublicWeb {
 		$Page = 1;
 		$Limit = 10;
 		$QueryTags = NULL;
-		$Users = NULL;
 		$Opt = [
 			'Adult'   => NULL,
 			'Enabled' => Post::EnableStatePublic,
 			'Tags'    => NULL
 		];
+
+		$Area = match(strtolower($this->Get->Format)) {
+			'rss'   => 'blog/index-rss',
+			default => 'blog/index'
+		};
 
 		// bail if no blog.
 
@@ -76,7 +79,7 @@ extends Atlantis\Site\PublicWeb {
 		->Set('Page.Desc',$Blog->Tagline)
 		->Set('Page.Keywords',$Keywords)
 		->Set('Page.Authour',$Blog->User->Alias)
-		->Area('blog/index',[
+		->Area($Area,[
 			'Blog'          => $Blog,
 			'BlogUser'      => $BlogUser,
 			'Posts'         => $Blog->GetRecentPosts($Limit,$Page,$Opt),
@@ -91,7 +94,7 @@ extends Atlantis\Site\PublicWeb {
 
 	protected function
 	GetTagList():
-	Array {
+	array {
 	/*//
 	@date 2020-09-29
 	//*/

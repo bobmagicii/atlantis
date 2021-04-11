@@ -19,6 +19,7 @@ purposes.
 	Atlantis\Properties\Subtitle,
 	Atlantis\Properties\URL,
 	Atlantis\Properties\ImageURL,
-	Atlantis\Properties\IconURL;
+	Atlantis\Properties\IconURL,
+	Atlantis\Properties\FeedURL;
 
 }

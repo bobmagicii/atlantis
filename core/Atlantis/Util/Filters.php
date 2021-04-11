@@ -41,7 +41,7 @@ methods here are safe for direct use or use as callback filtering.
 
 	static public function
 	TypeBool(mixed $Val):
-	Bool {
+	bool {
 	/*//
 	@date 2017-12-15
 	//*/
@@ -64,7 +64,7 @@ methods here are safe for direct use or use as callback filtering.
 
 	static public function
 	TypeInt(mixed $Val):
-	Int {
+	int {
 	/*//
 	@date 2017-12-15
 	//*/
@@ -74,7 +74,7 @@ methods here are safe for direct use or use as callback filtering.
 
 	static public function
 	TypeFloat(mixed $Val):
-	Float {
+	float {
 	/*//
 	@date 2017-12-15
 	//*/
@@ -84,7 +84,7 @@ methods here are safe for direct use or use as callback filtering.
 
 	static public function
 	TypeString(mixed $Val):
-	String {
+	string {
 	/*//
 	@date 2017-12-15
 	//*/
@@ -96,8 +96,8 @@ methods here are safe for direct use or use as callback filtering.
 	////////////////////////////////
 
 	static public function
-	NumberValidRange(mixed $Val, String $Var, Int $Min=0, Int $Max=0, Int $Def=0):
-	Int {
+	NumberValidRange(mixed $Val, string $Var, int $Min=0, int $Max=0, int $Def=0):
+	int {
 	/*//
 	@date 2017-12-15
 	//*/
@@ -111,7 +111,7 @@ methods here are safe for direct use or use as callback filtering.
 
 	static public function
 	NumberLimit25(mixed $Val):
-	Int {
+	int {
 	/*//
 	@date 2017-02-27
 	make sure the specified value is within the range of 0 to 25, and if not
@@ -126,7 +126,7 @@ methods here are safe for direct use or use as callback filtering.
 
 	static public function
 	PageNumber(mixed $Val):
-	Int {
+	int {
 	/*//
 	@date 2017-02-27
 	make sure the specified value makes sense for a page number, and if not
@@ -141,7 +141,7 @@ methods here are safe for direct use or use as callback filtering.
 
 	static public function
 	TrimmedText(mixed $Val):
-	String {
+	string {
 	/*//
 	@date 2020-06-01
 	//*/
@@ -151,7 +151,7 @@ methods here are safe for direct use or use as callback filtering.
 
 	static public function
 	EncodedText(mixed $Val):
-	String {
+	string {
 	/*//
 	@date 2020-06-01
 	//*/
@@ -161,7 +161,7 @@ methods here are safe for direct use or use as callback filtering.
 
 	static public function
 	StrippedText(mixed $Val):
-	String {
+	string {
 	/*//
 	@date 2020-06-01
 	//*/
@@ -171,7 +171,7 @@ methods here are safe for direct use or use as callback filtering.
 
 	static public function
 	RouteSafeAlias(mixed $Val):
-	String {
+	string {
 	/*//
 	@date 2017-02-27
 	transform the given input to be safe for routing based on the rules i
@@ -197,7 +197,7 @@ methods here are safe for direct use or use as callback filtering.
 
 	static public function
 	MethodFromAlias(mixed $Val):
-	String {
+	string {
 	/*//
 	@date 2020-05-22
 	transform the given input into a method name we want to call.
@@ -224,7 +224,7 @@ methods here are safe for direct use or use as callback filtering.
 
 	static public function
 	SafeForHTML(mixed $Val):
-	String {
+	string {
 	/*//
 	@date 2017-02-11
 	make sure strings are safe for html, this will be mostly used by printers
@@ -236,7 +236,7 @@ methods here are safe for direct use or use as callback filtering.
 
 	static public function
 	Email(mixed $Val):
-	?String {
+	?string {
 	/*//
 	@date 2020-10-05
 	//*/
@@ -252,7 +252,7 @@ methods here are safe for direct use or use as callback filtering.
 
 	static public function
 	ObjectAsJSON(mixed $Val):
-	?String {
+	?string {
 
 		$Output = json_decode($Val);
 
@@ -264,7 +264,7 @@ methods here are safe for direct use or use as callback filtering.
 
 	static public function
 	ValidatorForEditorJS(mixed $Val):
-	?Object {
+	?object {
 
 		return new Atlantis\Struct\EditorJS\Validator($Val);
 	}
@@ -273,8 +273,8 @@ methods here are safe for direct use or use as callback filtering.
 	////////////////////////////////
 
 	static public function
-	Base64Encode(?String $Val):
-	?String {
+	Base64Encode(?string $Val):
+	?string {
 	/*//
 	encode into base64 safe for urls.
 	https://en.wikipedia.org/wiki/Base64#URL_applications
@@ -291,8 +291,8 @@ methods here are safe for direct use or use as callback filtering.
 	}
 
 	static public function
-	Base64Decode(?String $Val):
-	?String {
+	Base64Decode(?string $Val):
+	?string {
 	/*//
 	decode from url safe base64.
 	https://en.wikipedia.org/wiki/Base64#URL_applications

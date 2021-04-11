@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-11 00:44:35
+@date 2021-04-11 02:17:43
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -32,6 +32,11 @@
 	--ColourAdultText: #ffe6ea;
 	--ColourAdultHoverButton: #cf6694;
 	--ColourAdultHoverText: #ffe6ea;
+
+	--ColourRssButton: #ff8800;
+	--ColourRssText: #fff5e9;
+	--ColourRssHoverButton: #ff961e;
+	--ColourRssHoverText: #fff5e9;
 
 	--ColourTwitterButton: #1DA1F2;
 	--ColourTwitterText: #eee;

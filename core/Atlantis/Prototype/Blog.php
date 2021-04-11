@@ -78,8 +78,8 @@ implements JsonSerializable {
 	///////////////////////////////////////////////////////////////////////////
 
 	public function
-	OnReady(Array $Raw):
-	Void {
+	OnReady(array $Raw):
+	void {
 	/*//
 	prepare some data for this object.
 	//*/
@@ -95,7 +95,7 @@ implements JsonSerializable {
 	}
 
 	protected function
-	OnReady_GetUser(Array $Raw):
+	OnReady_GetUser(array $Raw):
 	self {
 	/*//
 	prepare a blog object depending on if it was fetched with an inclusion
@@ -116,7 +116,7 @@ implements JsonSerializable {
 	}
 
 	protected function
-	OnReady_GetDates(Array $Raw):
+	OnReady_GetDates(array $Raw):
 	self {
 	/*//
 	prepare the date objects.
@@ -128,7 +128,7 @@ implements JsonSerializable {
 	}
 
 	protected function
-	OnReady_GetImages(Array $Raw):
+	OnReady_GetImages(array $Raw):
 	self {
 	/*//
 	prepare image urls.
@@ -167,7 +167,7 @@ implements JsonSerializable {
 
 	public function
 	JsonSerialize():
-	Array {
+	array {
 	/*//
 	@date 2020-06-01
 	@implements JsonSerializable
@@ -207,7 +207,7 @@ implements JsonSerializable {
 
 	public function
 	GetTagURL(BlogTag $Tag):
-	String {
+	string {
 
 		return sprintf(
 			'%s/?tags=%s',
@@ -218,7 +218,7 @@ implements JsonSerializable {
 
 	public function
 	GetImageHeaderURL($Size='lg'):
-	String {
+	string {
 	/*//
 	@date 2020-09-21
 	get the header image for this blog or the global default if none.
@@ -232,7 +232,7 @@ implements JsonSerializable {
 
 	public function
 	GetImageIconURL($Size='th'):
-	String {
+	string {
 	/*//
 	@date 2020-09-21
 	get the icon for this blog or the global default if none.
@@ -263,7 +263,7 @@ implements JsonSerializable {
 
 	public function
 	IsAdult():
-	Bool {
+	bool {
 	/*//
 	@date 2020-06-18
 	//*/
@@ -274,7 +274,7 @@ implements JsonSerializable {
 
 	public function
 	IsAdultForced():
-	Bool {
+	bool {
 	/*//
 	@date 2020-06-18
 	//*/
@@ -286,7 +286,7 @@ implements JsonSerializable {
 	///////////////////////////////////////////////////////////////////////////
 
 	public function
-	GetRecentPosts(Int $Limit=5, Int $Page=1, ?Array $Opt=NULL):
+	GetRecentPosts(int $Limit=5, int $Page=1, ?array $Opt=NULL):
 	Atlantis\Struct\SearchResult {
 	/*//
 	@date 2020-05-23
@@ -311,7 +311,7 @@ implements JsonSerializable {
 	}
 
 	public function
-	GetPopularPosts(Int $Limit=5, Int $Page=1, ?Array $Opt=NULL):
+	GetPopularPosts(int $Limit=5, int $Page=1, ?array $Opt=NULL):
 	Atlantis\Struct\SearchResult {
 	/*//
 	@date 2020-05-26
@@ -333,7 +333,7 @@ implements JsonSerializable {
 	}
 
 	public function
-	GetTags(Int $Limit=0, Int $Page=1, ?Array $Opt=NULL):
+	GetTags(int $Limit=0, int $Page=1, ?array $Opt=NULL):
 	Atlantis\Struct\SearchResult {
 	/*//
 	@date 2020-09-29
@@ -354,7 +354,7 @@ implements JsonSerializable {
 	///////////////////////////////////////////////////////////////////////////
 
 	static public function
-	GetByAlias(String $Alias):
+	GetByAlias(string $Alias):
 	?self {
 
 		$SQL = Nether\Database::Get()->NewVerse();
@@ -390,8 +390,8 @@ implements JsonSerializable {
 	///////////////////////////////////////////////////////////////////////////
 
 	static protected function
-	ExtendQueryJoins($SQL, String $TableAlias='Main', String $FieldPrefix=''):
-	Void {
+	ExtendQueryJoins($SQL, string $TableAlias='Main', string $FieldPrefix=''):
+	void {
 	/*//
 	@date 2018-06-08
 	//*/
@@ -408,8 +408,8 @@ implements JsonSerializable {
 	}
 
 	static protected function
-	ExtendQueryFields($SQL, String $TablePrefix='', String $FieldPrefix=''):
-	Void {
+	ExtendQueryFields($SQL, string $TablePrefix='', string $FieldPrefix=''):
+	void {
 	/*//
 	@date 2018-06-08
 	//*/
@@ -424,7 +424,7 @@ implements JsonSerializable {
 
 	static protected function
 	FindExtendOptions($Opt):
-	Array {
+	array {
 	/*//
 	@date 2020-05-23
 	//*/
@@ -437,7 +437,7 @@ implements JsonSerializable {
 
 	static protected function
 	FindApplyFilters($Opt,$SQL):
-	Void {
+	void {
 	/*//
 	@date 2018-06-08
 	//*/
