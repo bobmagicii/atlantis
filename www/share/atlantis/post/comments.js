@@ -202,6 +202,11 @@ class Comments {
 	@date 2021-04-09
 	//*/
 
+		this.Listing.empty();
+
+		jQuery('.PostCommentCount')
+		.text('0');
+
 		this.Listing.append(
 			jQuery('<div />')
 			.text('There are no comments on this post.')

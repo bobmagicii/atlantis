@@ -586,6 +586,8 @@ extends Atlantis\Site\PublicAPI {
 		////////
 
 		$Comment->Drop();
+		$Comment->Post->UpdateCountComments();
+
 		return;
 	}
 
