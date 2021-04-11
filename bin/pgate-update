@@ -10,15 +10,34 @@ require(sprintf(
 
 	#[Nether\Console\Meta\Subcommand]
 	#[Nether\Console\Meta\Info('full update all the things')]
+	#[Nether\Console\Meta\SubcommandOption('-e',FALSE,'errors will not stop the full pipeline')]
+	#[Nether\Console\Meta\SubcommandOption('-o',FALSE,'show command output')]
 	public function
 	HandleAll():
 	int {
 
-		$this->Run(['git']);
-		$this->Run(['conf']);
-		$this->Run(['local']);
-		$this->Run(['composer']);
-		$this->Run(['phinx']);
+		$Commands = [
+			'git',
+			'conf',
+			'local',
+			'composer',
+			'phinx',
+			'chmod'
+		];
+
+		$IgnoreErrors = $this->GetOption('e');
+		$ShowOutput = $this->GetOption('o');
+
+		foreach($Commands as $Cmd) {
+			$Args = [];
+			$Args[] = $Cmd;
+
+			if($ShowOutput)
+			$Args[] = '-o';
+
+			if($this->Run($Args) && !$IgnoreErrors)
+			return 1;
+		}
 
 		return 0;
 	}
@@ -29,8 +48,8 @@ require(sprintf(
 	HandleGit():
 	int {
 
-		exec('git pull origin master');
-		return 0;
+		$Result = $this->ExecuteCmd('git pull origin master',$this->GetInput(1));
+		return $Result->Error;
 	}
 
 	#[Nether\Console\Meta\Subcommand]
@@ -39,8 +58,8 @@ require(sprintf(
 	HandleConf():
 	int {
 
-		exec('cp /opt/web-dev/conf/env/prod/* conf/env/prod');
-		return 0;
+		$Result = $this->ExecuteCmd('cp -v /opt/web-dev/conf/env/prod/* conf/env/prod',$this->GetInput(1));
+		return $Result->Error;
 	}
 
 	#[Nether\Console\Meta\Subcommand]
@@ -49,9 +68,19 @@ require(sprintf(
 	HandleLocal():
 	int {
 
-		exec('cp -r /opt/web-dev/www/themes/local www/themes');
-		exec('cp -r /opt/web-dev/data/pages data');
+		$Result = $this->ExecuteCmd('cp -vr /opt/web-dev/www/themes/local www/themes',$this->GetInput(1));
+		$Result = $this->ExecuteCmd('cp -vr /opt/web-dev/data/pages data',$this->GetInput(1));
 		return 0;
+	}
+
+	#[Nether\Console\Meta\Subcommand]
+	#[Nether\Console\Meta\Info('pull the latest local app things.')]
+	public function
+	HandleChmod():
+	int {
+
+		$Result = $this->ExecuteCmd('chmod -R 777 bin',$this->GetInput(1));
+		return $Result->Error;
 	}
 
 	#[Nether\Console\Meta\Subcommand]
@@ -60,8 +89,8 @@ require(sprintf(
 	HandleComposer():
 	int {
 
-		exec('composer install');
-		return 0;
+		$Result = $this->ExecuteCmd('composer install',$this->GetInput(1));
+		return $Result->Error;
 	}
 
 	#[Nether\Console\Meta\Subcommand]
@@ -70,8 +99,50 @@ require(sprintf(
 	HandlePhinx():
 	int {
 
-		exec('phinx migrate');
-		return 0;
+		$Result = $this->ExecuteCmd('phinx migrate',$this->GetInput(1));
+		return $Result->Error;
+	}
+
+	protected function
+	ExecuteCmd(string $Cmd, string $StageName=''):
+	object {
+	/*//
+	//*/
+
+		$F = new Nether\Console\TerminalFormatter;
+		$Output = [];
+		$Error = 0;
+		$Line = NULL;
+
+		if($StageName)
+		$StageName  = "{$StageName}: ";
+
+		static::Message(
+			$F->BoldYellow("[$] {$StageName}").
+			$Cmd
+		);
+
+		exec("{$Cmd} 2>&1",$Output,$Error);
+
+		if($Error)
+		static::Message(
+			$F->BoldRed('[E] ').
+			"Exit Status: {$Error}"
+		);
+
+		if($this->GetOption('o') || $Error) {
+			foreach($Output as $Line)
+			static::Message('>>> '.$F->DimGrey($Line));
+			static::Message('');
+		}
+
+		return new class($Cmd,$Output,$Error) {
+			public function
+			__Construct(string $Cmd, array $Output, int $Error){
+				list($this->Cmd,$this->Output,$this->Error) = func_get_args();
+				return;
+			}
+		};
 	}
 
 })
