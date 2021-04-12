@@ -13,6 +13,19 @@ doing things like validating and sanitising input. unless stated otherwise all
 methods here are safe for direct use or use as callback filtering.
 //*/
 
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
+	// because i am fukken tired of passing around arrays and strings that
+	// promise to point at something callable this magic method system will
+	// allow you to demand a lambda wrapper all javascript style. this way
+	// you can just type at something and auto complete can follow what is
+	// really going on.
+
+	// all you have to do is add Callable to the method name.
+	// Filters::TypeBoolCallable() will give you a literal callable that
+	// will run ::TypeBool when invoked.
+
 	static public function
 	__CallStatic(string $Fn, array $Argv):
 	mixed {
@@ -39,6 +52,9 @@ methods here are safe for direct use or use as callback filtering.
 		return (fn(...$Input)=> static::{$Fn}(...$Input));
 	}
 
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
 	static public function
 	TypeBool(mixed $Val):
 	bool {
@@ -63,6 +79,19 @@ methods here are safe for direct use or use as callback filtering.
 	}
 
 	static public function
+	NullableBool(mixed $Val):
+	?bool {
+	/*//
+	@date 2017-12-15
+	//*/
+
+		return match($Val) {
+			NULL => NULL,
+			default => self::TypeBool($Val)
+		};
+	}
+
+	static public function
 	TypeInt(mixed $Val):
 	int {
 	/*//
@@ -70,6 +99,19 @@ methods here are safe for direct use or use as callback filtering.
 	//*/
 
 		return (Int)$Val;
+	}
+
+	static public function
+	NullableInt(mixed $Val):
+	?int {
+	/*//
+	@date 2017-12-15
+	//*/
+
+		return match($Val) {
+			NULL => NULL,
+			default => self::TypeInt($Val)
+		};
 	}
 
 	static public function
@@ -83,6 +125,19 @@ methods here are safe for direct use or use as callback filtering.
 	}
 
 	static public function
+	NullableFloat(mixed $Val):
+	?float {
+	/*//
+	@date 2017-12-15
+	//*/
+
+		return match($Val) {
+			NULL => NULL,
+			default => self::TypeFloat($Val)
+		};
+	}
+
+	static public function
 	TypeString(mixed $Val):
 	string {
 	/*//
@@ -92,6 +147,18 @@ methods here are safe for direct use or use as callback filtering.
 		return (String)$Val;
 	}
 
+	static public function
+	NullableString(mixed $Val):
+	?string {
+	/*//
+	@date 2017-12-15
+	//*/
+
+		return match($Val) {
+			NULL => NULL,
+			default => self::TypeString($Val)
+		};
+	}
 	////////////////////////////////
 	////////////////////////////////
 
