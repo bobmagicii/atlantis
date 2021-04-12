@@ -145,9 +145,16 @@ class PublicWeb {
 		if($this->User && $this->User->IsAdmin())
 		return;
 
-		if(!$this->User)
+		if(!$this->User) {
+			$this->Goto(sprintf(
+				'/login?goto=%s',
+				$this->GetEncodedURL()
+			));
+			return;
+		}
+
 		$this->Goto(sprintf(
-			'/login?goto=%s',
+			'/',
 			$this->GetEncodedURL()
 		));
 
@@ -269,15 +276,14 @@ class PublicWeb {
 	}
 
 	public function
-	Area(string $Area, ?array $Scope=NULL):
+	Area(string $Area, array|object|NULL $Scope=NULL):
 	self {
 	/*//
 	@date 2020-05-24
 	a chainable call to the surface area.
 	//*/
 
-		if(is_array($Scope))
-		$this->Push($Scope,$Area);
+		$this->Push((array)$Scope,$Area);
 
 		($this->Surface)
 		->Area($Area);
