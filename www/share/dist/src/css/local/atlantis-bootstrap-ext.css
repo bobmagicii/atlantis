@@ -87,6 +87,14 @@
 .mt-8 { margin-top: 5rem! important; }
 .mb-8 { margin-bottom: 5rem! important; }
 
+.w-75 { width: 75%; }
+.w-50 { width: 50%; }
+.w-25 { width: 25%; }
+.w-0 { width: 0%; }
+
+.wpx-1 { width: 1px; }
+.wpx-100 { width: 100px; }
+
 .row.tight {
 	margin-left: -0.25rem;
 	margin-right: -0.25rem;

@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-11 23:19:13
+@date 2021-04-11 23:38:15
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -746,6 +746,7 @@ given an image to display to art shit up.
 .breadcrumb a:visited,
 .breadcrumb .active {
 	color: #eee;
+	text-decoration: none;
 }
 
 .breadcrumb a:link,

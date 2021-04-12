@@ -2,15 +2,27 @@
 
 namespace Routes\Api\V1;
 
-use
-Atlantis,
-Nether;
+use Atlantis;
+use Nether;
 
-use
-Throwable;
+use Throwable;
+use Atlantis\Prototype\User as UserEntity;
 
 class User
 extends Atlantis\Site\ProtectedAPI {
+
+	protected function
+	OnReady():
+	void {
+	/*//
+	@date 2021-04-12
+	//*/
+
+		($this->Post)
+		->ID(Atlantis\Util\Filters::NullableIntCallable());
+
+		return;
+	}
 
 	/**
 	 * @input ?Int OptAdult
@@ -18,7 +30,7 @@ extends Atlantis\Site\ProtectedAPI {
 
 	final public function
 	EntityPatch():
-	Void {
+	void {
 	/*//
 	@date 2020-06-18
 	//*/
@@ -27,11 +39,24 @@ extends Atlantis\Site\ProtectedAPI {
 		$Fields = new Nether\Input\Filter($this->Post->Fields);
 
 		$Fields
-		->Location('Atlantis\\Util\\Filters::EncodedText')
-		->Details('Atlantis\\Util\\Filters::EncodedText')
-		->Email('Atlantis\\Util\\Filters::Email')
-		->OptAdult('Atlantis\\Util\\Filters::NumberValidRange',[0,2,0])
-		->OptAllowSeen('Atlantis\\Util\\Filters::NumberValidRange',[0,1,0]);
+		->ID(Atlantis\Util\Filters::NullableIntCallable())
+		->Location(Atlantis\Util\Filters::EncodedTextCallable())
+		->Details(Atlantis\Util\Filters::EncodedTextCallable())
+		->Email(Atlantis\Util\Filters::EmailCallable())
+		->OptAdult(Atlantis\Util\Filters::NumberValidRangeCallable(),[0,2,0])
+		->OptAllowSeen(Atlantis\Util\Filters::NumberValidRangeCallable(),[0,1,0]);
+
+		////////
+
+		$Entity = $this->User;
+
+		if($this->User->IsAdmin()) {
+			if($Fields->ID !== NULL) // admins can specify who.
+			$Entity = Atlantis\Prototype\User::GetByID($Fields->ID,FALSE);
+		}
+
+		if(!$Entity)
+		$this->Quit(1);
 
 		////////
 
@@ -60,7 +85,7 @@ extends Atlantis\Site\ProtectedAPI {
 
 		if($Fields->Exists('Password0') && $Fields->Exists('Password1') && $Fields->Exists('Password2')) {
 
-			if(!$this->User->IsValidPassword($Fields->Password0))
+			if(!$Entity->IsValidPassword($Fields->Password0))
 			$this->Quit(101,'Invalid Old Password');
 
 			try {
@@ -79,7 +104,7 @@ extends Atlantis\Site\ProtectedAPI {
 		if(!count($Dataset))
 		$this->Quit(0,'zzz');
 
-		($this->User)
+		($Entity)
 		->Update($Dataset);
 
 		////////
@@ -91,23 +116,24 @@ extends Atlantis\Site\ProtectedAPI {
 		$Dataset['ImageHeaderURL'] = Nether\Option::Get('Atlantis.Blog.DefaultImageHeaderURL');
 
 		if(array_key_exists('PHash',$Dataset)) {
-			Atlantis\Prototype\User::LaunchSession($this->User);
+			if($Entity->ID === $this->User->ID)
+			Atlantis\Prototype\User::LaunchSession($Entity);
+
 			unset($Dataset['PHash'],$Dataset['PSand']);
 		}
 
 		////////
 
 		$this
-		->SetLocation($this->User->URL)
+		->SetLocation($Entity->URL)
 		->SetPayload($Dataset);
 
 		return;
 	}
 
-
 	final public function
 	IconPost():
-	Void {
+	void {
 	/*//
 	@date 2020-09-21
 	//*/
@@ -157,7 +183,7 @@ extends Atlantis\Site\ProtectedAPI {
 
 	final public function
 	HeaderPost():
-	Void {
+	void {
 	/*//
 	@date 2020-09-21
 	//*/
@@ -194,6 +220,139 @@ extends Atlantis\Site\ProtectedAPI {
 			'ImageURL' => $Uploads->Success[0]->GetURL('lg')
 		]);
 
+		return;
+	}
+
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
+	#[Atlantis\Meta\Parameter('ID','int')]
+	#[Atlantis\Meta\Error(1,'profile not found')]
+	#[Atlantis\Meta\Error(2,'stop touching yourself')]
+	final public function
+	EntityOvershadow():
+	void {
+	/*//
+	@date 2021-04-12
+	yo danny fenton he was just 14 when his parents built a very strange
+	machine designed to view a world unseen
+	//*/
+
+		$this->RequireAdminSession();
+
+		$Entity = (
+			$this->Post->ID?
+			UserEntity::GetByID($this->Post->ID,FALSE):NULL
+		);
+
+		if(!$Entity)
+		$this->Quit(1);
+
+		if($Entity->ID === $this->User->ID)
+		$this->Quit(2);
+
+		UserEntity::LaunchSession($Entity,TRUE);
+		$this->SetMessage('going ghost');
+
+		return;
+	}
+
+	#[Atlantis\Meta\Parameter('ID','int')]
+	#[Atlantis\Meta\Error(1,'profile not found')]
+	#[Atlantis\Meta\Error(2,'stop touching yourself')]
+	final public function
+	EntityBan():
+	void {
+	/*//
+	@date 2021-04-12
+	yo danny fenton he was just 14 when his parents built a very strange
+	machine designed to view a world unseen
+	//*/
+
+		$this->RequireAdminSession();
+
+		$Entity = (
+			$this->Post->ID?
+			UserEntity::GetByID($this->Post->ID,FALSE):NULL
+		);
+
+		if(!$Entity)
+		$this->Quit(1);
+
+		if($Entity->ID === $this->User->ID)
+		$this->Quit(2);
+
+		////////
+
+		$Entity->Update([
+			'TimeBanned' => time()
+		]);
+
+		return;
+	}
+
+	#[Atlantis\Meta\Parameter('ID','int')]
+	#[Atlantis\Meta\Error(1,'profile not found')]
+	#[Atlantis\Meta\Error(2,'stop touching yourself')]
+	final public function
+	EntityUnban():
+	void {
+	/*//
+	@date 2021-04-12
+	yo danny fenton he was just 14 when his parents built a very strange
+	machine designed to view a world unseen
+	//*/
+
+		$this->RequireAdminSession();
+
+		$Entity = (
+			$this->Post->ID?
+			UserEntity::GetByID($this->Post->ID,FALSE):NULL
+		);
+
+		if(!$Entity)
+		$this->Quit(1);
+
+		if($Entity->ID === $this->User->ID)
+		$this->Quit(2);
+
+		////////
+
+		$Entity->Update([
+			'TimeBanned' => 0
+		]);
+
+		return;
+	}
+
+	#[Atlantis\Meta\Parameter('ID','int')]
+	#[Atlantis\Meta\Error(1,'profile not found')]
+	#[Atlantis\Meta\Error(2,'stop touching yourself')]
+	final public function
+	EntityDelete():
+	void {
+	/*//
+	@date 2021-04-12
+	yo danny fenton he was just 14 when his parents built a very strange
+	machine designed to view a world unseen
+	//*/
+
+		$this->RequireAdminSession();
+
+		$Entity = (
+			$this->Post->ID?
+			UserEntity::GetByID($this->Post->ID,FALSE):NULL
+		);
+
+		if(!$Entity)
+		$this->Quit(1);
+
+		if($Entity->ID === $this->User->ID)
+		$this->Quit(2);
+
+		////////
+
+		$Entity->Drop();
 		return;
 	}
 

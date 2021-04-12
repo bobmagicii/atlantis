@@ -49,7 +49,7 @@ methods here are safe for direct use or use as callback filtering.
 	@date 2021-04-10
 	//*/
 
-		return (fn(...$Input)=> static::{$Fn}(...$Input));
+		return (fn(...$In)=> static::{$Fn}(...$In));
 	}
 
 	////////////////////////////////////////////////////////////////
@@ -159,6 +159,7 @@ methods here are safe for direct use or use as callback filtering.
 			default => self::TypeString($Val)
 		};
 	}
+
 	////////////////////////////////
 	////////////////////////////////
 

@@ -13,6 +13,7 @@
 .breadcrumb a:visited,
 .breadcrumb .active {
 	color: #eee;
+	text-decoration: none;
 }
 
 .breadcrumb a:link,

@@ -30,7 +30,7 @@ extends Nether\Avenue\Router {
 	}
 
 	public function
-	Register(String $Name, String $Request, String $Pattern, String $Handler):
+	Register(string $Name, string $Request, string $Pattern, string $Handler):
 	self {
 
 		$this->AddRoute($Request,$Handler);

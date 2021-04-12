@@ -143,7 +143,7 @@ namespace.
 	////////////////////////////////////////////////////////////////
 
 	static public function
-	GetByID(int $ID):
+	GetByID(int $ID, bool $Safer=TRUE):
 	?static {
 	/*//
 	@date 2018-06-08
@@ -186,7 +186,7 @@ namespace.
 
 		////////
 
-		return new static($Row);
+		return new static($Row,$Safer);
 	}
 
 	static public function

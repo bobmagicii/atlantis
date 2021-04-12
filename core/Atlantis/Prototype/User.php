@@ -44,24 +44,24 @@ implements JsonSerializable {
 
 	// data properties
 
-	public Int $ID;
-	public String $UUID;
-	public Int $TimeCreated;
-	public Int $TimeSeen;
-	public Int $TimeBanned;
-	public Int $Enabled;
-	public Int $Admin;
-	public String $Alias;
-	public String $Email;
-	public String $PHash;
-	public String $PSand;
-	public Int $OptAdult;
-	public Int $OptAllowSeen;
-	public Int $BytesImages;
-	public ?String $Location;
-	public ?String $Details;
-	public ?String $AuthGithubID;
-	public ?String $AuthTwitterID;
+	public int $ID;
+	public string $UUID;
+	public int $TimeCreated;
+	public int $TimeSeen;
+	public int $TimeBanned;
+	public int $Enabled;
+	public int $Admin;
+	public string $Alias;
+	public string $Email;
+	public ?string $PHash;
+	public ?string $PSand;
+	public int $OptAdult;
+	public int $OptAllowSeen;
+	public int $BytesImages;
+	public ?string $Location;
+	public ?string $Details;
+	public ?string $AuthGithubID;
+	public ?string $AuthTwitterID;
 
 	// extended properties
 
@@ -89,7 +89,7 @@ implements JsonSerializable {
 	JoinModeInvite   = 2;
 
 	public function
-	__Construct($Input, Bool $MakeSafer=FALSE) {
+	__Construct($Input, bool $MakeSafer=TRUE) {
 
 		// provide a way to still use user objects but omit various
 		// personal data that is not needed outside of auth or
@@ -97,9 +97,9 @@ implements JsonSerializable {
 
 		if($MakeSafer) {
 			if(is_array($Input))
-			unset($Input['PHash'],$Input['PSand'],$Input['Email']);
+			unset($Input['PHash'],$Input['PSand']);
 			elseif(is_object($Input))
-			unset($Input->PHash,$Input->PSand,$Input->Email);
+			unset($Input->PHash,$Input->PSand);
 		}
 
 		parent::__Construct($Input);
@@ -108,7 +108,7 @@ implements JsonSerializable {
 
 	public function
 	__Ready($Raw):
-	Void {
+	void {
 
 		$this->URL = $this->GetURL();
 
@@ -133,7 +133,7 @@ implements JsonSerializable {
 
 	public function
 	JsonSerialize():
-	Array {
+	array {
 	/*//
 	@date 2020-06-01
 	@implements JsonSerializable
@@ -144,6 +144,10 @@ implements JsonSerializable {
 			'UUID'           => $this->UUID,
 			'Alias'          => $this->Alias,
 			'URL'            => $this->URL,
+			'TimeCreated'    => $this->TimeCreated,
+			'TimeSeen'       => ($this->OptAllowSeen ? $this->TimeSeen : $this->TimeCreated),
+			'DateCreated'    => (String)$this->DateCreated,
+			'DateSeen'       => ($this->OptAllowSeen ? $this->DateSeen->Fancy() : $this->DateCreated),
 			'ImageHeader'    => [
 				'Large'  => $this->GetImageHeaderURL('lg'),
 				'Medium' => $this->GetImageHeaderURL('md'),
@@ -154,11 +158,7 @@ implements JsonSerializable {
 				'Medium' => $this->GetImageIconURL('md'),
 				'Small'  => $this->GetImageIconURL('sm'),
 				'Tiny'   => $this->GetImageIconURL('th')
-			],
-			'TimeCreated'    => $this->TimeCreated,
-			'TimeSeen'       => ($this->OptAllowSeen?$this->TimeSeen:$this->TimeCreated),
-			'DateCreated'    => (String)$this->DateCreated,
-			'DateSeen'       => ($this->OptAllowSeen?(String)$this->DateSeen:$this->DateCreated)
+			]
 		];
 	}
 
@@ -167,7 +167,7 @@ implements JsonSerializable {
 
 	public function
 	IsFriendsWith(?Atlantis\Prototype\User $User):
-	Bool {
+	bool {
 	/*//
 	@date 2020-12-11
 	//*/
@@ -181,8 +181,8 @@ implements JsonSerializable {
 	}
 
 	public function
-	IsAdmin(Int $Flags=1):
-	Bool {
+	IsAdmin(int $Flags=1):
+	bool {
 	/*//
 	@date 2020-06-02
 	//*/
@@ -191,6 +191,16 @@ implements JsonSerializable {
 		return TRUE;
 
 		return FALSE;
+	}
+
+	public function
+	IsBanned():
+	bool {
+	/*//
+	@date 2021-04-12
+	//*/
+
+		return ($this->TimeBanned !== 0);
 	}
 
 	public function
@@ -220,8 +230,8 @@ implements JsonSerializable {
 	}
 
 	public function
-	GetImageHeaderURL(String $Size='lg'):
-	String {
+	GetImageHeaderURL(string $Size='lg'):
+	string {
 	/*//
 	@date 2020-10-01
 	//*/
@@ -233,8 +243,8 @@ implements JsonSerializable {
 	}
 
 	public function
-	GetImageIconURL(String $Size='th'):
-	String {
+	GetImageIconURL(string $Size='th'):
+	string {
 	/*//
 	@date 2020-10-01
 	//*/
@@ -247,7 +257,7 @@ implements JsonSerializable {
 
 	public function
 	ShouldAdultSafespace():
-	Bool {
+	bool {
 	/*//
 	@date 2020-06-18
 	//*/
@@ -257,7 +267,7 @@ implements JsonSerializable {
 
 	public function
 	ShouldAdultWarn():
-	Bool {
+	bool {
 	/*//
 	@date 2020-06-18
 	//*/
@@ -267,7 +277,7 @@ implements JsonSerializable {
 
 	public function
 	ShouldAdultAllow():
-	Bool {
+	bool {
 	/*//
 	@date 2020-06-18
 	if we should allow adult content to be shown. additional care needs
@@ -280,7 +290,7 @@ implements JsonSerializable {
 
 	public function
 	QueryBytesImages():
-	Int {
+	int {
 	/*//
 	@date 2020-09-21
 	//*/
@@ -319,8 +329,8 @@ implements JsonSerializable {
 	////////////////////////////////////////////////////////////////
 
 	static public function
-	ExtendMainFields($SQL, String $TableAlias, String $FieldPrefix):
-	Void {
+	ExtendMainFields($SQL, string $TableAlias, string $FieldPrefix):
+	void {
 	/*//
 	@date 2020-05-23
 	//*/
@@ -334,8 +344,8 @@ implements JsonSerializable {
 	}
 
 	static public function
-	ExtendQueryJoins($SQL, String $TableAlias='Main', String $FieldPrefix=''):
-	Void {
+	ExtendQueryJoins($SQL, string $TableAlias='Main', string $FieldPrefix=''):
+	void {
 	/*//
 	@date 2020-05-23
 	//*/
@@ -351,8 +361,8 @@ implements JsonSerializable {
 	}
 
 	static public function
-	ExtendQueryFields($SQL, String $TablePrefix='', String $FieldPrefix=''):
-	Void {
+	ExtendQueryFields($SQL, string $TablePrefix='', string $FieldPrefix=''):
+	void {
 	/*//
 	@date 2020-05-23
 	//*/
@@ -367,7 +377,7 @@ implements JsonSerializable {
 
 	static protected function
 	FindExtendOptions($Opt):
-	Array {
+	array {
 	/*//
 	@date 2018-06-08
 	//*/
@@ -379,7 +389,7 @@ implements JsonSerializable {
 
 	static protected function
 	FindApplyFilters($Opt,$SQL):
-	Void {
+	void {
 	/*//
 	@date 2018-06-08
 	//*/
@@ -392,7 +402,7 @@ implements JsonSerializable {
 
 	static protected function
 	FindApplySorts($Opt,$SQL):
-	Void {
+	void {
 	/*//
 	@date 2018-06-08
 	//*/
@@ -414,7 +424,7 @@ implements JsonSerializable {
 
 	public function
 	GetSessionHash():
-	String {
+	string {
 	/*//
 	@date 2017-02-10
 	get the current session hash allowing for shifting sands.
@@ -427,8 +437,8 @@ implements JsonSerializable {
 	}
 
 	public function
-	IsValidPassword(String $Password):
-	Bool {
+	IsValidPassword(string $Password):
+	bool {
 	/*//
 	@date 2017-02-11
 	does the specified password match the one belonging to this user?
@@ -473,7 +483,7 @@ implements JsonSerializable {
 	}
 
 	static public function
-	GetSession(Bool $Overshadowed=FALSE):
+	GetSession(bool $Overshadowed=FALSE):
 	?self {
 	/*//
 	@date 2017-02-09
@@ -508,10 +518,14 @@ implements JsonSerializable {
 		$Data[1] = (Int)base_convert($Data[1],36,10);
 
 		// see if the user exists.
-		if(!($User = static::GetByID($Data[1])))
+		if(!($User = static::GetByID($Data[1],FALSE)))
 		return NULL;
 
 		/** @var Atlantis\Prototype\User $User */
+
+		// not if they are banned
+		if($User->IsBanned())
+		return NULL;
 
 		// see that the user validates.
 		if($User->GetSessionHash() !== $Data[2])
@@ -523,7 +537,7 @@ implements JsonSerializable {
 
 	static public function
 	DestroySession():
-	Void {
+	void {
 	/*//
 	@date 2017-02-11
 	kill the login session.
@@ -533,13 +547,22 @@ implements JsonSerializable {
 		$CPath = Nether\Option::Get('Atlantis.User.Cookie.Path');
 		$CDomain = Nether\Option::Get('Atlantis.User.Cookie.Domain');
 
+		// first log out of an overshadow if it exists.
+
+		if(array_key_exists("{$CName}-os",$_COOKIE)) {
+			setcookie("{$CName}-os",'',(-1),$CPath,$CDomain);
+			return;
+		}
+
+		// then log out of the real session.
+
 		setcookie($CName,'',(-1),$CPath,$CDomain);
 		return;
 	}
 
 	static public function
-	LaunchSession(self $User, Bool $Overshadow=FALSE):
-	Void {
+	LaunchSession(self $User, bool $Overshadow=FALSE):
+	void {
 	/*//
 	@date 2017-02-09
 	set a user to be logged in.
@@ -592,7 +615,7 @@ implements JsonSerializable {
 	}
 
 	static public function
-	GetByFieldValue(String $Field, String $Value, String $Comp='LIKE'):
+	GetByFieldValue(string $Field, string $Value, string $Comp='LIKE'):
 	?self {
 	/*//
 	@date 2020-10-23
@@ -635,7 +658,7 @@ implements JsonSerializable {
 	}
 
 	static public function
-	GetByAlias(String $Alias):
+	GetByAlias(string $Alias):
 	?self {
 	/*//
 	@date 2020-10-23
@@ -646,7 +669,7 @@ implements JsonSerializable {
 	}
 
 	static public function
-	GetByEmail(String $Email):
+	GetByEmail(string $Email):
 	?self {
 	/*//
 	@date 2020-10-23
@@ -657,7 +680,7 @@ implements JsonSerializable {
 	}
 
 	static public function
-	GetByGithubID(String $GithubID):
+	GetByGithubID(string $GithubID):
 	?self {
 	/*//
 	@date 2020-10-23
@@ -668,7 +691,7 @@ implements JsonSerializable {
 	}
 
 	static public function
-	GetByTwitterID(String $TwitterID):
+	GetByTwitterID(string $TwitterID):
 	?self {
 	/*//
 	@date 2020-10-23
@@ -717,7 +740,7 @@ implements JsonSerializable {
 
 	static public function
 	Insert_ValidateAlias($Opt):
-	Void {
+	void {
 	/*//
 	@date 2017-02-08
 	handle validation of the user alias. if the validation fails it throws
@@ -737,7 +760,7 @@ implements JsonSerializable {
 
 	static public function
 	Insert_ValidateEmail($Opt):
-	Void {
+	void {
 	/*//
 	@date 2017-02-08
 	handle validation of the user email. if the validation fails it throws an
@@ -757,7 +780,7 @@ implements JsonSerializable {
 
 	static public function
 	Insert_ValidatePassword($Opt):
-	Void {
+	void {
 	/*//
 	@date 2017-02-08
 	handle validation cases about the user password. if the validation fails

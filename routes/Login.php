@@ -19,7 +19,7 @@ extends Atlantis\Site\PublicWeb {
 
 	public function
 	Index():
-	Void {
+	void {
 
 		($this->Get)
 		->Goto('Atlantis\\Util\\Filters::Base64Decode');
@@ -33,7 +33,7 @@ extends Atlantis\Site\PublicWeb {
 
 	public function
 	Destroy():
-	Void {
+	void {
 
 		Atlantis\Prototype\User::DestroySession();
 		$this->Goto('/');
@@ -45,7 +45,7 @@ extends Atlantis\Site\PublicWeb {
 
 	public function
 	Github():
-	Void {
+	void {
 	/*//
 	@date 2020-10-20
 	//*/
@@ -167,14 +167,17 @@ extends Atlantis\Site\PublicWeb {
 
 		////////
 
-		Atlantis\Prototype\User::LaunchSession($User);
+		Atlantis\Prototype\User::LaunchSession(
+			$User::GetByID($User->ID,FALSE)
+		);
+
 		$this->Goto(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home'));
 		return;
 	}
 
 	public function
 	Twitter():
-	Void {
+	void {
 	/*//
 	@date 2020-10-23
 	//*/
@@ -191,8 +194,9 @@ extends Atlantis\Site\PublicWeb {
 		////////
 
 		$Client = new League\OAuth1\Client\Server\Twitter([
-			'identifier' => Nether\Option::Get('Atlantis.Auth.Twitter.ClientID'),
-			'secret'     => Nether\Option::Get('Atlantis.Auth.Twitter.ClientSecret')
+			'identifier'   => Nether\Option::Get('Atlantis.Auth.Twitter.ClientID'),
+			'secret'       => Nether\Option::Get('Atlantis.Auth.Twitter.ClientSecret'),
+			'callback_uri' => $this->Router->GetURL()
 		]);
 
 		////////
@@ -275,7 +279,10 @@ extends Atlantis\Site\PublicWeb {
 
 		////////
 
-		Atlantis\Prototype\User::LaunchSession($User);
+		Atlantis\Prototype\User::LaunchSession(
+			$User::GetByID($User->ID,FALSE)
+		);
+
 		$this->Goto(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home'));
 		return;
 	}
@@ -285,7 +292,7 @@ extends Atlantis\Site\PublicWeb {
 
 	protected function
 	HandleLogin():
-	Void {
+	void {
 
 		$User = Atlantis\Prototype\User::Get($this->Post->Account);
 		$Goto = $this->Get->Goto ?? '/';

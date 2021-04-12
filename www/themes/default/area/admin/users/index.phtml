@@ -1,0 +1,123 @@
+
+<?php $Surface->Area('admin/header') ?>
+
+<div class="container pb-6">
+
+	<ol class="breadcrumb mb-4">
+		<li class="breadcrumb-item"><i class="fas fa-fw fa-home"></i> <a href="<?php echo Atlantis\Site\Endpoint::Get('Atlantis.Admin.Home') ?>">Admin</a></li>
+		<li class="breadcrumb-item active"><i class="fas fa-fw fa-users"></i> <a href="">Users</a></li>
+	</ol>
+
+	<div class="row mb-4">
+		<div class="col-auto">
+			<div class="btn-group" role="group">
+				<a href="?sort=newest" type="button" class="btn <?php $Printer($Route->Get->Sort==='newest'?'btn-primary':'btn-dark') ?>">Newest</a>
+				<a href="?sort=seen-za" type="button" class="btn <?php $Printer($Route->Get->Sort==='seen-za'?'btn-primary':'btn-dark') ?>">Active</a>
+			</div>
+		</div>
+		<div class="col-auto"></div>
+	</div>
+
+	<div class="table-responsive">
+	<table class="table table-striped table-bordered rounded mb-4">
+		<thead>
+			<tr>
+				<th class="wpx-100"></th>
+				<th class="wpx-1">User</th>
+				<th class="wpx-1">Joined</th>
+				<th class="wpx-1">Last Seen</th>
+				<th></th>
+				<th class="wpx-1"></th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php foreach($Users->Payload as $Who): ?>
+			<tr>
+				<td class="text-nowrap align-middle">
+					<a href="<?php $Printer($Who->URL) ?>" target="_blank">
+						<div class="wallpapered ratio-square background-primary rounded" style="background-image:url(<?php $Printer($Who->GetImageIconURL()) ?>);"></div>
+					</a>
+				</td>
+				<td class="text-nowrap align-middle">
+					<div><a href="<?php $Printer($Who->URL) ?>" target="_blank"><?php $Printer($Who->Alias) ?></a></div>
+					<div class="font-size-smaller text-muted"><?php $Printer($Who->Email) ?></div>
+				</td>
+				<td class="text-nowrap align-middle">
+					<div><?php $Printer($Who->DateCreated->GetAgoShort()) ?></div>
+					<div class="font-size-smaller text-muted"><?php $Printer($Who->DateCreated->YMD12T()) ?></div>
+				</td>
+				<td class="text-nowrap align-middle">
+					<div><?php $Printer($Who->DateSeen->GetAgoShort()) ?></div>
+					<div class="font-size-smaller text-muted"><?php $Printer($Who->DateSeen->YMD12T()) ?></div>
+				</td>
+				<td></td>
+				<td class="text-nowrap align-middle">
+					<button type="button" class="btn btn-dark CmdUserOvershadow" data-user-id="<?php $Printer($Who->ID) ?>" data-user-alias="<?php $Printer($Who->Alias) ?>"><i class="fas fa-fw fa-ghost"></i></button>
+					<?php if(!$Who->IsBanned()): ?><button type="button" class="btn btn-dark CmdUserBan" data-user-id="<?php $Printer($Who->ID) ?>" data-user-alias="<?php $Printer($Who->Alias) ?>"><i class="fas fa-fw fa-ban"></i></button>
+					<?php else: ?><button type="button" class="btn btn-danger CmdUserUnban" data-user-id="<?php $Printer($Who->ID) ?>" data-user-alias="<?php $Printer($Who->Alias) ?>"><i class="fas fa-fw fa-ban"></i></button>
+					<?php endif; ?>
+					<button type="button" class="btn btn-dark CmdUserDelete" data-user-id="<?php $Printer($Who->ID) ?>" data-user-alias="<?php $Printer($Who->Alias) ?>"><i class="fas fa-fw fa-trash"></i></button>
+				</td>
+			</tr>
+		<?php endforeach; ?>
+		</tbody>
+	</table>
+	</div>
+
+	<?php echo Atlantis\Element\Pager::FromResult($Users,$Router) ?>
+
+</div>
+<script type="module">
+import UserAPI from '/share/atlantis/api/user.js';
+
+jQuery(document)
+.ready(function(){
+
+	jQuery('.CmdUserOvershadow')
+	.on('click',function(){
+		let ID = jQuery(this).attr('data-user-id');
+		let Alias = jQuery(this).attr('data-user-alias');
+
+		if(confirm(`Overshadow ${Alias}?`))
+		UserAPI.Overshadow(ID,(()=> location.reload()));
+
+		return;
+	});
+
+	jQuery('.CmdUserBan')
+	.on('click',function(){
+		let ID = jQuery(this).attr('data-user-id');
+		let Alias = jQuery(this).attr('data-user-alias');
+
+		if(confirm(`Ban ${Alias}?`))
+		UserAPI.Ban(ID,(()=> location.reload()));
+
+		return;
+	});
+
+	jQuery('.CmdUserUnban')
+	.on('click',function(){
+		let ID = jQuery(this).attr('data-user-id');
+		let Alias = jQuery(this).attr('data-user-alias');
+
+		if(confirm(`Unban ${Alias}?`))
+		UserAPI.Unban(ID,(()=> location.reload()));
+
+		return;
+	});
+
+	jQuery('.CmdUserDelete')
+	.on('click',function(){
+		let ID = jQuery(this).attr('data-user-id');
+		let Alias = jQuery(this).attr('data-user-alias');
+
+		if(confirm(`Delete ${Alias}? This cannot be undone!`))
+		UserAPI.Delete(ID,(()=> location.reload()));
+
+		return;
+	});
+
+	return;
+});
+</script>
+

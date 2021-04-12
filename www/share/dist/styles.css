@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-11 05:56:16
+@date 2021-04-12 00:57:40
 @files [
     "src\/codemirror-themes\/3024-day.css",
     "src\/codemirror-themes\/3024-night.css",
@@ -3864,6 +3864,14 @@ span.CodeMirror-selectedtext { background: none; }
 .mb-7 { margin-bottom: 4rem! important; }
 .mt-8 { margin-top: 5rem! important; }
 .mb-8 { margin-bottom: 5rem! important; }
+
+.w-75 { width: 75%; }
+.w-50 { width: 50%; }
+.w-25 { width: 25%; }
+.w-0 { width: 0%; }
+
+.wpx-1 { width: 1px; }
+.wpx-100 { width: 100px; }
 
 .row.tight {
 	margin-left: -0.25rem;

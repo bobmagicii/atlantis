@@ -8,13 +8,15 @@
  * @var Atlantis\Prototype\User $User
  */
 
-echo (new Atlantis\Element\PagePromo)
-->SetTitle('Operations')
-->SetSubtitle('Look, I\'m not asking you swim out there! I\'m asking you to push a few buttons!');
-
 ?>
 
+<?php $Surface->Area('admin/header') ?>
+
 <div class="container">
+
+	<ol class="breadcrumb mb-6">
+		<li class="breadcrumb-item active"><i class="fas fa-fw fa-home"></i> <a href="<?php echo Atlantis\Site\Endpoint::Get('Atlantis.Admin.Home') ?>">Admin</a></li>
+	</ol>
 
 	<div class="row">
 		<div class="col">
@@ -62,8 +64,7 @@ echo (new Atlantis\Element\PagePromo)
 			<div class="quotron-primary pl-2 mb-4">
 				<div class="font-weight-bold text-uppercase">Users</div>
 				<hr class="mt-0 mb-2" />
-				<a href="#" class="btn btn-dark btn-block text-left mb-2">Newest</a>
-				<a href="#" class="btn btn-dark btn-block text-left mb-2">Active</a>
+				<a href="<?php $Printer(Atlantis\Site\Endpoint::Get('Atlantis.Admin.Users.List')) ?>" class="btn btn-dark btn-block text-left mb-2">Newest</a>
 			</div>
 		</div>
 </div>
