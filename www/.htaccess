@@ -6,6 +6,13 @@ MultiViewsMatch Any
 php_value upload_max_filesize 8M
 php_value post_max_size 9M
 
+<IfFile !../prod.lock>
+	AuthType Basic
+	AuthName "TRON LIVES"
+	AuthUserFile "/opt/web-dev/.htpasswd"
+	Require valid-user
+</IfFile>
+
 ################################################################################
 ################################################################################
 

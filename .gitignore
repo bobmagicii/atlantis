@@ -1,4 +1,7 @@
 # ignore some application paths.
+/prod.lock
+/.htpasswd
+
 /cache/
 /data/
 /local/
@@ -7,7 +10,6 @@
 /www/themes/local/
 /www/upl
 /www/.well-known
-/prod.lock
 
 # exclude configurations except for the example distro files.
 /conf/env/dev/*
