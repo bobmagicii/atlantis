@@ -15,19 +15,13 @@ implements Atlantis\Packages\StringableObject {
 
 	protected static
 	$PropertyMap = [
-		'type' => 'Type',
-		'data' => 'Data'
+		'type' => 'Type'
 	];
 
-	// data properties from EditorJS
-
-	public ?array
-	$data = NULL;
+	// local properties.
 
 	public ?string
-	$type = NULL;
-
-	// local properties.
+	$Type = NULL;
 
 	public ?Nether\Input\Filter
 	$Data = NULL;
@@ -38,7 +32,7 @@ implements Atlantis\Packages\StringableObject {
 	OnReady(array $Raw):
 	void {
 
-		$this->Data = new Nether\Input\Filter($this->Data);
+		$this->Data = new Nether\Input\Filter($Raw);
 		return;
 	}
 
