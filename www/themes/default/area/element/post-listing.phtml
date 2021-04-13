@@ -68,10 +68,10 @@ $Posts = $Element->GetItemStore();
 						<?php endif ?>
 					</div>
 					<?php if($Element->GetShowSourceBlog()): ?>
-					<div class="col-12 mt-2">
-						<div class="About">
-							From <a class="Source" href="<?php echo $Post->Blog->URL ?>"><?php echo $Post->Blog->Title ?></a>
-							By <a class="Authour" href="<?php echo $Post->User->URL ?>"><?php echo $Post->User->Alias ?></a>
+					<div class="col-12 mt-3">
+						<div class="About opacity-75 font-size-smaller">
+							From <a class="Source font-weight-light" href="<?php echo $Post->Blog->URL ?>"><?php echo $Post->Blog->Title ?></a>
+							By <a class="Authour font-weight-light" href="<?php echo $Post->User->URL ?>"><?php echo $Post->User->Alias ?></a>
 						</div>
 					</div>
 					<?php endif; ?>
