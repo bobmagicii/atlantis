@@ -44,6 +44,11 @@ extends Nether\Object\Mapped {
 		$Block = NULL;
 		$Class = NULL;
 
+		$this->Blocks = array_filter(
+			$this->Blocks,
+			function($Block){ return is_object($Block) && property_exists($Block,'type'); }
+		);
+
 		foreach($this->Blocks as &$Block) {
 			$Class = sprintf(
 				'Atlantis\Struct\EditorJS\Blocks\%s',

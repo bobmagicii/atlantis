@@ -2,8 +2,11 @@
 
 namespace Atlantis\Struct\EditorJS;
 
-use JsonSerializable;
+use Atlantis;
+use Atlantis\Struct\EditorJS;
 use Nether;
+
+use JsonSerializable;
 
 class Validator
 extends Nether\Object\Mapped
@@ -22,20 +25,23 @@ you back at a conforming structure.
 		'blocks'  => 'Blocks'
 	];
 
-	protected
-	$Version;
+	public ?string
+	$Version = NULL;
 
-	protected
-	$Time;
+	public ?int
+	$Time = NULL;
 
-	protected
-	$Blocks;
+	public ?array
+	$Blocks = NULL;
 
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
 
 	public function
-	__Construct($Input) {
+	__Construct(string|object|array $Input) {
+	/*//
+	@date 2021-04-13
+	//*/
 
 		if(is_string($Input))
 		$Input = json_decode($Input);
@@ -50,6 +56,9 @@ you back at a conforming structure.
 	public function
 	__ToString():
 	string {
+	/*//
+	@date 2020-10-09
+	//*/
 
 		return json_encode($this->JsonSerialize());
 	}
@@ -60,9 +69,17 @@ you back at a conforming structure.
 	protected function
 	OnReady():
 	void {
+	/*//
+	@date 2020-10-09
+	//*/
 
 		if(!is_array($this->Blocks))
 		$this->Blocks = [];
+
+		$this->Blocks = array_filter(
+			$this->Blocks,
+			(fn($Block)=> is_object($Block) && property_exists($Block,'type'))
+		);
 
 		return;
 	}
@@ -70,25 +87,34 @@ you back at a conforming structure.
 	public function
 	JsonSerialize():
 	array {
+	/*//
+	@date 2020-10-09
+	//*/
 
 		return $this->ToArray();
 	}
 
 	public function
+	ToStruct():
+	EditorJS\Content {
+	/*//
+	@date 2021-04-13
+	//*/
+
+		return new EditorJS\Content($this->ToArray());
+	}
+
+	public function
 	ToArray() {
+	/*//
+	@date 2021-04-13
+	//*/
 
 		return [
 			'version' => $this->Version,
 			'time'    => $this->Time,
 			'blocks'  => $this->Blocks
 		];
-	}
-
-	public function
-	GetBlocks():
-	array {
-
-		return $this->Blocks;
 	}
 
 }
