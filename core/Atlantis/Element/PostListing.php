@@ -15,11 +15,14 @@ extends Atlantis\Element {
 	Atlantis\Properties\Subtitle,
 	Atlantis\Properties\ItemListStore;
 
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
 	protected bool
 	$ShowSourceBlog = TRUE;
 
 	public function
-	GetShowSourceBlog():
+	ShowSourceBlog():
 	bool {
 	/*//
 	@date 2021-04-09
@@ -36,6 +39,33 @@ extends Atlantis\Element {
 	//*/
 
 		$this->ShowSourceBlog = $Val;
+		return $this;
+	}
+
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
+	protected bool
+	$ShowPostImage = TRUE;
+
+	public function
+	ShowPostImage():
+	bool {
+	/*//
+	@date 2021-04-09
+	//*/
+
+		return $this->ShowPostImage;
+	}
+
+	public function
+	SetShowPostImage(bool $Val):
+	static {
+	/*//
+	@date 2021-04-09
+	//*/
+
+		$this->ShowPostImage = $Val;
 		return $this;
 	}
 

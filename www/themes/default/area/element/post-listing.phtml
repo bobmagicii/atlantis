@@ -29,7 +29,7 @@ $Posts = $Element->GetItemStore();
 	</div>
 
 	<hr class="mt-2 mb-4" />
-	<?php foreach($Posts as $Post): ?>
+	<?php foreach($Posts as $Post): /** @var Atlantis\Prototype\BlogPost $Post */ ?>
 	<div class="Post <?php echo $Post->GetStyleClassAttr() ?>">
 
 		<div class="row align-items-top">
@@ -67,7 +67,12 @@ $Posts = $Element->GetItemStore();
 						</div>
 						<?php endif ?>
 					</div>
-					<?php if($Element->GetShowSourceBlog()): ?>
+					<?php if($Element->ShowPostImage() && $Post->Image): ?>
+					<div class="col-12 mt-3">
+						<a href="<?php $Printer($Post->URL) ?>"><img src="<?php $Printer($Post->Image->GetURL('md')) ?>" class="rounded mw-100" /></a>
+					</div>
+					<?php endif; ?>
+					<?php if($Element->ShowSourceBlog()): ?>
 					<div class="col-12 mt-3">
 						<div class="About opacity-75 font-size-smaller">
 							From <a class="Source font-weight-light" href="<?php echo $Post->Blog->URL ?>"><?php echo $Post->Blog->Title ?></a>

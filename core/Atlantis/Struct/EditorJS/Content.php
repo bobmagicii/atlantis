@@ -19,12 +19,18 @@ extends Nether\Object\Mapped {
 		'blocks'  => 'Blocks'
 	];
 
+	public ?string
+	$Version = '';
+
+	public ?int
+	$Time = 0;
+
+	public array
+	$Blocks = [];
+
 	protected function
 	OnReady($Raw):
-	Void {
-
-		if(!is_array($this->Blocks))
-		$this->Blocks = [];
+	void {
 
 		$this->OnReady_DigestBlocks();
 
@@ -33,7 +39,7 @@ extends Nether\Object\Mapped {
 
 	protected function
 	OnReady_DigestBlocks():
-	Void {
+	void {
 
 		$Block = NULL;
 		$Class = NULL;
@@ -54,7 +60,7 @@ extends Nether\Object\Mapped {
 	}
 
 	public static function
-	FromString(String $Input):
+	FromString(string $Input):
 	self {
 
 		$Object = json_decode(json_encode(

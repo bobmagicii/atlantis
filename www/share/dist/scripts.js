@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-10 07:08:53
+@date 2021-04-13 05:55:26
 @files [
     "src\/js\/libs\/000-jquery-3.1.1.min.js",
     "src\/js\/libs\/100-bootstrap.bundle.min.js",
@@ -13608,6 +13608,8 @@ a piece of content using codemirror as the code syntax magic thing.
 		this.InputUpload = null;
 		this.LabelGallery = null;
 		this.InputGallery = null;
+		this.LabelPrimaryImage = null;
+		this.InputPrimaryImage = null;
 		this.InputImageID = null;
 		this.Chooser = null;
 		this.Loader = null;
@@ -13684,6 +13686,42 @@ a piece of content using codemirror as the code syntax magic thing.
 
 		if(this.Data.Gallery)
 		this.InputGallery.attr('checked','checked');
+
+		return;
+	}
+
+	BuildInputPrimaryImage() {
+	/*//
+	@date 2020-10-17
+	construct the ui elements for the primary image checkbox
+	//*/
+
+		this.LabelPrimaryImage = (
+			jQuery('<label />')
+			.addClass('EditorPrimaryImage')
+			.attr('data-btn-class','btn-secondary btn-sm')
+			.append(
+				this.InputPrimaryImage =
+				jQuery('<input />')
+				.attr('type','checkbox')
+			)
+			.append(
+				jQuery('<span />')
+				.text('Main Post Image')
+			)
+		);
+
+		if(this.Data.PrimaryImage)
+		this.InputPrimaryImage.attr('checked','checked');
+
+		(this.LabelPrimaryImage)
+		.on('click',((Ev)=> {
+			jQuery(document)
+			.find('.EditorPrimaryImage')
+			.next('.btn-toggle.active')
+			.trigger('click');
+			return;
+		}));
 
 		return;
 	}
@@ -13896,6 +13934,7 @@ a piece of content using codemirror as the code syntax magic thing.
 		});
 
 		new Atlantis.Element.CheckboxButton(this.LabelGallery);
+		new Atlantis.Element.CheckboxButton(this.LabelPrimaryImage);
 		return;
 	}
 
@@ -13910,6 +13949,7 @@ a piece of content using codemirror as the code syntax magic thing.
 		this.BuildUI();
 		this.BuildInputURL();
 		this.BuildInputGallery();
+		this.BuildInputPrimaryImage();
 		this.BuildButtonUpload();
 		this.BuildButtonChooser();
 		this.BuildImage();
@@ -13930,6 +13970,11 @@ a piece of content using codemirror as the code syntax magic thing.
 			jQuery('<div />')
 			.addClass('col-auto mb-4')
 			.append(this.LabelGallery)
+		)
+		.append(
+			jQuery('<div />')
+			.addClass('col-auto mb-4')
+			.append(this.LabelPrimaryImage)
 		)
 		.append(
 			jQuery('<div />')
@@ -13973,6 +14018,7 @@ a piece of content using codemirror as the code syntax magic thing.
 		return {
 			'URL': jQuery.trim(this.InputURL.val()),
 			'Gallery': this.InputGallery.is(':checked'),
+			'PrimaryImage': this.InputPrimaryImage.is(':checked'),
 			'ImageID': this.InputImageID.val()
 		};
 	}
@@ -13981,6 +14027,7 @@ a piece of content using codemirror as the code syntax magic thing.
 		return {
 			'URL': false,
 			'Gallery': false,
+			'PrimaryImage': false,
 			'ImageID': false
 		}
 	}

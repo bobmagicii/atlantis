@@ -7,8 +7,8 @@ class Paragraph
 extends Atlantis\Struct\EditorJS\Block {
 
 	protected function
-	OnReady(Array $Raw):
-	Void {
+	OnReady(array $Raw):
+	void {
 		parent::OnReady($Raw);
 
 		($this->Data)
@@ -19,7 +19,7 @@ extends Atlantis\Struct\EditorJS\Block {
 
 	public function
 	__ToString():
-	String {
+	string {
 
 		return "<div class=\"mb-4\">{$this->Data->Text}</div>\n";
 	}

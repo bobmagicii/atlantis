@@ -7,8 +7,8 @@ class CodeMirror
 extends Atlantis\Struct\EditorJS\Block {
 
 	protected function
-	OnReady(Array $Raw):
-	Void {
+	OnReady(array $Raw):
+	void {
 		parent::OnReady($Raw);
 
 		($this->Data)
@@ -21,7 +21,7 @@ extends Atlantis\Struct\EditorJS\Block {
 
 	public function
 	__ToString():
-	String {
+	string {
 
 		return sprintf(
 			'<pre class="%s" data-mime="%s" data-title="%s" data-theme="%s">%s</pre>',

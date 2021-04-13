@@ -49,7 +49,7 @@ you back at a conforming structure.
 
 	public function
 	__ToString():
-	String {
+	string {
 
 		return json_encode($this->JsonSerialize());
 	}
@@ -59,7 +59,7 @@ you back at a conforming structure.
 
 	protected function
 	OnReady():
-	Void {
+	void {
 
 		if(!is_array($this->Blocks))
 		$this->Blocks = [];
@@ -69,13 +69,26 @@ you back at a conforming structure.
 
 	public function
 	JsonSerialize():
-	Array {
+	array {
+
+		return $this->ToArray();
+	}
+
+	public function
+	ToArray() {
 
 		return [
 			'version' => $this->Version,
 			'time'    => $this->Time,
 			'blocks'  => $this->Blocks
 		];
+	}
+
+	public function
+	GetBlocks():
+	array {
+
+		return $this->Blocks;
 	}
 
 }

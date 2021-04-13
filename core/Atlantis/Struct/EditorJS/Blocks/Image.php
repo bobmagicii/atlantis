@@ -9,21 +9,22 @@ class Image
 extends Atlantis\Struct\EditorJS\Block {
 
 	protected function
-	OnReady(Array $Raw):
-	Void {
+	OnReady(array $Raw):
+	void {
 		parent::OnReady($Raw);
 
 		($this->Data)
-		->ImageID('Atlantis\\Util\\Filters::TypeInt')
-		->URL('Atlantis\\Util\\Filters::StrippedText')
-		->Gallery('Atlantis\\Util\\Filters::TypeBool');
+		->ImageID(Atlantis\Util\Filters::TypeIntCallable())
+		->URL(Atlantis\Util\Filters::StrippedTextCallable())
+		->Gallery(Atlantis\Util\Filters::TypeBoolCallable())
+		->PrimaryImage(Atlantis\Util\Filters::TypeBoolCallable());
 
 		return;
 	}
 
 	public function
 	__ToString():
-	String {
+	string {
 
 		$PrimaryClass = 'PostImage';
 		$Image = NULL;

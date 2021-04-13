@@ -80,6 +80,7 @@ extends Atlantis\Site\PublicAPI {
 		$Title = $this->Post->Title;
 		$ContentJSON = (String)$this->Post->ContentJSON ?: NULL;
 		$Enabled = $this->Post->OptDraft ? 0 : 1;
+		$ImageID = NULL;
 		$OptAdult = NULL;
 		$Tags = [];
 		$TagID = NULL;
@@ -130,9 +131,25 @@ extends Atlantis\Site\PublicAPI {
 		foreach($this->Post->Tags as $TagID)
 		$Tags[] = (Int)$TagID;
 
+		////////
+
+		$Block = NULL;
+		$Content = new Atlantis\Struct\EditorJS\Content($ContentJSON);
+		foreach($Content->Blocks as $Block) {
+			if($Block instanceof Atlantis\Struct\EditorJS\Blocks\Image)
+			if($Block->Data->PrimaryImage && $Block->Data->ImageID) {
+				$ImageID = $Block->Data->ImageID;
+				break;
+			}
+		}
+		unset($Content,$Block);
+
+		////////
+
 		$Post = Atlantis\Prototype\BlogPost::Insert([
 			'BlogID'      => $BlogUser->BlogID,
 			'UserID'      => $BlogUser->UserID,
+			'ImageID'     => $ImageID,
 			'Enabled'     => $Enabled,
 			'Title'       => $Title,
 			'Alias'       => $Alias,
@@ -268,7 +285,18 @@ extends Atlantis\Site\PublicAPI {
 			$this->Quit(4,'should a blog post not have content');
 
 			$Dataset['ContentJSON'] = (String)$this->Post->ContentJSON ?: NULL;
-			$Dataset['Content'] = NULL; // actually cache the render here when done dicking around
+			$Dataset['Content'] = NULL;
+			$Dataset['ImageID'] = NULL;
+
+			$Content = new Atlantis\Struct\EditorJS\Content($this->Post->ContentJSON->ToArray());
+			foreach($Content->Blocks as $Block) {
+				if($Block instanceof Atlantis\Struct\EditorJS\Blocks\Image)
+				if($Block->Data->PrimaryImage && $Block->Data->ImageID) {
+					$Dataset['ImageID'] = $Block->Data->ImageID;
+					break;
+				}
+			}
+			unset($Content,$Block);
 		}
 
 		////////

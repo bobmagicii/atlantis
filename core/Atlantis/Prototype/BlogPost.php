@@ -21,6 +21,7 @@ extends Atlantis\Prototype {
 		'ID'            => 'ID:int',
 		'BlogID'        => 'BlogID:int',
 		'UserID'        => 'UserID:int',
+		'ImageID'       => 'ImageID:int',
 		'TimeCreated'   => 'TimeCreated:int',
 		'TimeUpdated'   => 'TimeUpdated:int',
 		'Enabled'       => 'Enabled:int',
@@ -40,6 +41,7 @@ extends Atlantis\Prototype {
 	public int $ID;
 	public int $BlogID;
 	public int $UserID;
+	public ?int $ImageID;
 	public int $TimeCreated;
 	public int $TimeUpdated;
 	public int $Enabled;
@@ -55,9 +57,10 @@ extends Atlantis\Prototype {
 
 	// extension fields.
 
+	public ?string $URL;
 	public ?Atlantis\Prototype\Blog $Blog;
 	public ?Atlantis\Prototype\User $User;
-	public ?string $URL;
+	public ?Atlantis\Prototype\UploadImage $Image;
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
 	public ?Nether\Object\Datastore $Tags;
@@ -113,13 +116,23 @@ extends Atlantis\Prototype {
 	//*/
 
 		$this->Blog = NULL;
+		$this->Image = NULL;
 
-		if(array_key_exists('B_ID',$Raw))
+		if(array_key_exists('B_ID',$Raw) && $Raw['B_ID'])
 		$this->Blog = new Atlantis\Prototype\Blog(
 			Atlantis\Util::StripPrefixedQueryFields(
 				$Raw, 'B_'
 			)
 		);
+
+		if(array_key_exists('I_ID',$Raw) && $Raw['I_ID'])
+		$this->Image = new Atlantis\Prototype\UploadImage(
+			Atlantis\Util::StripPrefixedQueryFields(
+				$Raw, 'I_'
+			)
+		);
+
+		//Atlantis\Util::VarDump(array_keys($Raw)); die();
 
 		return $this;
 	}
@@ -632,9 +645,11 @@ extends Atlantis\Prototype {
 
 		$SQL
 		->Join("Blogs {$FieldPrefix}BL ON {$TableAlias}.BlogID={$FieldPrefix}BL.ID")
-		->Join("Users {$FieldPrefix}PU ON {$TableAlias}.UserID={$FieldPrefix}PU.ID");
+		->Join("Users {$FieldPrefix}PU ON {$TableAlias}.UserID={$FieldPrefix}PU.ID")
+		->Join("UploadImages {$FieldPrefix}PI ON {$TableAlias}.ImageID={$FieldPrefix}PI.ID");
 
 		Atlantis\Prototype\Blog::ExtendQueryJoins($SQL,"{$FieldPrefix}BL","{$FieldPrefix}B_");
+		Atlantis\Prototype\UploadImage::ExtendQueryJoins($SQL,"{$FieldPrefix}PI","{$FieldPrefix}I_");
 
 		return;
 	}
@@ -649,6 +664,8 @@ extends Atlantis\Prototype {
 		Atlantis\Prototype\User::ExtendMainFields($SQL,"{$FieldPrefix}PU","{$FieldPrefix}PU_");
 		Atlantis\Prototype\Blog::ExtendMainFields($SQL,"{$FieldPrefix}BL","{$FieldPrefix}B_");
 		Atlantis\Prototype\Blog::ExtendQueryFields($SQL,"{$FieldPrefix}BL","{$FieldPrefix}B_");
+		Atlantis\Prototype\UploadImage::ExtendMainFields($SQL,"{$FieldPrefix}PI","{$FieldPrefix}I_");
+		Atlantis\Prototype\UploadImage::ExtendQueryFields($SQL,"{$FieldPrefix}PI","{$FieldPrefix}I_");
 
 		return;
 	}
@@ -726,6 +743,7 @@ extends Atlantis\Prototype {
 		$Opt = new Nether\Object\Mapped($Opt,[
 			'BlogID'      => 0,
 			'UserID'      => 0,
+			'ImageID'     => NULL,
 			'Title'       => NULL,
 			'Alias'       => NULL,
 			'Content'     => NULL,

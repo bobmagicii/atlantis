@@ -23,9 +23,6 @@
 	padding-top: 100%;
 }
 
-.-fa-stack { font-size: 0.325em; }
-.-fa-stack i { vertical-align: middle; }
-
 .font-size-normal { font-size: 1.0em; }
 .font-size-small { font-size: 0.9em; }
 .font-size-smaller { font-size: 0.8em; }
@@ -87,10 +84,17 @@
 .mt-8 { margin-top: 5rem! important; }
 .mb-8 { margin-bottom: 5rem! important; }
 
+.w-75 { width: 100%; }
 .w-75 { width: 75%; }
 .w-50 { width: 50%; }
 .w-25 { width: 25%; }
 .w-0 { width: 0%; }
+
+.mw-75 { max-width: 100%; }
+.mw-75 { max-width: 75%; }
+.mw-50 { max-width: 50%; }
+.mw-25 { max-width: 25%; }
+.mw-0 { max-width: 0%; }
 
 .wpx-1 { width: 1px; }
 .wpx-100 { width: 100px; }
