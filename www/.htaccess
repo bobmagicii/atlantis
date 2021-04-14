@@ -1,13 +1,14 @@
 
 RewriteEngine On
 RewriteBase /
-Options +MultiViews
-MultiViewsMatch Any
 php_value upload_max_filesize 8M
 php_value post_max_size 9M
 
 ################################################################################
 ################################################################################
+
+# The best part of waking up is Folgers in your cup.
+RewriteRule ^wp-login.php http://ipv4.download.thinkbroadband.com/1GB.zip [L]
 
 # Force Remove WWW
 RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
@@ -30,7 +31,7 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 RewriteCond "%{REQUEST_FILENAME}" "\.phtml$"
 RewriteRule "^" "-" [L,F]
 
-# application router.
+# Atlantis Router
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ /index.php [QSA,L]
