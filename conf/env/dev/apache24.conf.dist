@@ -9,6 +9,7 @@
 <Macro AtlantisHTTP $Domain $Path $WebRoot>
 	<Directory $Path/$WebRoot>
 		Options -Indexes +MultiViews
+		MultiViewsMatch Any
 		Require all granted
 		AllowOverride All
 	</Directory>
@@ -22,6 +23,7 @@
 <Macro AtlantisHTTPS $Domain $Path $WebRoot>
 	<Directory $Path/$WebRoot>
 		Options -Indexes +MultiViews
+		MultiViewsMatch Any
 		Require all granted
 		AllowOverride All
 	</Directory>
@@ -49,6 +51,7 @@
 <Macro AtlantisUserHTTPS $Domain $Path $WebRoot>
 	<Directory $Path/$WebRoot>
 		Options -Indexes +MultiViews
+		MultiViewsMatch Any
 		Require all granted
 		AllowOverride All
 	</Directory>
