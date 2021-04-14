@@ -48,6 +48,8 @@ extends PHPUnit\Framework\TestCase {
 		// this block should contain...
 		$this->AssertTrue($Struct->Blocks[2] instanceof EditorJS\Blocks\Paragraph);
 		$this->AssertEquals(NULL,$Struct->Blocks[2]->Data->Text);
+		$this->AssertTrue(str_starts_with((string)$Struct->Blocks[2],'<div '));
+		$this->AssertTrue(str_ends_with((string)$Struct->Blocks[2],"</div>\n"));
 
 		return;
 	}
