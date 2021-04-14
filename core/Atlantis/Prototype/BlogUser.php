@@ -39,15 +39,15 @@ extends Atlantis\Prototype {
 
 	// database fields.
 
-	public Int $ID;
-	public Int $BlogID;
+	public int $ID;
+	public int $BlogID;
 	public ?Atlantis\Prototype\Blog $Blog;
-	public Int $UserID;
-	public Int $Flags;
-	public Int $Enabled;
-	public Int $TimeCreated;
-	public Int $TimeUpdated;
-	public String $UUID;
+	public int $UserID;
+	public int $Flags;
+	public int $Enabled;
+	public int $TimeCreated;
+	public int $TimeUpdated;
+	public string $UUID;
 
 	// extension fields.
 
@@ -58,8 +58,8 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 
 	public function
-	OnReady(Array $Raw):
-	Void {
+	OnReady(array $Raw):
+	void {
 	/*//
 	prepare some data for this object.
 	//*/
@@ -73,7 +73,7 @@ extends Atlantis\Prototype {
 	}
 
 	protected function
-	OnReady_GetBlog(Array $Raw):
+	OnReady_GetBlog(array $Raw):
 	self {
 	/*//
 	prepare a blog object depending on if it was fetched with an inclusion
@@ -93,7 +93,7 @@ extends Atlantis\Prototype {
 	}
 
 	protected function
-	OnReady_GetUser(Array $Raw):
+	OnReady_GetUser(array $Raw):
 	self {
 	/*//
 	prepare a blog object depending on if it was fetched with an inclusion
@@ -114,7 +114,7 @@ extends Atlantis\Prototype {
 	}
 
 	protected function
-	OnReady_GetDates(Array $Raw):
+	OnReady_GetDates(array $Raw):
 	self {
 	/*//
 	prepare the date objects.
@@ -129,50 +129,50 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 
 	public function
-	HasFlagsAny(Int $Flags):
-	Bool {
+	HasFlagsAny(int $Flags):
+	bool {
 
 		return Atlantis\Util::BitwiseAndAny($this->Flags,$Flags);
 	}
 
 	public function
-	HasFlagsAll(Int $Flags):
-	Bool {
+	HasFlagsAll(int $Flags):
+	bool {
 
 		return Atlantis\Util::BitwiseAndAll($this->Flags,$Flags);
 	}
 
 	public function
 	HasOwnerPriv():
-	Bool {
+	bool {
 
 		return $this->HasFlagsAll(static::FlagOwner);
 	}
 
 	public function
 	HasManagePriv():
-	Bool {
+	bool {
 
 		return $this->HasFlagsAny(static::FlagOwner|static::FlagManage);
 	}
 
 	public function
 	HasWritePriv():
-	Bool {
+	bool {
 
 		return $this->HasFlagsAny(static::FlagOwner|static::FlagWriter);
 	}
 
 	public function
 	HasEditPriv():
-	Bool {
+	bool {
 
 		return $this->HasFlagsAny(static::FlagOwner|static::FlagEditor);
 	}
 
 	public function
 	GetRoleWord():
-	String {
+	string {
 
 		if($this->HasOwnerPriv())
 		return 'Blog Owner';
@@ -193,7 +193,7 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 
 	static public function
-	GetByBlogUser(Int $BlogID, Int $UserID):
+	GetByBlogUser(int $BlogID, int $UserID):
 	?self {
 	/*//
 	@date 2020-06-05
@@ -216,7 +216,7 @@ extends Atlantis\Prototype {
 
 	static public function
 	ResultChopToUser(Atlantis\Struct\SearchResult $Result):
-	Void {
+	void {
 	/*//
 	@date 2020-12-10
 	//*/
@@ -231,8 +231,8 @@ extends Atlantis\Prototype {
 	///////////////////////////////////////////////////////////////////////////
 
 	static protected function
-	ExtendQueryJoins($SQL, String $TableAlias='Main', String $FieldPrefix=''):
-	Void {
+	ExtendQueryJoins($SQL, string $TableAlias='Main', string $FieldPrefix=''):
+	void {
 	/*//
 	@date 2018-06-08
 	//*/
@@ -248,8 +248,8 @@ extends Atlantis\Prototype {
 	}
 
 	static protected function
-	ExtendQueryFields($SQL, String $TablePrefix='', String $FieldPrefix=''):
-	Void {
+	ExtendQueryFields($SQL, string $TablePrefix='', string $FieldPrefix=''):
+	void {
 	/*//
 	@date 2018-06-08
 	//*/
@@ -265,7 +265,7 @@ extends Atlantis\Prototype {
 
 	static protected function
 	FindExtendOptions($Opt):
-	Array {
+	array {
 	/*//
 	@date 2020-05-23
 	//*/
@@ -278,7 +278,7 @@ extends Atlantis\Prototype {
 
 	static protected function
 	FindApplyFilters($Opt,$SQL):
-	Void {
+	void {
 	/*//
 	@date 2018-06-08
 	//*/
@@ -294,7 +294,7 @@ extends Atlantis\Prototype {
 
 	static protected function
 	FindApplySorts($Opt,$SQL):
-	Void {
+	void {
 	/*//
 	@date 2018-06-08
 	//*/
