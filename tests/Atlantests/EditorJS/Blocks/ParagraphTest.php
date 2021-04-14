@@ -21,8 +21,8 @@ extends PHPUnit\Framework\TestCase {
 		$Struct = (
 			new EditorJS\Validator(
 				'{ "version": "2.18.0", "time": 123456789, "blocks": ['.
-				'{ "type": "paragraph", "text": "captain picard" },'.
-				'{ "type": "paragraph", "text": " commander riker " },'.
+				'{ "type": "paragraph", "data": { "text": "captain picard" } },'.
+				'{ "type": "paragraph", "data": { "text": " commander riker " } },'.
 				'{ "type": "paragraph" }'.
 				']}'
 			)

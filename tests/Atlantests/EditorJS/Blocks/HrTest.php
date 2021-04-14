@@ -21,8 +21,8 @@ extends PHPUnit\Framework\TestCase {
 		$Struct = (
 			new EditorJS\Validator(
 				'{ "version": "2.18.0", "time": 123456789, "blocks": ['.
-				'{ "type": "hr", "mode": "empty" },'.
-				'{ "type": "hr", "mode": "asdf" },'.
+				'{ "type": "hr", "data": { "mode": "empty" } },'.
+				'{ "type": "hr", "data": { "mode": "asdf" } },'.
 				'{ "type": "hr" }'.
 				']}'
 			)

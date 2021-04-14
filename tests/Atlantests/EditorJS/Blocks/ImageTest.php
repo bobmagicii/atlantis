@@ -21,8 +21,8 @@ extends PHPUnit\Framework\TestCase {
 		$Struct = (
 			new EditorJS\Validator(
 				'{ "version": "2.18.0", "time": 123456789, "blocks": ['.
-				'{ "type": "image", "ImageID": 0, "URL": "captain-picard.jpg", "Gallery": false, "PrimaryImage": true },'.
-				'{ "type": "image", "ImageID": 0, "URL": "commander-riker.jpg", "Gallery": true, "PrimaryImage": false },'.
+				'{ "type": "image", "data": { "ImageID": 0, "URL": "captain-picard.jpg", "Gallery": false, "PrimaryImage": true } },'.
+				'{ "type": "image", "data": { "ImageID": 0, "URL": "commander-riker.jpg", "Gallery": true, "PrimaryImage": false } },'.
 				'{ "type": "image" }'.
 				']}'
 			)
@@ -37,8 +37,8 @@ extends PHPUnit\Framework\TestCase {
 		$this->AssertTrue(str_starts_with((string)$Struct->Blocks[0],'<div '));
 		$this->AssertTrue(str_ends_with((string)$Struct->Blocks[0],"</div>"));
 		$this->AssertIsBool($Struct->Blocks[0]->Data->Gallery);
-		$this->assertFalse($Struct->Blocks[0]->Data->Gallery);
-		$this->assertTrue($Struct->Blocks[0]->Data->PrimaryImage);
+		$this->AssertFalse($Struct->Blocks[0]->Data->Gallery);
+		$this->AssertTrue($Struct->Blocks[0]->Data->PrimaryImage);
 
 		// this block should contain...
 		$this->AssertTrue($Struct->Blocks[1] instanceof EditorJS\Blocks\Image);

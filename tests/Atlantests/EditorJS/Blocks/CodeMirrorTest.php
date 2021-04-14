@@ -21,8 +21,8 @@ extends PHPUnit\Framework\TestCase {
 		$Struct = (
 			new EditorJS\Validator(
 				'{ "version": "2.18.0", "time": 123456789, "blocks": ['.
-				'{ "type": "code-mirror", "Title": "picard", "Mime": "captain", "Text": "Engage." },'.
-				'{ "type": "code-mirror", "Title": "riker", "Mime": "commander" },'.
+				'{ "type": "code-mirror", "data": { "Title": "picard", "Mime": "captain", "Text": "Engage." } },'.
+				'{ "type": "code-mirror", "data": { "Title": "riker", "Mime": "commander" } },'.
 				'{ "type": "code-mirror" }'.
 				']}'
 			)

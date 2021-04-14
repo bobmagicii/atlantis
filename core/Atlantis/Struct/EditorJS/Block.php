@@ -32,7 +32,11 @@ implements Atlantis\Packages\StringableObject {
 	OnReady(array $Raw):
 	void {
 
-		$this->Data = new Nether\Input\Filter($Raw);
+		$this->Data = new Nether\Input\Filter(
+			array_key_exists('data',$Raw)?
+			$Raw['data']: []
+		);
+
 		return;
 	}
 
