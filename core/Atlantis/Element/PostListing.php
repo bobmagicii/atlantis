@@ -45,12 +45,17 @@ extends Atlantis\Element {
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
 
-	protected bool
-	$ShowPostImage = TRUE;
+	const
+	PostImageHide    = 0,
+	PostImageShow    = 1,
+	PostImagePreview = 2;
+
+	protected int
+	$ShowPostImage = 1;
 
 	public function
 	ShowPostImage():
-	bool {
+	int {
 	/*//
 	@date 2021-04-09
 	//*/
@@ -59,7 +64,7 @@ extends Atlantis\Element {
 	}
 
 	public function
-	SetShowPostImage(bool $Val):
+	SetShowPostImage(int $Val):
 	static {
 	/*//
 	@date 2021-04-09
@@ -68,5 +73,7 @@ extends Atlantis\Element {
 		$this->ShowPostImage = $Val;
 		return $this;
 	}
+
+
 
 }

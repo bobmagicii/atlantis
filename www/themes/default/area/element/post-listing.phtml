@@ -67,11 +67,24 @@ $Posts = $Element->GetItemStore();
 						</div>
 						<?php endif ?>
 					</div>
-					<?php if($Element->ShowPostImage() && $Post->Image): ?>
+
+					<?php if($Post->Image): ?>
+					<?php if($Element->ShowPostImage() === 1): ?>
 					<div class="col-12 mt-3">
 						<a href="<?php $Printer($Post->URL) ?>"><img src="<?php $Printer($Post->Image->GetURL('md')) ?>" class="rounded mw-100" /></a>
 					</div>
 					<?php endif; ?>
+					<?php if($Element->ShowPostImage() === 2): ?>
+					<div class="col-12 mt-3">
+						<a href="<?php $Printer($Post->URL) ?>">
+						<div class="PostPreviewFader">
+							<img src="<?php $Printer($Post->Image->GetURL('md')) ?>" class="rounded mw-100" />
+						</div>
+						</a>
+					</div>
+					<?php endif; ?>
+					<?php endif; ?>
+
 					<?php if($Element->ShowSourceBlog()): ?>
 					<div class="col-12 mt-3">
 						<div class="About opacity-75 font-size-smaller">
