@@ -29,7 +29,8 @@ require(sprintf(
 			'local',
 			'composer',
 			'phinx',
-			'chmod'
+			'chmod',
+			'apache'
 		];
 
 		$IgnoreErrors = $this->GetOption('e');
@@ -94,6 +95,7 @@ require(sprintf(
 
 		$Result = $this->ExecuteCmd('cp -vr /opt/web-dev/www/themes/local www/themes',$this->GetInput(1));
 		$Result = $this->ExecuteCmd('cp -vr /opt/web-dev/data/pages data',$this->GetInput(1));
+		$Result = $this->ExecuteCmd('cp -vr /opt/web-dev/local .',$this->GetInput(1));
 		return 0;
 	}
 
@@ -133,6 +135,19 @@ require(sprintf(
 	//*/
 
 		$Result = $this->ExecuteCmd('phinx migrate',$this->GetInput(1));
+		return $Result->Error;
+	}
+
+	#[Nether\Console\Meta\Subcommand]
+	#[Nether\Console\Meta\Info('rehash apache configs')]
+	public function
+	HandleApache():
+	int {
+	/*//
+	@date 2021-04-11
+	//*/
+
+		$Result = $this->ExecuteCmd('sudo apachectl graceful',$this->GetInput(1));
 		return $Result->Error;
 	}
 
