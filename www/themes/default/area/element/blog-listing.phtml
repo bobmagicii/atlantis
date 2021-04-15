@@ -10,12 +10,13 @@ $Blogs = $Element->GetItemStore();
 
 ?>
 
-<div class="PostListing <?php echo $Element->GetClassesAttrString() ?>">
+<div class="BlogListing <?php echo $Element->GetClassesAttrString() ?>">
 	<h2><?php echo $Element->GetTitle() ?></h2>
-	<?php foreach($Blogs as $Blog): ?>
-	<div class="Post">
-		<h3><a href="<?php $Printer($Blog->GetURL()) ?>"><?php $Printer($Blog->Title) ?></a></h3>
-		<div class="About">
+	<?php foreach($Blogs as $Blog): /** @var Atlantis\Prototype\Blog $Blog */ ?>
+	<div class="rounded mt-2" style="position:relative;background-size:cover;background-position:center center;background-image: url(<?php $Printer($Blog->GetImageHeaderURL('th')) ?>);">
+		<div class="rounded" style="position:absolute;top:0px;left:0px;width:100%;height:100%;background:#0008"></div>
+		<div class="pl-2 pr-2 pt-4 pb-4 text-center font-size-large font-weight-bold" style="position:relative;">
+			<a class="text-white" href="<?php $Printer($Blog->GetURL()) ?>"><?php $Printer($Blog->Title) ?></a>
 		</div>
 	</div>
 	<?php endforeach; ?>

@@ -4,7 +4,13 @@
  * @var Atlantis\Prototype\User $Profile
  */
 
-echo (new Atlantis\Element\PagePromo)
+use Atlantis\Element\PostListing;
+use Atlantis\Element\PagePromo;
+
+////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
+
+echo (new PagePromo)
 ->SetArea('element/page-promo-artsy')
 ->SetURL($Profile->GetURL())
 ->SetImageURL($Profile->GetImageHeaderURL('lg'))
@@ -18,7 +24,21 @@ echo (new Atlantis\Element\PagePromo)
 
 	<div class="row">
 		<div class="col-12">
-			<div class="jumbotron jumbotron-secondary p-4 mb-4">
+
+		</div>
+		<div class="col-12 col-md-6">
+
+			<?php
+			echo (new PostListing)
+			->SetTitle("Recent Posts by {$Profile->Alias}")
+			->SetItemStore($RecentPosts->Payload)
+			->SetShowPostImage(PostListing::PostImagePreview);
+			?>
+
+		</div>
+
+		<div class="col-12 col-md">
+			<div class="quotron-primary pl-2 mb-6">
 				<div class="PostListing HideTheLastHr">
 					<h2 class="font-size-normal">
 						About
@@ -36,9 +56,7 @@ echo (new Atlantis\Element\PagePromo)
 					<hr />
 				</div>
 			</div>
-		</div>
-		<div class="col-12 col-md-6">
-			<div class="jumbotron jumbotron-secondary p-4 mb-4">
+			<div class="quotron-primary pl-2 mb-6">
 				<div class="PostListing HideTheLastHr ">
 					<h2 class="font-size-normal">
 						Blogs <?php $Printer($Profile->Alias) ?> Writes For
@@ -56,14 +74,11 @@ echo (new Atlantis\Element\PagePromo)
 					<?php endforeach; ?>
 				</div>
 			</div>
-		</div>
-		<div class="col-12 col-md-6">
-			<div class="jumbotron jumbotron-secondary p-4 m-0">
-			<?php
-			echo (new Atlantis\Element\PostListingSidebar)
-			->SetTitle("Recent Posts by {$Profile->Alias}")
-			->SetItemStore($RecentPosts->Payload);
-			?>
+			<div class="quotron-primary pl-2 mb-6">
+				<?php
+				echo (new Atlantis\Element\BlogListing)
+				->SetItemStore($Blogs->Payload->Map(fn($Val)=> $Val->Blog))
+				?>
 			</div>
 		</div>
 	</div>
