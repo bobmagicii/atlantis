@@ -315,8 +315,10 @@ extends Atlantis\Site\PublicAPI {
 			$Tag->UpdateUsage();
 		}
 
-		if(array_key_exists('ContentJSON',$Dataset))
-		$Post->UpdateUploadImageUsage();
+		if(array_key_exists('ContentJSON',$Dataset)) {
+			$Post->UpdateUploadImageUsage();
+			$Post->UpdateCounts();
+		}
 
 		////////
 

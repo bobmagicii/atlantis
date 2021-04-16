@@ -99,6 +99,8 @@
 .wpx-1 { width: 1px; }
 .wpx-100 { width: 100px; }
 
+.line-height-0 { line-height: 0em; }
+
 .row.tight {
 	margin-left: -0.25rem;
 	margin-right: -0.25rem;

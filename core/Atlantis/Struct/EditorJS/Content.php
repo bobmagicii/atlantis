@@ -2,12 +2,11 @@
 
 namespace Atlantis\Struct\EditorJS;
 
-use
-Atlantis,
-Nether;
+use Atlantis;
+use Nether;
 
-use
-Exception;
+use Exception;
+use Nether\Object\Datastore;
 
 class Content
 extends Nether\Object\Mapped {
@@ -25,8 +24,11 @@ extends Nether\Object\Mapped {
 	public ?int
 	$Time = 0;
 
-	public array
+	public array|Datastore
 	$Blocks = [];
+
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
 
 	protected function
 	OnReady($Raw):
@@ -41,30 +43,36 @@ extends Nether\Object\Mapped {
 	OnReady_DigestBlocks():
 	void {
 
-		$Block = NULL;
-		$Class = NULL;
 
-		$this->Blocks = array_filter(
+		$this->Blocks = new Datastore(array_filter(
 			$this->Blocks,
 			function($Block){ return is_object($Block) && property_exists($Block,'type'); }
-		);
+		));
 
-		foreach($this->Blocks as &$Block) {
+		$this->Blocks
+		->Remap(function(object $Block){
 			$Class = sprintf(
 				'Atlantis\Struct\EditorJS\Blocks\%s',
 				Atlantis\Util\Filters::MethodFromAlias($Block->type)
 			);
 
 			if(class_exists($Class))
-			$Block = new $Class($Block);
-			else
-			$Block = new Block($Block);
-		}
+			return new $Class($Block);
+
+			return new Block($Block);
+		});
 
 		return;
 	}
 
-	public static function
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
+
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
+	static public function
 	FromString(string $Input):
 	self {
 

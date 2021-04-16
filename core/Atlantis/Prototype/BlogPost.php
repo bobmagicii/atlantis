@@ -6,6 +6,7 @@ use Atlantis;
 use Nether;
 
 use Exception;
+use Atlantis\Struct\EditorJS;
 
 class BlogPost
 extends Atlantis\Prototype {
@@ -27,6 +28,8 @@ extends Atlantis\Prototype {
 		'Enabled'       => 'Enabled:int',
 		'CountViews'    => 'CountViews:int',
 		'CountComments' => 'CountComments:int',
+		'CountImages'   => 'CountImages:int',
+		'TimeToRead'    => 'TimeToRead:int',
 		'UUID'          => 'UUID',
 		'OptAdult'      => 'OptAdult:int',
 		'OptComments'   => 'OptComments:int',
@@ -47,6 +50,8 @@ extends Atlantis\Prototype {
 	public int $Enabled;
 	public int $CountViews;
 	public int $CountComments;
+	public int $CountImages;
+	public int $TimeToRead;
 	public string $UUID;
 	public string $Title;
 	public string $Alias;
@@ -268,6 +273,16 @@ extends Atlantis\Prototype {
 	}
 
 	public function
+	GetMinutesToRead():
+	int {
+	/*//
+	@date 2021-04-16
+	//*/
+
+		return round($this->TimeToRead / 60);
+	}
+
+	public function
 	BumpCountViews(int $Inc=1):
 	static {
 
@@ -286,7 +301,9 @@ extends Atlantis\Prototype {
 	//*/
 
 		$this->Update([
-			'CountComments' => $this->UpdateCountComments(FALSE)
+			'CountComments' => $this->UpdateCountComments(FALSE),
+			'CountImages'   => $this->UpdateCountImages(FALSE),
+			'TimeToRead'    => $this->UpdateTimeToRead(FALSE)
 		]);
 
 		return $this;
@@ -310,6 +327,65 @@ extends Atlantis\Prototype {
 		]);
 
 		return $Comments->Total;
+	}
+
+	public function
+	UpdateCountImages(bool $Commit=TRUE):
+	int {
+	/*//
+	@date 2021-04-15
+	//*/
+
+		if(!$this->ContentJSON)
+		return 0;
+
+		$Struct = EditorJS\Content::FromString($this->ContentJSON);
+		$Images = $Struct->Blocks->Filter(
+			fn(EditorJS\Block $B)=>
+			($B instanceof EditorJS\Blocks\Image)
+		);
+
+		if($Commit)
+		$this->Update([
+			'CountImages' => $Images->Count()
+		]);
+
+		return $Images->Count();
+	}
+
+	public function
+	UpdateTimeToRead(bool $Commit=TRUE):
+	int {
+	/*//
+	@date 2021-04-15
+	//*/
+
+		if(!$this->ContentJSON)
+		return 0;
+
+		$Struct = EditorJS\Content::FromString($this->ContentJSON);
+		$Words = (
+			($Struct->Blocks)
+			->Accumulate(0,function(int $Carry, EditorJS\Block $B){
+				if($B instanceof EditorJS\Blocks\Paragraph)
+				$Carry += str_word_count($B->Data->Text);
+
+				elseif($B instanceof EditorJS\Blocks\CodeMirror)
+				$Carry += str_word_count($B->Data->Text);
+
+				return $Carry;
+			})
+		);
+
+		// the internet suggests 200 is a decent wpm for the average person.
+		// i want to store it as estimated seconds to read though.
+
+		$TimeToRead = ($Words / 200) * 60;
+
+		if($Commit)
+		$this->Update([ 'TimeToRead' => $TimeToRead ]);
+
+		return $TimeToRead;
 	}
 
 	///////////////////////////////////////////////////////////////////////////

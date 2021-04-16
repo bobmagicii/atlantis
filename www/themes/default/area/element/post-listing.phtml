@@ -59,27 +59,44 @@ $Posts = $Element->GetItemStore();
 							<?php endif; ?>
 							<a class="flex-grow-0" href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->Title) ?></a>
 						</h3>
-						<?php if(is_iterable($Post->Tags)): ?>
-						<div>
-							<?php foreach($Post->Tags as $Tag): ?>
-							<a href="<?php $Printer($Post->Blog->GetTagURL($Tag)) ?>" class="btn btn-sm btn-outline-dark pt-0 pb-0"><?php $Printer($Tag->Title) ?></a>
-							<?php endforeach; ?>
+						<div class="row tight align-items-center line-height-0">
+							<?php if(is_iterable($Post->Tags) && count($Post->Tags)): ?>
+							<div class="col-auto">
+								<?php foreach($Post->Tags as $Tag): ?>
+								<a href="<?php $Printer($Post->Blog->GetTagURL($Tag)) ?>" class="btn btn-sm btn-outline-dark pt-0 pb-0 m-0"><?php $Printer($Tag->Title) ?></a>
+								<?php endforeach; ?>
+							</div>
+							<?php endif ?>
+							<div class="col-auto">
+								<div class="opacity-75 font-size-smaller">
+									<?php
+									$Infos = [];
+
+									if($Post->CountImages)
+									$Infos[] = "{$Post->CountImages} Images";
+
+									if($Post->TimeToRead)
+									$Infos[] = "{$Post->GetMinutesToRead()} Min Read";
+
+									$Printer(join(' | ',$Infos));
+									?>
+								</div>
+							</div>
 						</div>
-						<?php endif ?>
 					</div>
 
 					<?php if($Post->Image): ?>
 					<?php if($Element->ShowPostImage() === 1): ?>
-					<div class="col-12 mt-3">
+					<div class="col-12 mt-4">
 						<a href="<?php $Printer($Post->URL) ?>"><img src="<?php $Printer($Post->Image->GetURL('md')) ?>" class="rounded mw-100" /></a>
 					</div>
 					<?php endif; ?>
 					<?php if($Element->ShowPostImage() === 2): ?>
-					<div class="col-12 mt-3">
+					<div class="col-12 mt-2">
 						<a href="<?php $Printer($Post->URL) ?>">
-						<div class="PostPreviewFader">
-							<img src="<?php $Printer($Post->Image->GetURL('md')) ?>" class="rounded mw-100" />
-						</div>
+							<div class="PostPreviewFader">
+								<img src="<?php $Printer($Post->Image->GetURL('md')) ?>" class="rounded mw-100" />
+							</div>
 						</a>
 					</div>
 					<?php endif; ?>
