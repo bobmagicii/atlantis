@@ -11,8 +11,8 @@ use Exception;
 class Util {
 
 	static public function
-	BuildUpdateString(Array $Fields):
-	String {
+	BuildUpdateString(array $Fields):
+	string {
 
 		$Dataset = [];
 		$Name = NULL;
@@ -30,7 +30,7 @@ class Util {
 
 	static public function
 	BuildValueMap($PropertyMap, $Data):
-	Array {
+	array {
 	/*//
 	@date 2018-03-30
 	builds a value map array most commonly used for INSERT queries from a
@@ -55,8 +55,8 @@ class Util {
 	}
 
 	static public function
-	BuildPrefixedFieldList(Array $Map, String $Prefix):
-	Array {
+	BuildPrefixedFieldList(array $Map, string $Prefix):
+	array {
 
 		$Field = NULL;
 		$Prop = NULL;
@@ -69,8 +69,8 @@ class Util {
 	}
 
 	static public function
-	BuildPrefixedQueryFields(Array $Map, String $TblKey, String $Prefix):
-	Array {
+	BuildPrefixedQueryFields(array $Map, string $TblKey, string $Prefix):
+	array {
 
 		$Field = NULL;
 		$Prop = NULL;
@@ -84,8 +84,8 @@ class Util {
 	}
 
 	static public function
-	StripPrefixedQueryFields(Array $Dataset, String $Prefix):
-	Array {
+	StripPrefixedQueryFields(array $Dataset, string $Prefix):
+	array {
 
 		$Property = NULL;
 		$Value = NULL;
@@ -103,7 +103,7 @@ class Util {
 
 	static public function
 	BitwiseAndAll($Val,$Mask):
-	Bool {
+	bool {
 	/*//
 	@date 2018-08-29
 	//*/
@@ -113,7 +113,7 @@ class Util {
 
 	static public function
 	BitwiseAndAny($Val,$Mask):
-	Bool {
+	bool {
 	/*//
 	@date 2018-08-29
 	//*/
@@ -121,10 +121,9 @@ class Util {
 		return (($Val & $Mask) !== 0);
 	}
 
-
 	static public function
-	MkDir(String $Path):
-	Bool {
+	MkDir(string $Path):
+	bool {
 	/*//
 	@date 2018-04-03
 	//*/
@@ -138,8 +137,8 @@ class Util {
 	}
 
 	static public function
-	Chmod(String $Path, Int $Mode=0666):
-	Bool {
+	Chmod(string $Path, int $Mode=0666):
+	bool {
 	/*//
 	@date 2019-01-22
 	//*/
@@ -152,8 +151,8 @@ class Util {
 	}
 
 	static public function
-	FilesizeReadable(String $Filename):
-	String {
+	FilesizeReadable(string $Filename):
+	string {
 	/*//
 	@date 2019-01-22
 	//*/
@@ -163,8 +162,8 @@ class Util {
 	}
 
 	static public function
-	BytesReadable(Int $Bytes):
-	String {
+	BytesReadable(int $Bytes):
+	string {
 	/*//
 	@date 2019-01-22
 	//*/
@@ -185,8 +184,8 @@ class Util {
 	}
 
 	static public function
-	BytesToKilos(Int $Bytes):
-	Float {
+	BytesToKilos(int $Bytes):
+	float {
 	/*//
 	@date 2019-01-22
 	//*/
@@ -195,8 +194,8 @@ class Util {
 	}
 
 	static public function
-	BytesToMegs(Int $Bytes):
-	Float {
+	BytesToMegs(int $Bytes):
+	float {
 	/*//
 	@date 2019-01-22
 	//*/
@@ -205,8 +204,8 @@ class Util {
 	}
 
 	static public function
-	BytesToGigs(Int $Bytes):
-	Float {
+	BytesToGigs(int $Bytes):
+	float {
 	/*//
 	@date 2019-01-22
 	//*/
@@ -215,8 +214,8 @@ class Util {
 	}
 
 	static public function
-	BytesToTera(Int $Bytes):
-	Float {
+	BytesToTera(int $Bytes):
+	float {
 	/*//
 	@date 2019-01-22
 	//*/
@@ -226,7 +225,7 @@ class Util {
 
 	static public function
 	ParseEncodedStandardInput():
-	Array {
+	array {
 	/*//
 	@date 2020-06-17
 	//*/
@@ -242,8 +241,8 @@ class Util {
 	}
 
 	static public function
-	IsUUID(?String $Input):
-	Bool {
+	IsUUID(?string $Input):
+	bool {
 	/*//
 	@date 2018-03-29
 	//*/
@@ -261,8 +260,8 @@ class Util {
 	}
 
 	static public function
-	UUID(?Int $Ver=NULL, $Node=NULL):
-	String {
+	UUID(?int $Ver=NULL, $Node=NULL):
+	string {
 	/*//
 	@date 2020-05-24
 	wraps Ramsey/Uuid to get its most common use cases we need
@@ -301,7 +300,7 @@ class Util {
 
 	static public function
 	VarDump($Var):
-	Void {
+	void {
 	/*//
 	@date 2018-03-30
 	//*/
@@ -333,6 +332,19 @@ class Util {
 		$IP = $_SERVER['REMOTE_ADDR'];
 
 		return $Human->Verify($CVal,$IP)->IsSuccess();
+	}
+
+	static public function
+	IfOneOrNot(int $Count, mixed $One, mixed $Not):
+	mixed {
+	/*//
+	@date 2021-04-16
+	//*/
+
+		if($Count === 1)
+		return $One;
+
+		return $Not;
 	}
 
 }

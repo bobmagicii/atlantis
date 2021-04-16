@@ -8,6 +8,27 @@
 
 $Posts = $Element->GetItemStore();
 
+$PrintPostDetails = function(Atlantis\Prototype\BlogPost $Post) {
+
+	$Infos = [];
+
+	if($Post->CountImages)
+	$Infos[] = sprintf(
+		'<i class="fas fa-fw fa-image"></i> %s %s',
+		$Post->CountImages,
+		Atlantis\Util::IfOneOrNot($Post->CountImages,'Image','Images')
+	);
+
+	if($Post->TimeToRead)
+	$Infos[] = sprintf(
+		'<i class="fas fa-fw fa-clock"></i> %s Min Read',
+		$Post->GetMinutesToRead()
+	);
+
+	return join(' | ',$Infos);
+
+};
+
 ?>
 
 <div class="PostListing HideTheLastHr <?php echo $Element->GetClassesAttrString() ?>">
@@ -69,17 +90,7 @@ $Posts = $Element->GetItemStore();
 							<?php endif ?>
 							<div class="col-auto">
 								<div class="opacity-75 font-size-smaller">
-									<?php
-									$Infos = [];
-
-									if($Post->CountImages)
-									$Infos[] = "{$Post->CountImages} Images";
-
-									if($Post->TimeToRead)
-									$Infos[] = "{$Post->GetMinutesToRead()} Min Read";
-
-									$Printer(join(' | ',$Infos));
-									?>
+									<?php echo $PrintPostDetails($Post) ?>
 								</div>
 							</div>
 						</div>
