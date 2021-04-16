@@ -8,6 +8,9 @@
 	--ColourBackgroundPrimary: #fafafa;
 	--ColourTextPrimary: #222222;
 
+	--ColourBackgroundSecondary: #222222;
+	--ColourTextSecondary: #fafafa;
+
 	--ColourAdultButton: #c25684;
 	--ColourAdultText: #ffe6ea;
 	--ColourAdultHoverButton: #cf6694;
@@ -48,10 +51,17 @@
 	font-variant-ligatures: common-ligatures;
 }
 
+.font-family-reading {
+	font-family: 'Poppins', sans-serif;
+	font-variant-ligatures: no-common-ligatures;
+	letter-spacing: -0.02em;
+	font-weight: 400;
+}
+
 html,
 body {
 	background: var(--ColourSecondary);
-	font-weight: 300;
+	font-weight: 400;
 	margin: 0px;
 	padding: 0px;
 }

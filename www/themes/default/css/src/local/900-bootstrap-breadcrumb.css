@@ -10,9 +10,14 @@
 }
 
 .breadcrumb a:link,
-.breadcrumb a:visited,
+.breadcrumb a:visited {
+	color: var(--ColourTextSecondary);
+	border-bottom: 1px solid var(--ColourTextSecondary);
+	text-decoration: none;
+}
+
 .breadcrumb .active {
-	color: #eee;
+	color: var(--ColourTextSecondary);
 	text-decoration: none;
 }
 

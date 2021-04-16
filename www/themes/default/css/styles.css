@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-15 19:08:31
+@date 2021-04-16 05:18:42
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -29,6 +29,9 @@
 
 	--ColourBackgroundPrimary: #fafafa;
 	--ColourTextPrimary: #222222;
+
+	--ColourBackgroundSecondary: #222222;
+	--ColourTextSecondary: #fafafa;
 
 	--ColourAdultButton: #c25684;
 	--ColourAdultText: #ffe6ea;
@@ -70,10 +73,17 @@
 	font-variant-ligatures: common-ligatures;
 }
 
+.font-family-reading {
+	font-family: 'Poppins', sans-serif;
+	font-variant-ligatures: no-common-ligatures;
+	letter-spacing: -0.02em;
+	font-weight: 400;
+}
+
 html,
 body {
 	background: var(--ColourSecondary);
-	font-weight: 300;
+	font-weight: 400;
 	margin: 0px;
 	padding: 0px;
 }
@@ -320,7 +330,7 @@ body > header a {
 }
 
 .PostContent {
-	letter-spacing: 0.02em;
+	letter-spacing: -0.02em;
 	font-weight: 400;
 }
 
@@ -760,9 +770,14 @@ given an image to display to art shit up.
 }
 
 .breadcrumb a:link,
-.breadcrumb a:visited,
+.breadcrumb a:visited {
+	color: var(--ColourTextSecondary);
+	border-bottom: 1px solid var(--ColourTextSecondary);
+	text-decoration: none;
+}
+
 .breadcrumb .active {
-	color: #eee;
+	color: var(--ColourTextSecondary);
 	text-decoration: none;
 }
 
