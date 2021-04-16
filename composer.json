@@ -14,7 +14,7 @@
 		"netherphp/surface": "^4.0",
 		"ramsey/uuid": "^4.0",
 		"robmorgan/phinx": "^0.12.4",
-		"google\/recaptcha": "^1.1",
+		"google/recaptcha": "^1.1",
 		"artem_c/emmet": "^1.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
 		"monolog/monolog": "^2.1",
@@ -24,7 +24,8 @@
 		"phpstan/phpstan": "^0.12.48",
 		"matthiasmullie/minify": "^1.3",
 		"league/oauth2-github": "^2.0",
-		"league/oauth1-client": "^1.8"
+		"league/oauth1-client": "^1.8",
+		"tgalopin/html-sanitizer": "^1.4"
 	},
 	"config": {
 		"preferred-install": {

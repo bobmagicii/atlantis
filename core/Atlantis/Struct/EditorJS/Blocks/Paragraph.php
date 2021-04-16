@@ -12,7 +12,7 @@ extends Atlantis\Struct\EditorJS\Block {
 		parent::OnReady($Raw);
 
 		($this->Data)
-		->Text('Atlantis\\Util\\Filters::TrimmedText');
+		->Text(Atlantis\Util\Filters::FilteredHTMLCallable());
 
 		return;
 	}

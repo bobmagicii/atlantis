@@ -3,6 +3,7 @@
 namespace Atlantis\Util;
 
 use Atlantis;
+use HtmlSanitizer;
 
 // https://twitter.com/bobmagicii/status/825141051996389377
 
@@ -333,8 +334,25 @@ methods here are safe for direct use or use as callback filtering.
 	static public function
 	ValidatorForEditorJS(mixed $Val):
 	?object {
+	/*//
+	@date 2020-10-09
+	//*/
 
 		return new Atlantis\Struct\EditorJS\Validator($Val);
+	}
+
+	static public function
+	FilteredHTML(mixed $Val):
+	?string {
+	/*//
+	@date 2021-04-15
+	//*/
+
+		$Cleaner = HtmlSanitizer\Sanitizer::create([
+			'extensions' => [ 'basic','list','table','code','extra' ]
+		]);
+
+		return $Cleaner->Sanitize($Val ?: '');
 	}
 
 	////////////////////////////////

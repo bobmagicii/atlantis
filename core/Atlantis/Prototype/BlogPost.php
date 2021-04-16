@@ -215,7 +215,8 @@ extends Atlantis\Prototype {
 	Atlantis\Struct\SearchResult {
 
 		$Opt = new Nether\Object\Mapped($Opt,[
-			'PostID' => $this->ID
+			'PostID' => $this->ID,
+			'Limit'  => 0
 		]);
 
 		return Atlantis\Prototype\BlogPostTag::Find($Opt);
@@ -256,20 +257,23 @@ extends Atlantis\Prototype {
 	}
 
 	public function
-	GetShortDesc():
-	string {
+	GetShortDesc(int $Len=60):
+	?string {
+	/*//
+	@date 2020-10-23
+	//*/
+
 
 		$Output = '';
 		$Block = NULL;
-
+		$Text = NULL;
 		$Struct = $this->StructureFromJSON();
-		foreach($Struct->Blocks as $Block)
-		if($Block instanceof Atlantis\Struct\EditorJS\Blocks\Paragraph) {
-			$Output = substr($Block->Data->Text,0,256);
-			break;
-		}
 
-		return $Output;
+		foreach($Struct->Blocks as $Block)
+		if($Block instanceof Atlantis\Struct\EditorJS\Blocks\Paragraph)
+		return strip_tags($Block->Data->Text);
+
+		return NULL;
 	}
 
 	public function
