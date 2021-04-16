@@ -14,12 +14,19 @@
 <div id="BlogConfig" class="d-none" data-blog-id="<?php $Printer($Blog->ID) ?>"></div>
 
 <div class="container pb-4">
-	<ol class="breadcrumb mb-6">
-		<li class="breadcrumb-item"><a href="<?php echo Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home') ?>">Dashboard</a></li>
-		<li class="breadcrumb-item">Blogs</li>
-		<li class="breadcrumb-item"><?php $Printer($Blog->Title) ?></li>
-		<li class="breadcrumb-item active">Settings</li>
-	</ol>
+	<div class="breadcrumb mb-6">
+		<div class="breadcrumb-item"><a href="<?php echo Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home') ?>">Dashboard</a></div>
+		<div class="breadcrumb-item">Blogs</div>
+		<div class="breadcrumb-item">
+			<div class="dropdown" style="display:inline-block">
+				<a href="#" class="" data-toggle="dropdown"><?php $Printer($Blog->Title) ?></a>
+				<div class="dropdown-menu">
+					<div class="dropdown-item">[list-o-blogs]</div>
+				</div>
+			</div>
+		</div>
+		<div class="breadcrumb-item active">Settings</div>
+	</div>
 
 	<!-- IMAGES -->
 	<div class="row align-items-center mb-6">
