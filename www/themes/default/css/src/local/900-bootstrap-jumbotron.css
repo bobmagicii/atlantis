@@ -121,6 +121,10 @@
 	border-radius: 5px;
 }
 
+.quotron {
+	padding-left: 0.5rem;
+}
+
 .quotron-primary {
 	border-left: 4px solid var(--ColourPrimary);
 }

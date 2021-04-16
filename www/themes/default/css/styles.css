@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-16 05:18:42
+@date 2021-04-16 06:58:04
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -917,6 +917,10 @@ given an image to display to art shit up.
 	background: transparent;
 	border: 4px solid var(--ColourQuaternary);
 	border-radius: 5px;
+}
+
+.quotron {
+	padding-left: 0.5rem;
 }
 
 .quotron-primary {

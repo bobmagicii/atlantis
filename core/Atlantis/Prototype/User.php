@@ -471,6 +471,16 @@ implements JsonSerializable {
 		return $Valid;
 	}
 
+	public function
+	UsesThirdPartyAuth():
+	bool {
+	/*//
+	@date 2021-04-16
+	//*/
+
+		return ($this->AuthGithubID || $this->AuthTwitterID);
+	}
+
 	static public function
 	FetchSession():
 	?self {

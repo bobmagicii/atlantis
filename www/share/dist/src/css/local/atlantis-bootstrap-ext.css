@@ -219,3 +219,8 @@ select:focus {
 .text-github { color: var(--ColourGithubButton) !important; }
 .text-rss { color: var(--ColourRssButton) !important; }
 
+.border-color-adult { border-color: var(--ColourAdultButton) !important; }
+.border-color-github { border-color: var(--ColourGithubButton) !important; }
+.border-color-twitter { border-color: var(--ColourTwitterButton) !important; }
+.border-color-rss { border-color: var(--ColourRssButton) !important; }
+

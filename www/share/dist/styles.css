@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-16 01:27:42
+@date 2021-04-16 07:01:59
 @files [
     "src\/codemirror-themes\/3024-day.css",
     "src\/codemirror-themes\/3024-night.css",
@@ -3996,6 +3996,11 @@ select:focus {
 .text-twitter { color: var(--ColourTwitterButton) !important; }
 .text-github { color: var(--ColourGithubButton) !important; }
 .text-rss { color: var(--ColourRssButton) !important; }
+
+.border-color-adult { border-color: var(--ColourAdultButton) !important; }
+.border-color-github { border-color: var(--ColourGithubButton) !important; }
+.border-color-twitter { border-color: var(--ColourTwitterButton) !important; }
+.border-color-rss { border-color: var(--ColourRssButton) !important; }
 
 /*
 
