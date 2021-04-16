@@ -11,6 +11,7 @@ $Posts = $Element->GetItemStore();
 $PrintPostDetails = function(Atlantis\Prototype\BlogPost $Post) {
 
 	$Infos = [];
+	$Minutes = 0;
 
 	if($Post->CountImages)
 	$Infos[] = sprintf(
@@ -19,14 +20,13 @@ $PrintPostDetails = function(Atlantis\Prototype\BlogPost $Post) {
 		Atlantis\Util::IfOneOrNot($Post->CountImages,'Image','Images')
 	);
 
-	if($Post->TimeToRead)
+	if($Minutes = $Post->GetMinutesToRead())
 	$Infos[] = sprintf(
 		'<i class="fas fa-fw fa-clock"></i> %s Min Read',
-		$Post->GetMinutesToRead()
+		$Minutes
 	);
 
 	return join(' | ',$Infos);
-
 };
 
 ?>
