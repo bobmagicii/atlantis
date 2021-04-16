@@ -57,24 +57,6 @@ echo (new PagePromo)
 				</div>
 			</div>
 			<div class="quotron-primary pl-2 mb-6">
-				<div class="PostListing HideTheLastHr ">
-					<h2 class="font-size-normal">
-						Blogs <?php $Printer($Profile->Alias) ?> Writes For
-					</h2>
-					<hr class="mt-2 mb-2" />
-					<?php foreach($Blogs->Payload as $BlogUser): ?>
-					<div class="Post">
-						<h3 class="d-flex font-size-larger align-items-center mb-0" style="line-height:1em;">
-							<a class="flex-grow-0" href="<?php $Printer($BlogUser->Blog->GetURL()) ?>"><?php $Printer($BlogUser->Blog->Title) ?></a>
-						</h3>
-						<div class="About">
-						</div>
-					</div>
-					<hr class="mt-2 mb-2" />
-					<?php endforeach; ?>
-				</div>
-			</div>
-			<div class="quotron-primary pl-2 mb-6">
 				<?php
 				echo (new Atlantis\Element\BlogListing)
 				->SetItemStore($Blogs->Payload->Map(fn($Val)=> $Val->Blog))
