@@ -155,6 +155,48 @@ echo (new Atlantis\Element\PagePromo)
 				</div>
 				<?php endif; ?>
 
+				<div class="col-12 col-md-6 col-lg-12 mb-6">
+					<div class="quotron-primary pl-2">
+						<div class="row justify-content-between align-items-center">
+							<div class="col">
+								<i class="fas fa-fw fa-file-alt"></i> Posts
+							</div>
+							<div class="col-auto">
+								<?php $Printer($Blog->CountPosts) ?>
+							</div>
+							<div class="col-12"><hr class="mt-2 mb-2" /></div>
+							<div class="col">
+								<i class="fas fa-fw fa-comment"></i> Comments
+							</div>
+							<div class="col-auto">
+								<?php $Printer($Blog->CountComments) ?>
+							</div>
+							<div class="col-12"><hr class="mt-2 mb-2" /></div>
+							<div class="col">
+								<i class="fas fa-fw fa-image"></i> Images
+							</div>
+							<div class="col-auto">
+							 	<?php $Printer($Blog->CountImages) ?>
+							</div>
+							<div class="col-12"><hr class="mt-2 mb-2" /></div>
+							<div class="col">
+								<i class="fas fa-fw fa-code"></i> Code Blocks
+							</div>
+							<div class="col-auto">
+								<?php $Printer($Blog->CountCodeBlocks) ?>
+							</div>
+							<div class="col-12"><hr class="mt-2 mb-2" /></div>
+							<div class="col">
+								<i class="fas fa-fw fa-clock"></i> Reading Time
+							</div>
+							<div class="col-auto">
+								~ <?php $Printer($Blog->GetTimeToReadString()) ?>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
 			</div>
 
 		</div>

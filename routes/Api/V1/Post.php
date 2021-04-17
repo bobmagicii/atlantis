@@ -175,6 +175,7 @@ extends Atlantis\Site\PublicAPI {
 
 		$Post->UpdateUploadImageUsage();
 		$Post->UpdateCounts();
+		$Post->Blog->UpdateCounts();
 
 		////////
 
@@ -325,6 +326,7 @@ extends Atlantis\Site\PublicAPI {
 		if(array_key_exists('ContentJSON',$Dataset)) {
 			$Post->UpdateUploadImageUsage();
 			$Post->UpdateCounts();
+			$Post->Blog->UpdateCounts();
 		}
 
 		////////

@@ -2,13 +2,11 @@
 
 namespace Atlantis\Prototype;
 
-use
-\Atlantis as Atlantis,
-\Nether   as Nether;
+use Atlantis;
+use Nether;
 
-use
-\Exception as Exception,
-\JsonSerializable as JsonSerializable;
+use Exception;
+use JsonSerializable;
 
 class Blog
 extends Atlantis\Prototype
@@ -22,44 +20,56 @@ implements JsonSerializable {
 
 	protected static
 	$PropertyMap = [
-		'ID'             => 'ID:int',
-		'UserID'         => 'UserID:int',
-		'Enabled'        => 'Enabled:int',
-		'TimeCreated'    => 'TimeCreated:int',
-		'TimeUpdated'    => 'TimeUpdated:int',
-		'UUID'           => 'UUID',
-		'Alias'          => 'Alias',
-		'Title'          => 'Title',
-		'Tagline'        => 'Tagline',
-		'Details'        => 'Details',
-		'ImageHeaderID'  => 'ImageHeaderID:int',
-		'ImageHeaderURL' => 'ImageHeaderURL',
-		'ImageIconID'    => 'ImageIconID:int',
-		'ImageIconURL'   => 'ImageIconURL',
-		'OptAdult'       => 'OptAdult:int'
+		'ID'              => 'ID:int',
+		'UserID'          => 'UserID:int',
+		'Enabled'         => 'Enabled:int',
+		'TimeCreated'     => 'TimeCreated:int',
+		'TimeUpdated'     => 'TimeUpdated:int',
+		'UUID'            => 'UUID',
+		'Alias'           => 'Alias',
+		'Title'           => 'Title',
+		'Tagline'         => 'Tagline',
+		'Details'         => 'Details',
+		'ImageHeaderID'   => 'ImageHeaderID:int',
+		'ImageHeaderURL'  => 'ImageHeaderURL',
+		'ImageIconID'     => 'ImageIconID:int',
+		'ImageIconURL'    => 'ImageIconURL',
+		'CountPosts'      => 'CountPosts:int',
+		'CountViews'      => 'CountViews:int',
+		'CountComments'   => 'CountComments:int',
+		'CountImages'     => 'CountImages:int',
+		'CountCodeBlocks' => 'CountCodeBlocks:int',
+		'TimeToRead'      => 'TimeToRead:int',
+		'OptAdult'        => 'OptAdult:int'
 	];
 
 	// database fields.
 
-	public Int $ID;
-	public Int $UserID;
-	public Int $Enabled;
-	public Int $TimeCreated;
-	public Int $TimeUpdated;
-	public String $UUID;
-	public String $Title;
-	public String $Alias;
-	public ?String $Tagline;
-	public ?String $Details;
-	public ?Int $ImageHeaderID;
-	public ?String $ImageHeaderURL;
-	public ?Int $ImageIconID;
-	public ?String $ImageIconURL;
-	public Int $OptAdult;
+	public int $ID;
+	public int $UserID;
+	public int $Enabled;
+	public int $TimeCreated;
+	public int $TimeUpdated;
+	public string $UUID;
+	public string $Title;
+	public string $Alias;
+	public ?string $Tagline;
+	public ?string $Details;
+	public ?int $ImageHeaderID;
+	public ?string $ImageHeaderURL;
+	public ?int $ImageIconID;
+	public ?string $ImageIconURL;
+	public int $CountPosts;
+	public int $CountViews;
+	public int $CountComments;
+	public int $CountImages;
+	public int $CountCodeBlocks;
+	public int $TimeToRead;
+	public int $OptAdult;
 
 	// extension fields.
 
-	public ?String $URL;
+	public ?string $URL;
 	public ?Atlantis\Prototype\User $User;
 	public Atlantis\Util\Date $DateCreated;
 	public Atlantis\Util\Date $DateUpdated;
@@ -273,6 +283,21 @@ implements JsonSerializable {
 	}
 
 	public function
+	GetTimeToReadString():
+	string {
+	/*//
+	@date 2021-04-17
+	//*/
+
+		$Then = new Atlantis\Util\Date(sprintf(
+			'@%d',
+			(time() - $this->TimeToRead)
+		));
+
+		return $Then->GetAgoShort();
+	}
+
+	public function
 	IsAdult():
 	bool {
 	/*//
@@ -291,6 +316,76 @@ implements JsonSerializable {
 	//*/
 
 		return ($this->OptAdult === static::AdultForced);
+	}
+
+	public function
+	UpdateCounts():
+	static {
+	/*//
+	@date 2021-04-17
+	//*/
+
+		$this->UpdateCountViews();
+		$this->UpdateCountComments();
+
+		return $this;
+	}
+
+	public function
+	UpdateCountViews():
+	static {
+	/*//
+	@date 2021-04-17
+	//*/
+
+		$Row = (
+			(Nether\Database::Get()->NewVerse())
+			->Select(BlogPost::GetTableName())
+			->Fields([
+				'COUNT(*) As CountPosts',
+				'SUM(CountViews) As CountViews',
+				'SUM(CountComments) As CountComments',
+				'SUM(CountImages) As CountImages',
+				'SUM(CountCodeBlocks) As CountCodeBlocks',
+				'SUM(TimeToRead) As TimeToRead'
+			])
+			->Where('BlogID=:BlogID')
+			->Query([':BlogID'=>$this->ID])
+			->Next()
+		);
+
+		$this->Update([
+			'CountPosts'      => $Row->CountPosts,
+			'CountViews'      => $Row->CountViews,
+			'CountComments'   => $Row->CountComments,
+			'CountImages'     => $Row->CountImages,
+			'CountCodeBlocks' => $Row->CountCodeBlocks,
+			'TimeToRead'      => $Row->TimeToRead
+		]);
+
+		return $this;
+	}
+
+	public function
+	UpdateCountComments(bool $Commit=TRUE):
+	static {
+	/*//
+	@date 2021-04-17
+	//*/
+
+		$Count = (
+			(Nether\Database::Get()->NewVerse())
+			->Select(BlogPostComment::GetTableName())
+			->Fields('COUNT(*) As TotalCount')
+			->Where('BlogID=:BlogID')
+			->Query([':BlogID'=>$this->ID])
+			->Next()
+			->TotalCount
+		);
+
+		$this->Update([ 'CountComments' => $Count ]);
+
+		return $this;
 	}
 
 	///////////////////////////////////////////////////////////////////////////
