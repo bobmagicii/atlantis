@@ -17,7 +17,7 @@ classes in widgets and such.
 
 	public function
 	SetItemStore(Atlantis\Datastore $Input):
-	self {
+	static {
 
 		$this->ItemListStore = $Input;
 		return $this;

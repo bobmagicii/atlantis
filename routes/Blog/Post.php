@@ -63,6 +63,7 @@ extends Atlantis\Site\PublicWeb {
 		$Tags = $Post->GetTags();
 		$Keywords = join(',',$Tags->Payload->Map(function($Val){ return $Val->Tag->Title; })->GetData());
 		$Hit = NULL;
+		$Post->Tags = $Tags->Payload->Map((fn($Val)=> $Val->Tag));
 
 		($Popular->Payload)
 		->Remap(function($Val){ return $Val->Post; });

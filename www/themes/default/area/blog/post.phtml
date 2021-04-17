@@ -44,8 +44,20 @@ echo (new Atlantis\Element\PagePromo)
 
 		<div class="col-12 mb-4">
 
-			<!-- POST HEADING -->
-			<div class="row">
+			<?php
+
+			echo ((new Atlantis\Element\PostListing))
+			->AddClasses('mb-4 HideTheFirstHr')
+			->SetItemStore(new Atlantis\Datastore([$Post]))
+			->SetShowPostPreview(FALSE)
+			->SetShowSourceBlog(FALSE)
+
+			?>
+
+			<hr />
+
+			<!-- POST HEADING @deprecated -->
+			<div class="row d-none">
 				<div class="col-12 mb-1">
 					<?php $Printer($Post->DateCreated->Format('F jS g:ia')) ?>
 				</div>
@@ -77,7 +89,7 @@ echo (new Atlantis\Element\PagePromo)
 					</div>
 				</div>
 			</div>
-			<hr />
+			<hr class="d-none" />
 
 			<!-- POST CONTENT -->
 			<?php if($Post->IsAdult() && $Route->ShouldAdultSafespace()): ?>
