@@ -122,6 +122,14 @@ implements JsonSerializable {
 			TRUE
 		);
 
+		$this->Session = NULL;
+
+		//if(array_key_exists('CBU_ID',$Raw))
+		$this->Session = new Atlantis\Prototype\BlogUser(
+			Atlantis\Util::StripPrefixedQueryFields($Raw,'CBU_'),
+			TRUE
+		);
+
 		return $this;
 	}
 
@@ -502,6 +510,8 @@ implements JsonSerializable {
 	@date 2018-06-08
 	//*/
 
+		$User = NULL;
+
 		$SQL
 		->Join("Users {$FieldPrefix}BU ON {$TableAlias}.UserID={$FieldPrefix}BU.ID")
 		->Join("UploadImages {$FieldPrefix}BII ON {$TableAlias}.ImageIconID={$FieldPrefix}BII.ID")
@@ -509,6 +519,13 @@ implements JsonSerializable {
 
 		Atlantis\Prototype\UploadImage::ExtendQueryJoins($SQL,"{$FieldPrefix}BII","{$FieldPrefix}II_");
 		Atlantis\Prototype\UploadImage::ExtendQueryJoins($SQL,"{$FieldPrefix}BIH","{$FieldPrefix}IH_");
+
+		// we always want to know what kind of relaionship the current user has with this blog.
+		if($User = Nether\Stash::Get('Atlantis.User')) {
+			$SQL
+			->Join("BlogUsers {$FieldPrefix}CBU ON {$TableAlias}.ID={$FieldPrefix}CBU.BlogID")
+			->Where(sprintf("{$FieldPrefix}CBU.UserID=%d",$User->ID));
+		}
 
 		return;
 	}
@@ -520,11 +537,18 @@ implements JsonSerializable {
 	@date 2018-06-08
 	//*/
 
+		$User = NULL;
+
 		Atlantis\Prototype\User::ExtendMainFields($SQL,"{$FieldPrefix}BU","{$FieldPrefix}BU_");
 		Atlantis\Prototype\UploadImage::ExtendMainFields($SQL,"{$FieldPrefix}BII","{$FieldPrefix}II_");
 		Atlantis\Prototype\UploadImage::ExtendMainFields($SQL,"{$FieldPrefix}BIH","{$FieldPrefix}IH_");
 		Atlantis\Prototype\UploadImage::ExtendQueryFields($SQL,"{$FieldPrefix}BII","{$FieldPrefix}II_");
 		Atlantis\Prototype\UploadImage::ExtendQueryFields($SQL,"{$FieldPrefix}BIH","{$FieldPrefix}IH_");
+
+		if($User = Nether\Stash::Get('Atlantis.User')) {
+			Atlantis\Prototype\BlogUser::ExtendMainFields($SQL,"{$FieldPrefix}CBU","{$FieldPrefix}CBU_");
+		}
+
 		return;
 	}
 

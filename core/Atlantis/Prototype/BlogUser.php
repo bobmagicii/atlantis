@@ -43,10 +43,10 @@ extends Atlantis\Prototype {
 	public int $BlogID;
 	public ?Atlantis\Prototype\Blog $Blog;
 	public int $UserID;
-	public int $Flags;
+	public int $Flags = 0;
 	public int $Enabled;
-	public int $TimeCreated;
-	public int $TimeUpdated;
+	public int $TimeCreated = 0;
+	public int $TimeUpdated = 0;
 	public string $UUID;
 
 	// extension fields.

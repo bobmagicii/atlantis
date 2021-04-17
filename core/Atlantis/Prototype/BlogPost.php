@@ -154,11 +154,9 @@ extends Atlantis\Prototype {
 
 		$this->User = NULL;
 
-		if(array_key_exists('PU_ID',$Raw))
+		if(array_key_exists('PU_ID',$Raw) && $Raw['PU_ID'])
 		$this->User = new Atlantis\Prototype\User(
-			Atlantis\Util::StripPrefixedQueryFields(
-				$Raw, 'PU_'
-			),
+			Atlantis\Util::StripPrefixedQueryFields($Raw,'PU_'),
 			TRUE
 		);
 
