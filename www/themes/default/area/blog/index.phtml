@@ -55,12 +55,14 @@ echo (new Atlantis\Element\PagePromo)
 
 			<?php
 			echo (new Atlantis\Element\PostListing)
-			->AddClasses('NoBlogIcon')
+			->AddClasses('NoBlogIcon mb-4')
 			->SetTitle($PostListTitle)
 			->SetShowSourceBlog(FALSE)
 			->SetSubtitle($PostListSubtitle)
 			->SetFeedURL($Blog->GetFeedURL())
 			->SetItemStore($Posts->Payload);
+
+			echo (Atlantis\Element\Pager::FromResult($Posts,$Router));
 			?>
 
 		</div>

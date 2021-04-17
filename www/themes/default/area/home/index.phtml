@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @var Atlantis\Datastore $PopularPosts
- * @var Atlantis\Datastore $PopularBlogs
- * @var Atlantis\Datastore $Posts
+ * @var Atlantis\Struct\SearchResult $PopularPosts
+ * @var Atlantis\Struct\SearchResult $PopularBlogs
+ * @var Atlantis\Struct\SearchResult $Posts
  * @var Atlantis\Blog\Post $Post
  */
 
@@ -19,10 +19,14 @@ echo (new Atlantis\Element\PagePromo)
 		<div class="col-12 col-lg-8 mb-6">
 
 			<?php
-			if($Posts->Total)
+
 			echo (new Atlantis\Element\PostListing)
+			->AddClasses('mb-4')
 			->SetTitle('Recent Posts')
 			->SetItemStore($Posts->Payload);
+
+			echo (Atlantis\Element\Pager::FromResult($Posts,$Router));
+
 			?>
 
 		</div>

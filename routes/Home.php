@@ -8,12 +8,25 @@ use \Routes   as Routes;
 class Home
 extends Atlantis\Site\PublicWeb {
 
+	protected function
+	OnReady():
+	void {
+	/*//
+	@date 2021-04-17
+	//*/
+
+		($this->Get)
+		->Page(Atlantis\Util\Filters::PageNumberCallable());
+
+		return;
+	}
+
 	public function
 	Index():
 	void {
 
 		$this->Area('home/index',[
-			'Posts'        => $this->GetRecentPosts(),
+			'Posts'        => $this->GetRecentPosts($this->Get->Page),
 			'PopularBlogs' => $this->GetPopularBlogs(),
 			'PopularPosts' => $this->GetPopularPosts(),
 			'RecentUsers'  => $this->GetRecentUsers()
@@ -51,7 +64,7 @@ extends Atlantis\Site\PublicWeb {
 	}
 
 	protected function
-	GetRecentPosts():
+	GetRecentPosts(int $Page=1):
 	Atlantis\Struct\SearchResult {
 	/*//
 	fetch a list of the most recent blog posts site wide.
@@ -60,8 +73,8 @@ extends Atlantis\Site\PublicWeb {
 		$Output = Atlantis\Prototype\BlogPost::Find([
 			'Adult' => $this->ShouldAdultAllow(),
 			'Sort'  => 'newest',
-			'Limit' => 10,
-			'Page'  => 1,
+			'Limit' => 6,
+			'Page'  => $Page,
 			'BindTagsToResult' => TRUE
 		]);
 

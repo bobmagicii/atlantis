@@ -9,6 +9,19 @@ use Atlantis\Prototype\BlogPost;
 class Index
 extends Atlantis\Site\PublicWeb {
 
+	protected function
+	OnReady():
+	void {
+	/*//
+	@date 2021-04-17
+	//*/
+
+		($this->Get)
+		->Page(Atlantis\Util\Filters::PageNumberCallable());
+
+		return;
+	}
+
 	public function
 	Index(string $BlogAlias):
 	void {
@@ -18,8 +31,8 @@ extends Atlantis\Site\PublicWeb {
 
 		$Blog = Blog::GetByAlias($BlogAlias);
 		$BlogUser = NULL;
-		$Page = 1;
-		$Limit = 10;
+		$Page = $this->Get->Page;
+		$Limit = 6;
 		$QueryTags = NULL;
 		$RecentPostFilters = [
 			'Adult'            => NULL,
