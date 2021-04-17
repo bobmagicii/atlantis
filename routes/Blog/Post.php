@@ -75,8 +75,10 @@ extends Atlantis\Site\PublicWeb {
 				strtotime('-20 minutes')
 			);
 
-			if(!$Hit)
-			$Post->BumpCountViews();
+			if(!$Hit) {
+				$Post->BumpCountViews();
+				$Post->Blog->BumpCountViews();
+			}
 
 			Atlantis\Prototype\LogBlogPostTraffic::Upsert([
 				'BlogID' => $Post->Blog->ID,

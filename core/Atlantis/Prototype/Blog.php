@@ -396,6 +396,20 @@ implements JsonSerializable {
 		return $this;
 	}
 
+	public function
+	BumpCountViews(int $Inc=1):
+	static {
+	/*//
+	@date 2021-04-17
+	//*/
+
+		$this->Update([
+			'CountViews' => ($this->CountViews + 1)
+		]);
+
+		return $this;
+	}
+
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 

@@ -289,6 +289,9 @@ extends Atlantis\Prototype {
 	public function
 	BumpCountViews(int $Inc=1):
 	static {
+	/*//
+	@date 2020-10-03
+	//*/
 
 		$this->Update([
 			'CountViews' => ($this->CountViews + 1)
