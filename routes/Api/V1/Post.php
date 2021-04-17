@@ -170,12 +170,11 @@ extends Atlantis\Site\PublicAPI {
 			'TagID'  => $TagID
 		]);
 
-		foreach($Post->GetTags() as $Tag)
+		foreach($Post->GetTags()->Payload as $Tag)
 		$Tag->UpdateUsage();
 
-		($this->Post)
-		->UpdateUploadImageUsage()
-		->UpdateCounts();
+		$Post->UpdateUploadImageUsage();
+		$Post->UpdateCounts();
 
 		////////
 
