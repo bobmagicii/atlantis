@@ -42,20 +42,25 @@ extends Atlantis\Element {
 	FromResult(SearchResult $Result, Router $Router=NULL):
 	static {
 
+		$RequestPath = $Router->GetRequestPath();
 		$Pager = new static;
+
+		if($RequestPath === '/index')
+		$RequestPath = '/';
+
 		$Pager->Page = $Result->Page;
 		$Pager->PageCount = $Result->GetPageCount();
 
 		if($Router instanceof Router) {
 			$Pager->NextURL = sprintf(
 				'%s%s',
-				$Router->GetRequestPath(),
+				$RequestPath,
 				$Router->QueryCooker(['page'=>($Pager->Page+1)])
 			);
 
 			$Pager->PrevURL = sprintf(
 				'%s%s',
-				$Router->GetRequestPath(),
+				$RequestPath,
 				$Router->QueryCooker(['page'=>(
 					($Pager->Page === 2)?
 					(''):
