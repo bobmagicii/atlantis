@@ -33,6 +33,12 @@ $PrintPostDetails = function(Atlantis\Prototype\BlogPost $Post) {
 		$Minutes
 	);
 
+	if($Post->Blog->Session->HasEditPriv())
+	$Infos[] = sprintf(
+		'<i class="fas fa-fw fa-eye"></i> %d Views',
+		$Post->CountViews
+	);
+
 	return join(' | ',$Infos);
 };
 

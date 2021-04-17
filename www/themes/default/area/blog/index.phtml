@@ -165,6 +165,15 @@ echo (new Atlantis\Element\PagePromo)
 								<?php $Printer($Blog->CountPosts) ?>
 							</div>
 							<div class="col-12"><hr class="mt-2 mb-2" /></div>
+							<?php if($Blog->Session->HasEditPriv()): ?>
+							<div class="col">
+								<i class="fas fa-fw fa-eye"></i> Views
+							</div>
+							<div class="col-auto">
+								<?php $Printer($Blog->CountViews) ?>
+							</div>
+							<div class="col-12"><hr class="mt-2 mb-2" /></div>
+							<?php endif; ?>
 							<div class="col">
 								<i class="fas fa-fw fa-comment"></i> Comments
 							</div>
@@ -176,7 +185,7 @@ echo (new Atlantis\Element\PagePromo)
 								<i class="fas fa-fw fa-image"></i> Images
 							</div>
 							<div class="col-auto">
-							 	<?php $Printer($Blog->CountImages) ?>
+								<?php $Printer($Blog->CountImages) ?>
 							</div>
 							<div class="col-12"><hr class="mt-2 mb-2" /></div>
 							<div class="col">
