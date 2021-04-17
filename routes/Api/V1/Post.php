@@ -82,6 +82,7 @@ extends Atlantis\Site\PublicAPI {
 		$Enabled = $this->Post->OptDraft ? 0 : 1;
 		$ImageID = NULL;
 		$OptAdult = NULL;
+		$Tag = NULL;
 		$Tags = [];
 		$TagID = NULL;
 		$Alias = NULL;
@@ -168,6 +169,13 @@ extends Atlantis\Site\PublicAPI {
 			'PostID' => $Post->ID,
 			'TagID'  => $TagID
 		]);
+
+		foreach($Post->GetTags() as $Tag)
+		$Tag->UpdateUsage();
+
+		($this->Post)
+		->UpdateUploadImageUsage()
+		->UpdateCounts();
 
 		////////
 

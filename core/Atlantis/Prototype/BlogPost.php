@@ -19,24 +19,25 @@ extends Atlantis\Prototype {
 
 	protected static
 	$PropertyMap = [
-		'ID'            => 'ID:int',
-		'BlogID'        => 'BlogID:int',
-		'UserID'        => 'UserID:int',
-		'ImageID'       => 'ImageID:int',
-		'TimeCreated'   => 'TimeCreated:int',
-		'TimeUpdated'   => 'TimeUpdated:int',
-		'Enabled'       => 'Enabled:int',
-		'CountViews'    => 'CountViews:int',
-		'CountComments' => 'CountComments:int',
-		'CountImages'   => 'CountImages:int',
-		'TimeToRead'    => 'TimeToRead:int',
-		'UUID'          => 'UUID',
-		'OptAdult'      => 'OptAdult:int',
-		'OptComments'   => 'OptComments:int',
-		'Title'         => 'Title',
-		'Alias'         => 'Alias',
-		'Content'       => 'Content',
-		'ContentJSON'   => 'ContentJSON'
+		'ID'              => 'ID:int',
+		'BlogID'          => 'BlogID:int',
+		'UserID'          => 'UserID:int',
+		'ImageID'         => 'ImageID:int',
+		'TimeCreated'     => 'TimeCreated:int',
+		'TimeUpdated'     => 'TimeUpdated:int',
+		'Enabled'         => 'Enabled:int',
+		'CountViews'      => 'CountViews:int',
+		'CountComments'   => 'CountComments:int',
+		'CountImages'     => 'CountImages:int',
+		'CountCodeBlocks' => 'CountCodeBlocks:int',
+		'TimeToRead'      => 'TimeToRead:int',
+		'UUID'            => 'UUID',
+		'OptAdult'        => 'OptAdult:int',
+		'OptComments'     => 'OptComments:int',
+		'Title'           => 'Title',
+		'Alias'           => 'Alias',
+		'Content'         => 'Content',
+		'ContentJSON'     => 'ContentJSON'
 	];
 
 	// database fields.
@@ -51,6 +52,7 @@ extends Atlantis\Prototype {
 	public int $CountViews;
 	public int $CountComments;
 	public int $CountImages;
+	public int $CountCodeBlocks;
 	public int $TimeToRead;
 	public string $UUID;
 	public string $Title;
@@ -305,9 +307,10 @@ extends Atlantis\Prototype {
 	//*/
 
 		$this->Update([
-			'CountComments' => $this->UpdateCountComments(FALSE),
-			'CountImages'   => $this->UpdateCountImages(FALSE),
-			'TimeToRead'    => $this->UpdateTimeToRead(FALSE)
+			'CountComments'   => $this->UpdateCountComments(FALSE),
+			'CountImages'     => $this->UpdateCountImages(FALSE),
+			'CountCodeBlocks' => $this->UpdateCountCodeBlocks(FALSE),
+			'TimeToRead'      => $this->UpdateTimeToRead(FALSE)
 		]);
 
 		return $this;
@@ -355,6 +358,31 @@ extends Atlantis\Prototype {
 		]);
 
 		return $Images->Count();
+	}
+
+	public function
+	UpdateCountCodeBlocks(bool $Commit=TRUE):
+	int {
+	/*//
+	@date 2021-04-15
+	//*/
+
+		if(!$this->ContentJSON)
+		return 0;
+
+		$Struct = EditorJS\Content::FromString($this->ContentJSON);
+		$Blocks = $Struct->Blocks->Filter(
+			fn(EditorJS\Block $B)=>
+			($B instanceof EditorJS\Blocks\CodeMirror)
+			&& ($B->Data->Mime !== "text/plain")
+		);
+
+		if($Commit)
+		$this->Update([
+			'CountCodeBlocks' => $Blocks->Count()
+		]);
+
+		return $Blocks->Count();
 	}
 
 	public function

@@ -20,6 +20,13 @@ $PrintPostDetails = function(Atlantis\Prototype\BlogPost $Post) {
 		Atlantis\Util::IfOneOrNot($Post->CountImages,'Image','Images')
 	);
 
+	if($Post->CountCodeBlocks)
+	$Infos[] = sprintf(
+		'<i class="fas fa-fw fa-code"></i> %s %s',
+		$Post->CountCodeBlocks,
+		Atlantis\Util::IfOneOrNot($Post->CountCodeBlocks,'Code Block','Code Blocks')
+	);
+
 	if($Minutes = $Post->GetMinutesToRead())
 	$Infos[] = sprintf(
 		'<i class="fas fa-fw fa-clock"></i> %s Min Read',
@@ -88,11 +95,6 @@ $PrintPostDetails = function(Atlantis\Prototype\BlogPost $Post) {
 								<?php endforeach; ?>
 							</div>
 							<?php endif ?>
-							<div class="col-auto">
-								<div class="opacity-75 font-size-smaller">
-									<?php echo $PrintPostDetails($Post) ?>
-								</div>
-							</div>
 						</div>
 					</div>
 
@@ -125,12 +127,17 @@ $PrintPostDetails = function(Atlantis\Prototype\BlogPost $Post) {
 
 					<?php if($Element->ShowSourceBlog()): ?>
 					<div class="col-12 mt-3">
-						<div class="About opacity-75 font-size-smaller">
+						<div class="opacity-75 font-size-smaller">
 							From <a class="Source font-weight-light" href="<?php echo $Post->Blog->URL ?>"><?php echo $Post->Blog->Title ?></a>
 							By <a class="Authour font-weight-light" href="<?php echo $Post->User->URL ?>"><?php echo $Post->User->Alias ?></a>
 						</div>
 					</div>
 					<?php endif; ?>
+					<div class="col-12">
+						<div class="opacity-75 font-size-smaller">
+							<?php echo $PrintPostDetails($Post) ?>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

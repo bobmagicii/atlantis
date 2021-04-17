@@ -30,7 +30,7 @@ extends Nether\Console\Client {
 
 			$Result->Payload->Each(function(Atlantis\Prototype\BlogPost $Post){
 				$Post->UpdateCounts();
-				static::Message("#{$Post->ID}: Com={$Post->CountComments}, Img={$Post->CountImages}, TTR={$Post->TimeToRead}");
+				static::Message("#{$Post->ID}: Com={$Post->CountComments}, Img={$Post->CountImages}, Code={$Post->CountCodeBlocks}, TTR={$Post->TimeToRead}");
 				return;
 			});
 
