@@ -472,6 +472,16 @@ implements JsonSerializable {
 	}
 
 	public function
+	IsSeenAllowed():
+	bool {
+	/*//
+	@date 2021-04-16
+	//*/
+
+		return (bool)$this->OptAllowSeen;
+	}
+
+	public function
 	UsesThirdPartyAuth():
 	bool {
 	/*//

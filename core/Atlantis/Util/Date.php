@@ -17,6 +17,12 @@ extends DateTime
 implements JsonSerializable {
 
 	const
+	SecPerMin   = 60,
+	SecPerHour  = 3600,
+	SecPerDay   = 86400,
+	SecPerWeek  = 604800;
+
+	const
 	FormatYMD = 'Y-m-d',
 	FormatYMD12T = 'Y-m-d g:ia',
 	FormatYMD12TZ = 'Y-m-d g:ia T',
@@ -158,6 +164,25 @@ implements JsonSerializable {
 		// and combine it all into a string.
 
 		return join($Delim,$Output);
+	}
+
+	public function
+	GetAgoBroad():
+	string {
+	/*//
+	@date 2021-04-16
+	//*/
+
+		$Diff = time() - $this->GetTimestamp();
+
+		return match(TRUE) {
+			($Diff < static::SecPerMin)      => 'now',
+			($Diff < static::SecPerDay)      => 'today',
+			($Diff < static::SecPerWeek)     => 'this week',
+			($Diff < (static::SecPerWeek*3)) => 'few weeks',
+			($Diff < (static::SecPerWeek*6)) => 'a while',
+			default => 'a long time'
+		};
 	}
 
 	////////////////////////////////////////////////////////////////

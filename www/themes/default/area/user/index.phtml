@@ -23,23 +23,27 @@ echo (new PagePromo)
 <div class="container pb-4">
 
 	<div class="row">
-		<div class="col-12">
-
-		</div>
-		<div class="col-12 col-md-6">
+		<div class="col-12 col-md-8">
 
 			<?php
+
 			echo (new PostListing)
-			->SetTitle("Recent Posts by {$Profile->Alias}")
+			->AddClasses('mb-4')
+			->SetTitle("Latest Posts")
+			->SetSubtitle(" by {$Profile->Alias}")
 			->SetItemStore($RecentPosts->Payload)
 			->SetShowPostPreview(FALSE)
 			->SetShowPostImage(PostListing::PostImagePreview);
+
+
+			echo Atlantis\Element\Pager::FromResult($RecentPosts,$Router);
+
 			?>
 
 		</div>
 
 		<div class="col-12 col-md">
-			<div class="quotron-primary pl-2 mb-6">
+			<div class="quotron quotron-primary mb-6">
 				<div class="PostListing HideTheLastHr">
 					<h2 class="font-size-normal">
 						About
@@ -54,10 +58,19 @@ echo (new PagePromo)
 						<strong class="font-weight-bold">Location:</strong> <?php $Printer($Profile->Location) ?>
 					</div>
 					<?php endif; ?>
+					<?php if($Profile->IsSeenAllowed()): ?>
+					<div class="">
+						<strong class="font-weight-bold">Last Seen:</strong> <?php $Printer($Profile->DateSeen->GetAgoBroad()) ?>
+					</div>
+					<?php endif; ?>
 					<hr />
 				</div>
 			</div>
-			<div class="quotron-primary pl-2 mb-6">
+			<div class="quotron quotron-primary mb-6">
+				<h2 class="font-size-normal">
+					Writes For
+				</h2>
+				<hr class="mt-2 mb-3" />
 				<?php
 				echo (new Atlantis\Element\BlogListing)
 				->SetItemStore($Blogs->Payload->Map(fn($Val)=> $Val->Blog))

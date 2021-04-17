@@ -12,9 +12,22 @@ use Exception                  as Exception;
 class Index
 extends Atlantis\Site\PublicWeb {
 
+	protected function
+	OnReady():
+	void {
+	/*//
+	@date 2021-04-16
+	//*/
+
+		($this->Get)
+		->Page(Atlantis\Util\Filters::PageNumberCallable());
+
+		return;
+	}
+
 	public function
-	Index(String $Alias):
-	Void {
+	Index(string $Alias):
+	void {
 
 		$Profile = NULL;
 		$Scope = [];
@@ -28,7 +41,9 @@ extends Atlantis\Site\PublicWeb {
 		$Scope['Blogs'] = $Profile->GetBlogs();
 		$Scope['RecentPosts'] = Atlantis\Prototype\BlogPost::Find([
 			'UserID' => $Profile->ID,
-			'Sort'   => 'newest'
+			'Sort'   => 'newest',
+			'Limit'  => 6,
+			'Page'   => $this->Get->Page
 		]);
 
 		////////
