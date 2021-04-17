@@ -9,13 +9,11 @@
 			<div class="col-12 col-md-auto mb-4">
 				<a href="https://github.com/bobmagicii/atlantis" target="_blank"><i class="fab fa-github"></i> Github</a>
 			</div>
-			<?php if(count(Nether\Database::$QueryLog)): ?>
+			<?php if($User && $User->IsAdmin()): ?>
 			<div class="col-12 mb-4">
-			<?php foreach(Nether\Database::$QueryLog as $Query): ?>
-			<code class="d-block mb-4"><?php echo $Query->Query ?></code>
-			<?php endforeach; ?>
+				<?php $Surface->Area('design/footer-dev') ?>
 			</div>
-			<?php endif ;?>
+			<?php endif; ?>
 		</div>
 	</div>
 
