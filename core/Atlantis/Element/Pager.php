@@ -47,8 +47,21 @@ extends Atlantis\Element {
 		$Pager->PageCount = $Result->GetPageCount();
 
 		if($Router instanceof Router) {
-			$Pager->NextURL = $Router->QueryCooker(['page'=>($Pager->Page+1)]);
-			$Pager->PrevURL = $Router->QueryCooker(['page'=>($Pager->Page-1)]);
+			$Pager->NextURL = sprintf(
+				'%s%s',
+				$Router->GetRequestPath(),
+				$Router->QueryCooker(['page'=>($Pager->Page+1)])
+			);
+
+			$Pager->PrevURL = sprintf(
+				'%s%s',
+				$Router->GetRequestPath(),
+				$Router->QueryCooker(['page'=>(
+					($Pager->Page === 2)?
+					(''):
+					($Pager->Page-1)
+				)])
+			);
 		}
 
 		return $Pager;
