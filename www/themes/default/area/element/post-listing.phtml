@@ -40,11 +40,22 @@ $PrintPostDetails = function(Atlantis\Prototype\BlogPost $Post) {
 		$Minutes
 	);
 
-	if($Post->Blog->Session->HasEditPriv())
-	$Infos[] = sprintf(
-		'<i class="fas fa-fw fa-eye"></i> %d Views',
-		$Post->CountViews
-	);
+	if($Post->Blog->Session->HasEditPriv()) {
+		$Infos[] = sprintf(
+			'<i class="fas fa-fw fa-eye"></i> %d Views',
+			$Post->CountViews
+		);
+
+		$Infos[] = sprintf(
+			'<a href="%s">Edit</a>',
+			$Post->GetEditURL()
+		);
+
+		$Infos[] = sprintf(
+			'<a href="#" class="AtlantisCmdPostDelete" data-id="%d">Delete</a>',
+			$Post->ID
+		);
+	}
 
 	return join(' | ',$Infos);
 };

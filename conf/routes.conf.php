@@ -61,6 +61,11 @@
 	'//{{Domain}}/dashboard/blog/post-edit?post={{PostID}}',
 	'Routes\\Dashboard\\Blog::PostEdit'
 )
+->Register('Atlantis.Dashboard.Blog.Post.Delete',
+	'{&}//dashboard/blog/post-delete',
+	'//{{Domain}}/dashboard/blog/post-delete?post={{PostID}}',
+	'Routes\\Dashboard\\Blog::PostDelete'
+)
 ->Register('Atlantis.Dashboard.Blog.Settings',
 	'{&}//dashboard/blog/settings',
 	'//{{Domain}}/dashboard/blog/settings?blog={{BlogID}}',

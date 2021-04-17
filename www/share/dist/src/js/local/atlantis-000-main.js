@@ -126,7 +126,6 @@ jQuery(document)
 		return;
 	});
 
-
 	jQuery('.CodeViewer')
 	.each(function(){
 

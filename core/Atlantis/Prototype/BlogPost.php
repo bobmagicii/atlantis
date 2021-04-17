@@ -194,6 +194,32 @@ extends Atlantis\Prototype {
 	}
 
 	public function
+	GetEditURL():
+	?Atlantis\Site\Endpoint {
+	/*//
+	@date 2021-04-17
+	//*/
+
+		return Atlantis\Site\Endpoint::Get(
+			'Atlantis.Dashboard.Blog.Post.Edit',
+			[ 'PostID'=> $this->ID ]
+		);
+	}
+
+	public function
+	GetDeleteURL():
+	?Atlantis\Site\Endpoint {
+	/*//
+	@date 2021-04-17
+	//*/
+
+		return Atlantis\Site\Endpoint::Get(
+			'Atlantis.Dashboard.Blog.Post.Delete',
+			[ 'PostID'=> $this->ID ]
+		);
+	}
+
+	public function
 	GetBlogUser(?Atlantis\Prototype\User $User):
 	?Atlantis\Prototype\BlogUser {
 	/*//
@@ -213,6 +239,9 @@ extends Atlantis\Prototype {
 	public function
 	GetTags($Opt=NULL):
 	Atlantis\Struct\SearchResult {
+	/*//
+	@date 2020-09-29
+	//*/
 
 		$Opt = new Nether\Object\Mapped($Opt,[
 			'PostID' => $this->ID,
@@ -674,6 +703,7 @@ extends Atlantis\Prototype {
 	BindTagsToResultCallable():
 	mixed {
 	/*//
+	@date 2021-04-11
 	//*/
 
 		return (static fn($Output,$Opt)=> static::BindTagsToResult($Output,$Opt));

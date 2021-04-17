@@ -28,6 +28,9 @@ $GetStylesheetURL = function(String $URI):String {
 	<script type="text/javascript" src="<?php echo $GetStylesheetURL('/themes/default/js/scripts.js'); ?>"></script>
 	<link type="text/css" rel="stylesheet" href="<?php echo $GetStylesheetURL('/themes/default/css/styles.css'); ?>" />
 
+	<script type="module" src="/share/atlantis/init.js"></script>
+	<link type="text/css" rel="stylesheet" href="<?php echo $GetStylesheetURL('/share/nui/css/nui.css'); ?>" />
+
 	<!-- remote libraries -->
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,700;1,200;1,300;1,400;1,500;1,700&family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Share+Tech+Mono&family=Quicksand:wght@300;400;700&subset=latin-ext&display=swap" rel="stylesheet" />
 	<!-- <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Share+Tech+Mono&amp;subset=latin-ext" /> -->
@@ -51,7 +54,7 @@ $GetStylesheetURL = function(String $URI):String {
 
 
 </head>
-<body class="font-family-regular">
+<body class="NUI-Theme-Light font-family-regular">
 	<div id="Toaster" style="position:fixed;top:0px;right:0px;z-index:9001;"></div>
 
 <?php $Surface->Area('design/header') ?>
