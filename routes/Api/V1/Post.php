@@ -589,6 +589,7 @@ extends Atlantis\Site\PublicAPI {
 
 		$Comment = Atlantis\Prototype\BlogPostComment::Insert($Dataset);
 		$BlogPost->UpdateCountComments();
+		$BlogPost->Blog->UpdateCountComments();
 
 		$this->SetPayload($Comment);
 		return;
@@ -626,6 +627,7 @@ extends Atlantis\Site\PublicAPI {
 
 		$Comment->Drop();
 		$Comment->Post->UpdateCountComments();
+		$Comment->Post->Blog->UpdateCountComments();
 
 		return;
 	}

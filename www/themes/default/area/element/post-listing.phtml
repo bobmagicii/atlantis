@@ -13,6 +13,13 @@ $PrintPostDetails = function(Atlantis\Prototype\BlogPost $Post) {
 	$Infos = [];
 	$Minutes = 0;
 
+	if($Post->CountComments)
+	$Infos[] = sprintf(
+		'<i class="fas fa-fw fa-comment"></i> %s %s',
+		$Post->CountComments,
+		Atlantis\Util::IfOneOrNot($Post->CountComments,'Comment','Comments')
+	);
+
 	if($Post->CountImages)
 	$Infos[] = sprintf(
 		'<i class="fas fa-fw fa-image"></i> %s %s',
