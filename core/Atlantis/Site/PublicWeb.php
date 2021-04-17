@@ -74,6 +74,8 @@ class PublicWeb {
 		if(ProjectTime - $this->User->TimeSeen > 60)
 		$this->User->Update([ 'TimeSeen' => ProjectTime ]);
 
+		Nether\Stash::Set('Atlantis.User',$this->User);
+
 		$this->OnReady();
 		return;
 	}
