@@ -32,6 +32,7 @@ echo (new PagePromo)
 			echo (new PostListing)
 			->SetTitle("Recent Posts by {$Profile->Alias}")
 			->SetItemStore($RecentPosts->Payload)
+			->SetShowPostPreview(FALSE)
 			->SetShowPostImage(PostListing::PostImagePreview);
 			?>
 

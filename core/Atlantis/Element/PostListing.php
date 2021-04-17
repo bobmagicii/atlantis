@@ -74,6 +74,31 @@ extends Atlantis\Element {
 		return $this;
 	}
 
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
 
+	protected bool
+	$ShowPostPreview = TRUE;
+
+	public function
+	ShowPostPreview():
+	bool {
+	/*//
+	@date 2021-04-17
+	//*/
+
+		return $this->ShowPostPreview;
+	}
+
+	public function
+	SetShowPostPreview(bool $Val):
+	static {
+	/*//
+	@date 2021-04-17``
+	//*/
+
+		$this->ShowPostPreview = $Val;
+		return $this;
+	}
 
 }

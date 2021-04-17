@@ -96,6 +96,7 @@ $PrintPostDetails = function(Atlantis\Prototype\BlogPost $Post) {
 						</div>
 					</div>
 
+					<?php if($Element->ShowPostPreview()): ?>
 					<?php if($Post->Image): ?>
 					<?php if($Element->ShowPostImage() === 1): ?>
 					<div class="col-12 mt-4">
@@ -120,6 +121,7 @@ $PrintPostDetails = function(Atlantis\Prototype\BlogPost $Post) {
 						<a class="d-block mt-2 font-weight-bold" href="<?php $Printer($Post->URL) ?>">Continue Reading...</a>
 						<?php endif; ?>
 					</div>
+					<?php endif; ?>
 
 					<?php if($Element->ShowSourceBlog()): ?>
 					<div class="col-12 mt-3">
