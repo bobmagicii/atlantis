@@ -50,7 +50,7 @@ export default class {
 		delete this.Events[EventName][KeyName];
 
 		return this;
-	}
+	};
 
 	CallEventHandlers(EventName,Arg) {
 	/*//

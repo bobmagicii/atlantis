@@ -5,3 +5,8 @@
 	color: var(--NUI-Element-Window-Box-Colour);
 	padding: 2px 8px;
 }
+
+.NUI-Element-Button:disabled {
+	opacity: 0.5;
+	filter: saturate(0.5);
+}

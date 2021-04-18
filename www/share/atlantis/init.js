@@ -1,24 +1,20 @@
-import Util from '/share/atlantis/util.js';
 import PostAPI from '/share/atlantis/api/post.js';
-import Dialog from '/share/nui/element/window.js';
-import Button from '/share/nui/element/button.js';
+import DialogConfirm from '/share/atlantis/element/dialog-confirm.js';
 
 jQuery(document)
 .ready(function(){
 
 	let Handlers = new class {
 
-		OnCmdPostDelete(){
-			new Dialog({
-				'Title': 'Confirm Action: DELETE',
-				'Content': `Really delete post ${this.dataset.id}? This cannot be undone.`,
-				'Buttons': [
-					new Button({ 'Text':'Yes', 'Class':'NUI-Dialog-Accept' }),
-					new Button({ 'Text':'No', 'Class':'NUI-Dialog-Cancel' })
-				]
-			});
-			return;
-		};
+		OnCmdPostDelete(Ev){ return new DialogConfirm(
+			'DELETE BLOG POST',
+			`<div class="p-4">Really delete post ${Ev.currentTarget.dataset.id}? This cannot be undone.</div>`,
+			'FillPreferLast',
+			((Dialog)=> { PostAPI.Delete(
+				Ev.currentTarget.dataset.id,
+				((Result)=> location.href=Result.Location)
+			)})
+		); };
 
 	};
 
@@ -27,3 +23,5 @@ jQuery(document)
 
 	return;
 });
+
+export default null;

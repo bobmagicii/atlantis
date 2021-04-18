@@ -11,6 +11,7 @@ export default class extends Base {
 
 	Config = new class extends Config {
 		ID = `${(new Date).getTime()}`;
+		Class = '';
 		Container = 'body';
 		Content = '';
 		Debug = true;
@@ -51,6 +52,7 @@ export default class extends Base {
 		this.Container = (
 			jQuery('<div />')
 			.addClass('NUI-Element-Overlay')
+			.addClass(this.Config.Class)
 		);
 
 		jQuery(this.Config.Container)
@@ -68,6 +70,21 @@ export default class extends Base {
 			'Ready', 'Debug',
 			function(){ }
 		);
+
+		return;
+	};
+
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
+	Destroy() {
+	/*//
+	@date 2021-04-17
+	//*/
+
+		this.Container
+		.empty()
+		.remove();
 
 		return;
 	};

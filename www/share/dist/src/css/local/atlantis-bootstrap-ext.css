@@ -55,6 +55,7 @@
 .opacity-50 { opacity: 0.50; }
 .opacity-75 { opacity: 0.75; }
 .opacity-100 { opacity: 1.0; }
+.opacity-anim { transition: opacity 250ms; }
 
 .wallpapered { background-size:cover; background-position: center center; background-repeat: no-repeat; }
 

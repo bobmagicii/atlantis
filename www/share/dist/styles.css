@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-16 07:01:59
+@date 2021-04-17 23:53:56
 @files [
     "src\/codemirror-themes\/3024-day.css",
     "src\/codemirror-themes\/3024-night.css",
@@ -3833,6 +3833,7 @@ span.CodeMirror-selectedtext { background: none; }
 .opacity-50 { opacity: 0.50; }
 .opacity-75 { opacity: 0.75; }
 .opacity-100 { opacity: 1.0; }
+.opacity-anim { transition: opacity 250ms; }
 
 .wallpapered { background-size:cover; background-position: center center; background-repeat: no-repeat; }
 

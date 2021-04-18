@@ -26,7 +26,7 @@ more tailored version called Dialog may be more use.
 		Title = 'NUI.Element.Window';
 		Content = '';
 		Buttons = null;
-		ButtonPacking = 'Fill';
+		ButtonPacking = 'End';
 		Icon = 'far fa-window';
 		Position = 'center';
 		Modal = false;
@@ -254,6 +254,11 @@ more tailored version called Dialog may be more use.
 		(this.HeaderBtnMin)
 		.on('mousedown',function(){ return false; })
 		.on('click',(function(){ this.Minimize(); return; }).bind(this));
+
+		if(!this.Config.Resizable) {
+			this.HeaderBtnMax.hide();
+			this.HeaderBtnMin.hide();
+		}
 
 		this.SetIcon(this.Config.Icon);
 		return Element;

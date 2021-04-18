@@ -32,8 +32,8 @@
 	position: absolute;
 	top: 0px;
 	left: 0px;
-	min-height: 200px;
-	min-width: 300px;
+	--min-height: 200px;
+	--min-width: 300px;
 	z-index: 9000;
 
 	display: flex;
@@ -132,11 +132,23 @@
 }
 
 .NUI-Element-Window > nav.Center {
-	justify-content: Center;
+	justify-content: center;
+}
+
+.NUI-Element-Window > nav.Space {
+	justify-content: space-between;
 }
 
 .NUI-Element-Window > nav.Fill > button {
 	flex: 1;
+}
+
+.NUI-Element-Window > nav.FillPreferFirst > button:first-of-type {
+	flex-grow: 1;
+}
+
+.NUI-Element-Window > nav.FillPreferLast > button:last-of-type {
+	flex-grow: 1;
 }
 
 .NUI-Element-Window > footer .GripResize {
