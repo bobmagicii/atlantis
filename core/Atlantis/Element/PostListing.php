@@ -101,4 +101,31 @@ extends Atlantis\Element {
 		return $this;
 	}
 
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
+	protected bool
+	$ShowEditorControls = FALSE;
+
+	public function
+	ShowEditorControls():
+	bool {
+	/*//
+	@date 2021-04-17
+	//*/
+
+		return $this->ShowEditorControls;
+	}
+
+	public function
+	SetShowEditorControls(bool $Val):
+	static {
+	/*//
+	@date 2021-04-17``
+	//*/
+
+		$this->ShowEditorControls = $Val;
+		return $this;
+	}
+
 }

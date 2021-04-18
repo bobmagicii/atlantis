@@ -8,7 +8,7 @@
 
 $Posts = $Element->GetItemStore();
 
-$PrintPostDetails = function(Atlantis\Prototype\BlogPost $Post) {
+$PrintPostDetails = function(Atlantis\Prototype\BlogPost $Post) use($Element) {
 
 	$Infos = [];
 	$Minutes = 0;
@@ -46,15 +46,17 @@ $PrintPostDetails = function(Atlantis\Prototype\BlogPost $Post) {
 			$Post->CountViews
 		);
 
-		$Infos[] = sprintf(
-			'<a href="%s">Edit</a>',
-			$Post->GetEditURL()
-		);
+		if($Element->ShowEditorControls()) {
+			$Infos[] = sprintf(
+				'<a href="%s">Edit</a>',
+				$Post->GetEditURL()
+			);
 
-		$Infos[] = sprintf(
-			'<a href="#" class="AtlantisCmdPostDelete" data-id="%d">Delete</a>',
-			$Post->ID
-		);
+			$Infos[] = sprintf(
+				'<a href="#" class="AtlantisCmdPostDelete" data-id="%d">Delete</a>',
+				$Post->ID
+			);
+		}
 	}
 
 	return join(' | ',$Infos);
