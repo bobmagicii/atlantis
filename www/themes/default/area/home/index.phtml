@@ -22,8 +22,10 @@ echo (new Atlantis\Element\PagePromo)
 
 			echo (new Atlantis\Element\PostListing)
 			->AddClasses('mb-4')
-			->SetTitle('Recent Posts')
+			->SetTitle('Network Posts')
 			->SetShowEditorControls(FALSE)
+			->SetShowPostPreview(FALSE)
+			->SetShowPostImage(FALSE)
 			->SetItemStore($Posts->Payload);
 
 			echo (Atlantis\Element\Pager::FromResult($Posts,$Router));
