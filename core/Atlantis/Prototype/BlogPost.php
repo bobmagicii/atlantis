@@ -674,6 +674,9 @@ extends Atlantis\Prototype {
 	of them and then distribute the tags across the result objects.
 	//*/
 
+		if(!$Output->Payload->Count())
+		return;
+
 		// determine which posts we need to search for.
 
 		$Which = $Output->Payload->Map(fn($Val)=> $Val->ID);
