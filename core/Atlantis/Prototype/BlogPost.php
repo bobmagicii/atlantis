@@ -875,6 +875,37 @@ extends Atlantis\Prototype {
 		return;
 	}
 
+	static protected function
+	FindApplySorts($Opt,$SQL):
+	void {
+	/*//
+	@date 2021-04-17
+	//*/
+
+		switch($Opt->Sort) {
+			case 'views-most':
+				$SQL->Sort('Main.CountViews',$SQL::SortDesc);
+			break;
+			case 'views-least':
+				$SQL->Sort('Main.CountViews',$SQL::SortAsc);
+			break;
+			case 'commented-most':
+				$SQL->Sort('Main.CountComments',$SQL::SortDesc);
+			break;
+			case 'commented-least':
+				$SQL->Sort('Main.CountComments',$SQL::SortAsc);
+			break;
+			case 'ttr-longest':
+				$SQL->Sort('Main.TimeToRead',$SQL::SortDesc);
+			break;
+			case 'ttr-shortest':
+				$SQL->Sort('Main.TimeToRead',$SQL::SortAsc);
+			break;
+		}
+
+		return;
+	}
+
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 
