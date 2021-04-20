@@ -17,6 +17,7 @@
 		Documentroot $Path/$WebRoot
 		ServerName $Domain
 		ServerAlias $Domain *.$Domain
+		Header set Permissions-Policy: interest-cohort=()
 	</VirtualHost>
 </Macro>
 
@@ -45,6 +46,7 @@
 		SSLCertificateFile    "/opt/ssl/certs/$Domain/public/cert.pem"
 		SSLCACertificateFile  "/opt/ssl/certs/$Domain/public/fullchain.pem"
 		SSLCertificateKeyFile "/opt/ssl/certs/$Domain/private/key.private.pem"
+		Header set Permissions-Policy: interest-cohort=()
 	</VirtualHost>
 </Macro>
 
@@ -74,6 +76,7 @@
 		SSLCertificateFile    "/opt/ssl/certs/$Domain/public/cert.pem"
 		SSLCACertificateFile  "/opt/ssl/certs/$Domain/public/fullchain.pem"
 		SSLCertificateKeyFile "/opt/ssl/certs/$Domain/private/key.private.pem"
+		Header set Permissions-Policy: interest-cohort=()
 	</VirtualHost>
 </Macro>
 
