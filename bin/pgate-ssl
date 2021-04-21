@@ -74,7 +74,7 @@ require(sprintf(
 
 		foreach($Files as $File) {
 			$Command = sprintf(
-				'php /opt/pegasusgate/bin/acmephp.phar run %s',
+				'php /opt/ssl/acmephp.phar run %s',
 				escapeshellarg($File)
 			);
 
