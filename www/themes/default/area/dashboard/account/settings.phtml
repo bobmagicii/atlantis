@@ -12,11 +12,14 @@
 
 <div class="container pb-4">
 
-	<ol class="breadcrumb mb-6">
-		<li class="breadcrumb-item"><a href="<?php echo Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home') ?>">Dashboard</a></li>
-		<li class="breadcrumb-item">Account</li>
-		<li class="breadcrumb-item active">Settings</li>
-	</ol>
+	<?php
+	$Surface
+	->Set('Element.Items',[
+		'Account' => Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Account.Index')
+	])
+	->Set('Element.Active','Change Password')
+	->Area('dashboard/breadcrumbs');
+	?>
 
 	<!-- IMAGES -->
 	<div class="row align-items-center mb-6">

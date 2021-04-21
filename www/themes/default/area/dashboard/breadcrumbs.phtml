@@ -1,0 +1,24 @@
+<?php
+
+$Active = $Surface->Get('Element.Active');
+$Items = array_merge(
+	[ 'Dashboard' => Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Home') ],
+	($Surface->Get('Element.Items')??[]),
+	[ $Surface->Get('Page.Title') => NULL ]
+);
+
+?>
+
+<ol class="breadcrumb mb-4">
+	<?php foreach($Items as $Title => $URL): ?>
+	<li class="breadcrumb-item <?php $Printer($Active===$Title?'active':'') ?>">
+		<?php if($URL): ?><a href="<?php $Printer($URL) ?>">
+		<?php else: ?><span>
+		<?php endif; ?>
+			<?php $Printer($Title) ?>
+		<?php if($URL): ?></a>
+		<?php else: ?></span>
+		<?php endif; ?>
+	</li>
+	<?php endforeach; ?>
+</ol>

@@ -1,0 +1,48 @@
+<?php
+
+/**
+ * @var Atlantis\Prototype\User $User
+ */
+
+$Surface->Area('dashboard/promo');
+
+?>
+
+<div class="container pb-4">
+
+	<?php
+	$Surface
+	->Set('Element.Active','Account')
+	->Area('dashboard/breadcrumbs');
+	?>
+
+	<div class="row">
+		<div class="col-4">
+			<a href="<?php $Printer(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Account.Password')) ?>" class="btn btn-dark btn-block p-4">
+				<div class="font-size-largerest mb-2"><i class="fas fa-key"></i></div>
+				Change Password
+			</a>
+		</div>
+		<div class="col-4">
+			<a href="<?php $Printer(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Account.ThirdPartyAuth')) ?>" class="btn btn-dark btn-block p-4">
+				<div class="font-size-largerest mb-2"><i class="fas fa-user-astronaut"></i></div>
+				Manage Third-Party Auth
+			</a>
+		</div>
+		<div class="col-4">
+			<a href="<?php $Printer(Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Account.Settings')) ?>" class="btn btn-dark btn-block p-4">
+				<div class="font-size-largerest mb-2"><i class="fas fa-wrench"></i></div>
+				Account Settings
+			</a>
+		</div>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+jQuery(document)
+.ready(function(){
+
+	return;
+});
+</script>

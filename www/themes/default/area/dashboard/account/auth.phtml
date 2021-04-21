@@ -1,0 +1,77 @@
+<?php
+
+/**
+ * @var Atlantis\Prototype\User $User
+ */
+
+$Surface->Area('dashboard/promo');
+
+?>
+
+<div class="container pb-4">
+
+	<?php
+	$Surface
+	->Set('Element.Items',[
+		'Account' => Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Account.Index')
+	])
+	->Set('Element.Active','Change Password')
+	->Area('dashboard/breadcrumbs');
+	?>
+
+	<div class="row mb-6">
+		<div class="col-12 mb-4">
+			<h2 class="font-size-large font-weight-bold">Third Party Auth</h2>
+			<hr class="mb-2 mt-2" />
+		</div>
+		<div class="col-12 mb-4">
+			<div class="quotron quotron-primary border-color-github pt-4 pb-4 font-size-largerer font-weight-bold">
+				<div class="row align-items-center">
+					<div class="col-auto">
+						<i class="fab fa-fw fa-github font-size-largerer"></i>
+					</div>
+					<div class="col">
+						Github
+						<?php if($User->AuthGithubID): ?><div class="text-muted font-size-small text-italic font-weight-normal">ID: <?php $Printer($User->AuthGithubID) ?></div><?php endif; ?>
+					</div>
+					<div class="col-auto">
+						<?php if($User->AuthGithubID): ?>
+						<button class="btn btn-dark"><i class="fas fa-fw fa-check text-success"></i> Connected</button>
+						<?php else: ?>
+						<button class="btn btn-dark"><i class="fas fa-fw fa-check text-success"></i> Connected</button>
+						<?php endif; ?>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-12 mb-4">
+			<div class="quotron quotron-primary border-color-twitter pt-4 pb-4 font-size-largerer font-weight-bold">
+				<div class="row align-items-center">
+					<div class="col-auto">
+						<i class="fab fa-fw fa-twitter font-size-largerer"></i>
+					</div>
+					<div class="col">
+						Twitter
+						<?php if($User->AuthTwitterID): ?><div class="text-muted font-size-small text-italic font-weight-normal">ID: <?php $Printer($User->AuthTwitterID) ?></div><?php endif; ?>
+					</div>
+					<div class="col-auto">
+						<?php if($User->AuthTwitterID): ?>
+						<button class="btn btn-dark"><i class="fas fa-fw fa-check text-success"></i> Connected</button>
+						<?php else: ?>
+						<button class="btn btn-dark"><i class="fas fa-fw fa-times text-danger"></i> Not Connected</button>
+						<?php endif; ?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+jQuery(document)
+.ready(function(){
+
+	return;
+});
+</script>

@@ -90,7 +90,16 @@
 				<?php endif; ?>
 			</div>
 			<div class="mb-6">
-				<h2>Your Storage</h2>
+
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="quotron quotron-primary mb-6">
+				<a href="<?php echo $Printer($User->GetURL()) ?>" class="btn btn-dark btn-block text-left"><i class="fa fa-fw mr-1 fa-user"></i> My User Page</a>
+				<a href="<?php echo $Endpoint('Atlantis.Dashboard.Account.Index') ?>" class="btn btn-dark btn-block text-left"><i class="fa fa-fw mr-1 fa-cog"></i> Account Settings</a>
+			</div>
+			<div class="quotron quotron-primary mb-6">
+				<h2>Storage</h2>
 				<hr class="mt-2 mb-3" />
 				<div class="row">
 					<div class="col">
@@ -101,17 +110,6 @@
 						<div class="font-weight-bold"><?php $Printer(Atlantis\Util::BytesReadable($User->BytesImages)) ?></div>
 					</div>
 				</div>
-			</div>
-		</div>
-		<div class="col-md-4">
-			<div class="quotron-primary pl-2 mb-6">
-				<a href="<?php echo $Printer($User->GetURL()) ?>" class="btn btn-dark btn-block text-left"><i class="fa fa-fw mr-1 fa-user"></i> My User Page</a>
-			</div>
-			<div class="quotron-primary pl-2 mb-6">
-				<h2>Account</h2>
-				<hr class="mt-2 mb-3" />
-				<a href="<?php echo $Endpoint('Atlantis.Dashboard.Account.Password') ?>" class="btn btn-dark btn-block text-left"><i class="fa fa-fw mr-1 fa-key"></i> Change Password</a>
-				<a href="<?php echo $Endpoint('Atlantis.Dashboard.Account.Settings') ?>" class="btn btn-dark btn-block text-left"><i class="fa fa-fw mr-1 fa-user-circle"></i> Account Settings</a>
 			</div>
 		</div>
 	</div>

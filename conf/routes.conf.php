@@ -76,6 +76,11 @@
 	'//{{Domain}}/dashboard/blog/tags?blog={{BlogID}}',
 	'Routes\\Dashboard\\Blog::Tags'
 )
+->Register('Atlantis.Dashboard.Account.Index',
+	'{&}//dashboard/account',
+	'//{{Domain}}/dashboard/account',
+	'Routes\\Dashboard\\Account::Index'
+)
 ->Register('Atlantis.Dashboard.Account.Settings',
 	'{&}//dashboard/account/settings',
 	'//{{Domain}}/dashboard/account/settings',
@@ -85,6 +90,11 @@
 	'{&}//dashboard/account/password',
 	'//{{Domain}}/dashboard/account/password',
 	'Routes\\Dashboard\\Account::Password'
+)
+->Register('Atlantis.Dashboard.Account.ThirdPartyAuth',
+	'{&}//dashboard/account/auth',
+	'//{{Domain}}/dashboard/account/auth',
+	'Routes\\Dashboard\\Account::Auth'
 )
 ->Register('Atlantis.Dashboard.Account.Images',
 	'{&}//dashboard/account/images',

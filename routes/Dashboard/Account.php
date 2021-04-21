@@ -12,8 +12,19 @@ class Account
 extends ProtectedWeb {
 
 	public function
+	Index():
+	void {
+
+		$this
+		->Set('Page.Title','Account Dashboard')
+		->Area('dashboard/account/index');
+
+		return;
+	}
+
+	public function
 	Settings():
-	Void {
+	void {
 
 		$this
 		->Set('Page.Title','Account Settings')
@@ -23,8 +34,19 @@ extends ProtectedWeb {
 	}
 
 	public function
+	Auth():
+	void {
+
+		$this
+		->Set('Page.Title','Manage Third-Party Auth')
+		->Area('dashboard/account/auth');
+
+		return;
+	}
+
+	public function
 	Password():
-	Void {
+	void {
 
 		$this
 		->Set('Page.Title','Change Password')
@@ -35,7 +57,7 @@ extends ProtectedWeb {
 
 	public function
 	Images():
-	Void {
+	void {
 
 		($this->Get)
 		->Blog('Atlantis\\Util\\Filters::TypeInt');
