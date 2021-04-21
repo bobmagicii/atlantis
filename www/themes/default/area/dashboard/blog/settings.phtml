@@ -213,6 +213,7 @@
 
 <script type="module">
 import UploadButton from '/share/atlantis/element/upload-button.js';
+import StatusHandler from '/share/atlantis/element/status-handler.js';
 
 jQuery(document)
 .ready(function(){
@@ -220,18 +221,18 @@ jQuery(document)
 	let BlogConfig = jQuery('#BlogConfig');
 	let BlogID = BlogConfig.attr('data-blog-id');
 
-	let Title = new Atlantis.Action.StatusHandler({
+	let Title = new StatusHandler({
 		'Element': '#DashBlogTitle',
-		'OnCommit': function(Handler){
+		'OnCommit': function(){
 			let Input = jQuery.trim(jQuery('#InputTitle').val());
 
 			Atlantis.Request({
 				'Method': 'PATCH',
 				'URL': '/api/v1/blog/entity',
 				'Data': { 'ID': BlogID, 'Fields': { 'Title': Input } },
-				'OnSuccess': function(Result){
+				'OnSuccess': (Result)=> {
 					jQuery('.BlogHeaderDemo h2').text(Result.Payload.Title);
-					Handler.SetStatus('good');
+					this.SetStatus('good');
 					Atlantis.Toaster({
 						'Title': 'Blog Settings',
 						'Content': 'Your blog title has been successfully updated.',
@@ -239,8 +240,8 @@ jQuery(document)
 					});
 					return;
 				},
-				'OnError': function(Result) {
-					Handler.SetStatus('bad');
+				'OnError': (Result)=> {
+					this.SetStatus('bad');
 					Atlantis.Toaster({
 						'Title': 'Blog Settings',
 						'Content': 'Error: ' + Result.Message,
@@ -254,18 +255,18 @@ jQuery(document)
 		}
 	});
 
-	let Tagline = new Atlantis.Action.StatusHandler({
+	let Tagline = new StatusHandler({
 		'Element': '#DashBlogTagline',
-		'OnCommit': function(Handler){
+		'OnCommit': function(){
 			let Input = jQuery.trim(jQuery('#InputTagline').val());
 
 			Atlantis.Request({
 				'Method': 'PATCH',
 				'URL': '/api/v1/blog/entity',
 				'Data': { 'ID': BlogID, 'Fields': { 'Tagline': Input } },
-				'OnSuccess': function(Result){
+				'OnSuccess': (Result)=> {
 					jQuery('.BlogHeaderDemo p').text(Result.Payload.Tagline);
-					Handler.SetStatus('good');
+					this.SetStatus('good');
 					Atlantis.Toaster({
 						'Title': 'Blog Settings',
 						'Content': 'Your blog tagline has been successfully updated.',
@@ -273,8 +274,8 @@ jQuery(document)
 					});
 					return;
 				},
-				'OnError': function(Result) {
-					Handler.SetStatus('bad');
+				'OnError': (Result)=> {
+					this.SetStatus('bad');
 					Atlantis.Toaster({
 						'Title': 'Blog Settings',
 						'Content': 'Error: ' + Result.Message,
@@ -288,18 +289,18 @@ jQuery(document)
 		}
 	});
 
-	let Details = new Atlantis.Action.StatusHandler({
+	let Details = new StatusHandler({
 		'Element': '#DashBlogDetails',
-		'OnCommit': function(Handler){
+		'OnCommit': function(){
 			let Input = jQuery.trim(jQuery('#InputDetails').val());
 
 			Atlantis.Request({
 				'Method': 'PATCH',
 				'URL': '/api/v1/blog/entity',
 				'Data': { 'ID': BlogID, 'Fields': { 'Details': Input } },
-				'OnSuccess': function(Result){
+				'OnSuccess': (Result)=> {
 					jQuery('.BlogHeaderDemo p').text(Result.Payload.Tagline);
-					Handler.SetStatus('good');
+					this.SetStatus('good');
 					Atlantis.Toaster({
 						'Title': 'Blog Settings',
 						'Content': 'Your blog details has been successfully updated.',
@@ -307,8 +308,8 @@ jQuery(document)
 					});
 					return;
 				},
-				'OnError': function(Result) {
-					Handler.SetStatus('bad');
+				'OnError': (Result)=> {
+					this.SetStatus('bad');
 					Atlantis.Toaster({
 						'Title': 'Blog Settings',
 						'Content': 'Error: ' + Result.Message,
@@ -322,18 +323,20 @@ jQuery(document)
 		}
 	});
 
-	let Alias = new Atlantis.Action.StatusHandler({
+	let Alias = new StatusHandler({
 		'Element': '#DashBlogAlias',
-		'OnCommit': function(Handler){
+		'OnCommit': function(){
 			let Input = jQuery.trim(jQuery('#InputAlias').val());
 
 			Atlantis.Request({
 				'Method': 'PATCH',
 				'URL': '/api/v1/blog/entity',
 				'Data': { 'ID': BlogID, 'Fields': { 'Alias': Input } },
-				'OnSuccess': function(Result){
+				'OnSuccess': (Result)=> {
+					if(Result.Payload)
 					jQuery('.BlogHeaderDemo a').attr('href',('/+' + Result.Payload.Alias));
-					Handler.SetStatus('good');
+
+					this.SetStatus('good');
 					Atlantis.Toaster({
 						'Title': 'Blog Settings',
 						'Content': 'Your blog URL has been successfully updated.',
@@ -341,8 +344,8 @@ jQuery(document)
 					});
 					return;
 				},
-				'OnError': function(Result) {
-					Handler.SetStatus('bad');
+				'OnError': (Result)=> {
+					this.SetStatus('bad');
 					Atlantis.Toaster({
 						'Title': 'Blog Settings',
 						'Content': 'Error: ' + Result.Message,
@@ -354,7 +357,7 @@ jQuery(document)
 
 			return;
 		},
-		'OnKeyPress': function(Handler){
+		'OnKeyPress': function(){
 
 			let Final = jQuery.trim(
 				jQuery('#InputAlias')
@@ -366,23 +369,23 @@ jQuery(document)
 				.substr(0,64)
 			);
 
-			Handler.SetStatus(null);
+			this.SetStatus(null);
 			jQuery('#InputAlias').val(Final);
 			return;
 		}
 	});
 
-	let OptAdult = new Atlantis.Action.StatusHandler({
+	let OptAdult = new StatusHandler({
 		'Element': '#DashBlogOptAdult',
-		'OnCommit': function(Handler){
+		'OnCommit': function(){
 			let Input = jQuery('#InputOptAdult').hasClass('active') ? 1 : 0;
 
 			Atlantis.Request({
 				'Method': 'PATCH',
 				'URL': '/api/v1/blog/entity',
 				'Data': { 'ID': BlogID, 'Fields': { 'OptAdult': Input } },
-				'OnSuccess': function(Result){
-					Handler
+				'OnSuccess': (Result)=> {
+					this
 					.SetStatus('good')
 					.Notify({
 						'Title': 'Blog Settings',
@@ -391,8 +394,8 @@ jQuery(document)
 					});
 					return;
 				},
-				'OnError': function(Result) {
-					Handler
+				'OnError': (Result)=> {
+					this
 					.SetStatus('bad')
 					.Notify({
 						'Title': 'Blog Settings',

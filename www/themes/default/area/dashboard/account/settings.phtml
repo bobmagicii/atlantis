@@ -183,6 +183,7 @@
 
 <script type="module">
 import UploadButton from '/share/atlantis/element/upload-button.js';
+import StatusHandler from '/share/atlantis/element/status-handler.js';
 
 jQuery(document)
 .ready(function(){
@@ -190,17 +191,17 @@ jQuery(document)
 	let UserData = jQuery('#UserData');
 	let UserID = UserData.attr('data-user-id');
 
-	let OptAllowSeen = new Atlantis.Action.StatusHandler({
+	let OptAllowSeen = new StatusHandler({
 		'Element': '#AccountOptAllowSeen',
-		'OnCommit': function(Handler){
+		'OnCommit': function(){
 			let Input = jQuery.trim(jQuery('#InputOptAllowSeen').val());
 
 			Atlantis.Request({
 					'Method': 'PATCH',
 					'URL': '/api/v1/user/entity',
 					'Data': { 'Fields': { 'OptAllowSeen': Input } },
-					'OnSuccess': function(Result){
-						Handler
+					'OnSuccess': (Result)=> {
+						this
 						.SetStatus('good')
 						.Notify({
 							'Title': 'Account Settings',
@@ -209,8 +210,8 @@ jQuery(document)
 						});
 						return;
 					},
-					'OnError': function(Result) {
-						Handler
+					'OnError': (Result)=> {
+						this
 						.SetStatus('bad')
 						.Notify({
 							'Title': 'Account Settings',
@@ -225,17 +226,17 @@ jQuery(document)
 		}
 	});
 
-	let OptAdult = new Atlantis.Action.StatusHandler({
+	let OptAdult = new StatusHandler({
 		'Element': '#UserOptAdult',
-		'OnCommit': function(Handler){
+		'OnCommit': function(){
 			let Input = jQuery.trim(jQuery('#InputOptAdult').val());
 
 			Atlantis.Request({
 					'Method': 'PATCH',
 					'URL': '/api/v1/user/entity',
 					'Data': { 'Fields': { 'OptAdult': Input } },
-					'OnSuccess': function(Result){
-						Handler
+					'OnSuccess': (Result)=> {
+						this
 						.SetStatus('good')
 						.Notify({
 							'Title': 'Account Settings',
@@ -244,8 +245,8 @@ jQuery(document)
 						});
 						return;
 					},
-					'OnError': function(Result) {
-						Handler
+					'OnError': (Result)=> {
+						this
 						.SetStatus('bad')
 						.Notify({
 							'Title': 'Account Settings',
@@ -260,17 +261,17 @@ jQuery(document)
 		}
 	});
 
-	let Email = new Atlantis.Action.StatusHandler({
+	let Email = new StatusHandler({
 		'Element': '#DashAccountEmail',
-		'OnCommit': function(Handler){
+		'OnCommit': function(){
 			let Input = jQuery.trim(jQuery('#InputEmail').val());
 
 			Atlantis.Request({
 				'Method': 'PATCH',
 				'URL': '/api/v1/user/entity',
 				'Data': { 'Fields': { 'Email': Input } },
-				'OnSuccess': function(Result){
-					Handler.SetStatus('good');
+				'OnSuccess': (Result)=> {
+					this.SetStatus('good');
 					Atlantis.Toaster({
 						'Title': 'Account Settings',
 						'Content': 'Your e-mail address has been updated.',
@@ -278,8 +279,8 @@ jQuery(document)
 					});
 					return;
 				},
-				'OnError': function(Result) {
-					Handler.SetStatus('bad');
+				'OnError': (Result)=> {
+					this.SetStatus('bad');
 					Atlantis.Toaster({
 						'Title': 'Account Settings',
 						'Content': 'Error: ' + Result.Message,
@@ -293,17 +294,17 @@ jQuery(document)
 		}
 	});
 
-	let Details = new Atlantis.Action.StatusHandler({
+	let Details = new StatusHandler({
 		'Element': '#DashAccountDetails',
-		'OnCommit': function(Handler){
+		'OnCommit': function(){
 			let Input = jQuery.trim(jQuery('#InputDetails').val());
 
 			Atlantis.Request({
 				'Method': 'PATCH',
 				'URL': '/api/v1/user/entity',
 				'Data': { 'Fields': { 'Details': Input } },
-				'OnSuccess': function(Result){
-					Handler.SetStatus('good');
+				'OnSuccess': (Result)=> {
+					this.SetStatus('good');
 					Atlantis.Toaster({
 						'Title': 'Account Settings',
 						'Content': 'Your profile bio has been updated.',
@@ -311,8 +312,8 @@ jQuery(document)
 					});
 					return;
 				},
-				'OnError': function(Result) {
-					Handler.SetStatus('bad');
+				'OnError': (Result)=> {
+					this.SetStatus('bad');
 					Atlantis.Toaster({
 						'Title': 'Account Settings',
 						'Content': 'Error: ' + Result.Message,
@@ -326,17 +327,17 @@ jQuery(document)
 		}
 	});
 
-	let Location = new Atlantis.Action.StatusHandler({
+	let Location = new StatusHandler({
 		'Element': '#DashAccountLocation',
-		'OnCommit': function(Handler){
+		'OnCommit': function(){
 			let Input = jQuery.trim(jQuery('#InputLocation').val());
 
 			Atlantis.Request({
 				'Method': 'PATCH',
 				'URL': '/api/v1/user/entity',
 				'Data': { 'Fields': { 'Location': Input } },
-				'OnSuccess': function(Result){
-					Handler.SetStatus('good');
+				'OnSuccess': (Result)=> {
+					this.SetStatus('good');
 					Atlantis.Toaster({
 						'Title': 'Account Settings',
 						'Content': 'Your location has been updated.',
@@ -344,8 +345,8 @@ jQuery(document)
 					});
 					return;
 				},
-				'OnError': function(Result) {
-					Handler.SetStatus('bad');
+				'OnError': (Result)=> {
+					this.SetStatus('bad');
 					Atlantis.Toaster({
 						'Title': 'Account Settings',
 						'Content': 'Error: ' + Result.Message,
