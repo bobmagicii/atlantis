@@ -9,12 +9,12 @@ Nether\Option::Set([
 	////////////////////////////////////////////////////////////////
 	// Application Config //////////////////////////////////////////
 
-	'app-name'       => 'Atlantis',
-	'app-short-desc' => 'Lulz',
-	'app-long-desc'  => 'Lulz',
-
-	'nether-web-root' => sprintf('%s/www',ProjectRoot),
-	'nether-web-path' => '/',
+	'app-name'            => 'Atlantis',
+	'app-short-desc'      => 'Lulz',
+	'app-long-desc'       => 'Lulz',
+	'nether-web-root'     => sprintf('%s/www',ProjectRoot),
+	'nether-web-path'     => '/',
+	'surface-theme-stack' => ['common','local','pages','default'],
 
 	'Atlantis.User.Join.Mode'      => Atlantis\Prototype\User::JoinModeInvite,
 	'Atlantis.User.Password.Algo'  => PASSWORD_ARGON2ID,

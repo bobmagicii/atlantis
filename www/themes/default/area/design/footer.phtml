@@ -17,5 +17,5 @@
 		</div>
 	</div>
 
-	<?php $Surface->Area('design/footer-local') ?>
+	<?php try { $Surface->Area('design/footer-local'); } catch(Exception) { } ?>
 </footer>
