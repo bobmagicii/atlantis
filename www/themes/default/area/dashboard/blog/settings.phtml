@@ -211,10 +211,11 @@
 
 </div>
 
-<script type="text/javascript">
+<script type="module">
+import UploadButton from '/share/atlantis/element/upload-button.js';
+
 jQuery(document)
 .ready(function(){
-	"use strict";
 
 	let BlogConfig = jQuery('#BlogConfig');
 	let BlogID = BlogConfig.attr('data-blog-id');
@@ -406,48 +407,50 @@ jQuery(document)
 		}
 	});
 
-	let UploadIcon = new Atlantis.Upload.Button({
+	let UploadIcon = new UploadButton({
 		'SelectorButton': '#CmdImageIcon',
 		'SelectorInput': '#InputImageIcon',
-		'FileType': Atlantis.Upload.FileTypeImage,
+		'FileType': UploadButton.FileTypeImage,
 		'URL': '/api/v1/blog/icon',
 		'Data': {
 			'ID': BlogConfig.attr('data-blog-id')
 		},
-		'OnItemComplete': function(that,Status,Result,File){
-			if(Result.Error !== 0)
-			alert(Result.Message);
+		'OnItemComplete': function(Status,Result,File){
+			if(Result.Error !== 0) {
+				alert(Result.Message);
+			}
 
 			jQuery('.BlogHeaderDemo .ImageIcon')
 			.css('background-image','url(' + Result.Payload.ImageURL + ')')
 
 			return;
 		},
-		'OnQueueComplete': function(that){
-			that.Reset();
+		'OnQueueComplete': function(){
+			this.Reset();
 			return;
 		}
 	});
 
-	let UploadHeader = new Atlantis.Upload.Button({
+	let UploadHeader = new UploadButton({
 		'SelectorButton': '#CmdImageHeader',
 		'SelectorInput': '#InputImageHeader',
-		'FileType': Atlantis.Upload.FileTypeImage,
+		'FileType': UploadButton.FileTypeImage,
 		'URL': '/api/v1/blog/header',
 		'Data': {
 			'ID': BlogConfig.attr('data-blog-id')
 		},
-		'OnItemComplete': function(that,Status,Result,File){
-			if(Result.Error !== 0)
-			alert(Result.Message);
+		'OnItemComplete': function(Status,Result,File){
+			if(Result.Error !== 0) {
+				alert(Result.Message);
+			}
 
 			jQuery('.BlogHeaderDemo')
 			.css('background-image','url(' + Result.Payload.ImageURL + ')')
 
 			return;
 		},
-		'OnQueueComplete': function(that){
-			that.Reset();
+		'OnQueueComplete': function(){
+			this.Reset();
 			return;
 		}
 	});
