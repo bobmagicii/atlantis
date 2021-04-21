@@ -66,7 +66,7 @@ implements
 
 	public function
 	JsonSerialize():
-	Array {
+	array {
 	/*//
 	@date 2020-06-01
 	@implements JsonSerializable
@@ -97,8 +97,8 @@ implements
 	///////////////////////////////////////////////////////////////////////////
 
 	public function
-	OnReady(Array $Raw):
-	Void {
+	OnReady(array $Raw):
+	void {
 	/*//
 	prepare some data for this object.
 	//*/
@@ -114,7 +114,7 @@ implements
 	}
 
 	protected function
-	OnReady_GetUser(Array $Raw):
+	OnReady_GetUser(array $Raw):
 	self {
 	/*//
 	prepare a blog object depending on if it was fetched with an inclusion
@@ -135,7 +135,7 @@ implements
 	}
 
 	protected function
-	OnReady_GetDates(Array $Raw):
+	OnReady_GetDates(array $Raw):
 	self {
 	/*//
 	prepare the date objects.
@@ -147,7 +147,7 @@ implements
 	}
 
 	protected function
-	OnReady_AddonFields(Array $Raw):
+	OnReady_AddonFields(array $Raw):
 	self {
 	/*//
 	@date 2020-10-21
@@ -184,7 +184,7 @@ implements
 
 	public function
 	Drop():
-	Void {
+	void {
 
 		$Storage = new Atlantis\StorageManager;
 		$Path = dirname($this->GetFilePath());
@@ -221,8 +221,8 @@ implements
 	///////////////////////////////////////////////////////////////////////////
 
 	static public function
-	GenerateFilePath(String $Mount, String $OwnerUUID, String $UUID, String $Size, String $Ext):
-	String {
+	GenerateFilePath(string $Mount, string $OwnerUUID, string $UUID, string $Size, string $Ext):
+	string {
 	/*//
 	@date 2020-09-22
 	//*/
@@ -240,8 +240,8 @@ implements
 	}
 
 	static public function
-	GenerateFileURL(String $Mount, String $OwnerUUID, String $UUID, String $Size, String $Ext):
-	String {
+	GenerateFileURL(string $Mount, string $OwnerUUID, string $UUID, string $Size, string $Ext):
+	string {
 	/*//
 	@date 2020-09-22
 	//*/
@@ -261,8 +261,8 @@ implements
 	}
 
 	public function
-	GetFilePath(String $Size='lg'):
-	String {
+	GetFilePath(string $Size='lg'):
+	string {
 	/*//
 	@date 2020-09-22
 	//*/
@@ -277,8 +277,8 @@ implements
 	}
 
 	public function
-	GetURL(String $Size='lg', Bool $CacheBust=TRUE):
-	String {
+	GetURL(string $Size='lg', bool $CacheBust=TRUE):
+	string {
 	/*//
 	@date 2017-03-02
 	get the url to view this blog post.
@@ -302,8 +302,8 @@ implements
 	///////////////////////////////////////////////////////////////////////////
 
 	static protected function
-	ExtendQueryJoins($SQL, String $TableAlias='Main', String $FieldPrefix=''):
-	Void {
+	ExtendQueryJoins($SQL, string $TableAlias='Main', string $FieldPrefix=''):
+	void {
 	/*//
 	@date 2018-06-08
 	//*/
@@ -315,8 +315,8 @@ implements
 	}
 
 	static protected function
-	ExtendQueryFields($SQL, String $TablePrefix='', String $FieldPrefix=''):
-	Void {
+	ExtendQueryFields($SQL, string $TablePrefix='', string $FieldPrefix=''):
+	void {
 	/*//
 	@date 2018-06-08
 	//*/
@@ -328,7 +328,7 @@ implements
 
 	static protected function
 	FindExtendOptions($Opt):
-	Array {
+	array {
 	/*//
 	@date 2020-05-23
 	//*/
@@ -345,7 +345,7 @@ implements
 
 	static protected function
 	FindApplyFilters($Opt,$SQL):
-	Void {
+	void {
 	/*//
 	@date 2018-06-08
 	//*/
@@ -487,7 +487,7 @@ implements
 	///////////////////////////////////////////////////////////////////////////
 
 	static public function
-	HandlePostImage(Atlantis\Prototype\User $User, Atlantis\StorageManager $Storage, ?String $OverUUID=NULL):
+	HandlePostImage(Atlantis\Prototype\User $User, Atlantis\StorageManager $Storage, ?string $OverUUID=NULL):
 	Nether\Object\Mapped {
 	/*//
 	loop over all the files sent via post and handling all the images that
@@ -495,6 +495,7 @@ implements
 	//*/
 
 		$Mount = Nether\Option::Get('Atlantis.File.DefaultMount');
+		$DatabaseMethod = 'Insert';
 		$UUID = NULL;
 		$Filepath = NULL;
 		$Error = NULL;
@@ -520,8 +521,10 @@ implements
 		foreach($_FILES as $Current) {
 			$UUID = Atlantis\Util::UUID(NULL,TRUE);
 
-			if($OverUUID !== NULL)
-			$UUID = $OverUUID;
+			if($OverUUID !== NULL) {
+				$UUID = $OverUUID;
+				$DatabaseMethod = 'Upsert';
+			}
 
 			$Mime = mime_content_type($Current['tmp_name']);
 			$Filepath = static::GenerateFilePath(
@@ -592,7 +595,8 @@ implements
 			// try to create the reference row in the db.
 
 			try {
-				$Upload = Atlantis\Prototype\UploadImage::Insert([
+
+				$Upload = Atlantis\Prototype\UploadImage::{$DatabaseMethod}([
 					'UserID'      => $User->ID,
 					'TimeCreated' => $Now->Format('U'),
 					'Mount'       => $Mount,
@@ -639,7 +643,7 @@ implements
 	}
 
 	static public function
-	HandleWriteImageToStorage(Atlantis\StorageManager $Storage, String $Source, String $DestDir):
+	HandleWriteImageToStorage(Atlantis\StorageManager $Storage, string $Source, string $DestDir):
 	Nether\Object\Mapped {
 	/*//
 	@date 2020-09-23
