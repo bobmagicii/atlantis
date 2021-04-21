@@ -1,35 +1,19 @@
 :root {
 
+	/* main site palette */
 	--ColourPrimary: #222222;
 	--ColourSecondary: #dddddd;
-	--ColourTertiary: #e9e9e9;
+	--ColourTertiary: #fafafa;
 	--ColourQuaternary: #eeeeee;
 
-	--ColourBackgroundPrimary: #fafafa;
-	--ColourTextPrimary: #222222;
+	/* pairing for light background dark text */
+	--ColourBackgroundPrimary: var(--ColourTertiary);
+	--ColourTextPrimary: var(--ColourPrimary);
 
-	--ColourBackgroundSecondary: #222222;
-	--ColourTextSecondary: #fafafa;
+	/* pairing for dark background light text */
+	--ColourBackgroundSecondary: var(--ColourPrimary);
+	--ColourTextSecondary: var(--ColourTertiary);
 
-	--ColourAdultButton: #c25684;
-	--ColourAdultText: #ffe6ea;
-	--ColourAdultHoverButton: #cf6694;
-	--ColourAdultHoverText: #ffe6ea;
-
-	--ColourRssButton: #e9830f;
-	--ColourRssText: #fff5e9;
-	--ColourRssHoverButton: #eb9027;
-	--ColourRssHoverText: #fff5e9;
-
-	--ColourTwitterButton: #1DA1F2;
-	--ColourTwitterText: #eee;
-	--ColourTwitterHoverButton: #36abf3;
-	--ColourTwitterHoverText: #eee;
-
-	--ColourGithubButton: #222;
-	--ColourGithubText: #eee;
-	--ColourGithubHoverButton: rgb(49, 49, 49);
-	--ColourGithubHoverText: #eee;
 }
 
 * {

@@ -1,6 +1,28 @@
 
 /* a series of bootstrapesque classes designed to blend in */
 
+:root {
+	--ColourAdultButton: #c25684;
+	--ColourAdultText: #ffe6ea;
+	--ColourAdultHoverButton: #cf6694;
+	--ColourAdultHoverText: #ffe6ea;
+
+	--ColourRssButton: #e9830f;
+	--ColourRssText: #fff5e9;
+	--ColourRssHoverButton: #eb9027;
+	--ColourRssHoverText: #fff5e9;
+
+	--ColourTwitterButton: #1DA1F2;
+	--ColourTwitterText: #eee;
+	--ColourTwitterHoverButton: #36abf3;
+	--ColourTwitterHoverText: #eee;
+
+	--ColourGithubButton: #222;
+	--ColourGithubText: #eee;
+	--ColourGithubHoverButton: rgb(49, 49, 49);
+	--ColourGithubHoverText: #eee;
+}
+
 *:focus[readonly] {
 	background: transparent;
 	border: 0px;
@@ -11,10 +33,10 @@
 .background-tertiary { background-color: var(--ColourTertiary); }
 .background-quaternary { background-color: var(--ColourQuaternary); }
 
-.text-primary { background-color: var(--ColourPrimary); }
-.text-secondary { background-color: var(--ColourSecondary); }
-.text-tertiary { background-color: var(--ColourTertiary); }
-.text-quaternary { background-color: var(--ColourQuaternary); }
+.text-primary { color: var(--ColourPrimary); }
+.text-secondary { color: var(--ColourSecondary); }
+.text-tertiary { color: var(--ColourTertiary); }
+.text-quaternary { color: var(--ColourQuaternary); }
 
 .ratio-square::after {
 	content: '';
@@ -212,6 +234,32 @@ select:focus {
 	background: var(--ColourRssHoverButton);
 	border-color: var(--ColourRssHoverButton);
 	color: var(--ColourRssHoverText);
+}
+
+.btn-custom-primary {
+	background-color: var(--ColourBackgroundPrimary) !important;
+	border-color: var(--ColourBackgroundPrimary);
+	color: var(--ColourTextPrimary);
+}
+
+.btn-custom-primary:hover
+.btn-custom-primary.active {
+	background-color: var(--ColourBackgroundPrimary) !important;
+	border-color: var(--ColourBackgroundPrimary);
+	color: var(--ColourTextPrimary);
+}
+
+.btn-custom-secondary {
+	background: var(--ColourBackgroundSecondary) !important;
+	border-color: var(--ColourBackgroundSecondary);
+	color: var(--ColourTextSecondary);
+}
+
+.btn-custom-secondary:hover,
+.btn-custom-secondary.active {
+	background: var(--ColourBackgroundSecondary) !important;
+	border-color: var(--ColourBackgroundSecondary);
+	color: var(--ColourTextSecondary) !important;
 }
 
 .text-decoration-none { text-decoration: none; }
