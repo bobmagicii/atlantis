@@ -6,6 +6,7 @@ use Atlantis;
 use Nether;
 
 use Atlantis\Prototype\BlogPostComment;
+use Atlantis\Struct\EditorJS;
 
 class Post
 extends Atlantis\Site\PublicAPI {
@@ -134,16 +135,9 @@ extends Atlantis\Site\PublicAPI {
 
 		////////
 
-		$Block = NULL;
 		$Content = new Atlantis\Struct\EditorJS\Content($ContentJSON);
-		foreach($Content->Blocks as $Block) {
-			if($Block instanceof Atlantis\Struct\EditorJS\Blocks\Image)
-			if($Block->Data->PrimaryImage && $Block->Data->ImageID) {
-				$ImageID = $Block->Data->ImageID;
-				break;
-			}
-		}
-		unset($Content,$Block);
+		$ImageID = $Content->FindPrimaryImageID();
+		unset($Content);
 
 		////////
 
@@ -297,13 +291,7 @@ extends Atlantis\Site\PublicAPI {
 			$Dataset['ImageID'] = NULL;
 
 			$Content = new Atlantis\Struct\EditorJS\Content($this->Post->ContentJSON->ToArray());
-			foreach($Content->Blocks as $Block) {
-				if($Block instanceof Atlantis\Struct\EditorJS\Blocks\Image)
-				if($Block->Data->PrimaryImage && $Block->Data->ImageID) {
-					$Dataset['ImageID'] = $Block->Data->ImageID;
-					break;
-				}
-			}
+			$Dataset['ImageID'] = $Content->FindPrimaryImageID();
 			unset($Content,$Block);
 		}
 

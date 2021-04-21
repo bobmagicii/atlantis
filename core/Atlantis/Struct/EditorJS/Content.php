@@ -68,6 +68,25 @@ extends Nether\Object\Mapped {
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
 
+	public function
+	FindPrimaryImageID():
+	?int {
+	/*//
+	@date 2021-04-19
+	finds the first image block in this structure that is flagged as the
+	primary image and contains a local file image id.
+	//*/
+
+		$Block = NULL;
+
+		foreach($this->Blocks as $Block) {
+			if($Block instanceof Blocks\Image)
+			if($Block->Data->PrimaryImage && $Block->Data->ImageID)
+			return $Block->Data->ImageID;
+		}
+
+		return NULL;
+	}
 
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
