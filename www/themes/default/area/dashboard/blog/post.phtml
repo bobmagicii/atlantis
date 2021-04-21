@@ -95,7 +95,9 @@
 
 </div>
 
-<script type="text/javascript">
+<script type="module">
+import PostEditor from '/share/atlantis/element/editor.js';
+
 jQuery(document)
 .ready(function(){
 
@@ -230,7 +232,7 @@ jQuery(document)
 
 	let GetTagList = function() {
 
-		Output = new Array;
+		let Output = new Array;
 
 		ElementTagList
 		.find('.CmdTagRemove')
@@ -257,7 +259,7 @@ jQuery(document)
 	////////////////////////////////////////////////////////////////
 	// launch editor ///////////////////////////////////////////////
 
-	let Editor = new Atlantis.EditorJS.Editor({
+	let Editor = new PostEditor({
 		'Selector': '#EditorJS'
 	});
 

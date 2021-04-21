@@ -1,6 +1,4 @@
-'use strict';
-
-Atlantis.EditorJS.Plugins.Teletype = class {
+class PluginTT {
 /*//
 @date 2020-10-11
 provide a custom tt inline formatting. it actually uses the samp
@@ -107,7 +105,7 @@ tag to do it not tt.
 		return;
 	}
 
+};
 
-
-}
+export default PluginTT;
 
