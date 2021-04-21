@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-17 19:53:58
+@date 2021-04-18 05:22:16
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -613,7 +613,7 @@ given an image to display to art shit up.
 	left: 0px;
 
 	background-image: url(../gfx/bg01.jpg);
-	transform: scale(1.1));
+	transform: scale(1.1);
 	filter: blur(10px) brightness(0.8);
 	height: 100%;
 	width: 100%;
