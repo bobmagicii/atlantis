@@ -12,19 +12,19 @@ class UploadButton {
 		.css('position', 'relative')
 		.append(
 			jQuery('<span />')
-				.addClass('Status StatusThinking fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero')
+			.addClass('Status StatusThinking fas fa-cog fa-spin font-size-anim font-size-normal font-size-zero')
 		)
 		.append(
 			jQuery('<div />')
-				.addClass('UploadButtonBar')
-				.css({
-					'position': 'absolute',
-					'top': '0px',
-					'left': '0px',
-					'width': '0%',
-					'height': '100%',
-					'background-color': '#cccc'
-				})
+			.addClass('UploadButtonBar')
+			.css({
+				'position': 'absolute',
+				'top': '0px',
+				'left': '0px',
+				'width': '0%',
+				'height': '100%',
+				'background-color': '#cccc'
+			})
 		)
 		.on('click',this.OnButtonClick.bind(this));
 
