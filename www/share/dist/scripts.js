@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-22 02:47:01
+@date 2021-04-22 02:56:27
 @files [
     "src\/js\/libs\/000-jquery-3.1.1.min.js",
     "src\/js\/libs\/100-bootstrap.bundle.min.js",
@@ -18,10 +18,7 @@
     "src\/js\/local\/atlantis-000-main.js",
     "src\/js\/local\/atlantis-200-request.js",
     "src\/js\/local\/atlantis-200-toaster.js",
-    "src\/js\/local\/atlantis-300-blogtag.js",
-    "src\/js\/local\/atlantis-300-element-row.js",
-    "src\/js\/local\/atlantis-300-element-rowitem.js",
-    "src\/js\/local\/atlantis-500-postimage-gallery.js"
+    "src\/js\/local\/atlantis-300-blogtag.js"
 ]
 //*/
 
@@ -11841,17 +11838,6 @@ jQuery(document)
 		return;
 	});
 
-	jQuery('.PostContent')
-	.each(function(){
-		new Atlantis.Element.ImageGallery({
-			'Container': this,
-			'ItemSelector': '.PostImageGallery'
-		});
-		return;
-	});
-
-
-
 	return;
 });
 
@@ -12196,127 +12182,5 @@ Atlantis.BlogTag
 
 	Prepare();
 	return this;
-};
-
-///////////////////////////////////////////////////////////////////////////
-// src/js/local/atlantis-300-element-row.js ///////////////////////////////
-
-'use strict';
-
-Atlantis.Element.Row = class extends Atlantis.Element.Base {
-
-	OnConstruct() {
-
-		this.Items = new Array;
-
-		return this;
-	}
-
-	Append(Item) {
-		this.Items.push(Item);
-		return this;
-	}
-
-	Prepend(Item) {
-		this.Items.unshift(Item);
-		return this;
-	}
-
-	Compile() {
-
-		let Output = (
-			jQuery('<div />')
-			.addClass('row')
-		);
-
-		jQuery(this.ClassList)
-		.each(function(){
-			Output.addClass(this);
-			return;
-		});
-
-		jQuery(this.Items)
-		.each(function(){
-			if(this instanceof Atlantis.Element.Base) {
-				Output.append(this.Get());
-				return;
-			}
-
-			Output.append(this);
-			return;
-		});
-
-		return Output;
-	}
-
-}
-
-///////////////////////////////////////////////////////////////////////////
-// src/js/local/atlantis-300-element-rowitem.js ///////////////////////////
-
-'use strict';
-
-Atlantis.Element.RowItem = class extends Atlantis.Element.Base {
-
-	OnConstruct() {
-		this.Contents = null;
-
-		return this;
-	}
-
-	Set(Item) {
-		this.Contents = Item;
-		return this;
-	}
-
-	Compile() {
-
-		let Output = jQuery('<div />');
-
-		if(!this.ClassList || this.ClassList.length === 0)
-		this.ClassList = ['col'];
-
-		jQuery(this.ClassList)
-		.each(function(){
-			Output.addClass(this);
-			return;
-		});
-
-		if(this.Contents instanceof Atlantis.Element.Base)
-		Output.append(this.Contents.Get());
-		else
-		Output.append(this.Contents);
-
-		return Output;
-	}
-
-}
-
-///////////////////////////////////////////////////////////////////////////
-// src/js/local/atlantis-500-postimage-gallery.js /////////////////////////
-
-'use strict';
-
-Atlantis.Element.ImageGallery = class {
-
-	constructor(Opt) {
-
-		this.Container = null;
-		this.Items = null;
-
-		NUI.Util.MergeProperties(Opt,this);
-
-		if(this.Container instanceof HTMLElement)
-		this.Container = jQuery(this);
-
-		if(typeof this.Container === 'string')
-		this.Container = jQuery(this);
-
-		if(!(this.Container instanceof jQuery))
-		throw "Container is not a valid object.";
-
-		return;
-	}
-
 };
 

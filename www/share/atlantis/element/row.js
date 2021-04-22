@@ -1,6 +1,7 @@
-'use strict';
+import ElementBase from '/share/atlantis/element/base.js';
 
-Atlantis.Element.Row = class extends Atlantis.Element.Base {
+class Row
+extends ElementBase {
 
 	OnConstruct() {
 
@@ -34,7 +35,7 @@ Atlantis.Element.Row = class extends Atlantis.Element.Base {
 
 		jQuery(this.Items)
 		.each(function(){
-			if(this instanceof Atlantis.Element.Base) {
+			if(this instanceof ElementBase) {
 				Output.append(this.Get());
 				return;
 			}
@@ -44,6 +45,8 @@ Atlantis.Element.Row = class extends Atlantis.Element.Base {
 		});
 
 		return Output;
-	}
+	};
 
-}
+};
+
+export default Row;

@@ -73,7 +73,9 @@
 
 </div>
 
-<script type="text/javascript">
+<script type="module">
+import ElementRow from '/share/atlantis/element/row.js';
+import ElementRowItem from '/share/atlantis/element/row-item.js';
 
 class AtlantisImageManager {
 
@@ -202,20 +204,20 @@ class AtlantisImageManager {
 		let TbSpacer;
 
 		TbPageCounter = (
-			(new Atlantis.Element.RowItem(['col-auto']))
+			(new ElementRowItem(['col-auto']))
 			.Set(`Page ${Result.Payload.Page} of ${Result.Payload.PageCount}`)
 		);
 
 		TbSpacer = (
-			new Atlantis.Element.RowItem(['col'])
+			new ElementRowItem(['col'])
 		);
 
 		TbGridActions = (
-			(new Atlantis.Element.RowItem(['col-12','col-md-auto','mt-2','mt-md-0']))
+			(new ElementRowItem(['col-12','col-md-auto','mt-2','mt-md-0']))
 			.Set(
-				(new Atlantis.Element.Row(['tight']))
+				(new ElementRow(['tight']))
 				.Append(
-					(new Atlantis.Element.RowItem(['col','col-md-auto']))
+					(new ElementRowItem(['col','col-md-auto']))
 					.Set(
 						jQuery('<button />')
 						.addClass('btn btn-block btn-dark')
@@ -224,7 +226,7 @@ class AtlantisImageManager {
 					)
 				)
 				.Append(
-					(new Atlantis.Element.RowItem(['col','col-md-auto']))
+					(new ElementRowItem(['col','col-md-auto']))
 					.Set(
 						jQuery('<button />')
 						.addClass('btn btn-block btn-dark')
@@ -233,7 +235,7 @@ class AtlantisImageManager {
 					)
 				)
 				.Append(
-					(new Atlantis.Element.RowItem(['col col-md-auto']))
+					(new ElementRowItem(['col col-md-auto']))
 					.Set(
 						jQuery('<button />')
 						.addClass('btn btn-block btn-danger')
@@ -245,14 +247,14 @@ class AtlantisImageManager {
 		);
 
 		TbSelectedInfo = (
-			(new Atlantis.Element.RowItem(['col-auto']))
+			(new ElementRowItem(['col-auto']))
 			.Set('<span class="SelectedInfo">0 Selected</span>')
 		);
 
 		Toolbar = (
-			(new Atlantis.Element.RowItem(['col-12','mb-4']))
+			(new ElementRowItem(['col-12','mb-4']))
 			.Set(
-				(new Atlantis.Element.Row(['align-items-center']))
+				(new ElementRow(['align-items-center']))
 				.Append(TbPageCounter)
 				.Append(TbSpacer)
 				.Append(TbSelectedInfo)
@@ -261,7 +263,7 @@ class AtlantisImageManager {
 		);
 
 		Row = (
-			(new Atlantis.Element.Row())
+			(new ElementRow())
 			.Append(Toolbar)
 		);
 

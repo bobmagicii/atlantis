@@ -1,3 +1,8 @@
+import ElementRow from '/share/atlantis/element/row.js';
+import ElementRowItem from '/share/atlantis/element/row-item.js';
+import UploadButton from '/share/atlantis/element/upload-button.js';
+import CheckboxButton from '/share/atlantis/element/checkbox-button.js';
+
 class PluginImage {
 /*//
 @date 2020-10-11
@@ -230,16 +235,16 @@ a piece of content using codemirror as the code syntax magic thing.
 				let Toolbar;
 
 				Toolbar = (
-					(new Atlantis.Element.Row(['align-items-center','justify-content-center','mb-4']))
+					(new ElementRow(['align-items-center','justify-content-center','mb-4']))
 					.Append(
-						(new Atlantis.Element.RowItem(['col-auto']))
+						(new ElementRowItem(['col-auto']))
 						.Set(`Page ${Result.Payload.Page} of ${Result.Payload.PageCount}`)
 					)
 				);
 
 				if(Result.Payload.Page > 1)
 				Toolbar.Prepend(
-					(new Atlantis.Element.RowItem(['col-auto']))
+					(new ElementRowItem(['col-auto']))
 					.Set(
 						jQuery('<button />')
 						.attr('type','button')
@@ -251,7 +256,7 @@ a piece of content using codemirror as the code syntax magic thing.
 
 				if(Result.Payload.Page < Result.Payload.PageCount)
 				Toolbar.Append(
-					(new Atlantis.Element.RowItem(['col-auto']))
+					(new ElementRowItem(['col-auto']))
 					.Set(
 						jQuery('<button />')
 						.attr('type','button')
@@ -312,13 +317,13 @@ a piece of content using codemirror as the code syntax magic thing.
 
 		let that = this;
 
-		let UploadIcon = new Atlantis.Upload.Button({
+		let UploadIcon = new UploadButton({
 			'SelectorButton': this.ButtonUpload,
 			'SelectorInput': this.InputUpload,
-			'FileType': Atlantis.Upload.FileTypeImage,
+			'FileType': UploadButton.FileTypeImage,
 			'URL': '/api/v1/image/entity',
 			'Data': { },
-			'OnItemComplete': function(btn,Status,Result,File){
+			'OnItemComplete': function(Status,Result,File){
 				if(Result.Error !== 0) {
 					alert(Result.Message);
 					return;
@@ -337,14 +342,14 @@ a piece of content using codemirror as the code syntax magic thing.
 
 				return;
 			},
-			'OnQueueComplete': function(btn){
-				btn.Reset();
+			'OnQueueComplete': function(){
+				this.Reset();
 				return;
 			}
 		});
 
-		new Atlantis.Element.CheckboxButton(this.LabelGallery);
-		new Atlantis.Element.CheckboxButton(this.LabelPrimaryImage);
+		new CheckboxButton(this.LabelGallery);
+		new CheckboxButton(this.LabelPrimaryImage);
 		return;
 	}
 

@@ -106,16 +106,5 @@ jQuery(document)
 		return;
 	});
 
-	jQuery('.PostContent')
-	.each(function(){
-		new Atlantis.Element.ImageGallery({
-			'Container': this,
-			'ItemSelector': '.PostImageGallery'
-		});
-		return;
-	});
-
-
-
 	return;
 });

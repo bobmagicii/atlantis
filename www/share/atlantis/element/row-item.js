@@ -1,6 +1,6 @@
-'use strict';
+import ElementBase from '/share/atlantis/element/base.js';
 
-Atlantis.Element.RowItem = class extends Atlantis.Element.Base {
+class RowItem extends ElementBase {
 
 	OnConstruct() {
 		this.Contents = null;
@@ -26,7 +26,7 @@ Atlantis.Element.RowItem = class extends Atlantis.Element.Base {
 			return;
 		});
 
-		if(this.Contents instanceof Atlantis.Element.Base)
+		if(this.Contents instanceof ElementBase)
 		Output.append(this.Contents.Get());
 		else
 		Output.append(this.Contents);
@@ -34,4 +34,6 @@ Atlantis.Element.RowItem = class extends Atlantis.Element.Base {
 		return Output;
 	}
 
-}
+};
+
+export default RowItem;
