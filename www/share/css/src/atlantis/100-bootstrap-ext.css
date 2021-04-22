@@ -1,28 +1,6 @@
 
 /* a series of bootstrapesque classes designed to blend in */
 
-:root {
-	--ColourAdultButton: #c25684;
-	--ColourAdultText: #ffe6ea;
-	--ColourAdultHoverButton: #cf6694;
-	--ColourAdultHoverText: #ffe6ea;
-
-	--ColourRssButton: #e9830f;
-	--ColourRssText: #fff5e9;
-	--ColourRssHoverButton: #eb9027;
-	--ColourRssHoverText: #fff5e9;
-
-	--ColourTwitterButton: #1DA1F2;
-	--ColourTwitterText: #eee;
-	--ColourTwitterHoverButton: #36abf3;
-	--ColourTwitterHoverText: #eee;
-
-	--ColourGithubButton: #222;
-	--ColourGithubText: #eee;
-	--ColourGithubHoverButton: rgb(49, 49, 49);
-	--ColourGithubHoverText: #eee;
-}
-
 *:focus[readonly] {
 	background: transparent;
 	border: 0px;

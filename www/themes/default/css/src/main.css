@@ -1,21 +1,3 @@
-:root {
-
-	/* main site palette */
-	--ColourPrimary: #222222;
-	--ColourSecondary: #dddddd;
-	--ColourTertiary: #fafafa;
-	--ColourQuaternary: #eeeeee;
-
-	/* pairing for light background dark text */
-	--ColourBackgroundPrimary: var(--ColourTertiary);
-	--ColourTextPrimary: var(--ColourPrimary);
-
-	/* pairing for dark background light text */
-	--ColourBackgroundSecondary: var(--ColourPrimary);
-	--ColourTextSecondary: var(--ColourTertiary);
-
-}
-
 * {
 	box-sizing: border-box;
 }
