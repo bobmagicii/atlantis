@@ -375,7 +375,7 @@ a piece of content using codemirror as the code syntax magic thing.
 		.append(
 			jQuery('<div />')
 			.addClass('col-auto mb-4')
-			.append(jQuery.zc('span.fa.fa-fw.fa-image'))
+			.append('<span class="fa fa-fw fa-image"></span>')
 		)
 		.append(
 			jQuery('<div />')

@@ -64,7 +64,7 @@ jQuery(document)
 		let Editor = null;
 		let Container = null;
 
-		Container = jQuery.zc(
+		Container = Util.ZenCode(
 			'div.CodeViewer.WithLabel>'+
 			'div.Label>'+
 			'(div.row.tight>('+

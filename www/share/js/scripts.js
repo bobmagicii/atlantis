@@ -1,10 +1,9 @@
 /*// nether-onescript //
-@date 2021-04-22 04:56:59
+@date 2021-04-22 19:36:54
 @files [
     "src\/000-jquery-3.1.1.min.js",
     "src\/100-bootstrap.bundle.min.js",
     "src\/100-uri.min.js",
-    "src\/110-uri-jquery.min.js",
     "src\/200-nui.js",
     "src\/500-codemirror.js",
     "src\/500-editor.js",
@@ -13,7 +12,9 @@
     "src\/600-codemirror.multiplex.js",
     "src\/600-editorjs-header.js",
     "src\/600-editorjs-quote.js",
-    "src\/600-jquery.ripples-min.js"
+    "src\/600-jquery-ripples.min.js",
+    "src\/600-jquery-uri.min.js",
+    "src\/600-jquery-zencoding.js"
 ]
 //*/
 
@@ -132,17 +133,6 @@ this.expression,f=h.EXPRESSION_PATTERN,k=h.VARIABLE_PATTERN,n=h.VARIABLE_NAME_PA
 y;t++){var v=e[t].match(k);if(null===v)throw Error('Invalid Variable "'+e[t]+'" in "'+w[0]+'"');if(v[1].match(n))throw Error('Invalid Variable Name "'+v[1]+'" in "'+w[0]+'"');e[t]={name:v[1],explode:!!v[3],maxlength:v[4]&&parseInt(v[4],10)}}if(!e.length)throw Error('Expression Missing Variable(s) "'+w[0]+'"');z.push({expression:w[0],operator:w[1],variables:e})}z.length||z.push(C(b));this.parts=z;return this};k.prototype.get=function(b){var f=this.data,g={type:0,val:[],encode:[],encodeReserved:[]};
 if(void 0!==this.cache[b])return this.cache[b];this.cache[b]=g;f="[object Function]"===String(Object.prototype.toString.call(f))?f(b):"[object Function]"===String(Object.prototype.toString.call(f[b]))?f[b](b):f[b];if(void 0!==f&&null!==f)if("[object Array]"===String(Object.prototype.toString.call(f))){var h=0;for(b=f.length;h<b;h++)void 0!==f[h]&&null!==f[h]&&g.val.push([void 0,String(f[h])]);g.val.length&&(g.type=3)}else if("[object Object]"===String(Object.prototype.toString.call(f))){for(h in f)q.call(f,
 h)&&void 0!==f[h]&&null!==f[h]&&g.val.push([h,String(f[h])]);g.val.length&&(g.type=2)}else g.type=1,g.val.push([void 0,String(f)]);return g};f.expand=function(b,k){var g=(new h(b)).expand(k);return new f(g)};return h});
-
-///////////////////////////////////////////////////////////////////////////
-// src/110-uri-jquery.min.js //////////////////////////////////////////////
-
-/*! URI.js v1.19.2 http://medialize.github.io/URI.js/ */
-/* build contains: jquery.URI.js */
-(function(d,e){"object"===typeof module&&module.exports?module.exports=e(require("jquery"),require("./URI")):"function"===typeof define&&define.amd?define(["jquery","./URI"],e):e(d.jQuery,d.URI)})(this,function(d,e){function h(a){return a.replace(/([.*+?^=!:${}()|[\]\/\\])/g,"\\$1")}function k(a){var b=a.nodeName.toLowerCase();if("input"!==b||"image"===a.type)return e.domAttributes[b]}function n(a){return{get:function(b){return d(b).uri()[a]()},set:function(b,c){d(b).uri()[a](c);return c}}}function l(a,
-b){if(!k(a)||!b)return!1;var c=b.match(p);if(!c||!c[5]&&":"!==c[2]&&!g[c[2]])return!1;var e=d(a).uri();if(c[5])return e.is(c[5]);if(":"===c[2]){var f=c[1].toLowerCase()+":";return g[f]?g[f](e,c[4]):!1}f=c[1].toLowerCase();return m[f]?g[c[2]](e[f](),c[4],f):!1}var m={},g={"=":function(a,b){return a===b},"^=":function(a,b){return!!(a+"").match(new RegExp("^"+h(b),"i"))},"$=":function(a,b){return!!(a+"").match(new RegExp(h(b)+"$","i"))},"*=":function(a,b,c){"directory"===c&&(a+="/");return!!(a+"").match(new RegExp(h(b),
-"i"))},"equals:":function(a,b){return a.equals(b)},"is:":function(a,b){return a.is(b)}};d.each("origin authority directory domain filename fragment hash host hostname href password path pathname port protocol query resource scheme search subdomain suffix tld username".split(" "),function(a,b){m[b]=!0;d.attrHooks["uri:"+b]=n(b)});var q=function(a,b){return d(a).uri().href(b).toString()};d.each(["src","href","action","uri","cite"],function(a,b){d.attrHooks[b]={set:q}});d.attrHooks.uri.get=function(a){return d(a).uri()};
-d.fn.uri=function(a){var b=this.first(),c=b.get(0),d=k(c);if(!d)throw Error('Element "'+c.nodeName+'" does not have either property: href, src, action, cite');if(void 0!==a){var f=b.data("uri");if(f)return f.href(a);a instanceof e||(a=e(a||""))}else{if(a=b.data("uri"))return a;a=e(b.attr(d)||"")}a._dom_element=c;a._dom_attribute=d;a.normalize();b.data("uri",a);return a};e.prototype.build=function(a){if(this._dom_element)this._string=e.build(this._parts),this._deferred_build=!1,this._dom_element.setAttribute(this._dom_attribute,
-this._string),this._dom_element[this._dom_attribute]=this._string;else if(!0===a)this._deferred_build=!0;else if(void 0===a||this._deferred_build)this._string=e.build(this._parts),this._deferred_build=!1;return this};var p=/^([a-zA-Z]+)\s*([\^\$*]?=|:)\s*(['"]?)(.+)\3|^\s*([a-zA-Z0-9]+)\s*$/;var r=d.expr.createPseudo?d.expr.createPseudo(function(a){return function(b){return l(b,a)}}):function(a,b,c){return l(a,c[3])};d.expr[":"].uri=r;return d});
 
 ///////////////////////////////////////////////////////////////////////////
 // src/200-nui.js /////////////////////////////////////////////////////////
@@ -11199,7 +11189,7 @@ var a=function(){function e(t){var n=t.data,r=t.config,i=t.api,a=t.readOnly;!fun
 !function(t,e){"object"==typeof exports&&"object"==typeof module?module.exports=e():"function"==typeof define&&define.amd?define([],e):"object"==typeof exports?exports.Quote=e():t.EJSQuote=e()}(window,function(){return function(t){var e={};function n(r){if(e[r])return e[r].exports;var o=e[r]={i:r,l:!1,exports:{}};return t[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=t,n.c=e,n.d=function(t,e,r){n.o(t,e)||Object.defineProperty(t,e,{enumerable:!0,get:r})},n.r=function(t){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},n.t=function(t,e){if(1&e&&(t=n(t)),8&e)return t;if(4&e&&"object"==typeof t&&t&&t.__esModule)return t;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:t}),2&e&&"string"!=typeof t)for(var o in t)n.d(r,o,function(e){return t[e]}.bind(null,o));return r},n.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return n.d(e,"a",e),e},n.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},n.p="/",n(n.s=0)}([function(t,e,n){function r(t){return function(t){if(Array.isArray(t)){for(var e=0,n=new Array(t.length);e<t.length;e++)n[e]=t[e];return n}}(t)||function(t){if(Symbol.iterator in Object(t)||"[object Arguments]"===Object.prototype.toString.call(t))return Array.from(t)}(t)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance")}()}function o(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}function i(t,e,n){return e&&o(t.prototype,e),n&&o(t,n),t}n(1).toString();var a=function(){function t(e){var n=e.data,r=e.config,o=e.api,i=e.readOnly;!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,t);var a=t.ALIGNMENTS,s=t.DEFAULT_ALIGNMENT;this.api=o,this.readOnly=i,this.quotePlaceholder=r.quotePlaceholder||t.DEFAULT_QUOTE_PLACEHOLDER,this.captionPlaceholder=r.captionPlaceholder||t.DEFAULT_CAPTION_PLACEHOLDER,this.data={text:n.text||"",caption:n.caption||"",alignment:Object.values(a).includes(n.alignment)&&n.alignment||r.defaultAlignment||s}}return i(t,[{key:"CSS",get:function(){return{baseClass:this.api.styles.block,wrapper:"cdx-quote",text:"cdx-quote__text",input:this.api.styles.input,caption:"cdx-quote__caption",settingsWrapper:"cdx-quote-settings",settingsButton:this.api.styles.settingsButton,settingsButtonActive:this.api.styles.settingsButtonActive}}},{key:"settings",get:function(){return[{name:"left",icon:'<svg width="16" height="11" viewBox="0 0 16 11" xmlns="http://www.w3.org/2000/svg" ><path d="M1.069 0H13.33a1.069 1.069 0 0 1 0 2.138H1.07a1.069 1.069 0 1 1 0-2.138zm0 4.275H9.03a1.069 1.069 0 1 1 0 2.137H1.07a1.069 1.069 0 1 1 0-2.137zm0 4.275h9.812a1.069 1.069 0 0 1 0 2.137H1.07a1.069 1.069 0 0 1 0-2.137z" /></svg>'},{name:"center",icon:'<svg width="16" height="11" viewBox="0 0 16 11" xmlns="http://www.w3.org/2000/svg" ><path d="M1.069 0H13.33a1.069 1.069 0 0 1 0 2.138H1.07a1.069 1.069 0 1 1 0-2.138zm3.15 4.275h5.962a1.069 1.069 0 0 1 0 2.137H4.22a1.069 1.069 0 1 1 0-2.137zM1.069 8.55H13.33a1.069 1.069 0 0 1 0 2.137H1.07a1.069 1.069 0 0 1 0-2.137z"/></svg>'}]}}],[{key:"isReadOnlySupported",get:function(){return!0}},{key:"toolbox",get:function(){return{icon:'<svg width="15" height="14" viewBox="0 0 15 14" xmlns="http://www.w3.org/2000/svg"><path d="M13.53 6.185l.027.025a1.109 1.109 0 0 1 0 1.568l-5.644 5.644a1.109 1.109 0 1 1-1.569-1.568l4.838-4.837L6.396 2.23A1.125 1.125 0 1 1 7.986.64l5.52 5.518.025.027zm-5.815 0l.026.025a1.109 1.109 0 0 1 0 1.568l-5.644 5.644a1.109 1.109 0 1 1-1.568-1.568l4.837-4.837L.58 2.23A1.125 1.125 0 0 1 2.171.64L7.69 6.158l.025.027z" /></svg>',title:"Quote"}}},{key:"contentless",get:function(){return!0}},{key:"enableLineBreaks",get:function(){return!0}},{key:"DEFAULT_QUOTE_PLACEHOLDER",get:function(){return"Enter a quote"}},{key:"DEFAULT_CAPTION_PLACEHOLDER",get:function(){return"Enter a caption"}},{key:"ALIGNMENTS",get:function(){return{left:"left",center:"center"}}},{key:"DEFAULT_ALIGNMENT",get:function(){return t.ALIGNMENTS.left}},{key:"conversionConfig",get:function(){return{import:"text",export:function(t){return t.caption?"".concat(t.text," — ").concat(t.caption):t.text}}}}]),i(t,[{key:"render",value:function(){var t=this._make("blockquote",[this.CSS.baseClass,this.CSS.wrapper]),e=this._make("div",[this.CSS.input,this.CSS.text],{contentEditable:!this.readOnly,innerHTML:this.data.text}),n=this._make("div",[this.CSS.input,this.CSS.caption],{contentEditable:!this.readOnly,innerHTML:this.data.caption});return e.dataset.placeholder=this.quotePlaceholder,n.dataset.placeholder=this.captionPlaceholder,t.appendChild(e),t.appendChild(n),t}},{key:"save",value:function(t){var e=t.querySelector(".".concat(this.CSS.text)),n=t.querySelector(".".concat(this.CSS.caption));return Object.assign(this.data,{text:e.innerHTML,caption:n.innerHTML})}},{key:"renderSettings",value:function(){var t=this,e=this._make("div",[this.CSS.settingsWrapper],{});return this.settings.map(function(n){var r,o=t._make("div",t.CSS.settingsButton,{innerHTML:n.icon,title:"".concat((r=n.name,r[0].toUpperCase()+r.substr(1))," alignment")});return o.classList.toggle(t.CSS.settingsButtonActive,n.name===t.data.alignment),e.appendChild(o),o}).forEach(function(e,n,r){e.addEventListener("click",function(){t._toggleTune(t.settings[n].name),r.forEach(function(e,n){var r=t.settings[n].name;e.classList.toggle(t.CSS.settingsButtonActive,r===t.data.alignment)})})}),e}},{key:"_toggleTune",value:function(t){this.data.alignment=t}},{key:"_make",value:function(t){var e,n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,o=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{},i=document.createElement(t);Array.isArray(n)?(e=i.classList).add.apply(e,r(n)):n&&i.classList.add(n);for(var a in o)i[a]=o[a];return i}}],[{key:"sanitize",get:function(){return{text:{br:!0},caption:{br:!0},alignment:{}}}}]),t}();t.exports=a},function(t,e,n){var r=n(2);"string"==typeof r&&(r=[[t.i,r,""]]);var o={hmr:!0,transform:void 0,insertInto:void 0};n(4)(r,o);r.locals&&(t.exports=r.locals)},function(t,e,n){(t.exports=n(3)(!1)).push([t.i,".cdx-quote-icon svg {\n  transform: rotate(180deg);\n}\n\n.cdx-quote {\n  margin: 0;\n}\n\n.cdx-quote__text {\n  min-height: 158px;\n  margin-bottom: 10px;\n}\n\n.cdx-quote__caption {}\n\n.cdx-quote [contentEditable=true][data-placeholder]::before{\n  position: absolute;\n  content: attr(data-placeholder);\n  color: #707684;\n  font-weight: normal;\n  opacity: 0;\n}\n\n.cdx-quote [contentEditable=true][data-placeholder]:empty::before {\n  opacity: 1;\n}\n\n.cdx-quote [contentEditable=true][data-placeholder]:empty:focus::before {\n  opacity: 0;\n}\n\n\n.cdx-quote-settings {\n  display: flex;\n}\n\n.cdx-quote-settings .cdx-settings-button {\n  width: 50%;\n}\n",""])},function(t,e){t.exports=function(t){var e=[];return e.toString=function(){return this.map(function(e){var n=function(t,e){var n=t[1]||"",r=t[3];if(!r)return n;if(e&&"function"==typeof btoa){var o=(a=r,"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(a))))+" */"),i=r.sources.map(function(t){return"/*# sourceURL="+r.sourceRoot+t+" */"});return[n].concat(i).concat([o]).join("\n")}var a;return[n].join("\n")}(e,t);return e[2]?"@media "+e[2]+"{"+n+"}":n}).join("")},e.i=function(t,n){"string"==typeof t&&(t=[[null,t,""]]);for(var r={},o=0;o<this.length;o++){var i=this[o][0];"number"==typeof i&&(r[i]=!0)}for(o=0;o<t.length;o++){var a=t[o];"number"==typeof a[0]&&r[a[0]]||(n&&!a[2]?a[2]=n:n&&(a[2]="("+a[2]+") and ("+n+")"),e.push(a))}},e}},function(t,e,n){var r,o,i={},a=(r=function(){return window&&document&&document.all&&!window.atob},function(){return void 0===o&&(o=r.apply(this,arguments)),o}),s=function(t){var e={};return function(t){if("function"==typeof t)return t();if(void 0===e[t]){var n=function(t){return document.querySelector(t)}.call(this,t);if(window.HTMLIFrameElement&&n instanceof window.HTMLIFrameElement)try{n=n.contentDocument.head}catch(t){n=null}e[t]=n}return e[t]}}(),c=null,u=0,l=[],f=n(5);function p(t,e){for(var n=0;n<t.length;n++){var r=t[n],o=i[r.id];if(o){o.refs++;for(var a=0;a<o.parts.length;a++)o.parts[a](r.parts[a]);for(;a<r.parts.length;a++)o.parts.push(m(r.parts[a],e))}else{var s=[];for(a=0;a<r.parts.length;a++)s.push(m(r.parts[a],e));i[r.id]={id:r.id,refs:1,parts:s}}}}function d(t,e){for(var n=[],r={},o=0;o<t.length;o++){var i=t[o],a=e.base?i[0]+e.base:i[0],s={css:i[1],media:i[2],sourceMap:i[3]};r[a]?r[a].parts.push(s):n.push(r[a]={id:a,parts:[s]})}return n}function h(t,e){var n=s(t.insertInto);if(!n)throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");var r=l[l.length-1];if("top"===t.insertAt)r?r.nextSibling?n.insertBefore(e,r.nextSibling):n.appendChild(e):n.insertBefore(e,n.firstChild),l.push(e);else if("bottom"===t.insertAt)n.appendChild(e);else{if("object"!=typeof t.insertAt||!t.insertAt.before)throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");var o=s(t.insertInto+" "+t.insertAt.before);n.insertBefore(e,o)}}function g(t){if(null===t.parentNode)return!1;t.parentNode.removeChild(t);var e=l.indexOf(t);e>=0&&l.splice(e,1)}function v(t){var e=document.createElement("style");return void 0===t.attrs.type&&(t.attrs.type="text/css"),y(e,t.attrs),h(t,e),e}function y(t,e){Object.keys(e).forEach(function(n){t.setAttribute(n,e[n])})}function m(t,e){var n,r,o,i;if(e.transform&&t.css){if(!(i=e.transform(t.css)))return function(){};t.css=i}if(e.singleton){var a=u++;n=c||(c=v(e)),r=w.bind(null,n,a,!1),o=w.bind(null,n,a,!0)}else t.sourceMap&&"function"==typeof URL&&"function"==typeof URL.createObjectURL&&"function"==typeof URL.revokeObjectURL&&"function"==typeof Blob&&"function"==typeof btoa?(n=function(t){var e=document.createElement("link");return void 0===t.attrs.type&&(t.attrs.type="text/css"),t.attrs.rel="stylesheet",y(e,t.attrs),h(t,e),e}(e),r=function(t,e,n){var r=n.css,o=n.sourceMap,i=void 0===e.convertToAbsoluteUrls&&o;(e.convertToAbsoluteUrls||i)&&(r=f(r));o&&(r+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(o))))+" */");var a=new Blob([r],{type:"text/css"}),s=t.href;t.href=URL.createObjectURL(a),s&&URL.revokeObjectURL(s)}.bind(null,n,e),o=function(){g(n),n.href&&URL.revokeObjectURL(n.href)}):(n=v(e),r=function(t,e){var n=e.css,r=e.media;r&&t.setAttribute("media",r);if(t.styleSheet)t.styleSheet.cssText=n;else{for(;t.firstChild;)t.removeChild(t.firstChild);t.appendChild(document.createTextNode(n))}}.bind(null,n),o=function(){g(n)});return r(t),function(e){if(e){if(e.css===t.css&&e.media===t.media&&e.sourceMap===t.sourceMap)return;r(t=e)}else o()}}t.exports=function(t,e){if("undefined"!=typeof DEBUG&&DEBUG&&"object"!=typeof document)throw new Error("The style-loader cannot be used in a non-browser environment");(e=e||{}).attrs="object"==typeof e.attrs?e.attrs:{},e.singleton||"boolean"==typeof e.singleton||(e.singleton=a()),e.insertInto||(e.insertInto="head"),e.insertAt||(e.insertAt="bottom");var n=d(t,e);return p(n,e),function(t){for(var r=[],o=0;o<n.length;o++){var a=n[o];(s=i[a.id]).refs--,r.push(s)}t&&p(d(t,e),e);for(o=0;o<r.length;o++){var s;if(0===(s=r[o]).refs){for(var c=0;c<s.parts.length;c++)s.parts[c]();delete i[s.id]}}}};var b,x=(b=[],function(t,e){return b[t]=e,b.filter(Boolean).join("\n")});function w(t,e,n,r){var o=n?"":r.css;if(t.styleSheet)t.styleSheet.cssText=x(e,o);else{var i=document.createTextNode(o),a=t.childNodes;a[e]&&t.removeChild(a[e]),a.length?t.insertBefore(i,a[e]):t.appendChild(i)}}},function(t,e){t.exports=function(t){var e="undefined"!=typeof window&&window.location;if(!e)throw new Error("fixUrls requires window.location");if(!t||"string"!=typeof t)return t;var n=e.protocol+"//"+e.host,r=n+e.pathname.replace(/\/[^\/]*$/,"/");return t.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi,function(t,e){var o,i=e.trim().replace(/^"(.*)"$/,function(t,e){return e}).replace(/^'(.*)'$/,function(t,e){return e});return/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/|\s*$)/i.test(i)?t:(o=0===i.indexOf("//")?i:0===i.indexOf("/")?n+i:r+i.replace(/^\.\//,""),"url("+JSON.stringify(o)+")")})}}])});
 
 ///////////////////////////////////////////////////////////////////////////
-// src/600-jquery.ripples-min.js //////////////////////////////////////////
+// src/600-jquery-ripples.min.js //////////////////////////////////////////
 
 /**
  * jQuery Ripples plugin v0.6.3 / https://github.com/sirxemic/jquery.ripples
@@ -11208,4 +11198,528 @@ var a=function(){function e(t){var n=t.data,r=t.config,i=t.api,a=t.readOnly;!fun
  */
 
 !function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(require("jquery")):"function"==typeof define&&define.amd?define(["jquery"],t):t(e.$)}(this,function(e){"use strict";function t(e){return"%"==e[e.length-1]}function r(e){var t=e.split(" ");if(1!==t.length)return t.map(function(t){switch(e){case"center":return"50%";case"top":case"left":return"0";case"right":case"bottom":return"100%";default:return t}});switch(e){case"center":return["50%","50%"];case"top":return["50%","0"];case"bottom":return["50%","100%"];case"left":return["0","50%"];case"right":return["100%","50%"];default:return[e,"50%"]}}function i(e,t,r){function i(e,t){var r=s.createShader(e);if(s.shaderSource(r,t),s.compileShader(r),!s.getShaderParameter(r,s.COMPILE_STATUS))throw new Error("compile error: "+s.getShaderInfoLog(r));return r}var o={};if(o.id=s.createProgram(),s.attachShader(o.id,i(s.VERTEX_SHADER,e)),s.attachShader(o.id,i(s.FRAGMENT_SHADER,t)),s.linkProgram(o.id),!s.getProgramParameter(o.id,s.LINK_STATUS))throw new Error("link error: "+s.getProgramInfoLog(o.id));o.uniforms={},o.locations={},s.useProgram(o.id),s.enableVertexAttribArray(0);for(var n,a,u=/uniform (\w+) (\w+)/g,h=e+t;null!=(n=u.exec(h));)a=n[2],o.locations[a]=s.getUniformLocation(o.id,a);return o}function o(e,t){s.activeTexture(s.TEXTURE0+(t||0)),s.bindTexture(s.TEXTURE_2D,e)}function n(e){var t=/url\(["']?([^"']*)["']?\)/.exec(e);return null==t?null:t[1]}function a(e){return e.match(/^data:/)}var s,u=(e=e&&"default"in e?e.default:e)(window),h=function(){function e(e,t,i){var o="OES_texture_"+e,n=o+"_linear",a=n in r,s=[o];return a&&s.push(n),{type:t,arrayType:i,linearSupport:a,extensions:s}}var t=document.createElement("canvas");if(!(s=t.getContext("webgl")||t.getContext("experimental-webgl")))return null;var r={};if(["OES_texture_float","OES_texture_half_float","OES_texture_float_linear","OES_texture_half_float_linear"].forEach(function(e){var t=s.getExtension(e);t&&(r[e]=t)}),!r.OES_texture_float)return null;var i=[];i.push(e("float",s.FLOAT,Float32Array)),r.OES_texture_half_float&&i.push(e("half_float",r.OES_texture_half_float.HALF_FLOAT_OES,null));var o=s.createTexture(),n=s.createFramebuffer();s.bindFramebuffer(s.FRAMEBUFFER,n),s.bindTexture(s.TEXTURE_2D,o),s.texParameteri(s.TEXTURE_2D,s.TEXTURE_MIN_FILTER,s.NEAREST),s.texParameteri(s.TEXTURE_2D,s.TEXTURE_MAG_FILTER,s.NEAREST),s.texParameteri(s.TEXTURE_2D,s.TEXTURE_WRAP_S,s.CLAMP_TO_EDGE),s.texParameteri(s.TEXTURE_2D,s.TEXTURE_WRAP_T,s.CLAMP_TO_EDGE);for(var a=null,u=0;u<i.length;u++)if(s.texImage2D(s.TEXTURE_2D,0,s.RGBA,32,32,0,s.RGBA,i[u].type,null),s.framebufferTexture2D(s.FRAMEBUFFER,s.COLOR_ATTACHMENT0,s.TEXTURE_2D,o,0),s.checkFramebufferStatus(s.FRAMEBUFFER)===s.FRAMEBUFFER_COMPLETE){a=i[u];break}return a}(),d=function(e,t){try{return new ImageData(e,t)}catch(r){return document.createElement("canvas").getContext("2d").createImageData(e,t)}}(32,32);e("head").prepend("<style>.jquery-ripples { position: relative; z-index: 0; }</style>");var c=function(t,r){function i(){o.destroyed||(o.step(),requestAnimationFrame(i))}var o=this;this.$el=e(t),this.interactive=r.interactive,this.resolution=r.resolution,this.textureDelta=new Float32Array([1/this.resolution,1/this.resolution]),this.perturbance=r.perturbance,this.dropRadius=r.dropRadius,this.crossOrigin=r.crossOrigin,this.imageUrl=r.imageUrl;var n=document.createElement("canvas");n.width=this.$el.innerWidth(),n.height=this.$el.innerHeight(),this.canvas=n,this.$canvas=e(n),this.$canvas.css({position:"absolute",left:0,top:0,right:0,bottom:0,zIndex:-1}),this.$el.addClass("jquery-ripples").append(n),this.context=s=n.getContext("webgl")||n.getContext("experimental-webgl"),h.extensions.forEach(function(e){s.getExtension(e)}),this.updateSize=this.updateSize.bind(this),e(window).on("resize",this.updateSize),this.textures=[],this.framebuffers=[],this.bufferWriteIndex=0,this.bufferReadIndex=1;for(var a=h.arrayType,u=a?new a(this.resolution*this.resolution*4):null,d=0;d<2;d++){var c=s.createTexture(),f=s.createFramebuffer();s.bindFramebuffer(s.FRAMEBUFFER,f),s.bindTexture(s.TEXTURE_2D,c),s.texParameteri(s.TEXTURE_2D,s.TEXTURE_MIN_FILTER,h.linearSupport?s.LINEAR:s.NEAREST),s.texParameteri(s.TEXTURE_2D,s.TEXTURE_MAG_FILTER,h.linearSupport?s.LINEAR:s.NEAREST),s.texParameteri(s.TEXTURE_2D,s.TEXTURE_WRAP_S,s.CLAMP_TO_EDGE),s.texParameteri(s.TEXTURE_2D,s.TEXTURE_WRAP_T,s.CLAMP_TO_EDGE),s.texImage2D(s.TEXTURE_2D,0,s.RGBA,this.resolution,this.resolution,0,s.RGBA,h.type,u),s.framebufferTexture2D(s.FRAMEBUFFER,s.COLOR_ATTACHMENT0,s.TEXTURE_2D,c,0),this.textures.push(c),this.framebuffers.push(f)}this.quad=s.createBuffer(),s.bindBuffer(s.ARRAY_BUFFER,this.quad),s.bufferData(s.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,1,1,-1,1]),s.STATIC_DRAW),this.initShaders(),this.initTexture(),this.setTransparentTexture(),this.loadImage(),s.clearColor(0,0,0,0),s.blendFunc(s.SRC_ALPHA,s.ONE_MINUS_SRC_ALPHA),this.visible=!0,this.running=!0,this.inited=!0,this.destroyed=!1,this.setupPointerEvents(),requestAnimationFrame(i)};c.DEFAULTS={imageUrl:null,resolution:256,dropRadius:20,perturbance:.03,interactive:!0,crossOrigin:""},c.prototype={setupPointerEvents:function(){function e(){return r.visible&&r.running&&r.interactive}function t(t,i){e()&&r.dropAtPointer(t,r.dropRadius*(i?1.5:1),i?.14:.01)}var r=this;this.$el.on("mousemove.ripples",function(e){t(e)}).on("touchmove.ripples touchstart.ripples",function(e){for(var r=e.originalEvent.changedTouches,i=0;i<r.length;i++)t(r[i])}).on("mousedown.ripples",function(e){t(e,!0)})},loadImage:function(){var e=this;s=this.context;var t=this.imageUrl||n(this.originalCssBackgroundImage)||n(this.$el.css("backgroundImage"));if(t!=this.imageSource)if(this.imageSource=t,this.imageSource){var r=new Image;r.onload=function(){function t(e){return 0==(e&e-1)}s=e.context;var i=t(r.width)&&t(r.height)?s.REPEAT:s.CLAMP_TO_EDGE;s.bindTexture(s.TEXTURE_2D,e.backgroundTexture),s.texParameteri(s.TEXTURE_2D,s.TEXTURE_WRAP_S,i),s.texParameteri(s.TEXTURE_2D,s.TEXTURE_WRAP_T,i),s.texImage2D(s.TEXTURE_2D,0,s.RGBA,s.RGBA,s.UNSIGNED_BYTE,r),e.backgroundWidth=r.width,e.backgroundHeight=r.height,e.hideCssBackground()},r.onerror=function(){s=e.context,e.setTransparentTexture()},r.crossOrigin=a(this.imageSource)?null:this.crossOrigin,r.src=this.imageSource}else this.setTransparentTexture()},step:function(){s=this.context,this.visible&&(this.computeTextureBoundaries(),this.running&&this.update(),this.render())},drawQuad:function(){s.bindBuffer(s.ARRAY_BUFFER,this.quad),s.vertexAttribPointer(0,2,s.FLOAT,!1,0,0),s.drawArrays(s.TRIANGLE_FAN,0,4)},render:function(){s.bindFramebuffer(s.FRAMEBUFFER,null),s.viewport(0,0,this.canvas.width,this.canvas.height),s.enable(s.BLEND),s.clear(s.COLOR_BUFFER_BIT|s.DEPTH_BUFFER_BIT),s.useProgram(this.renderProgram.id),o(this.backgroundTexture,0),o(this.textures[0],1),s.uniform1f(this.renderProgram.locations.perturbance,this.perturbance),s.uniform2fv(this.renderProgram.locations.topLeft,this.renderProgram.uniforms.topLeft),s.uniform2fv(this.renderProgram.locations.bottomRight,this.renderProgram.uniforms.bottomRight),s.uniform2fv(this.renderProgram.locations.containerRatio,this.renderProgram.uniforms.containerRatio),s.uniform1i(this.renderProgram.locations.samplerBackground,0),s.uniform1i(this.renderProgram.locations.samplerRipples,1),this.drawQuad(),s.disable(s.BLEND)},update:function(){s.viewport(0,0,this.resolution,this.resolution),s.bindFramebuffer(s.FRAMEBUFFER,this.framebuffers[this.bufferWriteIndex]),o(this.textures[this.bufferReadIndex]),s.useProgram(this.updateProgram.id),this.drawQuad(),this.swapBufferIndices()},swapBufferIndices:function(){this.bufferWriteIndex=1-this.bufferWriteIndex,this.bufferReadIndex=1-this.bufferReadIndex},computeTextureBoundaries:function(){var e,i=this.$el.css("background-size"),o=this.$el.css("background-attachment"),n=r(this.$el.css("background-position"));if("fixed"==o?((e={left:window.pageXOffset,top:window.pageYOffset}).width=u.width(),e.height=u.height()):((e=this.$el.offset()).width=this.$el.innerWidth(),e.height=this.$el.innerHeight()),"cover"==i)var a=Math.max(e.width/this.backgroundWidth,e.height/this.backgroundHeight),s=this.backgroundWidth*a,h=this.backgroundHeight*a;else if("contain"==i)var a=Math.min(e.width/this.backgroundWidth,e.height/this.backgroundHeight),s=this.backgroundWidth*a,h=this.backgroundHeight*a;else{var s=(i=i.split(" "))[0]||"",h=i[1]||s;t(s)?s=e.width*parseFloat(s)/100:"auto"!=s&&(s=parseFloat(s)),t(h)?h=e.height*parseFloat(h)/100:"auto"!=h&&(h=parseFloat(h)),"auto"==s&&"auto"==h?(s=this.backgroundWidth,h=this.backgroundHeight):("auto"==s&&(s=this.backgroundWidth*(h/this.backgroundHeight)),"auto"==h&&(h=this.backgroundHeight*(s/this.backgroundWidth)))}var d=n[0],c=n[1];d=t(d)?e.left+(e.width-s)*parseFloat(d)/100:e.left+parseFloat(d),c=t(c)?e.top+(e.height-h)*parseFloat(c)/100:e.top+parseFloat(c);var f=this.$el.offset();this.renderProgram.uniforms.topLeft=new Float32Array([(f.left-d)/s,(f.top-c)/h]),this.renderProgram.uniforms.bottomRight=new Float32Array([this.renderProgram.uniforms.topLeft[0]+this.$el.innerWidth()/s,this.renderProgram.uniforms.topLeft[1]+this.$el.innerHeight()/h]);var l=Math.max(this.canvas.width,this.canvas.height);this.renderProgram.uniforms.containerRatio=new Float32Array([this.canvas.width/l,this.canvas.height/l])},initShaders:function(){var e=["attribute vec2 vertex;","varying vec2 coord;","void main() {","coord = vertex * 0.5 + 0.5;","gl_Position = vec4(vertex, 0.0, 1.0);","}"].join("\n");this.dropProgram=i(e,["precision highp float;","const float PI = 3.141592653589793;","uniform sampler2D texture;","uniform vec2 center;","uniform float radius;","uniform float strength;","varying vec2 coord;","void main() {","vec4 info = texture2D(texture, coord);","float drop = max(0.0, 1.0 - length(center * 0.5 + 0.5 - coord) / radius);","drop = 0.5 - cos(drop * PI) * 0.5;","info.r += drop * strength;","gl_FragColor = info;","}"].join("\n")),this.updateProgram=i(e,["precision highp float;","uniform sampler2D texture;","uniform vec2 delta;","varying vec2 coord;","void main() {","vec4 info = texture2D(texture, coord);","vec2 dx = vec2(delta.x, 0.0);","vec2 dy = vec2(0.0, delta.y);","float average = (","texture2D(texture, coord - dx).r +","texture2D(texture, coord - dy).r +","texture2D(texture, coord + dx).r +","texture2D(texture, coord + dy).r",") * 0.25;","info.g += (average - info.r) * 2.0;","info.g *= 0.995;","info.r += info.g;","gl_FragColor = info;","}"].join("\n")),s.uniform2fv(this.updateProgram.locations.delta,this.textureDelta),this.renderProgram=i(["precision highp float;","attribute vec2 vertex;","uniform vec2 topLeft;","uniform vec2 bottomRight;","uniform vec2 containerRatio;","varying vec2 ripplesCoord;","varying vec2 backgroundCoord;","void main() {","backgroundCoord = mix(topLeft, bottomRight, vertex * 0.5 + 0.5);","backgroundCoord.y = 1.0 - backgroundCoord.y;","ripplesCoord = vec2(vertex.x, -vertex.y) * containerRatio * 0.5 + 0.5;","gl_Position = vec4(vertex.x, -vertex.y, 0.0, 1.0);","}"].join("\n"),["precision highp float;","uniform sampler2D samplerBackground;","uniform sampler2D samplerRipples;","uniform vec2 delta;","uniform float perturbance;","varying vec2 ripplesCoord;","varying vec2 backgroundCoord;","void main() {","float height = texture2D(samplerRipples, ripplesCoord).r;","float heightX = texture2D(samplerRipples, vec2(ripplesCoord.x + delta.x, ripplesCoord.y)).r;","float heightY = texture2D(samplerRipples, vec2(ripplesCoord.x, ripplesCoord.y + delta.y)).r;","vec3 dx = vec3(delta.x, heightX - height, 0.0);","vec3 dy = vec3(0.0, heightY - height, delta.y);","vec2 offset = -normalize(cross(dy, dx)).xz;","float specular = pow(max(0.0, dot(offset, normalize(vec2(-0.6, 1.0)))), 4.0);","gl_FragColor = texture2D(samplerBackground, backgroundCoord + offset * perturbance) + specular;","}"].join("\n")),s.uniform2fv(this.renderProgram.locations.delta,this.textureDelta)},initTexture:function(){this.backgroundTexture=s.createTexture(),s.bindTexture(s.TEXTURE_2D,this.backgroundTexture),s.pixelStorei(s.UNPACK_FLIP_Y_WEBGL,1),s.texParameteri(s.TEXTURE_2D,s.TEXTURE_MAG_FILTER,s.LINEAR),s.texParameteri(s.TEXTURE_2D,s.TEXTURE_MIN_FILTER,s.LINEAR)},setTransparentTexture:function(){s.bindTexture(s.TEXTURE_2D,this.backgroundTexture),s.texImage2D(s.TEXTURE_2D,0,s.RGBA,s.RGBA,s.UNSIGNED_BYTE,d)},hideCssBackground:function(){var e=this.$el[0].style.backgroundImage;"none"!=e&&(this.originalInlineCss=e,this.originalCssBackgroundImage=this.$el.css("backgroundImage"),this.$el.css("backgroundImage","none"))},restoreCssBackground:function(){this.$el.css("backgroundImage",this.originalInlineCss||"")},dropAtPointer:function(e,t,r){var i=parseInt(this.$el.css("border-left-width"))||0,o=parseInt(this.$el.css("border-top-width"))||0;this.drop(e.pageX-this.$el.offset().left-i,e.pageY-this.$el.offset().top-o,t,r)},drop:function(e,t,r,i){s=this.context;var n=this.$el.innerWidth(),a=this.$el.innerHeight(),u=Math.max(n,a);r/=u;var h=new Float32Array([(2*e-n)/u,(a-2*t)/u]);s.viewport(0,0,this.resolution,this.resolution),s.bindFramebuffer(s.FRAMEBUFFER,this.framebuffers[this.bufferWriteIndex]),o(this.textures[this.bufferReadIndex]),s.useProgram(this.dropProgram.id),s.uniform2fv(this.dropProgram.locations.center,h),s.uniform1f(this.dropProgram.locations.radius,r),s.uniform1f(this.dropProgram.locations.strength,i),this.drawQuad(),this.swapBufferIndices()},updateSize:function(){var e=this.$el.innerWidth(),t=this.$el.innerHeight();e==this.canvas.width&&t==this.canvas.height||(this.canvas.width=e,this.canvas.height=t)},destroy:function(){this.$el.off(".ripples").removeClass("jquery-ripples").removeData("ripples"),s=null,e(window).off("resize",this.updateSize),this.$canvas.remove(),this.restoreCssBackground(),this.destroyed=!0},show:function(){this.visible=!0,this.$canvas.show(),this.hideCssBackground()},hide:function(){this.visible=!1,this.$canvas.hide(),this.restoreCssBackground()},pause:function(){this.running=!1},play:function(){this.running=!0},set:function(e,t){switch(e){case"dropRadius":case"perturbance":case"interactive":case"crossOrigin":this[e]=t;break;case"imageUrl":this.imageUrl=t,this.loadImage()}}};var f=e.fn.ripples;e.fn.ripples=function(t){if(!h)throw new Error("Your browser does not support WebGL, the OES_texture_float extension or rendering to floating point textures.");var r=arguments.length>1?Array.prototype.slice.call(arguments,1):void 0;return this.each(function(){var i=e(this),o=i.data("ripples"),n=e.extend({},c.DEFAULTS,i.data(),"object"==typeof t&&t);(o||"string"!=typeof t)&&(o?"string"==typeof t&&c.prototype[t].apply(o,r):i.data("ripples",o=new c(this,n)))})},e.fn.ripples.Constructor=c,e.fn.ripples.noConflict=function(){return e.fn.ripples=f,this}});
+
+///////////////////////////////////////////////////////////////////////////
+// src/600-jquery-uri.min.js //////////////////////////////////////////////
+
+/*! URI.js v1.19.2 http://medialize.github.io/URI.js/ */
+/* build contains: jquery.URI.js */
+(function(d,e){"object"===typeof module&&module.exports?module.exports=e(require("jquery"),require("./URI")):"function"===typeof define&&define.amd?define(["jquery","./URI"],e):e(d.jQuery,d.URI)})(this,function(d,e){function h(a){return a.replace(/([.*+?^=!:${}()|[\]\/\\])/g,"\\$1")}function k(a){var b=a.nodeName.toLowerCase();if("input"!==b||"image"===a.type)return e.domAttributes[b]}function n(a){return{get:function(b){return d(b).uri()[a]()},set:function(b,c){d(b).uri()[a](c);return c}}}function l(a,
+b){if(!k(a)||!b)return!1;var c=b.match(p);if(!c||!c[5]&&":"!==c[2]&&!g[c[2]])return!1;var e=d(a).uri();if(c[5])return e.is(c[5]);if(":"===c[2]){var f=c[1].toLowerCase()+":";return g[f]?g[f](e,c[4]):!1}f=c[1].toLowerCase();return m[f]?g[c[2]](e[f](),c[4],f):!1}var m={},g={"=":function(a,b){return a===b},"^=":function(a,b){return!!(a+"").match(new RegExp("^"+h(b),"i"))},"$=":function(a,b){return!!(a+"").match(new RegExp(h(b)+"$","i"))},"*=":function(a,b,c){"directory"===c&&(a+="/");return!!(a+"").match(new RegExp(h(b),
+"i"))},"equals:":function(a,b){return a.equals(b)},"is:":function(a,b){return a.is(b)}};d.each("origin authority directory domain filename fragment hash host hostname href password path pathname port protocol query resource scheme search subdomain suffix tld username".split(" "),function(a,b){m[b]=!0;d.attrHooks["uri:"+b]=n(b)});var q=function(a,b){return d(a).uri().href(b).toString()};d.each(["src","href","action","uri","cite"],function(a,b){d.attrHooks[b]={set:q}});d.attrHooks.uri.get=function(a){return d(a).uri()};
+d.fn.uri=function(a){var b=this.first(),c=b.get(0),d=k(c);if(!d)throw Error('Element "'+c.nodeName+'" does not have either property: href, src, action, cite');if(void 0!==a){var f=b.data("uri");if(f)return f.href(a);a instanceof e||(a=e(a||""))}else{if(a=b.data("uri"))return a;a=e(b.attr(d)||"")}a._dom_element=c;a._dom_attribute=d;a.normalize();b.data("uri",a);return a};e.prototype.build=function(a){if(this._dom_element)this._string=e.build(this._parts),this._deferred_build=!1,this._dom_element.setAttribute(this._dom_attribute,
+this._string),this._dom_element[this._dom_attribute]=this._string;else if(!0===a)this._deferred_build=!0;else if(void 0===a||this._deferred_build)this._string=e.build(this._parts),this._deferred_build=!1;return this};var p=/^([a-zA-Z]+)\s*([\^\$*]?=|:)\s*(['"]?)(.+)\3|^\s*([a-zA-Z0-9]+)\s*$/;var r=d.expr.createPseudo?d.expr.createPseudo(function(a){return function(b){return l(b,a)}}):function(a,b,c){return l(a,c[3])};d.expr[":"].uri=r;return d});
+
+///////////////////////////////////////////////////////////////////////////
+// src/600-jquery-zencoding.js ////////////////////////////////////////////
+
+/**
+ * Copyright (c) 2010 Mike Kent
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+(function($) {
+
+	/*
+	 * Calling conventions:
+	 *
+	 * $.zc( ZenCode | ZenObject [, data] )
+	 *
+	 * ZenCode: string to be parsed into HTML
+	 * ZenObject: Collection of ZenCode and ZenObjects.  ZenObject.main must
+	 * be defined
+	 */
+ 	$.zc = $.zen = function(ZenCode,data) {
+		if(data !== undefined)
+			var functions = data.functions;
+		var el = createHTMLBlock(ZenCode,data,functions);
+		return el;
+	};
+
+	var regZenTagDfn =
+      /*
+       * (
+       *   [#\.@]?[\w!-]+         # tag names, ids, classes, and references
+       *   |
+       *   \[                     # attributes
+       *     ([(\w|\-)!?=:"']+    # attribute name
+       *       (="([^"]|\\")+")?  # attribute value
+       *      {0,})+              # allow spaces, and look for 1+ attributes
+       *   \]
+       *   |
+       *   \~[\w$]+=[\w$]+        # events in form -event=function
+       *   |
+       *   &[\w$\+(=[\w$]+)?      # data in form &data[=variable]
+       *   |
+       *   [#\.\@]?               # allow for types to precede dynamic names
+       *   !([^!]|\\!)+!){0,}     # contents enclosed by !...!
+       *   |
+       *   (?:[^\\]|^)            # find either \ or beginning of line
+       *   !
+       * ){0,}                    # 0 or more of the above
+       * (\{                      # contents
+       *   (
+       *     [^\}]
+       *     |
+       *     \\\}                 # find all before }, but include \}
+       *   )+
+       * \})?
+       */
+            /([#\.\@]?[\w-]+|\[([(\w|\-)!?=:"']+(="([^"]|\\")+")? {0,})+\]|\~[\w$]+=[\w$]+|&[\w$]+(=[\w$]+)?|[#\.\@]?!([^!]|\\!)+!){0,}(\{([^\}]|\\\})+\})?/i,
+		regTag = /(\w+)/i,	//finds only the first word, must check for now word
+		regId = /#((\-|[\w])+)/i,	//finds id name
+		regTagNotContent = /((([#\.]?[\w-]+)?(\[([\w!]+(="([^"]|\\")+")? {0,})+\])?)+)/i,
+		regClasses = /(\.[\w-]+)/gi,	//finds all classes
+		regClass = /\.([\w-]+)/i,	//finds the class name of each class
+
+		//finds reference objects
+		regReference = /(@[\w$_][\w$_\d]+)/i,
+
+		//finds attributes within '[' and ']' of type name or name="value"
+		regAttrDfn = /(\[([(\w|\-)!]+(="([^"]|\\")+")? {0,})+\])/i,
+		regAttrs = /([(\w|\-)!]+(="([^"]|\\")+")?)/gi,	//finds each attribute
+		regAttr = /([(\w|\-)!]+)(="(([^"]|\\")+)")?/i,	//finds individual attribute and value
+
+		//finds content within '{' and '}' while ignoring '\}'
+		regCBrace = /\{(([^\}]|\\\})+)\}/i,
+		//finds content within !...! while ignoring '\!' within !...!
+		regExclamation = /(?:([^\\]|^))!([^!]|\\!)+!/gim,
+		
+		//finds events in form of -event=function
+		regEvents = /\~[\w$]+(=[\w$]+)?/gi,
+		regEvent = /\~([\w$]+)=([\w$]+)/i,
+		
+		//find data in form &data or &dataname=data
+		regDatas = /&[\w$]+(=[\w$]+)?/gi,
+		regData = /&([\w$]+)(=([\w$]+))?/i;
+
+	/*
+	 * The magic happens here.
+	 *
+	 * This is the recursive function to break up, parse, and create every
+	 * element.
+	 */
+	function createHTMLBlock(ZenObject,data,functions,indexes) {
+		if($.isPlainObject(ZenObject))
+			var ZenCode = ZenObject.main;
+		else {
+			var ZenCode = ZenObject;
+			ZenObject = {
+				main: ZenCode
+			};
+		}
+		var origZenCode = ZenCode;
+		if(indexes === undefined)
+			indexes = {};
+		// Take care of !for:...! and !if:...! structure and if $.isArray(data)
+		if(ZenCode.charAt(0)=='!' || $.isArray(data)) {
+			// If data is simply an array, then handle loop specially.
+			// This allows for some shorthand and quick templating.
+			if($.isArray(data))
+				var forScope = ZenCode;
+			// Check to see if an index is specified
+			else {
+				var obj = parseEnclosure(ZenCode,'!');
+				obj = obj.substring(obj.indexOf(':')+1,obj.length-1);
+				var forScope = parseVariableScope(ZenCode);
+			}
+			// Only parse the scope of the !for:! after taking care of references
+			while(forScope.charAt(0) == '@')
+				forScope = parseVariableScope(
+					'!for:!'+parseReferences(forScope, ZenObject));
+			// setup a zen object with the forScope as main
+			var zo = ZenObject;
+			zo.main = forScope;
+			// initialize el for consistent use
+			var el = $();
+			if(ZenCode.substring(0,5)=="!for:" || $.isArray(data)) {  //!for:...!
+				// again, data as an array is handled differently
+				if(!$.isArray(data) && obj.indexOf(':')>0) {
+					var indexName = obj.substring(0,obj.indexOf(':'));
+					obj = obj.substr(obj.indexOf(':')+1);
+				}
+				// setup the array to either be data as a whole or an object
+				// within data.  This is the reason for the two special exceptions
+				// above to handle data as an aray.
+				var arr = $.isArray(data)?data:data[obj];
+				var zc = zo.main;
+				if($.isArray(arr) || $.isPlainObject(arr)) {
+					$.map(arr, function(value, index) {
+						zo.main = zc;
+						// initialize index if it was specified
+						if(indexName!==undefined)
+							indexes[indexName] = index;
+						// allow for array references as "value" by wrapping the array
+						// element.
+						if(!$.isPlainObject(value))
+							value = {value:value};
+						// create the element based on ZenObject previously created
+						var next = createHTMLBlock(zo,value,functions,indexes);
+						if(el.length == 0)
+							el = next;
+						// append elements...  TODO: is this "if" necessary?
+						else {
+							$.each(next, function(index,value) {
+								el.push(value);
+							});
+						}
+					});
+				}
+				// if data is an array, then the whole ZenCode is looped, therefore
+				// there is nothing left to do.
+				if(!$.isArray(data))
+					ZenCode = ZenCode.substr(obj.length+6+forScope.length);
+				else
+					ZenCode = '';
+			} else if(ZenCode.substring(0,4)=="!if:") {  //!if:...!
+				// check result of if contents
+				var result = parseContents('!'+obj+'!',data,indexes);
+				// Only execute ZenCode if the result was positive.
+				if(result!='undefined' || result!='false' || result!='')
+					el = createHTMLBlock(zo,data,functions,indexes);
+				ZenCode = ZenCode.substr(obj.length+5+forScope.length);
+			}
+			// setup function ZenObject.main to reflect changes in both !for:!
+			// and !if:!
+			ZenObject.main = ZenCode;
+		}
+		// Take care of nested groups
+		else if(ZenCode.charAt(0)=='(') {
+			// get full parenthetical group
+			var paren = parseEnclosure(ZenCode,'(',')');
+			// exclude beginning and ending parentheses
+			var inner = paren.substring(1,paren.length-1);
+			// update ZenCode for later
+			ZenCode = ZenCode.substr(paren.length);
+			var zo = ZenObject;
+			zo.main = inner;
+			// create Element(s) based on contents of group
+			var el = createHTMLBlock(zo,data,functions,indexes);
+		}
+		// Everything left should be a regular block
+		else {
+			var blocks = ZenCode.match(regZenTagDfn);
+			var block = blocks[0];	// actual block to create
+			if(block.length == 0) {
+				return '';
+			}
+			// dereference references if any
+			// references can drastically change the code in unexpected ways
+			// so it is required to reparse the whole ZenObject.
+			if(block.indexOf('@') >= 0) {
+				ZenCode = parseReferences(ZenCode,ZenObject);
+				var zo = ZenObject;
+				zo.main = ZenCode;
+				return createHTMLBlock(zo,data,functions,indexes);
+			}
+			// apply any dynamic content to block ZenCode
+			block = parseContents(block,data,indexes);
+			// get all classes
+			var blockClasses = parseClasses(block);
+			// get block id if any
+			if(regId.test(block))
+				var blockId = regId.exec(block)[1];
+			// get block attributes
+			var blockAttrs = parseAttributes(block,data);
+			// default block tag is div unless block is only {...}, thenspan
+			var blockTag = block.charAt(0)=='{'?'span':'div';
+			// get block tag if it is explicitly defined
+			if(ZenCode.charAt(0)!='#' && ZenCode.charAt(0)!='.' &&
+					ZenCode.charAt(0)!='{')
+				blockTag = regTag.exec(block)[1];
+			// get block HTML contents
+			if(block.search(regCBrace) != -1)
+				var blockHTML = block.match(regCBrace)[1];
+			// create jQuery attribute object with all data
+			blockAttrs = $.extend(blockAttrs, {
+				id: blockId,
+				'class': blockClasses,
+				html: blockHTML
+			});
+			// create Element based on block
+			var el = $('<'+blockTag+'>', blockAttrs);
+			el.attr(blockAttrs);  //fixes IE error (issue 2)
+			// bind created element with any events and data
+			el = bindEvents(block, el, functions);
+			el = bindData(block, el, data);
+			// remove block from ZenCode and update ZenObject
+			ZenCode = ZenCode.substr(blocks[0].length);
+			ZenObject.main = ZenCode;
+		}
+
+		// Recurse based on '+' or '>'
+		if(ZenCode.length > 0) {
+			// Create children
+			if(ZenCode.charAt(0) == '>') {
+				// one or more elements enclosed in a group
+				if(ZenCode.charAt(1) == '(') {
+					var zc = parseEnclosure(ZenCode.substr(1),'(',')');
+					ZenCode = ZenCode.substr(zc.length+1);
+				}
+				// dynamically created elements or !for:! or !if:!
+				else if(ZenCode.charAt(1) == '!') {
+					var obj = parseEnclosure(ZenCode.substr(1),'!');
+					var forScope = parseVariableScope(ZenCode.substr(1));
+					var zc = obj+forScope;
+					ZenCode = ZenCode.substr(zc.length+1);
+				}
+				// a single element that either ends the ZenCode or has siblings
+				else {
+					var len = Math.max(ZenCode.indexOf('+'),ZenCode.length);
+					var zc = ZenCode.substring(1, len);
+					ZenCode = ZenCode.substr(len);
+				}
+				var zo = ZenObject;
+				zo.main = zc;
+				// recurse and append
+				var els = $(
+					createHTMLBlock(zo,data,functions,indexes)
+				);
+				els.appendTo(el);
+			}
+			// Create siblings
+			if(ZenCode.charAt(0) == '+') {
+				var zo = ZenObject;
+				zo.main = ZenCode.substr(1);
+				// recurse and push new elements with current ones
+				var el2 = createHTMLBlock(zo,data,functions,indexes);
+				$.each(el2, function(index,value) {
+					el.push(value);
+				});
+			}
+		}
+		var ret = el;
+		return ret;
+	}
+
+	/*
+	 * Binds the appropiate data to the element specified by
+	 * &data=value
+	 * Or in the case of
+	 * &data
+	 * binds data.data to data on the element.
+	 */
+	function bindData(ZenCode, el, data) {
+		if(ZenCode.search(regDatas) == 0)
+			return el;
+		var datas = ZenCode.match(regDatas);
+		if(datas === null)
+			return el;
+		for(var i=0;i<datas.length;i++) {
+			var split = regData.exec(datas[i]);
+			// the data dfn can be either &dfn or &data=dfn
+			if(split[3] === undefined)
+				$(el).data(split[1],data[split[1]]);
+			else
+				$(el).data(split[1],data[split[3]]);
+		}
+		return el;
+	}
+
+	/*
+	 * Binds the appropiate function to the event specified by
+	 * ~event=function
+	 * Or in the case of 
+	 * ~event
+	 * binds function.event to event.
+	 */
+	function bindEvents(ZenCode, el, functions) {
+		if(ZenCode.search(regEvents) == 0)
+			return el;
+		var bindings = ZenCode.match(regEvents);
+		if(bindings === null)
+			return el;
+		for(var i=0;i<bindings.length;i++) {
+			var split = regEvent.exec(bindings[i]);
+			// function dfn can be either ~dfn or ~function=dfn
+			if(split[2] === undefined)
+				var fn = functions[split[1]];
+			else
+				var fn = functions[split[2]];
+			$(el).bind(split[1],fn);
+		}
+		return el;
+	}
+
+	/*
+	 * parses attributes out of a single css element definition
+	 * returns as a space delimited string of attributes and their values
+	 */
+	function parseAttributes(ZenBlock, data) {
+		if(ZenBlock.search(regAttrDfn) == -1)
+			return undefined;
+		var attrStrs = ZenBlock.match(regAttrDfn);
+		attrStrs = attrStrs[0].match(regAttrs);
+		var attrs = {};
+		for(var i=0;i<attrStrs.length;i++) {
+			var parts = regAttr.exec(attrStrs[i]);
+			attrs[parts[1]] = '';
+			// all attributes must be attr="value"
+			if(parts[3] !== undefined)
+				attrs[parts[1]] = parseContents(parts[3],data);
+		}
+		return attrs;
+	}
+
+	/*
+	 * parses classes out of a single css element definition
+	 * returns as a space delimited string of classes
+	 */
+	function parseClasses(ZenBlock) {
+		ZenBlock = ZenBlock.match(regTagNotContent)[0];
+		if(ZenBlock.search(regClasses) == -1)
+			return undefined;
+		var classes = ZenBlock.match(regClasses);
+		var clsString = '';
+		for(var i=0;i<classes.length;i++) {
+			clsString += ' '+regClass.exec(classes[i])[1];
+		}
+		return $.trim(clsString);
+	}
+
+	/*
+	 * Converts !...! into its javascript equivelant.
+	 */
+	function parseContents(ZenBlock, data, indexes) {
+		if(indexes===undefined)
+			indexes = {};
+		var html = ZenBlock;
+		if(data===undefined)
+			return html;
+		//The while takes care of the issue .!fruit!!fruit=="bla"?:".sd":""!
+		//aka contigous !...!
+		while(regExclamation.test(html)) {
+			html = html.replace(regExclamation, function(str, str2) {
+				var begChar = '';
+				// don't process !for:! or !if:!
+				if(str.indexOf("!for:") > 0 || str.indexOf("!if:") > 0)
+					return str;
+				// regex can return either !val! or x!val! where x is a misc char
+				// begChar takes care of this second possability and saves the
+				// character to be restored back to the string
+				if(str.charAt(0) == '!')
+					str = str.substring(1,str.length-1);
+				else {
+					begChar = str.charAt(0);
+					str = str.substring(2,str.length-1);
+				}
+				// wrap a function with dfn to find value in either data or indexes
+				var fn = new Function('data','indexes',
+					'var r=undefined;'+
+					'with(data){try{r='+str+';}catch(e){}}'+
+					'with(indexes){try{if(r===undefined)r='+str+';}catch(e){}}'+
+					'return r;');
+				var val = unescape(fn(data,indexes));
+				//var val = fn(data,indexes);
+				return begChar+val;
+			});
+		}
+		html = html.replace(/\\./g,function (str) {
+			return str.charAt(1);
+		});
+		return unescape(html);
+	}
+
+	/*
+	 * There are actually three forms of this function:
+	 *
+	 * parseEnclosure(ZenCode,open) - use open as both open and close
+	 * parseEnclosure(ZenCode,open,close) - specify both
+	 * parseEnclosure(ZenCode,open,close,count) - specify initial count
+	 */
+	function parseEnclosure(ZenCode,open,close,count) {
+		if(close===undefined)
+			close = open;
+		var index = 1;
+		// allow count to be either 1 if the string starts with an open char
+		// or 0 and then return if it does not.
+		if(count === undefined)
+			count = ZenCode.charAt(0)==open?1:0;
+		if(count==0)
+			return;
+		// go through each character to find the end of the enclosure while
+		// keeping track of how deeply nested the parser currently is
+		// and ignoring escaped enclosure characters.
+		for(;count>0 && index<ZenCode.length;index++) {
+			if(ZenCode.charAt(index)==close && ZenCode.charAt(index-1)!='\\')
+				count--;
+			else if(ZenCode.charAt(index)==open && ZenCode.charAt(index-1)!='\\')
+				count++;
+		}
+		var ret = ZenCode.substring(0,index);
+		return ret;
+	}
+
+	/*
+	 * Parses multiple ZenCode references.  The initial ZenCode must be
+	 * declared as ZenObject.main
+	 */
+	function parseReferences(ZenCode, ZenObject) {
+		ZenCode = ZenCode.replace(regReference, function(str) {
+			str = str.substr(1);
+			// wrap str in a function to find its value in the ZenObject
+			var fn = new Function('objs',//'reparse',
+				'var r="";'+
+				'with(objs){try{'+
+					//'if($.isPlainObject('+str+'))'+
+					//	'r=reparse('+str+');'+
+					//'else '+
+						'r='+str+';'+
+				'}catch(e){}}'+
+				'return r;');
+			return fn(ZenObject,parseReferences);
+		});
+		return ZenCode;
+	}
+
+	/*
+	 * Parses the scope of a !for:...!
+	 *
+	 * The scope of !for:...! is:
+	 *   If the tag has no children, then only immeiately following tag
+	 *   Tag and its children
+	 */
+	function parseVariableScope(ZenCode) {
+		// only parse !for:! or !if:!
+		if(ZenCode.substring(0,5)!="!for:" &&
+				ZenCode.substring(0,4)!="!if:")
+			return undefined;
+		// find the enclosure and remove it from the string 
+		var forCode = parseEnclosure(ZenCode,'!');
+		ZenCode = ZenCode.substr(forCode.length);
+		// scope of !for:! and !if:! can only be one (if any) group of elements
+		if(ZenCode.charAt(0) == '(') {
+			return parseEnclosure(ZenCode,'(',')');
+		}
+		var tag = ZenCode.match(regZenTagDfn)[0];
+		ZenCode = ZenCode.substr(tag.length);
+		// scope of !for:! and !if:! is the single element and its children
+		if(ZenCode.length==0 || ZenCode.charAt(0)=='+') {
+			return tag;
+		}
+		else if(ZenCode.charAt(0)=='>') {
+			var rest = '';
+			rest = parseEnclosure(ZenCode.substr(1),'(',')',1);
+			return tag+'>'+rest;
+		}
+		return undefined;
+	}
+ })(jQuery);
 

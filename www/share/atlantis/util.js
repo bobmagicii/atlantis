@@ -230,6 +230,13 @@ class Util {
 		return;
 	};
 
+	static ZenCode(Input) {
+	/*//
+	@date 2021-04-22
+	//*/
+
+		return jQuery.zc(Input);
+	};
 };
 
 export default Util;
