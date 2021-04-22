@@ -1,3 +1,4 @@
+import Util from '/share/atlantis/util.js';
 
 class PostAPI {
 
@@ -6,7 +7,7 @@ class PostAPI {
 	@date 2021-04-12
 	//*/
 
-		Atlantis.Request({
+		Util.Request({
 			Method: 'DELETE',
 			URL: PostAPI.EndpointURL,
 			Data: { ID: ID },
@@ -21,7 +22,7 @@ class PostAPI {
 	@date 2021-04-12
 	//*/
 
-		Atlantis.Request({
+		Util.Request({
 			Method: 'GET',
 			URL: PostAPI.EndpointURL,
 			Data: { ID: ID },
@@ -38,7 +39,7 @@ class PostAPI {
 
 		Dataset.ID = ID;
 
-		Atlantis.Request({
+		Util.Request({
 			Method: 'PATCH',
 			URL: PostAPI.EndpointURL,
 			Data: Dataset,
@@ -53,7 +54,7 @@ class PostAPI {
 	@date 2021-04-12
 	//*/
 
-		Atlantis.Request({
+		Util.Request({
 			Method: 'POST',
 			URL: PostAPI.EndpointURL,
 			Data: Dataset,

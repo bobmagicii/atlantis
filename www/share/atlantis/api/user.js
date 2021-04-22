@@ -1,3 +1,4 @@
+import Util from '/share/atlantis/util.js';
 
 class UserAPI {
 
@@ -6,7 +7,7 @@ class UserAPI {
 	@date 2021-04-12
 	//*/
 
-		Atlantis.Request({
+		Util.Request({
 			Method: 'DELETE',
 			URL: UserAPI.EndpointURL,
 			Data: { ID: ID },
@@ -21,7 +22,7 @@ class UserAPI {
 	@date 2021-04-12
 	//*/
 
-		Atlantis.Request({
+		Util.Request({
 			Method: 'GET',
 			URL: UserAPI.EndpointURL,
 			Data: { ID: ID },
@@ -38,7 +39,7 @@ class UserAPI {
 
 		Dataset.ID = ID;
 
-		Atlantis.Request({
+		Util.Request({
 			Method: 'PATCH',
 			URL: UserAPI.EndpointURL,
 			Data: Dataset,
@@ -53,7 +54,7 @@ class UserAPI {
 	@date 2021-04-12
 	//*/
 
-		Atlantis.Request({
+		Util.Request({
 			Method: 'POST',
 			URL: UserAPI.EndpointURL,
 			Data: Dataset,
@@ -71,7 +72,7 @@ class UserAPI {
 	@date 2021-04-12
 	//*/
 
-		Atlantis.Request({
+		Util.Request({
 			Method: 'OVERSHADOW',
 			URL: UserAPI.EndpointURL,
 			Data: { ID: ID },
@@ -86,7 +87,7 @@ class UserAPI {
 	@date 2021-04-12
 	//*/
 
-		Atlantis.Request({
+		Util.Request({
 			Method: 'BAN',
 			URL: UserAPI.EndpointURL,
 			Data: { ID: ID },
@@ -101,7 +102,7 @@ class UserAPI {
 	@date 2021-04-12
 	//*/
 
-		Atlantis.Request({
+		Util.Request({
 			Method: 'UNBAN',
 			URL: UserAPI.EndpointURL,
 			Data: { ID: ID },

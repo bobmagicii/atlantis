@@ -227,7 +227,7 @@ jQuery(document)
 		'OnCommit': function(){
 			let Input = jQuery.trim(jQuery('#InputTitle').val());
 
-			Atlantis.Request({
+			Util.Request({
 				'Method': 'PATCH',
 				'URL': '/api/v1/blog/entity',
 				'Data': { 'ID': BlogID, 'Fields': { 'Title': Input } },
@@ -261,7 +261,7 @@ jQuery(document)
 		'OnCommit': function(){
 			let Input = jQuery.trim(jQuery('#InputTagline').val());
 
-			Atlantis.Request({
+			Util.Request({
 				'Method': 'PATCH',
 				'URL': '/api/v1/blog/entity',
 				'Data': { 'ID': BlogID, 'Fields': { 'Tagline': Input } },
@@ -295,7 +295,7 @@ jQuery(document)
 		'OnCommit': function(){
 			let Input = jQuery.trim(jQuery('#InputDetails').val());
 
-			Atlantis.Request({
+			Util.Request({
 				'Method': 'PATCH',
 				'URL': '/api/v1/blog/entity',
 				'Data': { 'ID': BlogID, 'Fields': { 'Details': Input } },
@@ -329,7 +329,7 @@ jQuery(document)
 		'OnCommit': function(){
 			let Input = jQuery.trim(jQuery('#InputAlias').val());
 
-			Atlantis.Request({
+			Util.Request({
 				'Method': 'PATCH',
 				'URL': '/api/v1/blog/entity',
 				'Data': { 'ID': BlogID, 'Fields': { 'Alias': Input } },
@@ -381,7 +381,7 @@ jQuery(document)
 		'OnCommit': function(){
 			let Input = jQuery('#InputOptAdult').hasClass('active') ? 1 : 0;
 
-			Atlantis.Request({
+			Util.Request({
 				'Method': 'PATCH',
 				'URL': '/api/v1/blog/entity',
 				'Data': { 'ID': BlogID, 'Fields': { 'OptAdult': Input } },
@@ -463,7 +463,7 @@ jQuery(document)
 	.on('click',function(){
 
 		if(confirm('Reset the icon image to default?'))
-		Atlantis.Request({
+		Util.Request({
 			'Method': 'PATCH',
 			'URL': '/api/v1/blog/entity',
 			'Data': { 'ID': BlogID, 'Fields': { 'RemoveImageIcon': 1 } },
@@ -482,7 +482,7 @@ jQuery(document)
 	.on('click',function(){
 
 		if(confirm('Reset the header image to default?'))
-		Atlantis.Request({
+		Util.Request({
 			'Method': 'PATCH',
 			'URL': '/api/v1/blog/entity',
 			'Data': { 'ID': BlogID, 'Fields': { 'RemoveImageHeader': 1 } },

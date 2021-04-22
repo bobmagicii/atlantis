@@ -1,3 +1,5 @@
+import Util from '/share/atlantis/util.js';
+
 class DialogBlogTagRename {
 
 	constructor(TagID,Opt) {
@@ -36,7 +38,7 @@ class DialogBlogTagRename {
 	@date 2021-04-21
 	//*/
 
-		Atlantis.Request({
+		Util.Request({
 			'Method': 'GET',
 			'URL': '/api/v1/blog/tag',
 			'Data': { 'TagID': this.TagID },
@@ -90,7 +92,7 @@ class DialogBlogTagRename {
 
 		let TagTitle = this.InputText.val();
 
-		Atlantis.Request({
+		Util.Request({
 			'Method': 'PATCH',
 			'URL': '/api/v1/blog/tag',
 			'Data': { 'TagID': this.TagID, 'TagTitle': TagTitle },

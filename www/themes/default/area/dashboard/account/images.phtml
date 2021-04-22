@@ -76,6 +76,7 @@
 <script type="module">
 import ElementRow from '/share/atlantis/element/row.js';
 import ElementRowItem from '/share/atlantis/element/row-item.js';
+import Util from '/share/atlantis/util.js';
 
 class AtlantisImageManager {
 
@@ -139,7 +140,7 @@ class AtlantisImageManager {
 		let that = this;
 
 		return new Promise(function(Next,Halt){
-			Atlantis.Request({
+			Util.Request({
 				'Method': 'LIST',
 				'URL': '/api/v1/image/entity',
 				'Data': {
@@ -433,7 +434,7 @@ class AtlantisImageManager {
 
 		if(confirm(`Really delete ${this.Selected.length} items? This cannot be undone.`)) {
 			that.ResetPage();
-			Atlantis.Request({
+			Util.Request({
 				'Method': 'DELETE',
 				'URL': '/api/v1/image/entity',
 				'Data': { 'ID': this.Selected },

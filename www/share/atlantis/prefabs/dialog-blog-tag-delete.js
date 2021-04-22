@@ -1,3 +1,5 @@
+import Util from '/share/atlantis/util.js';
+
 class DialogBlogTagDelete {
 
 	constructor(TagID,Opt) {
@@ -35,7 +37,7 @@ class DialogBlogTagDelete {
 	@date 2021-04-21
 	//*/
 
-		Atlantis.Request({
+		Util.Request({
 			'Method': 'GET',
 			'URL': '/api/v1/blog/tag',
 			'Data': { 'TagID': this.TagID },
@@ -74,7 +76,7 @@ class DialogBlogTagDelete {
 	@date 2021-04-21
 	//*/
 
-		Atlantis.Request({
+		Util.Request({
 			'Method': 'DELETE',
 			'URL': '/api/v1/blog/tag',
 			'Data': { 'TagID': this.TagID  },

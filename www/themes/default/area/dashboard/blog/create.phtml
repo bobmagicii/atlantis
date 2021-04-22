@@ -44,7 +44,8 @@
 	</div>
 </div>
 
-<script type="text/javascript">
+<script type="module">
+import Util from '/share/atlantis/util.js';
 
 jQuery(document)
 .ready(function(){
@@ -81,7 +82,7 @@ jQuery(document)
 
 	let CheckAliasExists = function(){
 
-		Atlantis.Request({
+		Util.Request({
 			'Method': 'GET',
 			'URL': '<?php echo $Endpoint('Atlantis.API.Blog',['Command'=>'entity']) ?>',
 			'Data': { 'Alias': EmulateServerSideAlias(InputAlias.val()) },
@@ -149,7 +150,7 @@ jQuery(document)
 
 	let HandleBlogCreate = function(Title,Alias) {
 
-		Atlantis.Request({
+		Util.Request({
 			'Method': 'POST',
 			'URL': '<?php echo $Endpoint('Atlantis.API.Blog',['Command'=>'entity']) ?>',
 			'Data': { 'Title': Title, 'Alias': Alias },

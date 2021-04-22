@@ -97,6 +97,7 @@
 
 <script type="module">
 import PostEditor from '/share/atlantis/element/editor.js';
+import Util from '/share/atlantis/util.js';
 
 jQuery(document)
 .ready(function(){
@@ -182,7 +183,7 @@ jQuery(document)
 				],
 				'OnAccept': function(){
 
-					Atlantis.Request({
+					Util.Request({
 						'Method': 'POST',
 						'URL': '/api/v1/blog/tag',
 						'Data': { 'ID':InputBlogID.val(), 'TagTitle':InputText.val() },
@@ -274,7 +275,7 @@ jQuery(document)
 			let Tags = GetTagList();
 			let Content = await Editor.GetContent();
 
-			Atlantis.Request({
+			Util.Request({
 				'Method': 'POST',
 				'URL': '/api/v1/post/entity',
 				'Data': {

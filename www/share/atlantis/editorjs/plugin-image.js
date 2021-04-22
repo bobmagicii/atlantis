@@ -2,6 +2,7 @@ import ElementRow from '/share/atlantis/element/row.js';
 import ElementRowItem from '/share/atlantis/element/row-item.js';
 import UploadButton from '/share/atlantis/element/upload-button.js';
 import CheckboxButton from '/share/atlantis/element/checkbox-button.js';
+import Util from '/share/atlantis/util.js';
 
 class PluginImage {
 /*//
@@ -226,7 +227,7 @@ a piece of content using codemirror as the code syntax magic thing.
 
 		(this.Chooser).empty();
 
-		Atlantis.Request({
+		Util.Request({
 			'Method': 'LIST',
 			'URL': '/api/v1/image/entity',
 			'Data': { 'Limit':12, 'Page':PageNum },

@@ -135,7 +135,7 @@ jQuery(document)
 		(Tag.parent())
 		.remove();
 
-		Atlantis.Request({
+		Util.Request({
 			'Method': 'TAGDELETE',
 			'URL': '/api/v1/post/entity',
 			'Data': { 'ID':PostID, 'TagID':TagID },
@@ -173,7 +173,7 @@ jQuery(document)
 				],
 				'OnAccept': function(){
 
-					Atlantis.Request({
+					Util.Request({
 						'Method': 'TAGPOST',
 						'URL': '/api/v1/post/entity',
 						'Data': { 'ID':PostID, 'TagTitle':InputText.val() },
@@ -251,7 +251,7 @@ jQuery(document)
 			let OptDraft = InputOptDraft.is(':checked') ? 1 : 0;
 			let Content = await Editor.GetContent();
 
-			Atlantis.Request({
+			Util.Request({
 				'Method': 'PATCH',
 				'URL': '<?php echo $Endpoint('Atlantis.API.Post',['Command'=>'entity']) ?>',
 				'Data': {

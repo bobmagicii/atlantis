@@ -1,6 +1,7 @@
 import CheckboxButton from '/share/atlantis/element/checkbox-button.js';
 import DialogConfirm from '/share/atlantis/element/dialog-confirm.js';
 import PostAPI from '/share/atlantis/api/post.js';
+import Util from '/share/atlantis/util.js';
 
 jQuery(document)
 .ready(function(){
@@ -24,6 +25,25 @@ jQuery(document)
 
 	jQuery('.AtlantisCheckboxButton')
 	.each(function(){ new CheckboxButton(this); return; });
+
+	jQuery('.CopyElementToClipboard')
+	.on('click',Util.CopyElementToClipboard);
+
+	jQuery('.CopyValueToClipboard')
+	.on('click',Util.CopyValueToClipboard);
+
+	jQuery('.HasTooltip, .AtlantisTooltip')
+	.each(function(){
+
+		let Opts = {
+			'container': 'body'
+		};
+
+		jQuery(this)
+		.tooltip(Opts);
+
+		return;
+	});
 
 	// notes about codemirror:
 	// lib/codemirror.[js|css] was copied into share/dist/src/libs
@@ -81,5 +101,20 @@ jQuery(document)
 
 	return;
 });
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+var Atlantis = { };
+
+Atlantis.CopyToClipboard = Util.CopyToClipboard;
+Atlantis.CopyElementToClipboard = Util.CopyElementToClipboard;
+Atlantis.CopyValueToClipboard = Util.CopyValueToClipboard;
+Atlantis.FilterArrayUnique = Util.FilterArrayUnique;
+Atlantis.FilterArrayStrip = Util.FilterArrayStrip;
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 export default null;

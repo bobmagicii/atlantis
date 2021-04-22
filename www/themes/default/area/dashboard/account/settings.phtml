@@ -197,7 +197,7 @@ jQuery(document)
 		'OnCommit': function(){
 			let Input = jQuery.trim(jQuery('#InputOptAllowSeen').val());
 
-			Atlantis.Request({
+			Util.Request({
 					'Method': 'PATCH',
 					'URL': '/api/v1/user/entity',
 					'Data': { 'Fields': { 'OptAllowSeen': Input } },
@@ -232,7 +232,7 @@ jQuery(document)
 		'OnCommit': function(){
 			let Input = jQuery.trim(jQuery('#InputOptAdult').val());
 
-			Atlantis.Request({
+			Util.Request({
 					'Method': 'PATCH',
 					'URL': '/api/v1/user/entity',
 					'Data': { 'Fields': { 'OptAdult': Input } },
@@ -267,7 +267,7 @@ jQuery(document)
 		'OnCommit': function(){
 			let Input = jQuery.trim(jQuery('#InputEmail').val());
 
-			Atlantis.Request({
+			Util.Request({
 				'Method': 'PATCH',
 				'URL': '/api/v1/user/entity',
 				'Data': { 'Fields': { 'Email': Input } },
@@ -300,7 +300,7 @@ jQuery(document)
 		'OnCommit': function(){
 			let Input = jQuery.trim(jQuery('#InputDetails').val());
 
-			Atlantis.Request({
+			Util.Request({
 				'Method': 'PATCH',
 				'URL': '/api/v1/user/entity',
 				'Data': { 'Fields': { 'Details': Input } },
@@ -333,7 +333,7 @@ jQuery(document)
 		'OnCommit': function(){
 			let Input = jQuery.trim(jQuery('#InputLocation').val());
 
-			Atlantis.Request({
+			Util.Request({
 				'Method': 'PATCH',
 				'URL': '/api/v1/user/entity',
 				'Data': { 'Fields': { 'Location': Input } },
@@ -415,7 +415,7 @@ jQuery(document)
 	.on('click',function(){
 
 		if(confirm('Reset the icon image to default?'))
-		Atlantis.Request({
+		Util.Request({
 			'Method': 'PATCH',
 			'URL': '/api/v1/user/entity',
 			'Data': { 'ID': UserID, 'Fields': { 'RemoveImageIcon': 1 } },
@@ -434,7 +434,7 @@ jQuery(document)
 	.on('click',function(){
 
 		if(confirm('Reset the header image to default?'))
-		Atlantis.Request({
+		Util.Request({
 			'Method': 'PATCH',
 			'URL': '/api/v1/user/entity',
 			'Data': { 'ID': UserID, 'Fields': { 'RemoveImageHeader': 1 } },

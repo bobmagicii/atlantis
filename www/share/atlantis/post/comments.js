@@ -1,3 +1,5 @@
+import Util from '/share/atlantis/util.js';
+
 let trim = jQuery.trim;
 
 class Comments {
@@ -225,7 +227,7 @@ class Comments {
 
 		return (
 			new Promise(function(Next,Fail){
-				Atlantis.Request({
+				Util.Request({
 					'Method': 'LIST',
 					'URL': '/api/v1/post/comment',
 					'Data': { 'ID': that.PostID },
@@ -317,7 +319,7 @@ class Comments {
 
 		this.LockForm();
 
-		Atlantis.Request({
+		Util.Request({
 			'Method': 'POST',
 			'URL': '/api/v1/post/comment',
 			'Data': {
@@ -375,7 +377,7 @@ class Comments {
 	//*/
 
 		let ID = parseInt(Btn.attr('data-comment-id'));
-		let Todo = ()=> Atlantis.Request({
+		let Todo = ()=> Util.Request({
 			'Method': 'DELETE',
 			'URL': '/api/v1/post/comment',
 			'Data': { CommentID: ID },

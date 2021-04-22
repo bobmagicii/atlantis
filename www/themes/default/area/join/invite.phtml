@@ -39,13 +39,15 @@ $Printer->SetDefaultFunction('Atlantis\\Util\\Filters::SafeForHTML');
 	</div>
 </div>
 
-<script type="text/javascript">
+<script type="module">
+import Util from '/share/atlantis/util.js';
+
 jQuery(document)
 .ready(function(){
 
 	let OnSubmit = function(Dataset){
 
-		Atlantis.Request({
+		Util.Request({
 			'Method': 'POST',
 			'URL': '/api/v1/invite/entity',
 			'Data': Dataset,
