@@ -28,7 +28,7 @@ echo (new Atlantis\Element\PagePromo)
 			->SetShowPostImage(FALSE)
 			->SetItemStore($Posts->Payload);
 
-			echo (Atlantis\Element\Pager::FromResult($Posts,$Router));
+			echo Atlantis\Element\Pager::FromResult($Posts,$Router);
 
 			?>
 
@@ -42,8 +42,10 @@ echo (new Atlantis\Element\PagePromo)
 						<hr class="mt-1 mb-2" />
 						<div class="row tight">
 						<?php foreach($RecentUsers->Payload as $Who): ?>
-							<div class="col-2">
-								<a href="<?php echo $Who->GetURL() ?>"><img class="rounded btn-dark" src="<?php echo $Who->GetImageIconURL() ?>" /></a>
+							<div class="col-3">
+								<div class="wallpapered ratio-square rounded" style="background-image:url(<?php $Printer($Who->GetImageIconURL()) ?>);">
+									<a class="position-absolutely" href="<?php $Printer($Who->GetURL()) ?>"></a>
+								</div>
 							</div>
 						<?php endforeach ?>
 						</div>

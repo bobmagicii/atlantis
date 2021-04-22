@@ -38,13 +38,6 @@
 .text-tertiary { color: var(--ColourTertiary); }
 .text-quaternary { color: var(--ColourQuaternary); }
 
-.ratio-square::after {
-	content: '';
-	display: block;
-	position: relative;
-	padding-top: 100%;
-}
-
 .font-size-normal { font-size: 1.0em; }
 .font-size-small { font-size: 0.9em; }
 .font-size-smaller { font-size: 0.8em; }
@@ -63,14 +56,34 @@
 .font-size-zero { font-size: 0em; }
 .font-size-anim { transition: font-size 0.3s; }
 
-.letter-space-normal { letter-spacing: 0.0em; }
-.letter-space-barely { letter-spacing: 0.05em; }
-.letter-space-large { letter-spacing: 0.10em; }
-.letter-space-larger { letter-spacing: 0.25em; }
+.letter-spacing-normal { letter-spacing: 0.0em; }
+.letter-spacing-barely { letter-spacing: 0.03em; }
+.letter-spacing-more { letter-spacing: 0.06em; }
+.letter-spacing-large { letter-spacing: 0.09em; }
+.letter-spacing-larger { letter-spacing: 0.12em; }
 
-.position-absolute { position: absolute; top: 0px; left: 0px; }
-.position-relative { position: relative; }
-.position-top-left { top: 0px; left: 0px; }
+.position-absolute {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+.position-absolutely {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+}
+
+.position-relative {
+	position: relative;
+}
+
+.position-top-left {
+	top: 0px;
+	left: 0px;
+}
 
 .opacity-0 { opacity: 0.0; }
 .opacity-25 { opacity: 0.25; }
@@ -79,7 +92,36 @@
 .opacity-100 { opacity: 1.0; }
 .opacity-anim { transition: opacity 250ms; }
 
-.wallpapered { background-size:cover; background-position: center center; background-repeat: no-repeat; }
+.wallpapered {
+	position: relative;
+
+	background-color: var(--ColourPrimary);
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+.ratio-square::after {
+	content: '';
+	display: block;
+	position: relative;
+	padding-top: 100%;
+	z-index: -10;
+}
+
+.ratio-photo::after {
+	content: '';
+	display: block;
+	position: relative;
+	padding-top: 75%;
+}
+
+.ratio-wide::after {
+	content: '';
+	display: block;
+	position: relative;
+	padding-top: 56.25%;
+}
 
 .p-5 { padding: 2rem !important; }
 .p-6 { padding: 3rem !important; }
