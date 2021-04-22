@@ -214,6 +214,7 @@
 <script type="module">
 import UploadButton from '/share/atlantis/element/upload-button.js';
 import StatusHandler from '/share/atlantis/element/status-handler.js';
+import Util from '/share/atlantis/util.js';
 
 jQuery(document)
 .ready(function(){
@@ -233,7 +234,7 @@ jQuery(document)
 				'OnSuccess': (Result)=> {
 					jQuery('.BlogHeaderDemo h2').text(Result.Payload.Title);
 					this.SetStatus('good');
-					Atlantis.Toaster({
+					Util.Toast({
 						'Title': 'Blog Settings',
 						'Content': 'Your blog title has been successfully updated.',
 						'ContentClass': 'alert-success'
@@ -242,7 +243,7 @@ jQuery(document)
 				},
 				'OnError': (Result)=> {
 					this.SetStatus('bad');
-					Atlantis.Toaster({
+					Util.Toast({
 						'Title': 'Blog Settings',
 						'Content': 'Error: ' + Result.Message,
 						'ContentClass': 'alert-danger'
@@ -267,7 +268,7 @@ jQuery(document)
 				'OnSuccess': (Result)=> {
 					jQuery('.BlogHeaderDemo p').text(Result.Payload.Tagline);
 					this.SetStatus('good');
-					Atlantis.Toaster({
+					Util.Toast({
 						'Title': 'Blog Settings',
 						'Content': 'Your blog tagline has been successfully updated.',
 						'ContentClass': 'alert-success'
@@ -276,7 +277,7 @@ jQuery(document)
 				},
 				'OnError': (Result)=> {
 					this.SetStatus('bad');
-					Atlantis.Toaster({
+					Util.Toast({
 						'Title': 'Blog Settings',
 						'Content': 'Error: ' + Result.Message,
 						'ContentClass': 'alert-danger'
@@ -301,7 +302,7 @@ jQuery(document)
 				'OnSuccess': (Result)=> {
 					jQuery('.BlogHeaderDemo p').text(Result.Payload.Tagline);
 					this.SetStatus('good');
-					Atlantis.Toaster({
+					Util.Toast({
 						'Title': 'Blog Settings',
 						'Content': 'Your blog details has been successfully updated.',
 						'ContentClass': 'alert-success'
@@ -310,7 +311,7 @@ jQuery(document)
 				},
 				'OnError': (Result)=> {
 					this.SetStatus('bad');
-					Atlantis.Toaster({
+					Util.Toast({
 						'Title': 'Blog Settings',
 						'Content': 'Error: ' + Result.Message,
 						'ContentClass': 'alert-danger'
@@ -337,7 +338,7 @@ jQuery(document)
 					jQuery('.BlogHeaderDemo a').attr('href',('/+' + Result.Payload.Alias));
 
 					this.SetStatus('good');
-					Atlantis.Toaster({
+					Util.Toast({
 						'Title': 'Blog Settings',
 						'Content': 'Your blog URL has been successfully updated.',
 						'ContentClass': 'alert-success'
@@ -346,7 +347,7 @@ jQuery(document)
 				},
 				'OnError': (Result)=> {
 					this.SetStatus('bad');
-					Atlantis.Toaster({
+					Util.Toast({
 						'Title': 'Blog Settings',
 						'Content': 'Error: ' + Result.Message,
 						'ContentClass': 'alert-danger'

@@ -184,6 +184,7 @@
 <script type="module">
 import UploadButton from '/share/atlantis/element/upload-button.js';
 import StatusHandler from '/share/atlantis/element/status-handler.js';
+import Util from '/share/atlantis/util.js';
 
 jQuery(document)
 .ready(function(){
@@ -272,7 +273,7 @@ jQuery(document)
 				'Data': { 'Fields': { 'Email': Input } },
 				'OnSuccess': (Result)=> {
 					this.SetStatus('good');
-					Atlantis.Toaster({
+					Util.Toast({
 						'Title': 'Account Settings',
 						'Content': 'Your e-mail address has been updated.',
 						'ContentClass': 'alert-success'
@@ -281,7 +282,7 @@ jQuery(document)
 				},
 				'OnError': (Result)=> {
 					this.SetStatus('bad');
-					Atlantis.Toaster({
+					Util.Toast({
 						'Title': 'Account Settings',
 						'Content': 'Error: ' + Result.Message,
 						'ContentClass': 'alert-danger'
@@ -305,7 +306,7 @@ jQuery(document)
 				'Data': { 'Fields': { 'Details': Input } },
 				'OnSuccess': (Result)=> {
 					this.SetStatus('good');
-					Atlantis.Toaster({
+					Util.Toast({
 						'Title': 'Account Settings',
 						'Content': 'Your profile bio has been updated.',
 						'ContentClass': 'alert-success'
@@ -314,7 +315,7 @@ jQuery(document)
 				},
 				'OnError': (Result)=> {
 					this.SetStatus('bad');
-					Atlantis.Toaster({
+					Util.Toast({
 						'Title': 'Account Settings',
 						'Content': 'Error: ' + Result.Message,
 						'ContentClass': 'alert-danger'
@@ -338,7 +339,7 @@ jQuery(document)
 				'Data': { 'Fields': { 'Location': Input } },
 				'OnSuccess': (Result)=> {
 					this.SetStatus('good');
-					Atlantis.Toaster({
+					Util.Toast({
 						'Title': 'Account Settings',
 						'Content': 'Your location has been updated.',
 						'ContentClass': 'alert-success'
@@ -347,7 +348,7 @@ jQuery(document)
 				},
 				'OnError': (Result)=> {
 					this.SetStatus('bad');
-					Atlantis.Toaster({
+					Util.Toast({
 						'Title': 'Account Settings',
 						'Content': 'Error: ' + Result.Message,
 						'ContentClass': 'alert-danger'

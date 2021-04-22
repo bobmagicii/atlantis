@@ -1,3 +1,5 @@
+import Util from '/share/atlantis/util.js';
+
 class StatusHandler {
 
 	constructor(Opt) {
@@ -123,7 +125,7 @@ class StatusHandler {
 	@date 2021-04-21
 	//*/
 
-		Atlantis.Toaster(ToastOpt);
+		Util.Toast(ToastOpt);
 		return this;
 	};
 
