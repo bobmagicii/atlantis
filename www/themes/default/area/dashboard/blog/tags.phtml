@@ -54,10 +54,12 @@
 
 </div>
 
-<script type="text/javascript">
+<script type="module">
+import DialogDelete from '/share/atlantis/prefabs/dialog-blog-tag-delete.js';
+import DialogRename from '/share/atlantis/prefabs/dialog-blog-tag-rename.js';
+
 jQuery(document)
 .ready(function(){
-	"use strict";
 
 	let BlogConfig = jQuery('#BlogConfig');
 	let BlogID = BlogConfig.attr('data-blog-id');
@@ -66,13 +68,13 @@ jQuery(document)
 	.on('click',function(){
 		let TagID = jQuery(this).attr('data-tag-id');
 
-		new Atlantis.BlogTag.DialogRename(TagID,{
-			'OnSuccess': function(that,Result){
+		new DialogRename(TagID,{
+			'OnSuccess': function(Result){
 
 				jQuery('.TagTitle' + TagID)
 				.text(Result.Payload.Title);
 
-				that.Close();
+				this.Close();
 				return;
 			}
 		});
@@ -84,13 +86,13 @@ jQuery(document)
 	.on('click',function(){
 		let TagID = jQuery(this).attr('data-tag-id');
 
-		new Atlantis.BlogTag.DialogDelete(TagID,{
-			'OnSuccess': function(that,Result){
+		new DialogDelete(TagID,{
+			'OnSuccess': function(Result){
 
 				jQuery('.TagBox' + TagID)
 				.remove();
 
-				that.Close();
+				this.Close();
 				return;
 			}
 		});
