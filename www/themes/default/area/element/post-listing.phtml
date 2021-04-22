@@ -113,15 +113,15 @@ $PrintPostDetails = function(Atlantis\Prototype\BlogPost $Post) use($Element) {
 							<?php endif; ?>
 							<a class="flex-grow-0" href="<?php echo $Post->GetURL() ?>"><?php echo Atlantis\Util\Filters::SafeForHTML($Post->Title) ?></a>
 						</h3>
+						<?php if(is_iterable($Post->Tags) && count($Post->Tags)): ?>
 						<div class="row tight align-items-center line-height-0">
-							<?php if(is_iterable($Post->Tags) && count($Post->Tags)): ?>
 							<div class="col-auto">
 								<?php foreach($Post->Tags as $Tag): ?>
 								<a href="<?php $Printer($Post->Blog->GetTagURL($Tag)) ?>" class="btn btn-sm btn-outline-dark pt-0 pb-0 m-0"><?php $Printer($Tag->Title) ?></a>
 								<?php endforeach; ?>
 							</div>
-							<?php endif ?>
 						</div>
+						<?php endif; ?>
 					</div>
 
 					<?php if($Element->ShowPostPreview()): ?>
@@ -142,7 +142,8 @@ $PrintPostDetails = function(Atlantis\Prototype\BlogPost $Post) use($Element) {
 					<?php endif; ?>
 					<?php endif; ?>
 
-					<div class="col-12 mt-3">
+					<?php if($Desc): ?>
+					<div class="col-12 mt-2">
 						<div class="font-family-reading"><?php echo $Desc = $Post->GetShortDesc() ?></div>
 
 						<?php if($Desc): ?>
@@ -150,9 +151,10 @@ $PrintPostDetails = function(Atlantis\Prototype\BlogPost $Post) use($Element) {
 						<?php endif; ?>
 					</div>
 					<?php endif; ?>
+					<?php endif; ?>
 
 					<?php if($Element->ShowSourceBlog()): ?>
-					<div class="col-12 mt-3">
+					<div class="col-12 mt-2">
 						<div class="opacity-75 font-size-smaller">
 							From <a class="Source font-weight-bold" href="<?php echo $Post->Blog->URL ?>"><?php echo $Post->Blog->Title ?></a>
 							By <a class="Authour font-weight-bold" href="<?php echo $Post->User->URL ?>"><?php echo $Post->User->Alias ?></a>
