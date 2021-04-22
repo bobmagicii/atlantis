@@ -19,12 +19,12 @@ $Project->Build();
 ob_get_clean();
 
 if($Project->Updated) {
-	$Min = new MatthiasMullie\Minify\CSS($Project->OutputFile);
-	$Min->Minify($Project->OutputMinFile);
+	//$Min = new MatthiasMullie\Minify\CSS($Project->OutputFile);
+	//$Min->Minify($Project->OutputMinFile);
 }
 
 $Cache = new Atlantis\Util\FileCacheHandler([
-	'File'        => $Project->OutputMinFile,
+	'File'        => $Project->OutputFile,
 	'ContentType' => $Project->ContentType
 ]);
 

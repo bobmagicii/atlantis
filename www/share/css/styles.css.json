@@ -1,16 +1,10 @@
 {
-    "AddFileHeader": false,
+    "AddFileHeader": true,
     "AddScriptHeader": true,
     "ContentType": "text\/css",
-    "Directories": [
-        "css/libs",
-        "css/local",
-        "codemirror-themes"
-    ],
+    "Directories": [ "libs","codemirror-themes","nui","atlantis" ],
     "DistDir": ".",
-    "Extensions": [
-        "css"
-    ],
+    "Extensions": [ "css" ],
     "Files": [],
     "Minify": false,
     "OutputFile": "styles.css",

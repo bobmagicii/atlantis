@@ -2,14 +2,9 @@
     "AddFileHeader": true,
     "AddScriptHeader": true,
     "ContentType": "text\/javascript",
-    "Directories": [
-        "js/libs",
-        "js/local"
-    ],
+    "Directories": [ "" ],
     "DistDir": ".",
-    "Extensions": [
-        "js"
-    ],
+    "Extensions": [ "js" ],
     "Files": [],
     "Minify": false,
     "OutputFile": "scripts.js",

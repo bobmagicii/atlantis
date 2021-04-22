@@ -20,16 +20,11 @@ $GetStylesheetURL = function(String $URI):String {
 	<meta name="theme-color" content="#333" />
 
 	<!-- local packages -->
-	<link rel="icon" href="/themes/default/gfx/icon-fav.png" type="image/png">
-	<link rel="shortcut icon" href="/themes/default/gfx/icon-fav.png" type="image/png">
-	<!-- <script type="text/javascript" src="/share/dist/require.js"></script> -->
-	<script type="text/javascript" src="<?php echo $GetStylesheetURL('/share/dist/scripts.js'); ?>"></script>
-	<link type="text/css" rel="stylesheet" href="<?php echo $GetStylesheetURL('/share/dist/styles.css'); ?>" />
+	<script type="text/javascript" src="<?php echo $GetStylesheetURL('/share/js/scripts.js'); ?>"></script>
+	<link type="text/css" rel="stylesheet" href="<?php echo $GetStylesheetURL('/share/css/styles.css'); ?>" />
 	<script type="text/javascript" src="<?php echo $GetStylesheetURL('/themes/default/js/scripts.js'); ?>"></script>
 	<link type="text/css" rel="stylesheet" href="<?php echo $GetStylesheetURL('/themes/default/css/styles.css'); ?>" />
-
 	<script type="module" src="/share/atlantis/init.js"></script>
-	<link type="text/css" rel="stylesheet" href="<?php echo $GetStylesheetURL('/share/nui/css/nui.css'); ?>" />
 
 	<!-- remote libraries -->
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,700;1,200;1,300;1,400;1,500;1,700&family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Share+Tech+Mono&family=Quicksand:wght@300;400;700&subset=latin-ext&display=swap" rel="stylesheet" />
@@ -37,6 +32,8 @@ $GetStylesheetURL = function(String $URI):String {
 	<script type="text/javascript" src="https://www.google.com/recaptcha/api.js"></script>
 
 	<title><?php $Surface->Show('page-title') ?></title>
+	<link rel="icon" href="/themes/default/gfx/icon-fav.png" type="image/png" />
+	<link rel="shortcut icon" href="/themes/default/gfx/icon-fav.png" type="image/png" />
 	<meta name="description" content="<?php $Surface->Show('Page.Desc') ?>" />
 	<meta name="keywords" content="<?php $Surface->Show('Page.Keywords') ?>" />
 	<meta name="author" content="<?php $Surface->Show('Page.Authour') ?>" />
