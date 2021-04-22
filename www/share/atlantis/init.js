@@ -51,7 +51,7 @@ jQuery(document)
 	// mode/meta.js was copied into share/dist/src/libs
 	// mode subfolders were copied to share/dist/src/codemirror-modes
 
-	CodeMirror.modeURL = "/share/dist/src/codemirror-modes/%N/%N.js";
+	CodeMirror.modeURL = "/share/js/codemirror-modes/%N/%N.js";
 
 	jQuery('.CodeViewer')
 	.each(function(){
