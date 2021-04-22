@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-22 04:41:53
+@date 2021-04-22 04:51:22
 @files [
     "src\/atlantis\/atlantis-bootstrap-ext.css",
     "src\/atlantis\/atlantis-codemirror-synthwave84.css",
@@ -326,20 +326,20 @@ select:focus {
 .btn-custom-primary {
 	background-color: var(--ColourBackgroundPrimary) !important;
 	border-color: var(--ColourBackgroundPrimary);
-	color: var(--ColourTextPrimary);
+	color: var(--ColourTextPrimary) !important;
 }
 
 .btn-custom-primary:hover
 .btn-custom-primary.active {
 	background-color: var(--ColourBackgroundPrimary) !important;
 	border-color: var(--ColourBackgroundPrimary);
-	color: var(--ColourTextPrimary);
+	color: var(--ColourTextPrimary) !important;
 }
 
 .btn-custom-secondary {
 	background: var(--ColourBackgroundSecondary) !important;
 	border-color: var(--ColourBackgroundSecondary);
-	color: var(--ColourTextSecondary);
+	color: var(--ColourTextSecondary) !important;
 }
 
 .btn-custom-secondary:hover,
