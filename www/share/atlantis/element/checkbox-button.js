@@ -1,9 +1,4 @@
-'use strict';
-
-if(typeof Atlantis.Element === 'undefined')
-Atlantis.Element = {};
-
-Atlantis.Element.CheckboxButton = class {
+class CheckboxButton {
 
 	constructor(Argv) {
 	/*//
@@ -23,7 +18,7 @@ Atlantis.Element.CheckboxButton = class {
 
 		this.OnConstruct(Argv);
 		return;
-	}
+	};
 
 	OnConstruct(Argv) {
 	/*//
@@ -74,7 +69,7 @@ Atlantis.Element.CheckboxButton = class {
 		this.Render();
 
 		return;
-	}
+	};
 
 	Render() {
 	/*//
@@ -117,7 +112,7 @@ Atlantis.Element.CheckboxButton = class {
 		this.Btn.button();
 		this.Update(false);
 		return;
-	}
+	};
 
 	Update(Notify) {
 	/*//
@@ -137,7 +132,7 @@ Atlantis.Element.CheckboxButton = class {
 		this.OnChanged();
 
 		return;
-	}
+	};
 
 	OnChanged() {
 	/*//
@@ -147,6 +142,8 @@ Atlantis.Element.CheckboxButton = class {
 	//*/
 
 		return;
-	}
+	};
 
 }
+
+export default CheckboxButton;

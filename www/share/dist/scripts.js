@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-21 22:15:08
+@date 2021-04-22 02:47:01
 @files [
     "src\/js\/libs\/000-jquery-3.1.1.min.js",
     "src\/js\/libs\/100-bootstrap.bundle.min.js",
@@ -16,11 +16,9 @@
     "src\/js\/libs\/600-editorjs-quote.js",
     "src\/js\/libs\/600-jquery.ripples-min.js",
     "src\/js\/local\/atlantis-000-main.js",
-    "src\/js\/local\/atlantis-100-element.js",
     "src\/js\/local\/atlantis-200-request.js",
     "src\/js\/local\/atlantis-200-toaster.js",
     "src\/js\/local\/atlantis-300-blogtag.js",
-    "src\/js\/local\/atlantis-300-element-checkboxbutton.js",
     "src\/js\/local\/atlantis-300-element-row.js",
     "src\/js\/local\/atlantis-300-element-rowitem.js",
     "src\/js\/local\/atlantis-500-postimage-gallery.js"
@@ -11825,14 +11823,6 @@ Atlantis.FilterArrayStrip = function(Input,ToRemove) {
 jQuery(document)
 .ready(function(){
 
-	// notes about codemirror:
-	// lib/codemirror.[js|css] was copied into share/dist/src/libs
-	// addon/mode/loadmode.js was copied into share/dist/src/libs
-	// mode/meta.js was copied into share/dist/src/libs
-	// mode subfolders were copied to share/dist/src/codemirror-modes
-
-	CodeMirror.modeURL = "/share/dist/src/codemirror-modes/%N/%N.js";
-
 	jQuery('.CopyElementToClipboard')
 	.on('click',Atlantis.CopyElementToClipboard);
 
@@ -11851,9 +11841,6 @@ jQuery(document)
 		return;
 	});
 
-	jQuery('.AtlantisCheckboxButton')
-	.each(function(){ new Atlantis.Element.CheckboxButton(this); return; });
-
 	jQuery('.PostContent')
 	.each(function(){
 		new Atlantis.Element.ImageGallery({
@@ -11863,108 +11850,10 @@ jQuery(document)
 		return;
 	});
 
-	jQuery('.CodeViewer')
-	.each(function(){
 
-		let Element = jQuery(this);
-		let Mime = Element.attr('data-mime') ?? 'text/plain';
-		let Title = Element.attr('data-title') ?? '';
-		let Theme = Element.attr('data-theme') ?? 'default';
-		let LangData = CodeMirror.findModeByMIME(Mime);
-		let Editor = null;
-		let Container = null;
-
-		Container = jQuery.zc(
-			'div.CodeViewer.WithLabel>'+
-			'div.Label>'+
-			'(div.row.tight>('+
-				'(div.col-auto>i.fas.fa-fw.fa-code.mr-2)+'+
-				'(div.col{!Title!})+'+
-				'(div.col-auto{!Lang!})'+
-			'))',
-			{ 'Title': Title, 'Lang': LangData.name }
-		);
-
-		Element.after(Container);
-		Element.hide();
-
-		Editor = CodeMirror(Container.get(0),{
-			'value': jQuery.trim(Element.text()),
-			'lineNumbers': true,
-			'indentWithTabs': true,
-			'readOnly': true,
-			'indentUnit': 4,
-			'tabSize': 4
-		});
-
-		if(LangData && LangData.mode)
-		CodeMirror.autoLoadMode(Editor,LangData.mode);
-
-		if(LangData && LangData.mime)
-		Editor.setOption('mode',LangData.mime);
-
-		if(Theme)
-		Editor.setOption('theme',Theme);
-
-		return;
-	});
 
 	return;
 });
-
-///////////////////////////////////////////////////////////////////////////
-// src/js/local/atlantis-100-element.js ///////////////////////////////////
-
-'use strict';
-
-if(typeof Atlantis.Element === 'undefined')
-Atlantis.Element = { };
-
-Atlantis.Element.Base = class {
-
-	constructor(ClassList) {
-	/*//
-	@date 2020-10-21
-	//*/
-
-		this.ClassList = null;
-
-		if(ClassList instanceof Array)
-		this.ClassList = ClassList;
-
-		this.OnConstruct();
-		return;
-	}
-
-	OnConstruct() {
-	/*//
-	@date 2020-10-21
-	@return self
-	//*/
-
-		return this;
-	}
-
-	Compile() {
-	/*//
-	@date 2020-10-21
-	@return jQuery
-	this method should be overloaded to construct your structure.
-	//*/
-
-		return null;
-	}
-
-	Get() {
-	/*//
-	@date 2020-10-21
-	@return jQuery
-	//*/
-
-		return this.Compile();
-	}
-
-};
 
 ///////////////////////////////////////////////////////////////////////////
 // src/js/local/atlantis-200-request.js ///////////////////////////////////
@@ -12308,162 +12197,6 @@ Atlantis.BlogTag
 	Prepare();
 	return this;
 };
-
-///////////////////////////////////////////////////////////////////////////
-// src/js/local/atlantis-300-element-checkboxbutton.js ////////////////////
-
-'use strict';
-
-if(typeof Atlantis.Element === 'undefined')
-Atlantis.Element = {};
-
-Atlantis.Element.CheckboxButton = class {
-
-	constructor(Argv) {
-	/*//
-	@date 2020-10-16
-	//*/
-
-		this.Element = null;
-		this.Active = null;
-		this.Input = null;
-		this.IconBase = null;
-		this.IconOff = null;
-		this.IconOn = null;
-		this.BtnClass = null;
-		this.BtnText = null;
-		this.Btn = null;
-		this.AutoRender = true;
-
-		this.OnConstruct(Argv);
-		return;
-	}
-
-	OnConstruct(Argv) {
-	/*//
-	@date 2020-10-16
-	//*/
-
-		let that = this;
-
-		if(typeof Argv === 'object')
-		if(!(Argv instanceof jQuery))
-		if(!(Argv instanceof HTMLElement))
-		NUI.Util.MergeProperties(Argv,this);
-
-		////////
-
-		if(typeof Argv === 'object') {
-			if(Argv instanceof jQuery)
-			this.Element = Argv;
-			else if(Argv instanceof HTMLElement)
-			this.Element = jQuery(Argv);
-		}
-
-		if(typeof Argv === 'string') {
-			this.Element = jQuery(Argv);
-		}
-
-		if(!(this.Element instanceof jQuery)) {
-			throw "AtlantisCheckboxButton: Element is not a valid object.";
-			return;
-		}
-
-		////////
-
-		this.Input = this.Element.find('input[type=checkbox]');
-		this.IconBase = this.Element.attr('data-btn-icon-base') ?? 'far fa-fw mr-2';
-		this.IconOff = this.Element.attr('data-btn-icon-off') ?? 'fa-square';
-		this.IconOn = this.Element.attr('data-btn-icon-on') ?? 'fa-check-square';
-		this.BtnClass = this.Element.attr('data-btn-class') ?? 'btn-dark';
-		this.BtnText = this.Element.text();
-
-		(this.Input)
-		.on('change',function(){
-			that.Update(true);
-			return;
-		});
-
-		if(this.AutoRender)
-		this.Render();
-
-		return;
-	}
-
-	Render() {
-	/*//
-	@date 2020-10-16
-	//*/
-
-		let that = this;
-		let Btn = null;
-
-		this.Btn = (
-			jQuery('<button />')
-			.addClass('btn btn-toggle')
-			.addClass(this.BtnClass)
-			.append(
-				jQuery('<span />')
-				.addClass('btn-toggle-off')
-				.addClass(this.IconBase)
-				.addClass(this.IconOff)
-			)
-			.append(
-				jQuery('<span />')
-				.addClass('btn-toggle-on')
-				.addClass(this.IconBase)
-				.addClass(this.IconOn)
-			)
-			.append(
-				jQuery('<span />')
-				.text(this.BtnText)
-			)
-			.on('click',function(){
-				that.Input.trigger('click');
-				return;
-			})
-		);
-
-		(this.Element)
-		.addClass('d-none')
-		.after(this.Btn);
-
-		this.Btn.button();
-		this.Update(false);
-		return;
-	}
-
-	Update(Notify) {
-	/*//
-	@date 2020-10-16
-	//*/
-
-		this.Active = this.Input.is(':checked');
-
-		if(this.Active)
-		this.Btn.addClass('active');
-		else
-		this.Btn.removeClass('active');
-
-		this.Btn.blur();
-
-		if(Notify)
-		this.OnChanged();
-
-		return;
-	}
-
-	OnChanged() {
-	/*//
-	@date 2020-10-16
-	this method is intended for you to override in the event
-	you want to do something when the choice is changed.
-	//*/
-
-		return;
-	}
-
-}
 
 ///////////////////////////////////////////////////////////////////////////
 // src/js/local/atlantis-300-element-row.js ///////////////////////////////

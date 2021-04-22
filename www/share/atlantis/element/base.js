@@ -1,9 +1,4 @@
-'use strict';
-
-if(typeof Atlantis.Element === 'undefined')
-Atlantis.Element = { };
-
-Atlantis.Element.Base = class {
+class ElementBase {
 
 	constructor(ClassList) {
 	/*//
@@ -17,7 +12,7 @@ Atlantis.Element.Base = class {
 
 		this.OnConstruct();
 		return;
-	}
+	};
 
 	OnConstruct() {
 	/*//
@@ -26,7 +21,7 @@ Atlantis.Element.Base = class {
 	//*/
 
 		return this;
-	}
+	};
 
 	Compile() {
 	/*//
@@ -36,7 +31,7 @@ Atlantis.Element.Base = class {
 	//*/
 
 		return null;
-	}
+	};
 
 	Get() {
 	/*//
@@ -45,6 +40,8 @@ Atlantis.Element.Base = class {
 	//*/
 
 		return this.Compile();
-	}
+	};
 
 };
+
+export default ElementBase;
