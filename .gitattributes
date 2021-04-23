@@ -1,1 +1,6 @@
-/www/share/js/* linguist-vendored
+# dont include the share directory in the github lang stats.
+www/share/* linguist-vendored
+
+# except the atlantis dir is ours.
+www/share/atlantis/* linguist-vendored=false
+www/share/css/src/atlantis/* linguist-vendored=false
