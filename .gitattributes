@@ -4,3 +4,5 @@ www/share/* linguist-vendored
 # except the atlantis dir is ours.
 www/share/atlantis/* linguist-vendored=false
 www/share/css/src/atlantis/* linguist-vendored=false
+
+#eof
