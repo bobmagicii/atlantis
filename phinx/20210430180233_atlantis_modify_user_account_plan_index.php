@@ -17,7 +17,7 @@ extends AbstractMigration {
 
 			ALTER TABLE `Users`
 			CHANGE COLUMN `AccountPlanID` `AccountPlanID` BIGINT(20) UNSIGNED NOT NULL DEFAULT '1' AFTER `ImageIconID`,
-			ADD CONSTRAINT `FkUserAccountPlanID` FOREIGN KEY (`AccountPlanID`) REFERENCES `PegasusDev`.`AccountPlans` (`ID`) ON UPDATE CASCADE ON DELETE RESTRICT;
+			ADD CONSTRAINT `FkUserAccountPlanID` FOREIGN KEY (`AccountPlanID`) REFERENCES `AccountPlans` (`ID`) ON UPDATE CASCADE ON DELETE RESTRICT;
 		");
 
 		return;
