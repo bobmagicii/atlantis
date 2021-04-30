@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-21 19:19:42
+@date 2021-04-30 18:53:16
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -19,24 +19,6 @@
     "src\/local\/900-bootstrap-jumbotron.css"
 ]
 //*/
-
-:root {
-
-	/* main site palette */
-	--ColourPrimary: #222222;
-	--ColourSecondary: #dddddd;
-	--ColourTertiary: #fafafa;
-	--ColourQuaternary: #eeeeee;
-
-	/* pairing for light background dark text */
-	--ColourBackgroundPrimary: var(--ColourTertiary);
-	--ColourTextPrimary: var(--ColourPrimary);
-
-	/* pairing for dark background light text */
-	--ColourBackgroundSecondary: var(--ColourPrimary);
-	--ColourTextSecondary: var(--ColourTertiary);
-
-}
 
 * {
 	box-sizing: border-box;

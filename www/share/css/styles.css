@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-22 18:16:18
+@date 2021-04-30 18:53:16
 @files [
     "src\/libs\/000-font-awesome.min.css",
     "src\/libs\/100-bootstrap.min.css",
@@ -75,11 +75,12 @@
     "src\/nui\/nui-element-overlay.css",
     "src\/nui\/nui-element-terminal.css",
     "src\/nui\/nui-element-window.css",
-    "src\/atlantis\/atlantis-bootstrap-ext.css",
-    "src\/atlantis\/atlantis-codemirror-synthwave84.css",
-    "src\/atlantis\/atlantis-codemirror.css",
-    "src\/atlantis\/atlantis-editorjs.css",
-    "src\/atlantis\/atlantis-nui.css"
+    "src\/atlantis\/000-vars.css",
+    "src\/atlantis\/100-bootstrap-ext.css",
+    "src\/atlantis\/400-editorjs.css",
+    "src\/atlantis\/400-nui.css",
+    "src\/atlantis\/500-codemirror.css",
+    "src\/atlantis\/550-codemirror-synthwave84.css"
 ]
 //*/
 
@@ -4352,11 +4353,27 @@ THE SOFTWARE.
 }
 
 /*/////////////////////////////////////////////////////////////////////////
-// src/atlantis/atlantis-bootstrap-ext.css //////////////////////////////*/
-
-/* a series of bootstrapesque classes designed to blend in */
+// src/atlantis/000-vars.css ////////////////////////////////////////////*/
 
 :root {
+
+	/* main site palette */
+	--ColourPrimary: #222222;
+	--ColourSecondary: #dddddd;
+	--ColourTertiary: #fafafa;
+	--ColourQuaternary: #eeeeee;
+
+	/* pairing for light background dark text */
+	--ColourBackgroundPrimary: var(--ColourTertiary);
+	--ColourTextPrimary: var(--ColourPrimary);
+
+	/* pairing for dark background light text */
+	--ColourBackgroundSecondary: var(--ColourPrimary);
+	--ColourTextSecondary: var(--ColourTertiary);
+
+	/* various typed elements that really should not change often. these
+	will be things like social media colours and that. */
+
 	--ColourAdultButton: #c25684;
 	--ColourAdultText: #ffe6ea;
 	--ColourAdultHoverButton: #cf6694;
@@ -4376,7 +4393,13 @@ THE SOFTWARE.
 	--ColourGithubText: #eee;
 	--ColourGithubHoverButton: rgb(49, 49, 49);
 	--ColourGithubHoverText: #eee;
+
 }
+
+/*/////////////////////////////////////////////////////////////////////////
+// src/atlantis/100-bootstrap-ext.css ///////////////////////////////////*/
+
+/* a series of bootstrapesque classes designed to blend in */
 
 *:focus[readonly] {
 	background: transparent;
@@ -4671,7 +4694,102 @@ select:focus {
 .border-color-rss { border-color: var(--ColourRssButton) !important; }
 
 /*/////////////////////////////////////////////////////////////////////////
-// src/atlantis/atlantis-codemirror-synthwave84.css /////////////////////*/
+// src/atlantis/400-editorjs.css ////////////////////////////////////////*/
+
+.ce-block__content,
+.ce-toolbar__content {
+	max-width: initial;
+}
+
+.ce-block {
+	background: #e0e0e0;
+	border: 1px solid #e0e0e0;
+	border-radius: 4px;
+	margin-bottom: 24px;
+	padding: 10px;
+}
+
+.ce-block--focused {
+	border-color: #444;
+}
+
+.ce-toolbar__plus,
+.ce-toolbar__settings-btn {
+	background: #0002;
+	border-radius: 5px;
+	height: 24px;
+	width: 24px;
+}
+
+.codex-editor__redactor {
+	padding-bottom: 24px !important;
+}
+
+.codex-editor--narrow .ce-block--focused {
+	margin-right: inherit;
+	padding-right: inherit;
+}
+
+.ce-header {
+	margin-bottom: 0px;
+	padding: 0px;
+}
+
+#EditorJS .Editor {
+	height: 0px;
+	overflow: hidden;
+}
+
+#EditorJS .Editor.Ready {
+	height: initial;
+	overflow: initial;
+}
+
+/*/////////////////////////////////////////////////////////////////////////
+// src/atlantis/400-nui.css /////////////////////////////////////////////*/
+
+.NUI-Dialog header button {
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+/*/////////////////////////////////////////////////////////////////////////
+// src/atlantis/500-codemirror.css //////////////////////////////////////*/
+
+.CodeViewer {
+	position: relative;
+	margin-bottom: 32px;
+}
+
+.CodeViewer .Label {
+	background: #444;
+	color: #eee;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	font-size: 0.9em;
+	font-weight: bold;
+	padding: 1px 6px;
+}
+
+.CodeViewer .CodeMirror {
+	border-radius: 5px;
+	height: initial;
+	margin-bottom: 24px;
+	font-family: 'Share Tech Mono', 'monospace' !important;
+}
+
+.CodeViewer.WithLabel .CodeMirror {
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+}
+
+.ce-block .CodeViewer,
+.ce-block .CodeMirror {
+	margin-bottom: 0px;
+}
+
+/*/////////////////////////////////////////////////////////////////////////
+// src/atlantis/550-codemirror-synthwave84.css //////////////////////////*/
 
 /*
 
@@ -4750,99 +4868,4 @@ select:focus {
 }
 .cm-s-synthwave84 span.cm-link { color: #a16a94; }
 .cm-s-synthwave84 span.cm-error { background: #db2d20; color: #807d7c; }
-
-/*/////////////////////////////////////////////////////////////////////////
-// src/atlantis/atlantis-codemirror.css /////////////////////////////////*/
-
-.CodeViewer {
-	position: relative;
-	margin-bottom: 32px;
-}
-
-.CodeViewer .Label {
-	background: #444;
-	color: #eee;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-	font-size: 0.9em;
-	font-weight: bold;
-	padding: 1px 6px;
-}
-
-.CodeViewer .CodeMirror {
-	border-radius: 5px;
-	height: initial;
-	margin-bottom: 24px;
-	font-family: 'Share Tech Mono', 'monospace' !important;
-}
-
-.CodeViewer.WithLabel .CodeMirror {
-	border-top-left-radius: 0px;
-	border-top-right-radius: 0px;
-}
-
-.ce-block .CodeViewer,
-.ce-block .CodeMirror {
-	margin-bottom: 0px;
-}
-
-/*/////////////////////////////////////////////////////////////////////////
-// src/atlantis/atlantis-editorjs.css ///////////////////////////////////*/
-
-.ce-block__content,
-.ce-toolbar__content {
-	max-width: initial;
-}
-
-.ce-block {
-	background: #e0e0e0;
-	border: 1px solid #e0e0e0;
-	border-radius: 4px;
-	margin-bottom: 24px;
-	padding: 10px;
-}
-
-.ce-block--focused {
-	border-color: #444;
-}
-
-.ce-toolbar__plus,
-.ce-toolbar__settings-btn {
-	background: #0002;
-	border-radius: 5px;
-	height: 24px;
-	width: 24px;
-}
-
-.codex-editor__redactor {
-	padding-bottom: 24px !important;
-}
-
-.codex-editor--narrow .ce-block--focused {
-	margin-right: inherit;
-	padding-right: inherit;
-}
-
-.ce-header {
-	margin-bottom: 0px;
-	padding: 0px;
-}
-
-#EditorJS .Editor {
-	height: 0px;
-	overflow: hidden;
-}
-
-#EditorJS .Editor.Ready {
-	height: initial;
-	overflow: initial;
-}
-
-/*/////////////////////////////////////////////////////////////////////////
-// src/atlantis/atlantis-nui.css ////////////////////////////////////////*/
-
-.NUI-Dialog header button {
-	padding-top: 0px;
-	padding-bottom: 0px;
-}
 
