@@ -3,12 +3,14 @@
 /**
  * @var Atlantis\Element\PostListing $Element
  * @var Atlantis\Datastore $Posts
- * @var Atlantis\Prototype\BlogPost $Post
  */
 
-$Posts = $Element->GetItemStore();
+use Atlantis\Prototype\BlogPost;
 
-$PrintPostDetails = function(Atlantis\Prototype\BlogPost $Post) use($Element) {
+$Posts = $Element->GetItemStore();
+$Desc = NULL;
+
+$PrintPostDetails = function(BlogPost $Post) use($Element) {
 
 	$Infos = [];
 	$Minutes = 0;
@@ -83,7 +85,7 @@ $PrintPostDetails = function(Atlantis\Prototype\BlogPost $Post) use($Element) {
 	</div>
 
 	<hr class="mt-2 mb-4" />
-	<?php foreach($Posts as $Post): /** @var Atlantis\Prototype\BlogPost $Post */ ?>
+	<?php foreach($Posts as $Post): /** @var BlogPost $Post */ ?>
 	<div class="Post <?php echo $Post->GetStyleClassAttr() ?>">
 
 		<div class="row align-items-top">
@@ -142,9 +144,9 @@ $PrintPostDetails = function(Atlantis\Prototype\BlogPost $Post) use($Element) {
 					<?php endif; ?>
 					<?php endif; ?>
 
-					<?php if($Desc): ?>
+					<?php if($Desc = $Post->GetShortDesc()): ?>
 					<div class="col-12 mt-2">
-						<div class="font-family-reading"><?php echo $Desc = $Post->GetShortDesc() ?></div>
+						<div class="font-family-reading"><?php echo $Desc ?></div>
 
 						<?php if($Desc): ?>
 						<a class="d-block mt-2 font-weight-bold" href="<?php $Printer($Post->URL) ?>">Continue Reading...</a>
