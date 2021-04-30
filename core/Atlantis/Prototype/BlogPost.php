@@ -286,23 +286,28 @@ extends Atlantis\Prototype {
 	}
 
 	public function
-	GetShortDesc(int $Len=60):
+	GetShortDesc(int $Len=600):
 	?string {
 	/*//
 	@date 2020-10-23
 	//*/
 
-
 		$Output = '';
 		$Block = NULL;
-		$Text = NULL;
 		$Struct = $this->StructureFromJSON();
 
 		foreach($Struct->Blocks as $Block)
-		if($Block instanceof Atlantis\Struct\EditorJS\Blocks\Paragraph)
-		return strip_tags($Block->Data->Text);
+		if($Block instanceof EditorJS\Blocks\Paragraph) {
+			$Output = strip_tags($Block->Data->Text);
+			break;
+		}
 
-		return NULL;
+		if($Output !== NULL && strlen($Output) > $Len) {
+			$Output = substr($Output,0,$Len);
+			$Output += ' [...]';
+		}
+
+		return $Output;
 	}
 
 	public function
