@@ -4,24 +4,29 @@ A multi user blogging platform. I'm just trying to make a thing to do a thing, a
 
 Point Of Origin: https://pegasusgate.net
 
-# Requirements
+# Local Requirements
 
 * PHP 8.0+
-* PHP-PDO
+* PHP Extension: PDO
+* PHP Extension: Imagick
+* PHP Extension: BC Math
+* PHP Extension: OpenSSL
 * MySQL 5.6+ or MariaDB 10.4+
 * Composer for PHP
+
+# Third-Party Requirements
+
 * A ReCaptcha API key (https://www.google.com/recaptcha/intro/)
 
 # Suggestions
 
-* PHP-OpenSSL
 * PHP-Memcached
 
 # Is It Ready To Use?
 
 No. I'm still greenfielding this.
 
-## Shout Outs
+## Shoutouts
 
 I am the most NIH coder you know but there are still things I depend on. Here are a few of my favourite projects.
 
