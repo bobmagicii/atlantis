@@ -20,26 +20,28 @@ implements JsonSerializable {
 
 	static protected
 	$PropertyMap = [
-		'ID'            => 'ID:int',
-		'TimeCreated'   => 'TimeCreated:int',
-		'TimeSeen'      => 'TimeSeen:int',
-		'TimeBanned'    => 'TimeBanned:int',
-		'Enabled'       => 'Enabled:int',
-		'Admin'         => 'Admin:int',
-		'UUID'          => 'UUID',
-		'Alias'         => 'Alias',
-		'Email'         => 'Email',
-		'PHash'         => 'PHash',
-		'PSand'         => 'PSand',
-		'ImageHeaderID' => 'ImageHeaderID:int',
-		'ImageIconID'   => 'ImageIconID:int',
-		'OptAdult'      => 'OptAdult:int',
-		'OptAllowSeen'  => 'OptAllowSeen:int',
-		'BytesImages'   => 'BytesImages:int',
-		'Location'      => 'Location',
-		'Details'       => 'Details',
-		'AuthGithubID'  => 'AuthGithubID',
-		'AuthTwitterID' => 'AuthTwitterID'
+		'ID'              => 'ID:int',
+		'TimeCreated'     => 'TimeCreated:int',
+		'TimeSeen'        => 'TimeSeen:int',
+		'TimeBanned'      => 'TimeBanned:int',
+		'Enabled'         => 'Enabled:int',
+		'Admin'           => 'Admin:int',
+		'UUID'            => 'UUID',
+		'Alias'           => 'Alias',
+		'Email'           => 'Email',
+		'PHash'           => 'PHash',
+		'PSand'           => 'PSand',
+		'ImageHeaderID'   => 'ImageHeaderID:int',
+		'ImageIconID'     => 'ImageIconID:int',
+		'AccountPlanID'   => 'AccountPlanID:int',
+		'AccountPlanTime' => 'AccountPlanTime:int',
+		'OptAdult'        => 'OptAdult:int',
+		'OptAllowSeen'    => 'OptAllowSeen:int',
+		'BytesImages'     => 'BytesImages:int',
+		'Location'        => 'Location',
+		'Details'         => 'Details',
+		'AuthGithubID'    => 'AuthGithubID',
+		'AuthTwitterID'   => 'AuthTwitterID'
 	];
 
 	// data properties
@@ -55,6 +57,8 @@ implements JsonSerializable {
 	public string $Email;
 	public ?string $PHash;
 	public ?string $PSand;
+	public ?int $ImageHeaderID;
+	public ?int $ImageIconID;
 	public int $OptAdult;
 	public int $OptAllowSeen;
 	public int $BytesImages;
@@ -71,6 +75,13 @@ implements JsonSerializable {
 	public Atlantis\Util\Date $DateBanned;
 	public Atlantis\Prototype\UploadImage $ImageIcon;
 	public Atlantis\Prototype\UploadImage $ImageHeader;
+
+	// account plan properties.
+
+	public int $AccountPlanID;
+	public int $AccountPlanTime;
+	public Atlantis\Prototype\AccountPlan $AccountPlan;
+	public Atlantis\Util\Date $AccountPlanDate;
 
 	////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////
@@ -126,6 +137,14 @@ implements JsonSerializable {
 			$this->ImageHeader = new Atlantis\Prototype\UploadImage(
 				Atlantis\Util::StripPrefixedQueryFields($Raw,'UIH_')
 			);
+		}
+
+		if(array_key_exists('UAP_ID',$Raw) && $Raw['UAP_ID']) {
+			$this->AccountPlan = new Atlantis\Prototype\AccountPlan(
+				Atlantis\Util::StripPrefixedQueryFields($Raw,'UAP_')
+			);
+
+			$this->AccountPlanDate = new Atlantis\Util\Date("@{$Raw['AccountPlanTime']}");
 		}
 
 		return;
@@ -352,10 +371,12 @@ implements JsonSerializable {
 
 		$SQL
 		->Join("UploadImages {$FieldPrefix}UII ON {$TableAlias}.ImageIconID={$FieldPrefix}UII.ID")
-		->Join("UploadImages {$FieldPrefix}UIH ON {$TableAlias}.ImageHeaderID={$FieldPrefix}UIH.ID");
+		->Join("UploadImages {$FieldPrefix}UIH ON {$TableAlias}.ImageHeaderID={$FieldPrefix}UIH.ID")
+		->Join("AccountPlans {$FieldPrefix}UAP ON {$TableAlias}.AccountPlanID={$FieldPrefix}UAP.ID");
 
 		Atlantis\Prototype\UploadImage::ExtendQueryJoins($SQL,"{$FieldPrefix}UII","{$FieldPrefix}UII_");
 		Atlantis\Prototype\UploadImage::ExtendQueryJoins($SQL,"{$FieldPrefix}UIH","{$FieldPrefix}UIH_");
+		Atlantis\Prototype\AccountPlan::ExtendQueryJoins($SQL,"{$FieldPrefix}UAP","{$FieldPrefix}UAP_");
 
 		return;
 	}
@@ -369,8 +390,11 @@ implements JsonSerializable {
 
 		Atlantis\Prototype\UploadImage::ExtendMainFields($SQL,"{$FieldPrefix}UII","{$FieldPrefix}UII_");
 		Atlantis\Prototype\UploadImage::ExtendMainFields($SQL,"{$FieldPrefix}UIH","{$FieldPrefix}UIH_");
+		Atlantis\Prototype\AccountPlan::ExtendMainFields($SQL,"{$FieldPrefix}UAP","{$FieldPrefix}UAP_");
+
 		Atlantis\Prototype\UploadImage::ExtendQueryFields($SQL,"{$FieldPrefix}UII","{$FieldPrefix}UII_");
 		Atlantis\Prototype\UploadImage::ExtendQueryFields($SQL,"{$FieldPrefix}UIH","{$FieldPrefix}UIH_");
+		Atlantis\Prototype\AccountPlan::ExtendQueryFields($SQL,"{$FieldPrefix}UAP","{$FieldPrefix}UAP_");
 
 		return;
 	}

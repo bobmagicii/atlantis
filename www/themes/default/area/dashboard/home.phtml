@@ -1,9 +1,12 @@
 <?php
 
 /**
+ * @var Atlantis\Site\Router $Router
+ * @var Atlantis\Site\PublicWeb $Route
+ * @var Atlantis\Site\Surface $Surface
+ * @var Atlantis\Prototype\User $User
  * @var Atlantis\Struct\SearchResult $Blogs
- * @var Atlantis\Prototype\BlogUser $BlogUser
- * */
+ */
 
 ?>
 
@@ -12,105 +15,122 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-8">
-			<div class="mb-6">
-				<div class="row">
-					<div class="col">
-						<h2>Your Blogs</h2>
-					</div>
-					<div class="col-auto">
-						<a href="<?php echo Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Blog.Create') ?>" class="btn btn-secondary btn-block text-left"><i class="fa fa-fw mr-1 fa-plus-square"></i> Create</a>
+
+<div class="mb-6">
+	<div class="row">
+		<div class="col">
+			<h2>Your Blogs</h2>
+		</div>
+		<div class="col-auto">
+			<a href="<?php echo Atlantis\Site\Endpoint::Get('Atlantis.Dashboard.Blog.Create') ?>" class="btn btn-secondary btn-block text-left"><i class="fa fa-fw mr-1 fa-plus-square"></i> Create</a>
+		</div>
+	</div>
+	<hr class="mt-2 mb-3" />
+	<div class="HideTheLastHr">
+		<?php foreach($Blogs->Payload as $BlogUser): /** @var Atlantis\Prototype\BlogUser $BlogUser */ ?>
+		<div class="WallpaperedBox rounded p-4" style="background-image:url(<?php $Printer($BlogUser->Blog->GetImageHeaderURL()) ?>);">
+			<div style="position:absolute;top:0px;left:0px;width:100%;height:100%;background-color:#000a;"></div>
+			<div class="row align-items-center">
+				<div class="col-12 col-sm-3 mb-2">
+					<div class="WallpaperedBox Square rounded" style="background-image:url(<?php $Printer($BlogUser->Blog->GetImageIconURL('sm')) ?>);">
+						<a href="<?php $Printer($BlogUser->Blog->GetURL()) ?>"></a>
 					</div>
 				</div>
-				<hr class="mt-2 mb-3" />
-				<div class="HideTheLastHr">
-					<?php foreach($Blogs->Payload as $BlogUser): ?>
-					<div class="WallpaperedBox rounded p-4" style="background-image:url(<?php $Printer($BlogUser->Blog->GetImageHeaderURL()) ?>);">
-						<div style="position:absolute;top:0px;left:0px;width:100%;height:100%;background-color:#000a;"></div>
-						<div class="row align-items-center">
-							<div class="col-12 col-sm-3 mb-2">
-								<div class="WallpaperedBox Square rounded" style="background-image:url(<?php $Printer($BlogUser->Blog->GetImageIconURL('sm')) ?>);">
-									<a href="<?php $Printer($BlogUser->Blog->GetURL()) ?>"></a>
-								</div>
-							</div>
-							<div class="col">
-								<div class="mb-2">
-									<a href="<?php $Printer($BlogUser->Blog->GetURL()) ?>" class="font-size-larger font-weight-bold text-white"><?php $Printer($BlogUser->Blog->Title) ?></a>
-								</div>
-								<div class="row tight">
-									<?php if($BlogUser->HasWritePriv()): ?>
-									<div class="col col-sm-auto">
-										<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Post.New',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-block btn-dark text-uppercase AtlantisTooltip" title="New Post"><i class="fa fa-fw fa-edit"></i></a>
-									</div>
-									<?php else: ?>
-									<div class="col col-sm-auto">
-										<span class="btn btn-block btn-dark text-uppercase disabled HasTooltip" title="You do not have writer privileges on this blog."><i class="fa fa-fw fa-edit"></i></span>
-									</div>
-									<?php endif; ?>
-
-									<?php if($BlogUser->HasManagePriv()): ?>
-									<div class="col col-sm-auto">
-										<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Tags',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-block btn-dark text-uppercase AtlantisTooltip" title="Manage Blog Tags"><i class="fa fa-fw fa-tag"></i></a>
-									</div>
-									<?php else: ?>
-									<div class="col col-sm-auto">
-										<span class="btn btn-block btn-dark text-uppercase disabled HasTooltip" title="You do not have manage privileges on this blog."><i class="fa fa-fw fa-tag"></i></span>
-									</div>
-									<?php endif; ?>
-
-									<?php if($BlogUser->HasManagePriv()): ?>
-									<div class="col col-sm-auto">
-										<a href="<?php echo $Endpoint('Atlantis.Dashboard.Account.Images',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-block btn-dark text-uppercase AtlantisTooltip" title="Manage Blog Images"><i class="fa fa-fw fa-image"></i></a>
-									</div>
-									<?php else: ?>
-									<div class="col col-sm-auto">
-										<span class="btn btn-block btn-dark text-uppercase disabled HasTooltip" title="You do not have manage privileges on this blog."><i class="fa fa-fw fa-image"></i></span>
-									</div>
-									<?php endif; ?>
-
-									<?php if($BlogUser->HasManagePriv()): ?>
-									<div class="col col-sm-auto">
-										<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Settings',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-block btn-dark text-uppercase AtlantisTooltip" title="Blog Settings"><i class="fa fa-fw fa-wrench"></i></a>
-									</div>
-									<?php else: ?>
-									<div class="col col-sm-auto">
-										<span class="btn btn-block btn-dark text-uppercase disabled HasTooltip" title="You do not have manage privileges on this blog."><i class="fa fa-fw fa-wrench"></i></span>
-									</div>
-									<?php endif; ?>
-								</div>
-							</div>
+				<div class="col">
+					<div class="mb-2">
+						<a href="<?php $Printer($BlogUser->Blog->GetURL()) ?>" class="font-size-larger font-weight-bold text-white"><?php $Printer($BlogUser->Blog->Title) ?></a>
+					</div>
+					<div class="row tight">
+						<?php if($BlogUser->HasWritePriv()): ?>
+						<div class="col col-sm-auto">
+							<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Post.New',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-block btn-dark text-uppercase AtlantisTooltip" title="New Post"><i class="fa fa-fw fa-edit"></i></a>
 						</div>
-					</div>
-					<hr />
-					<?php endforeach; ?>
-				</div>
-				<?php if(!$Blogs->Total): ?>
-				<div class="p-4 text-center">
-					You have not created any blogs yet.
-				</div>
-				<?php endif; ?>
-			</div>
-			<div class="mb-6">
+						<?php else: ?>
+						<div class="col col-sm-auto">
+							<span class="btn btn-block btn-dark text-uppercase disabled HasTooltip" title="You do not have writer privileges on this blog."><i class="fa fa-fw fa-edit"></i></span>
+						</div>
+						<?php endif; ?>
 
+						<?php if($BlogUser->HasManagePriv()): ?>
+						<div class="col col-sm-auto">
+							<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Tags',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-block btn-dark text-uppercase AtlantisTooltip" title="Manage Blog Tags"><i class="fa fa-fw fa-tag"></i></a>
+						</div>
+						<?php else: ?>
+						<div class="col col-sm-auto">
+							<span class="btn btn-block btn-dark text-uppercase disabled HasTooltip" title="You do not have manage privileges on this blog."><i class="fa fa-fw fa-tag"></i></span>
+						</div>
+						<?php endif; ?>
+
+						<?php if($BlogUser->HasManagePriv()): ?>
+						<div class="col col-sm-auto">
+							<a href="<?php echo $Endpoint('Atlantis.Dashboard.Account.Images',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-block btn-dark text-uppercase AtlantisTooltip" title="Manage Blog Images"><i class="fa fa-fw fa-image"></i></a>
+						</div>
+						<?php else: ?>
+						<div class="col col-sm-auto">
+							<span class="btn btn-block btn-dark text-uppercase disabled HasTooltip" title="You do not have manage privileges on this blog."><i class="fa fa-fw fa-image"></i></span>
+						</div>
+						<?php endif; ?>
+
+						<?php if($BlogUser->HasManagePriv()): ?>
+						<div class="col col-sm-auto">
+							<a href="<?php echo $Endpoint('Atlantis.Dashboard.Blog.Settings',['BlogID'=>$BlogUser->Blog->ID]) ?>" class="btn btn-block btn-dark text-uppercase AtlantisTooltip" title="Blog Settings"><i class="fa fa-fw fa-wrench"></i></a>
+						</div>
+						<?php else: ?>
+						<div class="col col-sm-auto">
+							<span class="btn btn-block btn-dark text-uppercase disabled HasTooltip" title="You do not have manage privileges on this blog."><i class="fa fa-fw fa-wrench"></i></span>
+						</div>
+						<?php endif; ?>
+					</div>
+				</div>
 			</div>
 		</div>
+		<hr />
+		<?php endforeach; ?>
+	</div>
+	<?php if(!$Blogs->Total): ?>
+	<div class="p-4 text-center">
+		You have not created any blogs yet.
+	</div>
+	<?php endif; ?>
+</div>
+
+		</div>
 		<div class="col-md-4">
-			<div class="quotron quotron-primary mb-6">
-				<a href="<?php echo $Printer($User->GetURL()) ?>" class="btn btn-dark btn-block text-left"><i class="fa fa-fw mr-1 fa-user"></i> My User Page</a>
-				<a href="<?php echo $Endpoint('Atlantis.Dashboard.Account.Index') ?>" class="btn btn-dark btn-block text-left"><i class="fa fa-fw mr-1 fa-cog"></i> Account Settings</a>
+
+<div class="quotron quotron-primary mb-6">
+	<a href="<?php echo $Printer($User->GetURL()) ?>" class="btn btn-dark btn-block text-left"><i class="fa fa-fw mr-1 fa-user"></i> My User Page</a>
+	<a href="<?php echo $Endpoint('Atlantis.Dashboard.Account.Index') ?>" class="btn btn-dark btn-block text-left"><i class="fa fa-fw mr-1 fa-cog"></i> Account Settings</a>
+</div>
+<div class="quotron quotron-primary mb-6">
+	<h2>Account</h2>
+	<hr class="mt-2 mb-3" />
+	<div class="row">
+		<div class="col">
+			<div class="font-weight-bold">Account Type</div>
+			<div class="text-muted list-style-none">
+				<div class="m-0"><i class="fas fa-fw fa-blog"></i> Max Blogs: <?php $Printer($User->AccountPlan->MaxBlogs) ?></div>
+				<div class="m-0"><i class="fas fa-fw fa-boxes"></i> Max Storage: <?php $Printer(Atlantis\Util::BytesReadable($User->AccountPlan->MaxStorage)) ?></div>
 			</div>
-			<div class="quotron quotron-primary mb-6">
-				<h2>Storage</h2>
-				<hr class="mt-2 mb-3" />
-				<div class="row">
-					<div class="col">
-						<div class="font-weight-bold"><a href="<?php $Printer($Endpoint('Atlantis.Dashboard.Account.Images')) ?>">Images</a></div>
-						<div class="text-muted">Includes the uploads and the generated sizes.</div>
-					</div>
-					<div class="col-auto">
-						<div class="font-weight-bold"><?php $Printer(Atlantis\Util::BytesReadable($User->BytesImages)) ?></div>
-					</div>
-				</div>
-			</div>
+		</div>
+		<div class="col-auto">
+			<div class="font-weight-bold"><?php $Printer($User->AccountPlan->Title) ?></div>
+		</div>
+	</div>
+</div>
+<div class="quotron quotron-primary mb-6">
+	<h2>Storage</h2>
+	<hr class="mt-2 mb-3" />
+	<div class="row">
+		<div class="col">
+			<div class="font-weight-bold"><a href="<?php $Printer($Endpoint('Atlantis.Dashboard.Account.Images')) ?>">Images</a></div>
+			<div class="text-muted">Includes the uploads and the generated sizes.</div>
+		</div>
+		<div class="col-auto">
+			<div class="font-weight-bold"><?php $Printer(Atlantis\Util::BytesReadable($User->BytesImages)) ?></div>
+		</div>
+	</div>
+</div>
+
 		</div>
 	</div>
 

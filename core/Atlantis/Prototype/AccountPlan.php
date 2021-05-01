@@ -16,7 +16,13 @@ extends Atlantis\Prototype {
 		'Title'      => 'Title',
 		'MaxBlogs'   => 'MaxBlogs:int',
 		'MaxStorage' => 'MaxStorage:int',
-		'Price'      => 'Price:float'
+		'Price'      => 'Price'
 	];
+
+	public int $ID;
+	public string $Title;
+	public int $MaxBlogs;
+	public int $MaxStorage;
+	public string $Price;
 
 }
