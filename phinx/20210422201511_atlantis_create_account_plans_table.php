@@ -30,7 +30,7 @@ extends AbstractMigration {
 		INSERT INTO `AccountPlans`
 		(`ID`,`UUID`,`Title`,`MaxBlogs`,`MaxStorage`,`Price`)
 		VALUES
-		(1,'free','Free',1,1048576,0.0);
+		(1,'free','Free',1,1073741824,0.0);
 		");
 
 		return;
