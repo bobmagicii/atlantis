@@ -41,7 +41,7 @@ class PublicWeb {
 		$this->Method = $this->GetRequestMethod();
 		$this->Get = new Nether\Input\Filter($_GET);
 		$this->Router = Nether\Stash::Get('Router');
-		$this->Surface = new Nether\Surface;
+		$this->Surface = new Atlantis\Site\Surface;
 		$this->User = Atlantis\Prototype\User::FetchSession();
 		$this->Errors = new Nether\Object\Datastore;
 		$this->Storage = new Atlantis\StorageManager;
