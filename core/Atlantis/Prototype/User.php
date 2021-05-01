@@ -757,20 +757,21 @@ implements JsonSerializable {
 
 		$Opt = new Nether\Object\Mapped($Opt,[
 			// fields used by the query.
-			'TimeCreated' => time(),
-			'TimeSeen'    => 0,
-			'TimeBanned'  => 0,
-			'Enabled'     => 1,
-			'UUID'        => Ramsey\Uuid\Uuid::UUID4()->ToString(),
-			'Alias'       => NULL,
-			'Email'       => NULL,
-			'PHash'       => NULL,
-			'PSand'       => NULL,
-			'OptAdult'    => 0,
-			'BytesImages' => 0,
+			'TimeCreated'   => time(),
+			'TimeSeen'      => 0,
+			'TimeBanned'    => 0,
+			'Enabled'       => 1,
+			'UUID'          => Ramsey\Uuid\Uuid::UUID4()->ToString(),
+			'Alias'         => NULL,
+			'Email'         => NULL,
+			'PHash'         => NULL,
+			'PSand'         => NULL,
+			'AccountPlanID' => 1,
+			'OptAdult'      => 0,
+			'BytesImages'   => 0,
 			// fields used to generate data.
-			'Password1'   => NULL,
-			'Password2'   => NULL
+			'Password1'     => NULL,
+			'Password2'     => NULL
 		]);
 
 		static::Insert_ValidateAlias($Opt);
