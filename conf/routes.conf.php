@@ -110,6 +110,11 @@
 	'{&}//ops/users/list',
 	'//{{Domain}}/ops/users/list',
 	'Routes\\Admin\\Users::Index'
+)
+->Register('Atlantis.Admin.AccountPlans.List',
+	'{&}//ops/account-plans/list',
+	'//{{Domain}}/ops/account-plans/list',
+	'Routes\\Admin\\AccountPlans::Index'
 );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -140,6 +145,11 @@
 	'{&}//api/v1/invite/($)',
 	'//{{Domain}}/api/v1/invite/{{Command}}',
 	'Routes\\Api\\V1\\Invite::Index'
+)
+->Register('Atlantis.API.AccountPlan',
+	'{&}//api/v1/account-plan/($)',
+	'//{{Domain}}/api/v1/account-plan/{{Command}}',
+	'Routes\\Api\\V1\\AccountPlan::Index'
 )
 ->Register('Atlantis.API.Test',
 	'{&}//api/v1/test/($)',
