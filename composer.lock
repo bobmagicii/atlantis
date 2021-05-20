@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c2ddf426126a29006d6088ac26681ee1",
+    "content-hash": "a622ca6f32897c1c79c2f8d0561d4d19",
     "packages": [
         {
             "name": "artem_c/emmet",
@@ -1987,6 +1987,54 @@
                 "source": "https://github.com/netherphp/cache/tree/v2.0.5"
             },
             "time": "2020-11-07T00:39:53+00:00"
+        },
+        {
+            "name": "netherphp/composer-plugin",
+            "version": "v0.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/netherphp/composer-plugin.git",
+                "reference": "35c8e3e4bc4c4c659eaf904cc8a966dfda1a67d7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/netherphp/composer-plugin/zipball/35c8e3e4bc4c4c659eaf904cc8a966dfda1a67d7",
+                "reference": "35c8e3e4bc4c4c659eaf904cc8a966dfda1a67d7",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^2.0",
+                "php": "^7.0 || ^8.0"
+            },
+            "require-dev": {
+                "composer/composer": "^2.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Nether\\Composer\\Plugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Nether\\": "src/Nether"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bob Majdak Jr",
+                    "email": "bob@pegasusgate.net",
+                    "homepage": "https://pegasusgate.net/+bob"
+                }
+            ],
+            "description": "Adds some features to Composer via its plugin system.",
+            "support": {
+                "issues": "https://github.com/netherphp/composer-plugin/issues",
+                "source": "https://github.com/netherphp/composer-plugin/tree/v0.0.2"
+            },
+            "time": "2021-05-20T00:13:58+00:00"
         },
         {
             "name": "netherphp/console",
