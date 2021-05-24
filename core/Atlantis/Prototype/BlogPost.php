@@ -304,7 +304,7 @@ extends Atlantis\Prototype {
 
 		if($Output !== NULL && strlen($Output) > $Len) {
 			$Output = substr($Output,0,$Len);
-			$Output += ' [...]';
+			$Output .= ' [...]';
 		}
 
 		return $Output;
