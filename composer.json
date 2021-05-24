@@ -27,7 +27,7 @@
 		"league/oauth1-client": "^1.8",
 		"tgalopin/html-sanitizer": "^1.4",
 		"jdorn/sql-formatter": "^1.2",
-		"netherphp/composer-plugin": "^0.0.2"
+		"netherphp/composer-plugin": "^1.0"
 	},
 	"config": {
 		"preferred-install": {

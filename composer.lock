@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a622ca6f32897c1c79c2f8d0561d4d19",
+    "content-hash": "845319a259c84a3513b7890fcc320b80",
     "packages": [
         {
             "name": "artem_c/emmet",
@@ -1990,16 +1990,16 @@
         },
         {
             "name": "netherphp/composer-plugin",
-            "version": "v0.0.2",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/netherphp/composer-plugin.git",
-                "reference": "35c8e3e4bc4c4c659eaf904cc8a966dfda1a67d7"
+                "reference": "c898ff6f922cdd53e32da4ae5d8cdc862d1d24ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/netherphp/composer-plugin/zipball/35c8e3e4bc4c4c659eaf904cc8a966dfda1a67d7",
-                "reference": "35c8e3e4bc4c4c659eaf904cc8a966dfda1a67d7",
+                "url": "https://api.github.com/repos/netherphp/composer-plugin/zipball/c898ff6f922cdd53e32da4ae5d8cdc862d1d24ac",
+                "reference": "c898ff6f922cdd53e32da4ae5d8cdc862d1d24ac",
                 "shasum": ""
             },
             "require": {
@@ -2032,9 +2032,9 @@
             "description": "Adds some features to Composer via its plugin system.",
             "support": {
                 "issues": "https://github.com/netherphp/composer-plugin/issues",
-                "source": "https://github.com/netherphp/composer-plugin/tree/v0.0.2"
+                "source": "https://github.com/netherphp/composer-plugin/tree/v1.0.1"
             },
-            "time": "2021-05-20T00:13:58+00:00"
+            "time": "2021-05-24T17:58:57+00:00"
         },
         {
             "name": "netherphp/console",
