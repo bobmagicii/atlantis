@@ -17,6 +17,15 @@ data.
 	__Construct() {
 		parent::__Construct();
 
+		$MemcacheServers = NULL;
+
+		////////
+
+		if(!Nether\Cache\Engines\MemcacheEngine::HasGlobalPool())
+		$MemcacheServers = Nether\Option::Get(
+			'Atlantis.Cache.MemcacheServers'
+		);
+
 		// add the global app cache.
 
 		$this->EngineAdd(new Nether\Cache\Engines\LocalEngine(
@@ -28,10 +37,7 @@ data.
 
 		$this->EngineAdd(new Nether\Cache\Engines\MemcacheEngine(
 			UseGlobal: TRUE,
-			Servers: (
-				Nether\Cache\Engines\MemcacheEngine::HasGlobalPool()
-				? NULL : [ 'localhost:11211' ]
-			)
+			Servers: $MemcacheServers
 		));
 
 		return;
