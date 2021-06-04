@@ -1941,16 +1941,16 @@
         },
         {
             "name": "netherphp/cache",
-            "version": "v3.0.2",
+            "version": "v3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/netherphp/cache.git",
-                "reference": "dd92188ddaf3b697179ebe8573493dab985c44c0"
+                "reference": "48a0b590d876d4a640fa5722d37661a66b090df6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/netherphp/cache/zipball/dd92188ddaf3b697179ebe8573493dab985c44c0",
-                "reference": "dd92188ddaf3b697179ebe8573493dab985c44c0",
+                "url": "https://api.github.com/repos/netherphp/cache/zipball/48a0b590d876d4a640fa5722d37661a66b090df6",
+                "reference": "48a0b590d876d4a640fa5722d37661a66b090df6",
                 "shasum": ""
             },
             "require": {
@@ -1986,9 +1986,9 @@
             ],
             "support": {
                 "issues": "https://github.com/netherphp/cache/issues",
-                "source": "https://github.com/netherphp/cache/tree/v3.0.2"
+                "source": "https://github.com/netherphp/cache/tree/v3.0.4"
             },
-            "time": "2021-06-04T04:04:07+00:00"
+            "time": "2021-06-04T04:49:33+00:00"
         },
         {
             "name": "netherphp/composer-plugin",

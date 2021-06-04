@@ -71,12 +71,5 @@ if(Nether\Option::Get('Atlantis.Log.Application.File')) {
 
 Nether\Stash::Set(
 	'Atlantis.Cache.GlobalMemory',
-	(new Nether\Cache\Manager)
-	->EngineAdd(new Nether\Cache\Engines\LocalEngine(
-		UseGlobal: TRUE
-	))
-	->EngineAdd(new Nether\Cache\Engines\MemcacheEngine(
-		UseGlobal: TRUE,
-		Servers: [ 'localhost:11211' ]
-	))
+	new Atlantis\Cache\GlobalMemory
 );
