@@ -1,7 +1,7 @@
 {
 	"require": {
 		"netherphp/avenue": "^4.0",
-		"netherphp/cache": ">=2.0.0",
+		"netherphp/cache": "^3.0",
 		"netherphp/console": "^4.0",
 		"netherphp/database": ">=3.0.0",
 		"netherphp/input": ">=3.1.0",

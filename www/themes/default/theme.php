@@ -70,13 +70,15 @@ class Theme {
 			public function
 			GetCache():
 			String {
-				$Stat = Nether\Stash::Get('Cache')->GetStats();
+
+				$Manager = Nether\Stash::Get('Atlantis.Cache.GlobalMemory');
+				$Stats = $Manager->GetStats();
+
 				return sprintf(
 					'qn=%d, hn=%d, hp=%d%%',
-					$Stat->QueryCount,
-					$Stat->HitCount,
-					($Stat->QueryCount===0)?:
-					((($Stat->HitCount / $Stat->QueryCount) * 100))
+					($Stats->Hit + $Stats->Miss),
+					$Stats->Hit,
+					($Stats->HitRatio * 100)
 				);
 			}
 
