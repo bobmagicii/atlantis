@@ -38,6 +38,18 @@ require(sprintf(
 
 (function(){
 	$Filename = sprintf(
+		'%s/conf/local.conf.php',
+		ProjectRoot
+	);
+
+	if(file_exists($Filename))
+	require($Filename);
+
+	return;
+})();
+
+(function(){
+	$Filename = sprintf(
 		'%s/conf/env/%s/atlantis.conf.php',
 		ProjectRoot,
 		ENV

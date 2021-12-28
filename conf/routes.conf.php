@@ -5,6 +5,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 // mostly static routes ///////////////////////////////////////////////////////
 
+Nether\Ki::Flow('Atlantis.Routes.Pre',[$Router]);
+
 ($Router)
 ->Register('Atlantis.Home',
 	'{&}//index',
@@ -160,6 +162,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 // wildly wildcarded routes ///////////////////////////////////////////////////
 
+Nether\Ki::Flow('Atlantis.Routes.Post',[$Router]);
+
 ($Router)
 ->Register('Atlantis.Blog.Post',
 	'{&}//\x2b($)/($)(?:/($))?',
@@ -201,3 +205,5 @@
 	'//{{Domain}}/error/not-found',
 	'Routes\\Home::NotFound'
 );
+
+Nether\Ki::Flow('Atlantis.Routes.Final',[$Router]);
