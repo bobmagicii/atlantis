@@ -1,5 +1,5 @@
 /*// nether-onescript //
-@date 2021-04-30 18:53:16
+@date 2021-08-06 16:29:55
 @files [
     "src\/main.css",
     "src\/local\/100-design-header.css",
@@ -42,7 +42,7 @@
 .font-family-reading {
 	font-family: 'Poppins', sans-serif;
 	font-variant-ligatures: no-common-ligatures;
-	letter-spacing: -0.02em;
+	letter-spacing: 0.01em;
 	font-weight: 400;
 }
 
@@ -296,7 +296,6 @@ body > header a {
 }
 
 .PostContent {
-	letter-spacing: -0.02em;
 	font-weight: 400;
 }
 

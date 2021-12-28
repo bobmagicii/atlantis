@@ -185,6 +185,55 @@ implements JsonSerializable {
 	////////////////////////////////////////////////////////////////
 
 	public function
+	CacheDrop():
+	static {
+	/*//
+	@date 2021-06-08
+	//*/
+
+		$CacheKey = static::GetCacheKey($this->ID);
+		$Cache = NULL;
+
+		////////
+
+		// drop from shared app and memcache.
+
+		$Cache = Nether\Stash::Get('Atlantis.Cache.GlobalMemory');
+
+		if($Cache instanceof Nether\Cache\Manager)
+		$Cache->Drop($CacheKey);
+
+		////////
+
+		return $this;
+	}
+
+	protected function
+	OnDrop():
+	void {
+	/*//
+	@date 2021-06-08
+	//*/
+
+		$this->CacheDrop();
+		return;
+	}
+
+	protected function
+	OnUpdate():
+	void {
+	/*//
+	@date 2021-06-08
+	//*/
+
+		$this->CacheDrop();
+		return;
+	}
+
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+
+	public function
 	IsFriendsWith(?Atlantis\Prototype\User $User):
 	bool {
 	/*//
@@ -868,6 +917,58 @@ implements JsonSerializable {
 		));
 
 		return;
+	}
+
+	////////////////////////////////////////////////////////////////
+	// Cached Object API ///////////////////////////////////////////
+
+	static protected
+	$CacheKeyFormat = 'atlantis-user-%d';
+
+	static public function
+	GetCacheKey(int $ID):
+	string {
+	/*//
+	@date 2021-06-08
+	//*/
+
+		return sprintf(static::$CacheKeyFormat,$ID);
+	}
+
+	static public function
+	BuildObjectResult(array $Raw, string $Prefix, bool $Saftey=TRUE):
+	static {
+	/*//
+	@date 2021-06-08
+	//*/
+
+		// even though we have queried and returned a full dataset
+		// needed to construct a user object, we are going to check
+		// if we have one already built in cache. this will make all
+		// user objects built this way all point to the exact same
+		// reference.
+
+		$CacheKey = static::GetCacheKey($Raw["{$Prefix}ID"]);
+		$Cache = Nether\Stash::Get('Atlantis.Cache.GlobalMemory');
+
+		if($Cache instanceof Nether\Cache\Manager) {
+			$User = $Cache->Get($CacheKey);
+
+			if($User instanceof Atlantis\Prototype\User) {
+				return $User;
+			}
+		}
+
+		////////
+
+		$User = new static(
+			Atlantis\Util::StripPrefixedQueryFields($Raw, $Prefix),
+			$Saftey
+		);
+
+		$Cache->Set($CacheKey,$User);
+
+		return $User;
 	}
 
 }

@@ -64,6 +64,18 @@ namespace.
 		->Limit(1)
 		->Query($this);
 
+		$this->OnDrop();
+
+		return;
+	}
+
+	protected function
+	OnDrop():
+	void {
+	/*//
+	@date 2021-06-08
+	//*/
+
 		return;
 	}
 
@@ -122,7 +134,19 @@ namespace.
 
 		//var_dump($Result);
 
+		$this->OnUpdate($Input);
+
 		return $this;
+	}
+
+	protected function
+	OnUpdate():
+	void {
+	/*//
+	@date 2021-06-08
+	//*/
+
+		return;
 	}
 
 	////////////////////////////////////////////////////////////////

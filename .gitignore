@@ -1,6 +1,7 @@
 # ignore some application paths.
 /prod.lock
 /.htpasswd
+/conf/local.conf.php
 
 /cache/
 /data/

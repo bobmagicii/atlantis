@@ -45,7 +45,7 @@ class Theme {
 			public function
 			__ToString():
 			String {
-				return "database { {$this->GetDatabase()} }<br />cache{ {$this->GetCache()} }<br />atlantis{$this->GetEnv()} { {$this->GetApp()} }";
+				return "database { {$this->GetDatabase()} }<br />cache{ {$this->GetCache()} }<br />memory{ {$this->GetMemory()} }<br />atlantis{$this->GetEnv()} { {$this->GetApp()} }";
 			}
 
 			public function
@@ -62,7 +62,7 @@ class Theme {
 			GetApp():
 			String {
 				return sprintf(
-					't=%.3f',
+					't: %.3f',
 					(microtime(TRUE)-ProjectTime)
 				);
 			}
@@ -75,7 +75,7 @@ class Theme {
 				$Stats = $Manager->GetStats();
 
 				return sprintf(
-					'qn=%d, hn=%d, hp=%d%%',
+					'qn: %d, hn: %d, hp: %d%%',
 					($Stats->Hit + $Stats->Miss),
 					$Stats->Hit,
 					($Stats->HitRatio * 100)
@@ -86,11 +86,20 @@ class Theme {
 			GetDatabase():
 			String {
 				return sprintf(
-					'cn=%d, ct=%.3f, qn=%d, qt=%.3f',
+					'cn: %d, ct: %.3f, qn: %d, qt: %.3f',
 					Nether\Database::$ConnectCount,
 					Nether\Database::$ConnectTime,
 					Nether\Database::$QueryCount,
 					Nether\Database::$QueryTime
+				);
+			}
+
+			public function
+			GetMemory():
+			string {
+				return sprintf(
+					'p: %s',
+					Atlantis\Util::BytesReadable(memory_get_peak_usage(TRUE))
 				);
 			}
 

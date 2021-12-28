@@ -51,7 +51,7 @@ extends Atlantis\Site\ProtectedAPI {
 	#[Atlantis\Meta\Error(101,'Database shit itself inserting blog ownership.')]
 	final public function
 	EntityPost():
-	Void {
+	void {
 
 		($this->Post)
 		->Title('Atlantis\Util\Filters::EncodedText')
