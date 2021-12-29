@@ -33,6 +33,10 @@
 		"preferred-install": {
 			"netherphp\/*": "source",
 			"*": "dist"
+		},
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"netherphp/composer-plugin": true
 		}
 	},
 	"autoload": {

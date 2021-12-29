@@ -686,7 +686,7 @@ extends Atlantis\Prototype {
 		// get all of those tags then.
 
 		$Tags = Atlantis\Prototype\BlogPostTag::Find([
-			'PostID'=>$Which->Value()
+			'PostID'=>$Which->Values()
 		]);
 
 		// bind the relevant tags to each of the output objects.
