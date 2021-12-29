@@ -64,16 +64,21 @@ jQuery(document)
 		let Editor = null;
 		let Container = null;
 
+		console.log(`init codemirror: ${Mime} ${Theme} ${Title}`);
+
 		Container = Util.ZenCode(
 			'div.CodeViewer.WithLabel>'+
 			'div.Label>'+
 			'(div.row.tight>('+
 				'(div.col-auto>i.fas.fa-fw.fa-code.mr-2)+'+
-				'(div.col{!Title!})+'+
-				'(div.col-auto{!Lang!})'+
+				'(div.col.CodeTitle)+'+
+				'(div.col-auto.CodeLang)'+
 			'))',
 			{ 'Title': Title, 'Lang': LangData.name }
 		);
+
+		Container.find('.CodeTitle').text(Title);
+		Container.find('.CodeLang').text(LangData.name);
 
 		Element.after(Container);
 		Element.hide();
