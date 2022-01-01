@@ -35,13 +35,20 @@ $GetStylesheetURL = function(String $URI):String {
 	<link rel="icon" href="/themes/default/gfx/icon-fav.png" type="image/png" />
 	<link rel="shortcut icon" href="/themes/default/gfx/icon-fav.png" type="image/png" />
 	<meta name="description" content="<?php $Surface->Show('Page.Desc') ?>" />
+	<?php if($Surface->Get('Page.Keywords')): ?>
 	<meta name="keywords" content="<?php $Surface->Show('Page.Keywords') ?>" />
+	<?php endif; ?>
 	<meta name="author" content="<?php $Surface->Show('Page.Authour') ?>" />
-	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:card" content="<?php $Surface->Show('Page.Type') ?>" />
 	<meta name="twitter:title" content="<?php $Surface->Show('Page.Title') ?>" />
 	<meta name="twitter:creator" content="<?php $Surface->Show('Social.Authour') ?>" />
 	<meta name="twitter:image" content="<?php $Surface->Show('Social.Image') ?>" />
 	<meta name="twitter:domain" content="<?php $Printer($Router->GetDomain()) ?>" />
+	<?php if($Surface->Has('Page.EmbedURL')): ?>
+	<meta name="twitter:player" content="<?php $Surface->Show('Page.EmbedURL') ?>" />
+	<meta name="twitter:player:width" content="1920" />
+	<meta name="twitter:player:height" content="1080" />
+	<?php endif; ?>
 	<meta property="og:site_name" content="<?php $Printer(Nether\Option::Get('app-name')) ?>">
 	<meta property="og:title" content="<?php $Surface->Show('Page.Title') ?>">
 	<meta property="og:image" content="<?php $Surface->Show('Social.Image') ?>">

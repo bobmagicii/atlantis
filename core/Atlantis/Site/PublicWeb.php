@@ -51,6 +51,9 @@ class PublicWeb {
 		else
 		$this->Post = new Nether\Input\Filter(Atlantis\Util::ParseEncodedStandardInput());
 
+		$this->Surface
+		->Set('Page.Type','article');
+
 		$this->Push([
 			'Router'    => $this->Router,
 			'Route'     => $this,
