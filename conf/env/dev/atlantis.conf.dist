@@ -11,7 +11,7 @@ Nether\Option::Set([
 	////////////////////////////////////////////////////////////////
 	// Database Settings ///////////////////////////////////////////
 
-	'nether-database-connections' => [
+	'Nether.Database.Connections' => [
 		'Default' => [
 			'Type'     => 'mysql',
 			'Hostname' => 'ur-db-host',

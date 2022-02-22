@@ -10,7 +10,7 @@ require(sprintf(
 ));
 
 $Connection = (new Nether\Database)->GetDriver();
-$Database = Nether\Option::Get('nether-database-connections')['Default']['Database'];
+$Database = Nether\Option::Get('Nether.Database.Connections')['Default']['Database'];
 
 return [
 	'environments' => [
